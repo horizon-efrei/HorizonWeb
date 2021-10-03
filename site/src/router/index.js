@@ -3,6 +3,7 @@ import Content from '@/components/Content.vue'
 import PostView from '@/pages/Post/PostView.vue'
 import PostNew from '@/pages/Post/PostNew.vue'
 import Login from '@/pages/Login.vue'
+import FileUpload from '@/pages/FileUpload.vue'
 import PostList from '@/pages/Post/PostList.vue'
 
 const routes = [
@@ -17,6 +18,11 @@ const routes = [
   {
     path: '/new_post',
     component: PostNew
+  },
+
+  {
+    path: '/file_upload',
+    component: FileUpload
   },
 
   {

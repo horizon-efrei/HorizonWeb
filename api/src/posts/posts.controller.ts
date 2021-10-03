@@ -1,15 +1,15 @@
 import {
- Body,
- Controller,
- Delete,
- Get,
- Param,
- ParseIntPipe,
- Patch,
- Post as PostRequest,
- Query,
- UseGuards,
- UseInterceptors,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post as PostRequest,
+  Query,
+  UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/decorators/current-user.decorator';
@@ -31,7 +31,7 @@ export class PostsController {
   constructor(
     private readonly postsService: PostsService,
     private readonly postLikesService: PostLikesService,
-  ) {}
+  ) { }
 
   @UseInterceptors(PostInterceptor)
   @PostRequest()
