@@ -14,7 +14,19 @@ interface Config {
 
 const logger = new Logger('Configuration');
 
-export const config = createProfiguration<Config>({
+export const uploadConfig = {
+  allowedDocFiles: ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'txt', 'rtf'],
+  allowedImgFiles: ['jpg', 'jpeg', 'png', 'gif'],
+  allowedVideoFiles: ['wma', 'mpg', 'flv', 'avi'],
+  allowedProgFiles: ['c', 'py', 'vue', 'js', 'ts', 'md'],
+  allowedSoundFiles: ['mp3', 'wav'],
+  allowedArchiveFiles: ['rar', 'zip'],
+  convertToPDF: true,
+  maxSize: 10_485_760,
+  uploadPath: './uploads',
+};
+
+export const apiConfig = createProfiguration<Config>({
   port: {
     default: 5000,
     format: Number,
