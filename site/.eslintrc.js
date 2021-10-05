@@ -4,30 +4,14 @@ module.exports = {
     node: true
   },
   extends: [
-    'plugin:vue/vue3-recommended',
-    'eslint:recommended',
+    'plugin:vue/vue3-essential',
     '@vue/standard'
   ],
   parserOptions: {
-    parser: 'babel-eslint',
-    ecmaVersion: 12
+    parser: 'babel-eslint'
   },
   rules: {
-    // 'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'import/no-unresolved': ['error'],
-    'vue/html-self-closing': ['off']
-  },
-  settings: {
-    'import/resolver': {
-      webpack: {
-        alias: {
-          map: [
-            ['@api', './api/']
-          ]
-        },
-        extensions: ['.js', '.less', '.json']
-      }
-    }
+    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
   }
 }
