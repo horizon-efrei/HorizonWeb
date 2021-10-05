@@ -6,7 +6,7 @@ import {
 import type { JwtSignOptions } from '@nestjs/jwt';
 import { JwtService } from '@nestjs/jwt';
 import type { oauth2_v2 as oauth2v2 } from 'googleapis';
-import { config } from '../config';
+import { apiConfig } from '../config';
 import type { User } from '../users/user.schema';
 import { UserService } from '../users/users.service';
 import { GoogleAuthService } from './google-auth.service';
@@ -55,7 +55,7 @@ export class AuthService {
     return {
       /* eslint-disable @typescript-eslint/naming-convention */
       access_token: await this.jwtService.signAsync(payload, this.getAccessTokenOptions()),
-      refresh_token: config.get('accessTokenExpiration')
+      refresh_token: apiConfig.get('accessTokenExpiration')
         ? await this.jwtService.signAsync(payload, this.getRefreshTokenOptions())
         : null,
       /* eslint-enable @typescript-eslint/naming-convention */
@@ -120,10 +120,10 @@ export class AuthService {
 
   private getTokenOptions(type: 'access' | 'refresh'): JwtSignOptions {
     const options: JwtSignOptions = {
-      secret: config.get(`${type}TokenSecret`),
+      secret: apiConfig.get(`${type}TokenSecret`),
     };
 
-    const expiration = config.get(`${type}TokenExpiration`);
+    const expiration = apiConfig.get(`${type}TokenExpiration`);
     if (expiration)
       options.expiresIn = expiration;
 

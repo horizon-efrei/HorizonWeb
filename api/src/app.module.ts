@@ -2,19 +2,19 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AuthModule } from './auth/auth.module';
-import { config } from './config';
+import { apiConfig } from './config';
 import { PostsModule } from './posts/posts.module';
 import { UserModule } from './users/users.module';
-import { UploadModule } from './upload/upload.module';
+import { FilesModule } from './files/files.module';
 
 @Module({
   imports: [
     AuthModule,
     UserModule,
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(config.get('mongoUri')),
+    MongooseModule.forRoot(apiConfig.get('mongoUri')),
     PostsModule,
-    UploadModule
+    FilesModule
   ],
   providers: [],
   controllers: [],

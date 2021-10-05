@@ -31,7 +31,7 @@ export class PostsController {
   constructor(
     private readonly postsService: PostsService,
     private readonly postLikesService: PostLikesService,
-  ) { }
+  ) {}
 
   @UseInterceptors(PostInterceptor)
   @PostRequest()

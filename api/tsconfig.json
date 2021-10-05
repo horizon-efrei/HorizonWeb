@@ -2,6 +2,27 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
+    // TODO: path mapping
+    /*"paths": {
+      "@": [
+        "src/"
+      ],
+      "@users": [
+        "src/users"
+      ],
+      "@docs": [
+        "src/course-docs"
+      ],
+      "@posts": [
+        "src/posts"
+      ],
+      "@auth": [
+        "src/auth"
+      ],
+      "@shared": [
+        "src/shared"
+      ]
+    },*/
     "checkJs": true,
     "declaration": true,
     "emitDecoratorMetadata": true,
@@ -18,8 +39,16 @@
     "skipLibCheck": true,
     "strictNullChecks": true,
     "target": "es2019",
-    "typeRoots": ["./typings", "./node_modules/@types"]
+    "typeRoots": [
+      "./typings",
+      "./node_modules/@types"
+    ]
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": ["node_modules/", "typings/"]
+  "include": [
+    "./src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules/",
+    "typings/"
+  ]
 }

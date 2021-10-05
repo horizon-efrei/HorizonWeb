@@ -1,9 +1,10 @@
+import * as path from 'path';
 import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
-import { config } from './config';
+import { apiConfig } from './config';
 import { ExceptionsFilter } from './shared/filter/exceptions.filter';
 import { logger } from './shared/middlewares/logger';
 
@@ -21,8 +22,8 @@ async function bootstrap(): Promise<void> {
 
   app.use(logger);
 
-  await app.listen(config.get('port'));
-  Logger.log(`Server initialized on port ${config.get('port')}`, 'Bootstrap');
+  await app.listen(apiConfig.get('port'));
+  Logger.log(`Server initialized on port ${apiConfig.get('port')}`, 'Bootstrap');
 }
 
 void bootstrap();
