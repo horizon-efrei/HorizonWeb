@@ -9,8 +9,8 @@ import { FilesController } from './files.controller';
 import { CourseDoc, CourseDocSchema } from './schemas/course-doc.schema';
 import { CourseSchema, CourseSubject } from './schemas/course-subject.schema';
 import { Upload, UploadSchema } from './schemas/file.schema';
-import { CourseDocService } from './services/course-doc.service';
-import { UploadInterceptor } from './upload.interceptor';
+import { CourseDocsService } from './services/course-docs.service';
+import { FilesService } from './services/files.service';
 
 
 @Module({
@@ -42,7 +42,7 @@ import { UploadInterceptor } from './upload.interceptor';
     UserModule,
   ],
   controllers: [FilesController],
-  providers: [CourseDocService, UploadInterceptor],
-  exports: [CourseDocService],
+  providers: [CourseDocsService, FilesService],
+  exports: [CourseDocsService],
 })
 export class FilesModule {}

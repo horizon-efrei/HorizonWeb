@@ -10,6 +10,9 @@ export class Upload extends Document {
   author: User;
 
   @Prop()
+  encoding: string;
+
+  @Prop()
   originalName: string;
 
   @Prop()
@@ -43,5 +46,6 @@ export class Upload extends Document {
 export const UploadSchema = SchemaFactory.createForClass(Upload);
 
 UploadSchema.methods.filePath = function (): string {
-  return path.join(uploadConfig.uploadPath, (this.id as string), (this.get('orginalName') as string));
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  return path.join(uploadConfig.uploadPath, this.id, this.originalName);
 };
