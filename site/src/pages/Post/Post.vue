@@ -52,7 +52,7 @@
       <div class="w-9/12 flex">
         <div>
           <div>
-            <Post :post="thread.post" />
+            <Reply :post="thread.post" />
           </div>
           <div
             v-for="response in thread.responses"
@@ -107,7 +107,7 @@
 
 <script lang="js">
 import { defineComponent } from 'vue'
-import Post from '@/pages/Post/Post.vue'
+import Reply from '@/components/Reply.vue'
 import Response from '@/components/Response.vue'
 import Timeline from '@/components/Timeline.vue'
 import Tag from '@/components/Tag.vue'
@@ -116,13 +116,13 @@ import SimilarTopic from '@/components/SimilarTopic.vue'
 // import Comment from '@/components/Comment.vue'
 
 export default defineComponent({
-  name: 'Thread',
+  name: 'Post',
   components: {
     Timeline,
     Tag,
     Contributors,
     SimilarTopic,
-    Post,
+    Reply,
     Response
     // Comment
   },
