@@ -27,7 +27,7 @@ export default defineComponent({
           body: data,
           headers: {
             'X-Api-Version': 1,
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MTViMDZjNDFhMzU2OTdkNzgxZDdmM2EiLCJ1c2VybmFtZSI6InVzcm5fZWxsaW90IiwiaWF0IjoxNjMzNDc0NjYzLCJleHAiOjE2MzM0NzgyNjN9.d7qalDtQc1lQ07_OQP3UMWDiM920G86KfEiTXmHIUag'
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MTU5YjE0MzY3NmIwOGViZWRlYzAyODQiLCJ1c2VybmFtZSI6InVzcm5fZWxsaW90IiwiaWF0IjoxNjMzNjE1ODczLCJleHAiOjE2MzM2MTk0NzN9.idt9dDlVDPBdyuNK00D1NcORDJDpLgeYOhge8PUZ7Ns'
           }
         })
         console.log(await res)
