@@ -5,13 +5,13 @@ import { Upload } from './file.schema';
 
 @Schema({ timestamps: true })
 export class CourseDoc extends Document {
-  @Prop({ required: true, type: Number, ref: 'File' })
+  @Prop({ required: true, type: Number, ref: 'Upload' })
   file: Upload;
 
   @Prop()
   year?: number;
 
-  @Prop({ type: SchemaTypes.ObjectId, ref: 'Subject' })
+  @Prop({ type: SchemaTypes.ObjectId, ref: 'CourseSubject' })
   subject?: CourseSubject;
 
   @Prop()
