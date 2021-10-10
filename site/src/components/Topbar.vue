@@ -1,7 +1,7 @@
 <template>
   <nav
     id="topbar"
-    class="flex fixed top-0 left-0 w-full h-tbar bg-2 bc-1 text-1 items-center justify-between border-b tr-filter"
+    class="flex fixed top-0 left-0 w-full h-tbar bg-1 bc-1 text-1 items-center justify-between border-b"
   >
     <div class="flex flex-shrink-0 px-4 w-sbar items-center justify-center">
       <button
@@ -11,7 +11,7 @@
       >
         <MenuIcon class="h-8 w-8" />
       </button>
-      <div class="brand w-48 h-8 mt-1.5" />
+      <div class="brand w-32 h-6 mt-1.5" />
     </div>
 
     <div class="relative bg-transparent flex-grow px-6">
@@ -24,7 +24,7 @@
       <input
         id="search-input"
         type="text"
-        class="w-full text-1 placeholder-3 bg-2 p-1.5 pr-10 text-lg border-b-2 bc-alt-1 bc-mouse-brand"
+        class="w-full text-1 placeholder-3 bg-1 p-1.5 pr-10 text-lg border-b-2 bc-alt-1 bc-mouse-brand"
         placeholder="Search..."
         @input="(e) => $emit('updateSearch', e.target.value)"
       >
@@ -92,10 +92,6 @@ export default {
 
 <style>
   @import "~@/assets/css/utils/switch.css";
-
-  .tr-filter {
-    transition: color 400ms, background-color 400ms linear, border-color 400ms, fill 400ms, stroke 400ms, filter 1s;
-  }
 
   .topbar-icon {
       @apply mr-6 w-6 h-6;

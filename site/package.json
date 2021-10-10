@@ -16,14 +16,13 @@
     "core-js": "^3.6.5",
     "discord.js": "^12.5.3",
     "dotenv": "^8.6.0",
-    "eslint-plugin-tailwind": "^0.2.1",
     "jquery": "^3.6.0",
+    "katex": "^0.13.18",
     "mongoose": "^5.13.3",
     "node-fetch": "^2.6.5",
     "postcss": "^7",
     "request": "^2.88.2",
-    "uglifyjs-webpack-plugin": "^2.2.0",
-    "v-markdown-editor": "^1.2.6"
+    "vue3-quill": "^0.2.6"
   },
   "devDependencies": {
     "@headlessui/vue": "^1.4.0",
@@ -43,6 +42,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.1.0",
+    "eslint-plugin-tailwind": "^0.2.1",
     "eslint-plugin-vue": "^7.0.0",
     "lint-staged": "^9.5.0",
     "node-sass": "^4.12.0",
@@ -51,7 +51,6 @@
     "sass-loader": "^8.0.2",
     "tailwind-scrollbar": "^1.3.1",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.0.2",
-    "terser-webpack-plugin": "^1.4.5",
     "vue": "^3.0.0",
     "vue-cli-plugin-tailwind": "~2.0.6",
     "vue-router": "^4.0.11"

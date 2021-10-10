@@ -1,117 +1,149 @@
 <template>
-  <div class="ml-32 mr-32">
-    <div class="text-2xl text-1 mt-8">
+  <div>
+    <div class="text-3xl text-1 font-extrabold mt-6">
       Créer un nouveau Thread
     </div>
-    <div class="flex mt-8">
-      <form
-        class="w-4/6"
-        method="post"
-        action="#"
-      >
-        <div class="bg-2 border-1 text-1 p-4">
+    <div class="flex mt-6">
+      <div>
+        <div class="flex flex-col space-y-4 box-card">
           <div>
-            <div class="text-xl">
-              Titre du Thread :
+            <div class="label-title">
+              Titre
             </div>
-            <div class="text-sm">
+
+            <div class="label-desc">
               Donnez un titre simple et complet afin de décrire votre ticket
             </div>
             <input
               id="title"
-              class="bg-1 w-full pl-1 border-1"
+              class="w-full input bg-1"
               type="text"
               name="title"
-              placeholder="Ex : problème de machine dans la salle E001"
+              placeholder="Ex. ''"
             />
           </div>
-          <div class="mt-4">
-            <div class="text-xl">
-              Contenu du Thread :
+
+          <div>
+            <div class="label-title">
+              Contenu
             </div>
-            <div class="text-sm">
+            <div class="label-desc">
               Décrivez le plus précisément possible votre ticket afin d'avoir
               toutes les données nécessaires pour le faire avancer
             </div>
-            <textarea
-              id="title"
-              class="bg-1 w-full min-h-32 border-1"
-              type="text"
-              name="title"
-              placeholder="Ex : Avec mes amis on a rencontré un dysfonctionnement de windows sur les ordinateurs de la 3ème rangée en partant du mur, en effet... "
-            />
-            <markdown-editor
-              toolbar="bold italic upload"
-              :extend="custom"
-              @command:upload="upload"
-            >
-            </markdown-editor>
-          </div>
-          <div>
-            <div class="text-xl">
-              Tags :
+            <div>
+              <quill-editor
+                v-model:value="state.content"
+                :options="state.editorOption"
+                :disabled="state.disabled"
+                @blur="onEditorBlur($event)"
+                @focus="onEditorFocus($event)"
+                @ready="onEditorReady($event)"
+                @change="onEditorChange($event)"
+              />
             </div>
-            <div class="text-sm">
+          </div>
+
+          <div>
+            <div class="label-title">
+              Tags
+            </div>
+            <div class="label-desc">
               Ajoutez 5 Tags qui décrivent le sujet de votre Thread
             </div>
-            <input
-              id="title"
-              class="bg-1 w-full pl-1 border-1"
-              type="text"
-              name="title"
-              placeholder="Ex : problème de machine dans la salle E001"
-            />
+            <tags-input></tags-input>
           </div>
         </div>
-        <input
-          class="
-            bg-2
-            border-1
-            rounded-md
-            px-1
-            bc-mouse-brand
-            text-hover-brand text-xl
-            mt-4
-            text-1
-          "
-          type="submit"
-          value="Créer le Thread ✉"
-        />
-      </form>
-      <div class="w-2/6 ml-8">
-        <div class="border-1 text-1">
-          <div class="bg-3 px-4 text-1 text-l">
-            Qu'est-ce qu'un Thread ?
-          </div>
-          <div class="bg-2 p-2 px-4">
+      </div>
+
+      <div class="w-2/6 ml-6">
+        <TextCard title="Qu'est-ce qu'un Thread ?">
+          <div>
             Les Threads sont là pour faciliter les échanges entre
-            l'établissement et les élèves, utilisez les quand vous avez un
-            problème à faire remonter, besoin d'une aide, une question à
-            poser...
+          l'établissement et les élèves, utilisez les quand vous avez un
+          problème à faire remonter, besoin d'une aide, une question à
+          poser...
           </div>
-        </div>
-        <div class="mt-4 border-1 text-1">
-          <div class="bg-3 px-4 text-l">
-            Etapes de création :
-          </div>
-          <div class="bg-2 p-2 px-4">
-            <ol>
-              <li>Entrez le titre</li>
-              <li>Décrivez le problème</li>
-              <li>Entrez des Tags</li>
-            </ol>
-          </div>
-        </div>
+        </TextCard>
+        <br>
+        <TextCard title="Étapes de création" desc="">
+          <ol>
+            <li>Entrez le titre</li>
+            <li>Décrivez le problème</li>
+            <li>Entrez des Tags</li>
+          </ol>
+        </TextCard>
       </div>
     </div>
   </div>
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
+import TagsInput from '@/components/Input/TagsInput.vue'
+import TextCard from '@/components/Card/TextCard.vue'
+
+import { reactive, defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'PostNew',
+  components: { TagsInput, TextCard },
+  data () {
+    return {
+      value: [
+        { name: 'Javascript', code: 'js' }
+      ],
+      options: [
+        { name: 'Vue.js', code: 'vu' },
+        { name: 'Javascript', code: 'js' },
+        { name: 'Open Source', code: 'os' }
+      ]
+    }
+  },
+  methods: {
+    addTag (newTag) {
+      const tag = {
+        name: newTag,
+        code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
+      }
+      this.options.push(tag)
+      this.value.push(tag)
+    }
+  },
+  setup () {
+    const state = reactive({
+      content: '<p>2333</p>',
+      _content: '',
+      editorOption: {
+        placeholder: 'core',
+        modules: {
+          // toolbars: [
+          // custom toolbars options
+          // will override the default configuration
+          // ],
+          // other moudle options here
+          // otherMoudle: {}
+        }
+        // more options
+      },
+      disabled: false
+    })
+
+    const onEditorBlur = (quill) => {
+      console.log('editor blur!', quill)
+    }
+    const onEditorFocus = (quill) => {
+      console.log('editor focus!', quill)
+    }
+    const onEditorReady = (quill) => {
+      console.log('editor ready!', quill)
+    }
+    const onEditorChange = ({ quill, html, text }) => {
+      console.log('editor change!', quill, html, text)
+      state._content = html
+    }
+
+    return { state, onEditorBlur, onEditorFocus, onEditorReady, onEditorChange }
+  },
   props: {
     title: {
       type: String,
@@ -121,12 +153,12 @@ export default defineComponent({
       type: String,
       required: true
     }
-  },
-
-  methods: {
   }
 })
 </script>
 
-<style scoped>
+<style>
+  @import "~@/assets/css/utils/inputs.css";
+  @import "~@/assets/css/utils/box.css";
+  @import "~@/assets/css/utils/section.css";
 </style>
