@@ -1,7 +1,9 @@
 <template>
   <aside
     id="sidebar"
-    class="sticky overflow-hidden lg-max:w-0 flex flex-col flex-shrink-0 h-content w-sbar top-tbar border bc-2 bg-2 fc-2 whitespace-nowrap tr-width duration-300"
+    class="sticky overflow-hidden lg-max:w-0 flex flex-col
+    flex-shrink-0 h-content w-sbar top-tbar bg-1
+    fc-2 whitespace-nowrap tr-width duration-300"
   >
     <SidebarBase />
   </aside>

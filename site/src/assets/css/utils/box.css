@@ -1,0 +1,5 @@
+.box-card {
+    @apply shadow border rounded-md dark:border-v-2-light border-v-2-dark pt-3 pb-5 px-4 dark:text-v-0-light text-v-0-dark;
+}
+
+

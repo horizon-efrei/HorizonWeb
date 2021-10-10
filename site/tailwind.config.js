@@ -19,7 +19,27 @@ module.exports = {
       'xl-max': { max: '1279px' }
     },
     colors: {
-      ...colors
+      ...colors,
+      'v-0': {
+        light: '#fff',
+        dark: '#000'
+      },
+      'v-1': {
+        light: '#f4f4f4',
+        dark: '#1d1e20'
+      },
+      'v-2': {
+        light: '#f2f3f5',
+        dark: '#202225'
+      },
+      'v-3': {
+        light: '#e3e5e8',
+        dark: '#2f3136'
+      },
+      'v-4': {
+        light: '#d5d5d5',
+        dark: '#323030'
+      }
     },
     spacing: {
       px: '1px',

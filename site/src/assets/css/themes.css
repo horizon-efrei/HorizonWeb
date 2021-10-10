@@ -1,13 +1,6 @@
 :root {
-    --topbar-height: 4.5rem;
-    --sidebar-width: 14rem;
-    --collapse-width: 900px;
     --expander-transition-time: 3s;
     --brand-url: url("~@/assets/img/brand.png");
-}
-
-.button {
-    @apply bg-white dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-black cursor-pointer
 }
 
 .bg-opaque {
@@ -15,31 +8,27 @@
 }
 
 .bg-0 {
-    @apply bg-white dark:bg-black
+    @apply bg-v-0-light dark:bg-v-0-dark
 }
 
 .bg-1 {
-    @apply bg-gray-50 dark:bg-gray-800
+    @apply bg-v-1-light dark:bg-v-1-dark
 }
 
 .bg-2 {
-    @apply bg-gray-100 dark:bg-gray-700
+    @apply bg-v-2-light dark:bg-v-2-dark
 }
 
 .bg-3 {
-    @apply bg-gray-300 dark:bg-gray-600
+    @apply bg-v-3-light dark:bg-v-3-dark
 }
 
 .bg-4 {
-    @apply bg-gray-400 dark:bg-gray-500
+    @apply bg-v-4-light dark:bg-v-4-dark
 }
 
 .bg-5 {
-    @apply bg-gray-500 dark:bg-gray-400
-}
-
-.border-1{
-    @apply  shadow border-opacity-50
+    @apply bg-gray-500 dark:bg-gray-500
 }
 
 .bg-content {
@@ -107,7 +96,7 @@
 }
 
 .bc-2 {
-    @apply border-gray-300 dark:border-gray-700
+    @apply dark:border-v-2-light border-v-2-dark
 }
 
 .bc-3 {
@@ -148,34 +137,3 @@
     background: var(--brand-url) no-repeat 0 0;
     background-size: 100%;
 }
-
-.w-sbar {
-    width: var(--sidebar-width)
-}
-
-.-l-sbar {
-    margin-left: calc(-1 * var(--sidebar-width))
-}
-
-.l-sbar {
-    left: calc(var(--sidebar-width))
-}
-
-.h-content {
-    height: calc(100vh - var(--topbar-height))
-}
-
-.w-content {
-    width: calc(100% - var(--sidebar-width))
-}
-
-.h-tbar {
-    height: var(--topbar-height)
-}
-
-.top-tbar {
-    top: var(--topbar-height)
-}
-
-
-

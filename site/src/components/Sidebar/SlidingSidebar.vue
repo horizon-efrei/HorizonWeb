@@ -1,7 +1,7 @@
 <template>
   <aside
     id="slide-sidebar"
-    class="-l-sbar fixed overflow-hidden z-50 flex flex-col h-full w-sbar border bc-2 bg-1 text-2 whitespace-nowrap tr-spacing"
+    class="-l-sbar fixed overflow-hidden z-50 flex flex-col h-full w-sbar bg-1 text-2 whitespace-nowrap tr-spacing"
   >
     <div
       id="slide-sidebar-top"
@@ -14,7 +14,7 @@
       >
         <XIcon class="w-10 h-10" />
       </button>
-      <div class="logo w-32 h-6 flex-shrink-0" />
+      <div class="brand w-32 h-6 flex-shrink-0" />
     </div>
     <SidebarBase />
     <img>

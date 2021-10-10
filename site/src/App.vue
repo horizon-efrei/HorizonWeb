@@ -3,9 +3,21 @@
 
   <div
     id="main-container"
-    class="relative flex flex-row filter h-screen w-screen tr-filter z-1"
+    class="relative flex flex-row-reverse filter h-screen w-screen z-1"
   >
-    <SearchQuery ref="searchQuery" />
+      <SearchQuery ref="searchQuery" />
+
+      <div
+      id="content-wrapper"
+      class="w-full bg-1 inner-shadow h-content flex relative top-tbar overflow-hidden"
+    >
+      <div
+        id="content"
+        class="py-7 px-9 flex-1 overflow-auto app-scrollbar"
+      >
+        <router-view />
+      </div>
+    </div>
     <Topbar
       ref="topbar"
       @launchSearch="launchSearch"
@@ -13,17 +25,6 @@
       @openSidebar="sidebarHandler"
     />
     <Sidebar @closeSidebar="sidebarHandler" />
-    <div
-      id="content-wrapper"
-      class="w-full bg-3 h-content flex relative top-tbar bg-gray-100 overflow-hidden"
-    >
-      <div
-        id="content"
-        class="p-4 flex-1 overflow-auto app-scrollbar"
-      >
-        <router-view />
-      </div>
-    </div>
   </div>
 </template>
 
@@ -116,17 +117,18 @@ export default defineComponent({
 
 <style>
 @import "~@/assets/css/themes.css";
+@import "~@/assets/css/utils/spacing.css";
+
+.inner-shadow {
+  box-shadow: inset 4px 5px 16px -12px rgba(0,0,0,0.4);
+}
 
 .icon {
   @apply h-6 float-right pl-6;
 }
 
-.tr-filter {
-  transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms, filter 500ms;
-}
-
 * {
-  transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms;
+  transition: color 300ms, box-shadow 300ms, background-color 300ms linear, border 300ms, outline 300ms, fill 300ms, stroke 300ms, filter 500ms;
 }
 
 html {
