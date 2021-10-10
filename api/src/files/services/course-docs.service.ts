@@ -1,6 +1,7 @@
 import { Body, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, PaginateModel } from 'mongoose';
+import { CustomPaginateResult, labelize } from 'src/shared/pagination';
 import { User } from '../../users/user.schema';
 import { CreateCourseDocDto } from '../dto/create-course-doc.dto';
 import { CourseDoc } from '../schemas/course-doc.schema';
@@ -9,7 +10,7 @@ import { Upload } from '../schemas/file.schema';
 @Injectable()
 export class CourseDocsService {
   constructor(
-    @InjectModel(CourseDoc.name) private readonly courseDocModel: Model<CourseDoc>,
+    @InjectModel(CourseDoc.name) private readonly courseDocModel: PaginateModel<CourseDoc>,
     @InjectModel(Upload.name) private readonly uploadModel: Model<Upload>,
   ) {}
 
@@ -45,5 +46,17 @@ export class CourseDocsService {
     });
 
     return await upload.save();
+  }
+
+  public async findAll(
+    paginationOptions?: { page: number; itemsPerPage: number },
+  ): Promise<CustomPaginateResult<CourseDoc> | CourseDoc[]> {
+    if (paginationOptions) {
+      return labelize(await this.courseDocModel.paginate({}, {
+        page: paginationOptions.page,
+        limit: paginationOptions.itemsPerPage,
+      }));
+    }
+    return await this.courseDocModel.find();
   }
 }

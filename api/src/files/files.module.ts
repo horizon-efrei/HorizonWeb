@@ -15,12 +15,18 @@ import { FilesService } from './services/files.service';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([
+    MongooseModule.forFeatureAsync([
       {
         name: CourseDoc.name,
-        schema: CourseDocSchema,
-      },
+        useFactory: (): Schema => {
+          const schema = CourseDocSchema;
+          schema.plugin(autoIncrement, { model: 'CourseDoc', startAt: 1 });
+          schema.plugin(paginate);
+          return schema;
+        },
+      },  
     ]),
+
     MongooseModule.forFeatureAsync([
       {
         name: Upload.name,
