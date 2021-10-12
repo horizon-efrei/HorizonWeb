@@ -1,5 +1,7 @@
-.box-card {
-    @apply shadow border rounded-md dark:border-v-2-light border-v-2-dark pt-3 pb-5 px-4 dark:text-v-0-light text-v-0-dark;
+.box-card-border {
+    @apply border-opacity-25 dark:border-gray-400 border-gray-800 rounded-lg;
 }
 
-
+.box-card {
+    @apply shadow-md border pt-3 pb-5 px-4 dark:text-v-0-light text-v-0-dark;
+}

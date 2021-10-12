@@ -1,7 +1,8 @@
 <template>
   <nav
     id="topbar"
-    class="flex fixed top-0 left-0 w-full h-tbar bg-1 bc-1 text-1 items-center justify-between border-b"
+    class="flex fixed top-0 left-0 w-full h-tbar divide-color-1 text-1 items-center justify-between border-b"
+    :class="bg"
   >
     <div class="flex flex-shrink-0 px-4 w-sbar items-center justify-center">
       <button
@@ -24,7 +25,8 @@
       <input
         id="search-input"
         type="text"
-        class="w-full text-1 placeholder-3 bg-1 p-1.5 pr-10 text-lg border-b-2 bc-alt-1 bc-mouse-brand"
+        class="w-full text-1 placeholder-3 p-1.5 pr-10 text-lg border-b-2 bc-alt-1 bc-mouse-brand outline-none"
+        :class="bg"
         placeholder="Search..."
         @input="(e) => $emit('updateSearch', e.target.value)"
       >
@@ -56,6 +58,11 @@
 import { DocumentSearchIcon, BellIcon, FolderIcon, MailIcon, MenuIcon } from '@heroicons/vue/solid'
 
 export default {
+  data () {
+    return {
+      bg: 'bg-2'
+    }
+  },
   components: {
     DocumentSearchIcon,
     MenuIcon,
@@ -69,15 +76,7 @@ export default {
     'openSidebar',
     'closeSidebar'
   ],
-  mounted () {
-    const input = document.getElementById('test-input')
-    console.log('input', input)
-    // input.addEventListener('change', (e) => console.log(e))
-  },
   methods: {
-    log (val) {
-      console.log(val)
-    },
     changeTheme (e) {
       const root = document.querySelector(':root')
       if (e.target.checked) {

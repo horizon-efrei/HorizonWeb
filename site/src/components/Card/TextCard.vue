@@ -1,6 +1,6 @@
 <template>
-  <div class="border bc-2 text-1 rounded-lg">
-    <div class="font-bold bg-4 text-1 text-l p-2 px-4 align-middle text-center rounded-t-lg">
+  <div class="border box-card-border text-1 rounded-lg">
+    <div class="font-bold bg-3 text-1 text-l p-2 px-4 align-middle text-center rounded-t-lg">
       {{ title }}
     </div>
     <div class="bg-1 p-2 px-4 rounded-lg">

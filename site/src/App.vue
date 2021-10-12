@@ -1,15 +1,17 @@
 <template>
-  <SlidingSidebar @closeSidebar="sidebarHandler" />
-
+  <sliding-sidebar @closeSidebar="sidebarHandler" @toggleLogin="toggleLogin" />
+  <div v-if="showLogin" class="fixed top-0 left-0 w-screen h-screen z-50" @click="toggleLogin">
+    <login @click.stop="() => {}"></login>
+  </div>
   <div
     id="main-container"
     class="relative flex flex-row-reverse filter h-screen w-screen z-1"
   >
-      <SearchQuery ref="searchQuery" />
+      <search-query ref="searchQuery" />
 
       <div
       id="content-wrapper"
-      class="w-full bg-1 inner-shadow h-content flex relative top-tbar overflow-hidden"
+      class="w-full bg-1 shadow-inner-deep dark:shadow-dark-inner-deep h-content flex relative top-tbar overflow-hidden"
     >
       <div
         id="content"
@@ -18,17 +20,18 @@
         <router-view />
       </div>
     </div>
-    <Topbar
+    <topbar
       ref="topbar"
       @launchSearch="launchSearch"
       @updateSearch="updateSearch"
       @openSidebar="sidebarHandler"
     />
-    <Sidebar @closeSidebar="sidebarHandler" />
+    <sidebar @closeSidebar="sidebarHandler" @toggleLogin="toggleLogin" />
   </div>
 </template>
 
 <script lang="js">
+import Login from '@/components/Login.vue'
 import { defineComponent } from 'vue'
 
 import Topbar from '@/components/Topbar.vue'
@@ -38,6 +41,7 @@ import SearchQuery from '@/components/SearchQuery.vue'
 
 export default defineComponent({
   components: {
+    Login,
     Topbar,
     Sidebar,
     SlidingSidebar,
@@ -47,7 +51,8 @@ export default defineComponent({
     return {
       showSidebar: false,
       reachedBreak: false,
-      breakWidth: 1024
+      breakWidth: 1024,
+      showLogin: false
     }
   },
   mounted () {
@@ -78,8 +83,10 @@ export default defineComponent({
           slideSidebar.classList.add('-l-sbar')
         }
 
-        const mainContainer = document.getElementById('main-container')
-        mainContainer.classList.remove('brightness-50')
+        if (!this.showLogin) {
+          const mainContainer = document.getElementById('main-container')
+          mainContainer.classList.remove('brightness-50')
+        }
 
         this.$data.reachedBreak = true
       } else if (vw <= this.$data.breakWidth && this.$data.reachedBreak) {
@@ -104,6 +111,18 @@ export default defineComponent({
         mainContainer.removeEventListener('mousedown', this.sidebarHandler, { once: true })
       }
     },
+    toggleLogin () {
+      const mainContainer = document.getElementById('main-container')
+      this.showLogin = !this.showLogin
+      if (this.showLogin) {
+        if (this.$data.showSidebar) {
+          this.sidebarHandler()
+        }
+        mainContainer.classList.add('brightness-50')
+      } else {
+        mainContainer.classList.remove('brightness-50')
+      }
+    },
     updateSearch (e) {
       this.$refs.searchQuery.updateQuery(e)
     },
@@ -118,10 +137,6 @@ export default defineComponent({
 <style>
 @import "~@/assets/css/themes.css";
 @import "~@/assets/css/utils/spacing.css";
-
-.inner-shadow {
-  box-shadow: inset 4px 5px 16px -12px rgba(0,0,0,0.4);
-}
 
 .icon {
   @apply h-6 float-right pl-6;

@@ -6,10 +6,6 @@
     --brand-url: url("~@/assets/img/brand.png");
 }
 
-.min-w-1 {
-    min-width: 1em;
-}
-
 .w-sbar {
     width: var(--sidebar-width)
 }

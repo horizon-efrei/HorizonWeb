@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Content from '@/components/Content.vue'
 import PostView from '@/pages/Post/PostView.vue'
 import PostNew from '@/pages/Post/PostNew.vue'
-import Login from '@/pages/Login.vue'
 import FileUpload from '@/pages/FileUpload.vue'
 import PostList from '@/pages/Post/PostList.vue'
 
@@ -26,13 +25,16 @@ const routes = [
   },
 
   {
-    path: '/login',
-    component: Login
+    path: '/posts',
+    component: PostList
   },
 
   {
-    path: '/posts',
-    component: PostList
+    path: '/secret',
+    component: Content,
+    beforeEnter: (to, from, next) => {
+      // ...
+    }
   }
 ]
 
