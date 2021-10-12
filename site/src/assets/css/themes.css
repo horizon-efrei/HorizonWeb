@@ -55,18 +55,6 @@
     @apply bg-gray-900 dark:bg-gray-300
 }
 
-.text-1 {
-    @apply text-black dark:text-white
-}
-
-.text-2 {
-    @apply text-gray-700 dark:text-gray-100
-}
-
-.text-3 {
-    @apply text-gray-500 dark:text-gray-300
-}
-
 .placeholder-1 {
     @apply placeholder-black dark:placeholder-white
 }
@@ -77,6 +65,22 @@
 
 .placeholder-3 {
     @apply placeholder-gray-500 dark:placeholder-gray-300
+}
+
+.text-0 {
+    @apply dark:text-v-0-light text-v-0-dark
+}
+
+.text-1 {
+    @apply dark:text-v-1-light text-v-1-dark
+}
+
+.text-2 {
+    @apply dark:text-v-2-light text-v-2-dark
+}
+
+.text-3 {
+    @apply dark:text-v-2-light text-v-3-dark
 }
 
 .text-alt-1 {
@@ -91,16 +95,20 @@
     @apply text-gray-300 dark:text-gray-500
 }
 
-.bc-1 {
-    @apply border-gray-500 dark:border-black
+.border-color-0 {
+    @apply dark:border-v-0-light border-v-0-dark
 }
 
-.bc-2 {
+.border-color-1 {
+    @apply dark:border-v-1-light border-v-1-dark
+}
+
+.border-color-2 {
     @apply dark:border-v-2-light border-v-2-dark
 }
 
-.bc-3 {
-    @apply border-gray-100 dark:border-gray-500
+.border-color-3 {
+    @apply dark:border-v-3-light border-v-3-dark
 }
 
 .bc-alt-1 {
@@ -113,6 +121,11 @@
 
 .bc-alt-3 {
     @apply border-gray-500 dark:border-gray-100
+}
+
+.divide-color-1 {
+    border-color: #e4e4e7;
+    @apply  dark:border-black
 }
 
 .text-hover-brand {

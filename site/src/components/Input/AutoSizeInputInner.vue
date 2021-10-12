@@ -1,6 +1,6 @@
 <template>
-  <span class="relative min-w-1 w-min max-w-full">
-    <span ref="spanSize" class="invisible whitespace-pre"></span>
+  <span class="relative">
+    <span ref="spanSize" class="invisible whitespace-pre">_</span>
     <input :value="modelValue" ref="autoSizeInput" @blur="$emit('blur')" @focus="$emit('focus')" @input="updateSize" class="absolute left-0 w-full bg-opacity-0 bg-white outline-none" />
   </span>
 </template>
@@ -15,7 +15,7 @@ export default {
     const autoSizeInput = ref(null)
     const updateSize = (evt) => {
       context.emit('update:modelValue', evt.target.value)
-      spanSize.value.innerText = autoSizeInput.value.value
+      spanSize.value.innerText = '_' + autoSizeInput.value.value
     }
 
     return { updateSize, spanSize, autoSizeInput }

@@ -1,6 +1,6 @@
 <template>
   <div class="text-1 overflow-y-auto overflow-x-hidden app-scrollbar">
-    <div class="divide-y bc-1">
+    <div class="divide-y divide-color-1">
       <ul
         v-for="section of sections"
         :key="section"
@@ -26,15 +26,15 @@
         </template>
       </ul>
 
-      <div class="px-4">
-        <ul class="w-full flex items-center justify-between">
-          <li class="cursor-pointer pt-5 pb-3">
-            <CogIcon class="h-8" />
-          </li>
-        </ul>
+      <div class="flex justify-center pt-5">
+        <button class="button text-md" @click="$emit('toggleLogin')">
+           <div class="flex space-x-2 items-center">
+            <i class="ri-login-circle-line text-xl"></i>
+            <p>SE CONNECTER</p>
+           </div>
+        </button>
       </div>
     </div>
-    <div class="" />
   </div>
 </template>
 
@@ -52,16 +52,12 @@ import {
   DatabaseIcon
 } from '@heroicons/vue/solid'
 
-import {
-  CogIcon
-} from '@heroicons/vue/outline'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'SidebarBase',
+  emits: ['toggleLogin'],
   components: {
-    // eslint-disable-next-line vue/no-unused-components
-    CogIcon,
     SearchIcon,
     SpeakerphoneIcon,
     DocumentDownloadIcon,
@@ -73,11 +69,6 @@ export default defineComponent({
     PresentationChartLineIcon,
     DatabaseIcon
   },
-  // methods: {
-  //   sidebarHandler () {
-  //     this.$emit('closeSidebar')
-  //   }
-  // },
   props: {
     sections: {
       type: Array,
@@ -110,6 +101,8 @@ export default defineComponent({
 </script>
 
 <style>
+@import "~@/assets/css/utils/button.css";
+
 #sidebar[opened] {
   @apply lg-max:absolute lg-max:h-screen lg-max:top-0;
 }

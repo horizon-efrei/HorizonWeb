@@ -3,60 +3,55 @@
     <div class="text-3xl text-1 font-extrabold mt-6">
       Créer un nouveau Thread
     </div>
-    <div class="flex mt-6">
-      <div>
-        <div class="flex flex-col space-y-4 box-card">
-          <div>
-            <div class="label-title">
-              Titre
-            </div>
-
-            <div class="label-desc">
-              Donnez un titre simple et complet afin de décrire votre ticket
-            </div>
-            <input
-              id="title"
-              class="w-full input bg-1"
-              type="text"
-              name="title"
-              placeholder="Ex. ''"
-            />
+    <div class="flex mt-6" style="flex-basis: 50%;">
+      <div class="flex flex-col space-y-4 box-card box-card-border">
+        <div>
+          <div class="label-title">
+            Titre
           </div>
 
-          <div>
-            <div class="label-title">
-              Contenu
-            </div>
-            <div class="label-desc">
-              Décrivez le plus précisément possible votre ticket afin d'avoir
-              toutes les données nécessaires pour le faire avancer
-            </div>
-            <div>
-              <quill-editor
-                v-model:value="state.content"
-                :options="state.editorOption"
-                :disabled="state.disabled"
-                @blur="onEditorBlur($event)"
-                @focus="onEditorFocus($event)"
-                @ready="onEditorReady($event)"
-                @change="onEditorChange($event)"
-              />
-            </div>
+          <div class="label-desc">
+            Donnez un titre simple et complet afin de décrire votre ticket
           </div>
+          <input
+            id="title"
+            class="w-full input input-border bg-1"
+            type="text"
+            name="title"
+            placeholder="Ex. ''"
+          />
+        </div>
 
-          <div>
-            <div class="label-title">
-              Tags
-            </div>
-            <div class="label-desc">
-              Ajoutez 5 Tags qui décrivent le sujet de votre Thread
-            </div>
-            <tags-input></tags-input>
+        <div>
+          <div class="label-title">
+            Contenu
           </div>
+          <div class="label-desc">
+            Décrivez le plus précisément possible votre ticket afin d'avoir
+            toutes les données nécessaires pour le faire avancer
+          </div>
+          <div>
+            <tip-tap-editor :buttons="editorButtons" placeholder="Décrivez votre question/suggestion/problème !">
+            </tip-tap-editor>
+          </div>
+        </div>
+
+        <div>
+          <div class="label-title">
+            Tags
+          </div>
+          <div class="label-desc">
+            Ajoutez 5 Tags qui décrivent le sujet de votre Thread
+          </div>
+          <tags-input></tags-input>
+        </div>
+
+        <div>
+          <button class="button">Soumettre le Post pour validation</button>
         </div>
       </div>
 
-      <div class="w-2/6 ml-6">
+      <div class="ml-6 flex-grow-0 flex-shrink-0 w-1/5">
         <TextCard title="Qu'est-ce qu'un Thread ?">
           <div>
             Les Threads sont là pour faciliter les échanges entre
@@ -74,6 +69,7 @@
           </ol>
         </TextCard>
       </div>
+
     </div>
   </div>
 </template>
@@ -81,84 +77,30 @@
 <script lang="js">
 import TagsInput from '@/components/Input/TagsInput.vue'
 import TextCard from '@/components/Card/TextCard.vue'
+import TipTapEditor from '@/components/TipTapEditor.vue'
 
-import { reactive, defineComponent } from 'vue'
+import { defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'PostNew',
-  components: { TagsInput, TextCard },
+  components: {
+    TagsInput,
+    TextCard,
+    TipTapEditor
+  },
   data () {
     return {
-      value: [
-        { name: 'Javascript', code: 'js' }
-      ],
-      options: [
-        { name: 'Vue.js', code: 'vu' },
-        { name: 'Javascript', code: 'js' },
-        { name: 'Open Source', code: 'os' }
+      editorButtons: [
+        { action: 'paragraph', icon: '<i class="ri-home-line"></i>', content: 'Text' }
       ]
-    }
-  },
-  methods: {
-    addTag (newTag) {
-      const tag = {
-        name: newTag,
-        code: newTag.substring(0, 2) + Math.floor((Math.random() * 10000000))
-      }
-      this.options.push(tag)
-      this.value.push(tag)
-    }
-  },
-  setup () {
-    const state = reactive({
-      content: '<p>2333</p>',
-      _content: '',
-      editorOption: {
-        placeholder: 'core',
-        modules: {
-          // toolbars: [
-          // custom toolbars options
-          // will override the default configuration
-          // ],
-          // other moudle options here
-          // otherMoudle: {}
-        }
-        // more options
-      },
-      disabled: false
-    })
-
-    const onEditorBlur = (quill) => {
-      console.log('editor blur!', quill)
-    }
-    const onEditorFocus = (quill) => {
-      console.log('editor focus!', quill)
-    }
-    const onEditorReady = (quill) => {
-      console.log('editor ready!', quill)
-    }
-    const onEditorChange = ({ quill, html, text }) => {
-      console.log('editor change!', quill, html, text)
-      state._content = html
-    }
-
-    return { state, onEditorBlur, onEditorFocus, onEditorReady, onEditorChange }
-  },
-  props: {
-    title: {
-      type: String,
-      required: true
-    },
-    color: {
-      type: String,
-      required: true
     }
   }
 })
 </script>
 
 <style>
-  @import "~@/assets/css/utils/inputs.css";
+  @import "~@/assets/css/utils/input.css";
   @import "~@/assets/css/utils/box.css";
+  @import "~@/assets/css/utils/button.css";
   @import "~@/assets/css/utils/section.css";
 </style>
