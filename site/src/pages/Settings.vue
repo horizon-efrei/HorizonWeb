@@ -1,31 +1,56 @@
 <template>
   <div class="m-0">
-    <div
-      class="m-0 absolute py-12 hero h-52 w-full top-0 left-0"
-    >
-      <h3 class="text-4xl font-bold mb-8 text-0" style="padding-left: 5%; padding-right: 5%;">
+    <div class="m-0 absolute py-12 hero h-52 w-full top-0 left-0">
+      <h3
+        class="text-4xl font-bold mb-8 text-0"
+        style="padding-left: 5%; padding-right: 5%"
+      >
         Paramètres
       </h3>
     </div>
-    <div class="relative mt-32 mb-10 h-96 box-card box-card-border p-0 bg-1 w-11/12 mx-auto flex">
+    <div
+      class="
+        height
+        relative
+        mt-32
+        mb-10
+        box-card box-card-border
+        p-0
+        bg-1
+        w-11/12
+        mx-auto
+        flex
+      "
+    >
       <div class="mt-2">
         <ul class="py-2">
-          <template
-            v-for="link of links"
-            :key="link"
-          >
-            <li class="h-12 py-2 pl-8 pr-20 flex w-full space-x-2 items-center transition-colors bg-mouse-brand duration-300 cursor-pointer"
-                :class="{ active: currentComponent === link.component }"
-                @click="currentComponent = link.component">
-
-                <i class="ri-xl" :class="link.icon"></i>
-                <span>{{ link.text }}</span>
+          <template v-for="link of links" :key="link">
+            <li
+              class="
+                h-12
+                py-2
+                pl-8
+                pr-20
+                flex
+                w-full
+                space-x-2
+                items-center
+                transition-colors
+                bg-mouse-brand
+                duration-300
+                cursor-pointer
+              "
+              :class="{ active: currentComponent === link.component }"
+              @click="currentComponent = link.component"
+            >
+              <i class="ri-xl" :class="link.icon"></i>
+              <span>{{ link.text }}</span>
             </li>
           </template>
         </ul>
       </div>
 
-      <div class="border-l-2 border-footer">
+      <div class="border-l-2 border-footer w-full">
         <component :is="currentComponent"></component>
       </div>
     </div>
@@ -34,10 +59,11 @@
 
 <script lang="js">
 import { defineComponent } from 'vue'
+import Profile from '@/components/Profile.vue'
 export default defineComponent({
   name: 'Settings',
   components: {
-
+    Profile
   },
   inheritAttrs: false,
   data () {
@@ -54,13 +80,16 @@ export default defineComponent({
 </script>
 
 <style>
-  @import "~@/assets/css/utils/box.css";
+@import "~@/assets/css/utils/box.css";
+.height {
+  min-height: 24rem;
+}
 
-  .hero {
-    background: linear-gradient(90deg, #ffe100 20%, #ffb800 100%)
-  }
+.hero {
+  background: linear-gradient(90deg, #ffe100 20%, #ffb800 100%);
+}
 
-  :root.dark .hero {
-    background: linear-gradient(90deg, #000d4b 20%, #000926 100%)
-  }
+:root.dark .hero {
+  background: linear-gradient(90deg, #000d4b 20%, #000926 100%);
+}
 </style>
