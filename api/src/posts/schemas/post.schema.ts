@@ -5,18 +5,18 @@ import { PreHook } from '../../shared/decorators/mongoose-hooks.decorator';
 import { createSchemaForClass } from '../../shared/utils/createSchemaForClass';
 import { User } from '../../users/user.schema';
 
-enum Issue {
-  Question = 1,
-  Suggestion,
-  Problem,
-  Opinion,
-  Discussion,
-}
+// Enum Issue {
+//   Question = 1,
+//   Suggestion,
+//   Problem,
+//   Opinion,
+//   Discussion,
+// }
 
-enum State {
-  NotSolved = 0,
-  Solved,
-}
+// enum State {
+//   NotSolved = 0,
+//   Solved,
+// }
 
 @Schema({ timestamps: true })
 export class Post extends Document {
@@ -35,14 +35,20 @@ export class Post extends Document {
   @Prop({ required: true, type: SchemaTypes.ObjectId, ref: 'User' })
   author: User;
 
-  @Prop({ default: '' })
-  state: State;
+  @Prop({ default: 0 })
+  state: number;
 
   @Prop({ default: false })
   locked: boolean;
 
   @Prop({ default: true })
   opened: boolean;
+
+  @Prop({ default: 0 })
+  views: number;
+
+  @Prop({ default: 0 })
+  favs: number;
 
   @Prop({ default: 0 })
   upvotes: number;

@@ -23,6 +23,7 @@ export class PostsInterceptor<T extends CustomPaginateResult<Post>> implements N
             upvotes: post.upvotes,
             author: post.author,
             locked: post.locked,
+            favs: post.favs,
             id: post.id,
             createdAt: post.createdAt,
             contentLastEditedAt: post.contentLastEditedAt,
@@ -30,6 +31,7 @@ export class PostsInterceptor<T extends CustomPaginateResult<Post>> implements N
             tags: post.tags,
             type: post.type,
             updatedAt: post.updatedAt,
+            views: post.views,
           })),
         })),
       );

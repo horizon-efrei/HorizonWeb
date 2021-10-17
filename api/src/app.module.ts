@@ -16,7 +16,7 @@ import { UserModule } from './users/users.module';
     AuthModule,
     UserModule,
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(apiConfig.get('mongoUri')),
+    MongooseModule.forRoot(apiConfig.get('mongoUri') as string),
     PostsModule,
     CommentsModule,
     RepliesModule,
