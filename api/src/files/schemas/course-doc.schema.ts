@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document, SchemaTypes } from 'mongoose';
+import { Document, Schema as MongooseSchema } from 'mongoose';
 import { CourseSubject } from './course-subject.schema';
 import { Upload } from './file.schema';
 
@@ -11,7 +11,7 @@ export class CourseDoc extends Document {
   @Prop()
   year?: number;
 
-  @Prop({ type: SchemaTypes.ObjectId, ref: 'CourseSubject' })
+  @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'CourseSubject' })
   subject?: CourseSubject;
 
   @Prop()

@@ -44,7 +44,6 @@ export class FilesService {
       author: currentUser,
       ...body,
     });
-    console.log(body, fileDocument, fileDocument.id);
 
     const uploadFolder = path.join(uploadConfig.uploadPath, fileDocument.id as string);
 
@@ -59,3 +58,4 @@ export class FilesService {
     return await fileDocument.save();
   }
 }
+
