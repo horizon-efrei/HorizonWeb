@@ -5,7 +5,7 @@ import { map } from 'rxjs/operators';
 import type { Post } from '../../posts/schemas/post.schema';
 
 export type PostResponse = Pick<Post,
-  'archived' | 'author' | 'body' | 'contentLastEditedAt' | 'createdAt' | 'dislikes' | 'id' | 'likes' | 'opened' | 'state' | 'tags' | 'title' | 'type' | 'updatedAt'
+  'archived' | 'author' | 'body' | 'contentLastEditedAt' | 'createdAt' | 'dislikes' | 'favs' | 'id' | 'likes' | 'opened' | 'state' | 'tags' | 'title' | 'type' | 'updatedAt' | 'views'
 >;
 
 @Injectable()
@@ -23,12 +23,14 @@ export class PostInterceptor<T extends Post> implements NestInterceptor<T, PostR
           author: post.author,
           archived: post.archived,
           id: post.id,
+          favs: post.favs,
           createdAt: post.createdAt,
           contentLastEditedAt: post.contentLastEditedAt,
           state: post.state,
           type: post.type,
           tags: post.tags,
           updatedAt: post.updatedAt,
+          views: post.views,
         })),
       );
   }

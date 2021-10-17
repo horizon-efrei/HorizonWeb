@@ -11,6 +11,7 @@
       <div>
         <PostListingCard
           v-for="post in posts" :key="post.id"
+          class="mb-4"
           :post="post"
         />
       </div>

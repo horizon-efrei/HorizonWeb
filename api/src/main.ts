@@ -1,5 +1,4 @@
-import * as path from 'path';
-import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import helmet from 'helmet';
@@ -15,14 +14,13 @@ async function bootstrap(): Promise<void> {
 
   app.enableCors();
   app.enableShutdownHooks();
-  // App.enableVersioning({ type: VersioningType.HEADER, header: 'X-Api-Version' });
   app.useGlobalPipes(new ValidationPipe({ transform: true, forbidUnknownValues: true }));
   app.useGlobalFilters(new ExceptionsFilter());
   app.set('trust proxy', false);
 
   app.use(logger);
   app.setGlobalPrefix('api');
-  await app.listen(apiConfig.get('port'));
+  await app.listen(apiConfig.get('port') as number);
   Logger.log(`Server initialized on port ${apiConfig.get('port')}`, 'Bootstrap');
 }
 

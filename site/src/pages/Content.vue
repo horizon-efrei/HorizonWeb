@@ -41,33 +41,30 @@
   "clickable": true
 }' :navigation="true">
             <swiper-slide>
-              <post-listing-card :post="{ title: 'test', body: 'test', author: { username: 'Sophie H.', avatar: 'http://localhost:5000/landing/girl_1.jpg' } }"></post-listing-card>
+              <post-listing-card :post="{ title: 'test', body: 'test', author: { username: 'Sophie H.', avatar: 'http://localhost:5000/landing/girl_1.jpg', rep: 50200 }, favs: 33, likes: 243, views: 44653, dislikes: 3, createdAt: '2021-10-18T13:51:36.631Z', updatedAt: '2021-10-18T13:51:36.631Z' }"></post-listing-card>
             </swiper-slide>
             <swiper-slide>
-              <post-listing-card :post="{ title: 'test', body: 'test', author: { username: 'Jean R.', avatar: 'http://localhost:5000/landing/guy_1.jpg' } }"></post-listing-card>
+              <post-listing-card :post="{ title: 'test', body: 'test', author: { username: 'Jean R.', avatar: 'http://localhost:5000/landing/guy_1.jpg', rep: 2021 }, favs: 104, likes: 1255, views: 27553, dislikes: 3, createdAt: '2021-10-15T13:51:36.631Z', updatedAt: '2021-10-17T13:51:36.631Z' }"></post-listing-card>
             </swiper-slide>
             <swiper-slide>
-              <post-listing-card :post="{ title: 'test', body: 'test', author: { username: 'Emma L.', avatar: 'http://localhost:5000/landing/girl_2.jpg' } }"></post-listing-card>
+              <post-listing-card :post="{ title: 'test', body: 'test', author: { username: 'Emma L.', avatar: 'http://localhost:5000/landing/girl_2.jpg', rep: 1234 }, favs: 95, likes: 1004, views: 16993, dislikes: 3, createdAt: '2021-10-01T13:51:36.631Z', updatedAt: '2021-10-08T13:51:36.631Z' }"></post-listing-card>
             </swiper-slide>
             <swiper-slide>
-              <post-listing-card :post="{ title: 'test', body: 'test', author: { username: 'Stéphane M.', avatar: 'http://localhost:5000/landing/guy_2.jpg' } }"></post-listing-card>
+              <post-listing-card :post="{ title: 'test', body: 'test', author: { username: 'Stéphane M.', avatar: 'http://localhost:5000/landing/guy_2.jpg', rep: 234 }, favs: 12, likes: 430, views: 4683, dislikes: 3, createdAt: '2021-02-04T13:51:36.631Z', updatedAt: '2021-03-04T13:51:36.631Z' }"></post-listing-card>
             </swiper-slide>
           </swiper>
-          <!-- <vue-carousel :data="data"/> -->
         </div>
       </div>
       <div class="flex items-center flex-wrap mb-20">
         <div class="w-full md:w-1/2">
-          <img src="assets/report.svg" alt="Reporting" />
+          [Showcase]
         </div>
         <div class="w-full md:w-1/2 pl-10">
           <h4 class="text-3xl text-1 font-medium  mb-3">
             Fils de discussion détaillés
           </h4>
           <p class="text-2 mb-8">
-            Our Smart Health Monitoring Wristwatch can generate a comprehensive
-            report on your vitals depending on your settings either daily,
-            weekly, monthly, quarterly or yearly.
+            [TODO]
           </p>
         </div>
       </div>
@@ -77,13 +74,11 @@
             Recherche avancée &amp; Filtrage des Posts
           </h4>
           <p class="text-2 mb-8">
-            Our Smart Health Monitoring Wristwatch allows you to sync data
-            across all your mobile devices whether iOS, Android or Windows OS
-            and also to your laptop whether MacOS, GNU/Linux or Windows OS.
+            [TODO]
           </p>
         </div>
         <div>
-          [Showcase ]
+          [Showcase]
         </div>
       </div>
     </section>
@@ -158,5 +153,9 @@ export default defineComponent({
 
   .swiper-pagination-fraction, .swiper-pagination-custom, .swiper-container-horizontal > .swiper-pagination-bullets {
     @apply w-1/2 left-1/4;
+  }
+
+  .swiper-pagination-bullet {
+    @apply dark:bg-v-1-light bg-v-1-dark;
   }
 </style>

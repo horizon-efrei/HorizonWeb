@@ -1,3 +1,5 @@
+import { createReadStream, promises as fs, constants as fsConst } from 'fs';
+import { join } from 'path';
 import {
   BadRequestException,
   Body,
@@ -17,13 +19,11 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
-import { createReadStream, promises as fs, constants as fsConst } from 'fs';
-import { join } from 'node:path';
-import { PaginateDto } from 'src/posts/dto/paginate.dto';
-import { CustomPaginateResult } from 'src/shared/pagination';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { uploadConfig } from '../config';
+import { PaginateDto } from '../posts/dto/paginate.dto';
 import { CurrentUser } from '../shared/decorators/current-user.decorator';
+import type { CustomPaginateResult } from '../shared/pagination';
 import { User } from '../users/user.schema';
 import type { CreateCourseDocDto } from './dto/create-course-doc.dto';
 import type { CreateUploadDto } from './dto/create-file.dto';
@@ -44,11 +44,11 @@ export class FilesController {
   public async uploadCourseDocument(@CurrentUser() user: User,
   @Body() body: Partial<CreateCourseDocDto & CreateUploadDto>,
   @UploadedFile() file: Express.Multer.File): Promise<CourseDoc> {
-    console.log("receive");
+    console.log('receive');
     if (!file)
       throw new BadRequestException('No file has been provided.');
 
-    console.log("good");
+    console.log('good');
     const fileDocument = await this.filesService.create(user, {
       originalName: file.originalname,
       fileSize: file.size,
@@ -56,15 +56,17 @@ export class FilesController {
       encoding: file.encoding,
       lastModified: body?.lastModified ?? new Date(),
     }, file);
-    console.log("creatad2");
+    console.log('creatad2');
     return await this.courseDocsService.create(user, body as CreateCourseDocDto, fileDocument);
   }
 
-  // essais de crud
-  
+  // Essais de crud
+
   // Read
   @Get('/course-docs/search')
-  public async getAllUploads(@Query() query: PaginateDto): Promise<CustomPaginateResult<CourseDoc> | { items: CourseDoc[] }>  {
+  public async getAllUploads(
+    @Query() query: PaginateDto,
+  ): Promise<CustomPaginateResult<CourseDoc> | { items: CourseDoc[] }> {
     if (query.page) {
       return await this.courseDocsService.findAll({
         page: query.page,
@@ -79,7 +81,7 @@ export class FilesController {
   public async getOne(@Param('id', ParseIntPipe) id: number): Promise<CourseDoc> {
     return await this.courseDocsService.findOne(id);
   }
-  
+
   // Update
   @Patch(':id')
   public async updateDoc(
@@ -87,9 +89,9 @@ export class FilesController {
     @Param('id', ParseIntPipe) id: number,
     @Body() updateCourseDocDto: UpdateCourseDocsDto,
   ): Promise<CourseDoc> {
-    return this.courseDocsService.update(user, id, updateCourseDocDto);
+    return await this.courseDocsService.update(user, id, updateCourseDocDto);
   }
-  
+
   // Delete
   @Delete(':id')
   public async remove(@CurrentUser() user: User, @Param('id', ParseIntPipe) id: number): Promise<void> {
@@ -100,9 +102,7 @@ export class FilesController {
   public async getFile(@Param('id', ParseIntPipe) id: number, @Param('file_name') fileName: string): Promise<StreamableFile> {
     const filePath = join(process.cwd(), `uploads/${id}/${fileName}`);
     return await fs.access(filePath, fsConst.F_OK)
-    .then(() => {
-      return new StreamableFile(createReadStream(join(process.cwd(), `uploads/${id}/${fileName}`)));
-    })
-    .catch(() => { throw new NotFoundException('File does not exist'); })
+    .then(() => new StreamableFile(createReadStream(join(process.cwd(), `uploads/${id}/${fileName}`))))
+    .catch(() => { throw new NotFoundException('File does not exist'); });
   }
 }

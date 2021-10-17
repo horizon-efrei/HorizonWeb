@@ -24,7 +24,7 @@ import { FilesService } from './services/files.service';
           schema.plugin(paginate);
           return schema;
         },
-      },  
+      },
     ]),
 
     MongooseModule.forFeatureAsync([

@@ -171,15 +171,6 @@ export default defineComponent({
       searchVisible: false
     }
   },
-  mounted () {
-    /* const previewers = document.getElementsByClassName('previewer')
-    for (const previewer of previewers) {
-      previewer.addEventListener('wheel', function (e) {
-        e.preventDefault()
-        e.target.scrollLeft += e.deltaY
-      })
-    } */
-  },
   methods: {
     testKey (e) {
       console.log(e)
@@ -201,26 +192,8 @@ export default defineComponent({
       this.checkScrollersAfterScroll(previewer)
     },
     checkResize () {
-      document.getElementsByClassName('previewer').forEach((el) => {
+      document.querySelectorAll('.previewer').forEach((el) => {
         this.checkScrollersAfterScroll(el)
-        // const chevronRight = el.parentNode.lastChild
-        /* if (el.scrollLeft >= (el.scrollWidth - el.clientWidth) && chevronRight.classList.contains('opacity-1')) {
-          chevronRight.classList.remove('opacity-1')
-          chevronRight.classList.add('opacity-0')
-          chevronRight.classList.add('cursor-pointer')
-        } else if (el.scrollLeft < (el.scrollWidth - el.clientWidth) && chevronRight.classList.contains('opacity-0')) {
-          chevronRight.classList.remove('opacity-0')
-          chevronRight.classList.add('opacity-1')
-          chevronRight.classList.remove('cursor-pointer')
-        }
-         const overflows = el.scrollWidth > el.clientWidth
-        if (overflows && chevronRight.classList.contains('opacity-0')) {
-          chevronRight.classList.remove('opacity-0')
-          chevronRight.classList.add('opacity-1')
-        } else if ((!overflows && chevronRight.classList.contains('opacity-1')) || el.scrollLeft >= (el.scrollWidth - el.clientWidth)) {
-          chevronRight.classList.remove('opacity-1')
-          chevronRight.classList.add('opacity-0')
-        } */
       })
     },
     checkScrollersAfterScroll (previewer) {
