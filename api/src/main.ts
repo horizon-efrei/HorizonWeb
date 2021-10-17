@@ -14,13 +14,13 @@ async function bootstrap(): Promise<void> {
 
   app.enableCors();
   app.enableShutdownHooks();
-  app.enableVersioning({ type: VersioningType.HEADER, header: 'X-Api-Version' });
+  // App.enableVersioning({ type: VersioningType.HEADER, header: 'X-Api-Version' });
   app.useGlobalPipes(new ValidationPipe({ transform: true, forbidUnknownValues: true }));
   app.useGlobalFilters(new ExceptionsFilter());
   app.set('trust proxy', false);
 
   app.use(logger);
-
+  app.setGlobalPrefix('api');
   await app.listen(apiConfig.get('port'));
   Logger.log(`Server initialized on port ${apiConfig.get('port')}`, 'Bootstrap');
 }

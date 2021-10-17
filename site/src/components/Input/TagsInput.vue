@@ -10,13 +10,13 @@
       </Tag>
     </template>
     <input v-model="newTag" ref="tagsInput"
+      :placeholder="inputPlaceholder"
       @blur="focused = false"
       @focus="focused = true"
-      @keydown.enter="addTag(newTag)"
+      @keydown.enter.prevent="addTag(newTag)"
       @keydown.space="addTag(newTag)"
-      @keydown.prevent.tab="addTag(newTag)"
       @keydown.delete="newTag.length || removeTag(tags.length - 1)"
-      class="min-w-1 w-full bg-opacity-0 flex-1 bg-white outline-none" />
+      class="placeholder h-8 min-w-1 w-full bg-opacity-0 flex-1 bg-white outline-none" />
   </div>
 </template>
 
@@ -37,20 +37,31 @@ export default {
     // AutoSizeInputInner,
     Tag
   },
+  props: {
+    inputPlaceholder: String
+  },
   data: () => {
     return {
       focused: false
     }
   },
-  setup: () => {
+  setup: (props) => {
     const tagsContainer = ref(null)
     const tagsInput = ref(null)
     const addTag = (tag) => {
-      tags.value.push(tag)
-      newTag.value = '' // reset newTag
+      if (tagsInput.value.placeholder) {
+        tagsInput.value.placeholder = ''
+      }
+      if (tag) {
+        tags.value.push(tag)
+        newTag.value = '' // reset newTag
+      }
     }
     const removeTag = (index) => {
       tags.value.splice(index, 1)
+      if (!tags.value.length) {
+        tagsInput.value.placeholder = props.inputPlaceholder
+      }
     }
     const tags = ref([])
     const newTag = ref('') // keep up with new tag

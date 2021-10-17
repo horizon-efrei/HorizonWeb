@@ -8,6 +8,10 @@
     line-height: 1.43;
 }
 
+.icon-button {
+    @apply p-2 rounded outline-none cursor-pointer border shadow;
+}
+
 /*.button.is-validate {
     background-color: #1d69e0;
 }

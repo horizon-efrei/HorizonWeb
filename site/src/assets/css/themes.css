@@ -28,31 +28,47 @@
 }
 
 .bg-5 {
-    @apply bg-gray-500 dark:bg-gray-500
+    @apply bg-v-5-light dark:bg-v-5-dark
+}
+
+.bg-6 {
+    @apply bg-v-6-light dark:bg-v-6-dark
+}
+
+.bg-alt-0 {
+    @apply dark:bg-v-0-light bg-v-0-dark
+}
+
+.bg-alt-1 {
+    @apply dark:bg-v-1-light bg-v-1-dark
+}
+
+.bg-alt-2 {
+    @apply dark:bg-v-2-light bg-v-2-dark
+}
+
+.bg-alt-3 {
+    @apply dark:bg-v-3-light bg-v-3-dark
+}
+
+.bg-alt-4 {
+    @apply dark:bg-v-4-light bg-v-4-dark
 }
 
 .bg-content {
     @apply bg-gray-300 dark:bg-gray-600
 }
 
-.bg-alt-1 {
-    @apply bg-gray-700 dark:bg-gray-50
-}
-
-.bg-alt-2 {
-    @apply bg-gray-600 dark:bg-gray-100
-}
-
-.bg-alt-3 {
-    @apply bg-gray-500 dark:bg-gray-200
-}
-
-.bg-alt-4 {
-    @apply bg-gray-400 dark:bg-gray-300
-}
-
 .bg-alt-content {
     @apply bg-gray-900 dark:bg-gray-300
+}
+
+.bg-content-1 {
+    @apply dark:bg-v-1-light bg-v-1-dark
+}
+
+.bg-content-2 {
+    @apply dark:bg-v-2-light bg-v-2-dark
 }
 
 .placeholder-1 {
@@ -80,19 +96,31 @@
 }
 
 .text-3 {
-    @apply dark:text-v-2-light text-v-3-dark
+    @apply dark:text-v-3-light text-v-3-dark
+}
+
+.text-4 {
+    @apply dark:text-v-4-light text-v-4-dark
+}
+
+.text-alt-0 {
+    @apply text-v-0-light dark:text-v-0-dark
 }
 
 .text-alt-1 {
-    @apply text-white dark:text-black
+    @apply text-v-1-light dark:text-v-1-dark
 }
 
 .text-alt-2 {
-    @apply text-gray-100 dark:text-gray-700
+    @apply text-v-2-light dark:text-v-2-dark
 }
 
 .text-alt-3 {
-    @apply text-gray-300 dark:text-gray-500
+    @apply text-v-3-light dark:text-v-3-dark
+}
+
+.text-alt-4 {
+    @apply text-v-4-light dark:text-v-4-dark
 }
 
 .border-color-0 {
@@ -111,6 +139,26 @@
     @apply dark:border-v-3-light border-v-3-dark
 }
 
+.border-color-alt-0 {
+    @apply border-v-0-light dark:border-v-0-dark
+}
+
+.border-color-alt-1 {
+    @apply border-v-1-light dark:border-v-1-dark
+}
+
+.border-color-alt-2 {
+    @apply border-v-2-light dark:border-v-2-dark
+}
+
+.border-color-alt-3 {
+    @apply border-v-3-light dark:border-v-3-dark
+}
+
+.border-footer {
+    @apply border-gray-300 dark:border-gray-400
+}
+
 .bc-alt-1 {
     @apply border-black dark:border-gray-500
 }
@@ -123,21 +171,38 @@
     @apply border-gray-500 dark:border-gray-100
 }
 
-.divide-color-1 {
+.border-bar {
     border-color: #e4e4e7;
     @apply  dark:border-black
+}
+
+.divide-color-1 {
+    @apply divide-gray-400 dark:divide-gray-100
 }
 
 .text-hover-brand {
     @apply hover:text-indigo-300 focus:outline-none focus:text-blue-400
 }
 
-.bc-mouse-brand {
+.border-brand {
     @apply hover:border-indigo-300 focus:outline-none focus:border-blue-400
 }
 
 .bg-mouse-brand {
-    @apply hover:bg-indigo-100 focus:bg-blue-200 dark:hover:bg-indigo-400 dark:focus:bg-blue-600
+    @apply hover:bg-indigo-100  dark:hover:bg-indigo-400
+}
+
+.bg-mouse-brand.active {
+    box-shadow: inset 5px 0px 0px 0px #6666FF;
+    @apply  bg-indigo-100 dark:bg-indigo-300;
+}
+
+.mouse-icon {
+    @apply hover:text-blue-500
+}
+
+.mouse-icon.active {
+    @apply  text-blue-800;
 }
 
 .app-scrollbar {

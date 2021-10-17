@@ -3,5 +3,5 @@
 }
 
 .box-card {
-    @apply shadow-md border pt-3 pb-5 px-4 dark:text-v-0-light text-v-0-dark;
+    @apply shadow-md border py-3 px-4 dark:text-v-0-light text-v-0-dark;
 }

@@ -25,20 +25,32 @@ module.exports = {
         dark: '#000'
       },
       'v-1': {
-        light: '#f4f4f4',
+        light: '#fafafa',
         dark: '#1d1e20'
       },
       'v-2': {
-        light: '#f2f3f5',
+        light: '#f6f6f6',
         dark: '#202225'
       },
       'v-3': {
-        light: '#e3e5e8',
+        light: '#e2e2e2',
         dark: '#2f3136'
       },
       'v-4': {
-        light: '#d5d5d5',
+        light: '#d4d4d4',
         dark: '#323030'
+      },
+      'v-5': {
+        light: '#c6c6c6',
+        dark: '#444'
+      },
+      'v-6': {
+        light: '#bebebe',
+        dark: '#5e5e5e'
+      },
+      'v-placeholder': {
+        light: '#a6a6a6',
+        dark: '#777777'
       }
     },
     spacing: {
@@ -454,6 +466,7 @@ module.exports = {
     }),
     inset: (theme, { negative }) => ({
       auto: 'auto',
+      unset: 'unset',
       ...theme('spacing'),
       ...negative(theme('spacing')),
       '1/2': '50%',
@@ -560,11 +573,13 @@ module.exports = {
     }),
     minHeight: {
       0: '0px',
+      20: '5rem',
       full: '100%',
       screen: '100vh'
     },
     minWidth: {
       0: '0px',
+      '2/3': '66.66%',
       full: '100%',
       min: 'min-content',
       max: 'max-content'
@@ -1018,6 +1033,7 @@ module.exports = {
         })
       })
     }),
-    require('tailwind-scrollbar')
+    require('tailwind-scrollbar'),
+    require('@tailwindcss/line-clamp')
   ]
 }
