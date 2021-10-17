@@ -4,10 +4,10 @@
       rounded-full
       text-white
       space-x-0 md:space-x-1
-      font-bold
+      font-medium
       flex items-center justify-center
-      mr-1 md:mr-2 px-2 md:px-4 py-1
-      opacity-80 cursor-pointer hover:opacity-100
+      mr-1 md:mr-2 px-2 md:px-4
+      bg-opacity-80 cursor-pointer hover:bg-opacity-100
     "
     :class="`bg-${color}`"
   >

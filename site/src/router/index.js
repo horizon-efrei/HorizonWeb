@@ -1,9 +1,11 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import Content from '@/components/Content.vue'
+import { createRouter, createWebHashHistory } from 'vue-router'
+import Content from '@/pages/Content.vue'
 import PostView from '@/pages/Post/PostView.vue'
 import PostNew from '@/pages/Post/PostNew.vue'
 import FileUpload from '@/pages/FileUpload.vue'
 import PostList from '@/pages/Post/PostList.vue'
+import Filler from '@/pages/Filler.vue'
+import Settings from '@/pages/Settings.vue'
 
 const routes = [
   {
@@ -30,6 +32,16 @@ const routes = [
   },
 
   {
+    path: '/filler',
+    component: Filler
+  },
+
+  {
+    path: '/my_account',
+    component: Settings
+  },
+
+  {
     path: '/secret',
     component: Content,
     beforeEnter: (to, from, next) => {
@@ -39,7 +51,7 @@ const routes = [
 ]
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes
 })
 

@@ -2,10 +2,10 @@
   <aside
     id="sidebar"
     class="sticky overflow-hidden lg-max:w-0 flex flex-col
-    flex-shrink-0 h-content w-sbar top-tbar bg-2
-    border-r divide-color-1 whitespace-nowrap tr-width duration-300"
+    flex-shrink-0 h-content w-sbar top-tbar bg-1
+    border-r border-bar whitespace-nowrap tr-width duration-300"
   >
-    <SidebarBase @toggleLogin="$emit('toggleLogin')" />
+    <SidebarBase />
   </aside>
 </template>
 

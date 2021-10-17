@@ -13,8 +13,11 @@ export class User extends Document {
   @Prop()
   password?: string;
 
-  @Prop()
-  googleId?: string;
+  @Prop({ default: 0 })
+  rep?: number;
+
+  @Prop({ default: 'http://localhost:5000/user.png' })
+  avatar?: string;
 
   createdAt: Date;
   updatedAt: Date;
@@ -27,7 +30,7 @@ UserSchema.methods.validatePassword = async function (password: string): Promise
   return await bcrypt.compare(password, this.password ?? '');
 };
 
-// Update password into a hashed one.
+// Update password into a hashed o  ne.
 UserSchema.pre('save', async function (this: User, next) {
   if (!this.isModified('password') || !this.password) {
     next();

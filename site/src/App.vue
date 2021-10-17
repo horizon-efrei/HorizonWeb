@@ -1,7 +1,7 @@
 <template>
-  <sliding-sidebar @closeSidebar="sidebarHandler" @toggleLogin="toggleLogin" />
+  <sliding-sidebar @closeSidebar="sidebarHandler"/>
   <div v-if="showLogin" class="fixed top-0 left-0 w-screen h-screen z-50" @click="toggleLogin">
-    <login @click.stop="() => {}"></login>
+    <login @click.stop="() => {}" @toggleLogin="toggleLogin" ></login>
   </div>
   <div
     id="main-container"
@@ -11,28 +11,32 @@
 
       <div
       id="content-wrapper"
-      class="w-full bg-1 shadow-inner-deep dark:shadow-dark-inner-deep h-content flex relative top-tbar overflow-hidden"
+      class="w-full bg-2 h-content flex flex-col relative top-tbar overflow-auto app-scrollbar"
     >
       <div
         id="content"
-        class="py-7 px-9 flex-1 overflow-auto app-scrollbar"
+        class="flex-grow-1 flex-shrink-0 flex-auto"
       >
-        <router-view />
+        <router-view class="my-7 mx-9" />
       </div>
+      <Footer class="flex-shrink-0"/>
     </div>
     <topbar
       ref="topbar"
+      @toggleLogin="toggleLogin"
       @launchSearch="launchSearch"
       @updateSearch="updateSearch"
       @openSidebar="sidebarHandler"
     />
-    <sidebar @closeSidebar="sidebarHandler" @toggleLogin="toggleLogin" />
+    <sidebar @closeSidebar="sidebarHandler" />
   </div>
 </template>
 
 <script lang="js">
 import Login from '@/components/Login.vue'
-import { defineComponent } from 'vue'
+import Footer from '@/components/Footer.vue'
+
+import { defineComponent, watch } from 'vue'
 
 import Topbar from '@/components/Topbar.vue'
 import Sidebar from '@/components/Sidebar/Sidebar.vue'
@@ -45,7 +49,8 @@ export default defineComponent({
     Topbar,
     Sidebar,
     SlidingSidebar,
-    SearchQuery
+    SearchQuery,
+    Footer
   },
   data () {
     return {
@@ -55,7 +60,27 @@ export default defineComponent({
       showLogin: false
     }
   },
+  created () {
+    if (this.$store.state.userConfig.theme === 'dark') {
+      const root = document.querySelector(':root')
+      if (!root.classList.contains('dark')) {
+        root.classList.add('dark')
+      }
+    }
+  },
   mounted () {
+    watch(() => this.$store.getters['userConfig/getTheme'], (theme) => {
+      const root = document.querySelector(':root')
+      if (theme === 'dark') {
+        if (!root.classList.contains('dark')) {
+          root.classList.add('dark')
+        }
+      } else {
+        if (root.classList.contains('dark')) {
+          root.classList.remove('dark')
+        }
+      }
+    })
     window.addEventListener('resize', this.checkResize)
     window.addEventListener('keydown', this.checkKeydown)
     this.checkResize()
@@ -140,6 +165,11 @@ export default defineComponent({
 
 .icon {
   @apply h-6 float-right pl-6;
+}
+
+#content-wrapper::after {
+  content: '';
+  @apply shadow-inner-deep dark:shadow-dark-inner-deep h-full w-full absolute top-0 left-0 pointer-events-none
 }
 
 * {

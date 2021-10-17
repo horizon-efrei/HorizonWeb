@@ -5,18 +5,14 @@ import {
 } from '@nestjs/common';
 import type { JwtSignOptions } from '@nestjs/jwt';
 import { JwtService } from '@nestjs/jwt';
-import type { oauth2_v2 as oauth2v2 } from 'googleapis';
 import { apiConfig } from '../config';
 import type { User } from '../users/user.schema';
 import { UserService } from '../users/users.service';
-import { GoogleAuthService } from './google-auth.service';
 import type { Token } from './jwt-auth.guard';
 
 export interface TokenResponse {
-  /* eslint-disable @typescript-eslint/naming-convention, camelcase */
-  access_token: string;
-  refresh_token: string | null;
-  /* eslint-enable @typescript-eslint/naming-convention, camelcase */
+  accessToken: string;
+  refreshToken: string | null;
 }
 
 export interface SocialUser {
@@ -32,7 +28,6 @@ export class AuthService {
   constructor(
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-    private readonly googleService: GoogleAuthService,
   ) {}
 
   public async validate(username: string, password: string): Promise<User> {
@@ -53,46 +48,11 @@ export class AuthService {
     };
 
     return {
-      /* eslint-disable @typescript-eslint/naming-convention */
-      access_token: await this.jwtService.signAsync(payload, this.getAccessTokenOptions()),
-      refresh_token: apiConfig.get('accessTokenExpiration')
+      accessToken: await this.jwtService.signAsync(payload, this.getAccessTokenOptions()),
+      refreshToken: apiConfig.get('accessTokenExpiration')
         ? await this.jwtService.signAsync(payload, this.getRefreshTokenOptions())
         : null,
-      /* eslint-enable @typescript-eslint/naming-convention */
     };
-  }
-
-  public async loginWithGoogle(
-    accessToken: string,
-    customName?: string,
-  ): Promise<TokenResponse> {
-    let googleUser: oauth2v2.Schema$Userinfo;
-    try {
-      googleUser = await this.googleService.getUser(accessToken);
-    } catch {
-      throw new UnauthorizedException('Invalid access token');
-    }
-
-    if (!googleUser.id)
-      throw new BadRequestException('Unknown google user');
-
-    const internalUser = await this.userService.getUserByGoogleId(googleUser.id);
-    if (internalUser)
-      return this.login(internalUser);
-
-    if (!googleUser.email)
-      throw new BadRequestException('No email associated with google account');
-    if (await this.userService.getUserByEmail(googleUser.email))
-      throw new BadRequestException('Email already exists');
-
-    const user = await this.userService.create({
-      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-      username: customName || googleUser.name || 'Anonymous',
-      email: googleUser.email.toLowerCase(),
-      googleId: googleUser.id,
-    });
-
-    return this.login(user);
   }
 
   public async loginWithRefreshToken(refreshToken: string): Promise<TokenResponse> {

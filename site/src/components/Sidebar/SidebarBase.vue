@@ -2,98 +2,122 @@
   <div class="text-1 overflow-y-auto overflow-x-hidden app-scrollbar">
     <div class="divide-y divide-color-1">
       <ul
-        v-for="section of sections"
-        :key="section"
+        v-for="linkSection of links"
+        :key="linkSection"
         class="py-2"
       >
-        <span class="capitalize" />
         <template
-          v-for="link of links"
+          v-for="link of linkSection"
           :key="link"
         >
-          <li v-if="link.section == section">
-            <a
-              :href="link.href"
-              class="h-12 py-2 px-4 flex w-full items-center transition-colors bg-mouse-brand duration-300"
+          <li>
+            <router-link :to="link.to"
+              class="h-12 py-2 px-4 flex w-full items-center transition-colors bg-mouse-brand duration-300 cursor-pointer"
+              :class="{ active: link.to === $route.path }"
             >
               <component
                 :is="link.icon"
                 class="w-6 h-6 mr-4 flex-shrink-0"
               />
               <span>{{ link.text }}</span>
-            </a>
+            </router-link>
           </li>
         </template>
       </ul>
 
-      <div class="flex justify-center pt-5">
-        <button class="button text-md" @click="$emit('toggleLogin')">
-           <div class="flex space-x-2 items-center">
-            <i class="ri-login-circle-line text-xl"></i>
-            <p>SE CONNECTER</p>
-           </div>
-        </button>
+      <div class="flex py-4 items-center justify-center">
+        <div class="topbar-icon">
+          <BellIcon />
+        </div>
+        <div class="topbar-icon">
+          <FolderIcon />
+        </div>
+        <div class="topbar-icon">
+          <MailIcon />
+        </div>
+
+        <label
+          class="switch mr-3 orange"
+          @click="$store.dispatch('userConfig/switchTheme')"
+        >
+          <input type="checkbox" v-model="theme">
+          <span class="slider round" />
+        </label>
       </div>
+
+      <!-- <div class="p-2" >
+        <user-card avatar="http://cdn.onlinewebfonts.com/svg/img_83486.png" :user="user" status="green-500"></user-card>
+      </div> -->
     </div>
   </div>
 </template>
 
 <script lang="js">
 import {
-  SearchIcon,
+  HomeIcon,
   SpeakerphoneIcon,
-  DocumentDownloadIcon,
-  CalendarIcon,
+  ClipboardCheckIcon,
+  ClipboardListIcon,
   TicketIcon,
   InformationCircleIcon,
   UserIcon,
   BriefcaseIcon,
   PresentationChartLineIcon,
-  DatabaseIcon
+  DatabaseIcon,
+  BellIcon,
+  FolderIcon,
+  MailIcon
 } from '@heroicons/vue/solid'
 
-import { defineComponent } from 'vue'
+import { defineComponent, watch } from 'vue'
 
 export default defineComponent({
   name: 'SidebarBase',
-  emits: ['toggleLogin'],
   components: {
-    SearchIcon,
+    HomeIcon,
     SpeakerphoneIcon,
-    DocumentDownloadIcon,
-    CalendarIcon,
+    ClipboardCheckIcon,
+    ClipboardListIcon,
     TicketIcon,
     InformationCircleIcon,
     UserIcon,
     BriefcaseIcon,
     PresentationChartLineIcon,
-    DatabaseIcon
+    DatabaseIcon,
+    BellIcon,
+    FolderIcon,
+    MailIcon
+  },
+  mounted () {
+    watch(() => this.$store.getters['userConfig/getTheme'], (newTheme) => {
+      if ((newTheme === 'dark') !== this.theme) {
+        this.theme = newTheme === 'dark'
+      }
+    })
+  },
+  data () {
+    return {
+      theme: this.$store.state.userConfig.theme === 'dark'
+    }
   },
   props: {
-    sections: {
-      type: Array,
-      default: () => [
-        'Général',
-        "Ef'réussite",
-        'Scolarité',
-        'Horizon',
-        'Mon Espace'
-      ]
-    },
-
     links: {
       type: Array,
       default: () => [
-        { href: '#', section: 'Général', text: 'Annonces', icon: 'SpeakerphoneIcon' },
-        { href: '#', section: 'Général', text: 'Dashboard site', icon: 'PresentationChartLineIcon' },
-        { href: '#', section: "Ef'réussite", text: 'Docs sharing', icon: 'DocumentDownloadIcon' },
-        { href: '#', section: "Ef'réussite", text: 'Scheduler', icon: 'CalendarIcon' },
-        { href: '#', section: 'Scolarité', text: 'Infos scolarité', icon: 'InformationCircleIcon' },
-        { href: '#', section: 'Scolarité', text: 'Remontées', icon: 'TicketIcon' },
-        { href: '#', section: 'Horizon', text: 'Notre association', icon: 'SearchIcon' },
-        { href: '#', section: 'Horizon', text: 'Project dating', icon: 'BriefcaseIcon' },
-        { href: '#', section: 'Mon Espace', text: 'Mon compte', icon: 'UserIcon' },
-        { href: '#', section: 'Mon Espace', text: 'RGPD', icon: 'DatabaseIcon' }
+        [
+          { to: '/', text: 'Accueil', icon: 'HomeIcon' },
+          { to: '/todo_announce', text: 'Annonces', icon: 'SpeakerphoneIcon' },
+          { to: '/todo_dashboard', text: 'Dashboard site', icon: 'PresentationChartLineIcon' }
+        ],
+        [
+          { to: '/new_post', text: 'Créer un post', icon: 'TicketIcon' },
+          { to: '/posts', text: 'Tous les posts', icon: 'ClipboardCheckIcon' }
+        ],
+        [
+          { to: '/my_account', text: 'Mon compte', icon: 'UserIcon' },
+          { to: '/todo_rgpd', text: 'RGPD', icon: 'DatabaseIcon' },
+          { to: '/todo_horizon', text: 'Horizon', icon: 'InformationCircleIcon' }
+        ]
       ]
     }
   }

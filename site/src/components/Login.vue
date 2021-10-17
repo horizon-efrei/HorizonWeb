@@ -5,7 +5,7 @@
 
         <!-- Card Title -->
 
-        <form method="POST" class="flex flex-col">
+        <div class="flex flex-col">
             <h2 class="text-center font-semibold text-3xl text-1">
                 Connexion
             </h2>
@@ -13,15 +13,15 @@
             <div class="space-y-3 mt-4">
                 <div>
                     <label for="email" class="block tracking-wider text-sm font-semibold text-gray-600 uppercase">E-mail</label>
-                    <input-with-icon :icon="userIcon" type="email"></input-with-icon>
+                    <input-with-icon :name="email" v-model="user.username" :icon="userIcon"></input-with-icon>
                 </div>
                 <div>
                     <label for="password" class="block tracking-wider mt-2 text-sm font-semibold text-gray-600 uppercase">Password</label>
-                    <input-with-icon :icon="passwordIcon" type="password"></input-with-icon>
+                    <input-with-icon :name="password" v-model="user.password" :icon="passwordIcon" type="password"></input-with-icon>
                 </div>
             </div>
             <div class="flex flex-col mt-10 space-y-2 items-center justify-center">
-                <button type="submit"
+                <button type="submit" @click="handleLogin"
                     class="w-full py-3 bg-gray-500 rounded-sm text-sm
                     font-medium text-white uppercase
                     focus:outline-none hover:bg-gray-400 hover:shadow-none">
@@ -49,7 +49,7 @@
                     </a>
                 </div>
             </div>
-        </form>
+        </div>
     </div>
 </template>
 
@@ -57,6 +57,8 @@
 import { defineComponent } from 'vue'
 import InputWithIcon from '@/components/Input/InputWithIcon.vue'
 // import { UserIcon, KeyIcon } from '@heroicons/vue/outline'
+import User from '@/models/user'
+// import { useForm, useField } from 'vee-validate'
 
 export default defineComponent({
   name: 'Login',
@@ -64,10 +66,75 @@ export default defineComponent({
     InputWithIcon
     // UserIcon, KeyIcon
   },
+  setup () {
+    // Define a validation schema
+    // const loginSchema = {
+    //   email (value) {
+    //     if (email) {
+    //       return 'OK'
+    //     } else {
+    //       return 'Error.'
+    //     }
+    //   },
+    //   password (value) {
+    //     if (password) {
+    //       return 'OK'
+    //     } else {
+    //       return 'Error.'
+    //     }
+    //   }
+    // }
+
+    // // Create a form context with the validation schema
+    // useForm({
+    //   validationSchema: loginSchema
+    // })
+
+    // // No need to define rules for fields
+    // const { value: email, errorMessage: emailError } = useField('field')
+    // const { value: password, errorMessage: passwordError } = useField('field')
+
+    // return {
+    //   email,
+    //   emailError,
+    //   password,
+    //   passwordError
+    // }
+  },
+  emits: ['toggleLogin'],
   data () {
     return {
       userIcon: "<i class='ri-shield-user-fill ri-xl'></i>",
-      passwordIcon: "<i class='ri-key-2-fill ri-xl'></i>"
+      passwordIcon: "<i class='ri-key-2-fill ri-xl'></i>",
+      user: new User('', '', '')
+    }
+  },
+  methods: {
+    handleLogin () {
+      console.log('handle', this.user.username, this.user.password)
+      this.loading = true
+
+      //   this.$validator.validateAll().then(isValid => {
+      //     if (!isValid) {
+      //       this.loading = false
+      //       return
+      //     }
+
+      if (this.user.username && this.user.password) {
+        this.$store.dispatch('auth/login', this.user).then(
+          (data) => {
+            this.message = data.toString()
+            this.$emit('toggleLogin')
+          },
+          error => {
+            this.loading = false
+            this.message =
+                (error.response && error.response.data) ||
+                error.message ||
+                error.toString()
+          }
+        )
+      }
     }
   }
 })

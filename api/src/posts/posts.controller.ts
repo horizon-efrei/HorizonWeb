@@ -10,6 +10,8 @@ import {
   Query,
   UseGuards,
   UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CurrentUser } from '../shared/decorators/current-user.decorator';
@@ -33,9 +35,11 @@ export class PostsController {
     private readonly postLikesService: PostLikesService,
   ) {}
 
+  @UsePipes(new ValidationPipe({ transform: true }))
   @UseInterceptors(PostInterceptor)
   @PostRequest()
   public async create(@CurrentUser() user: User, @Body() createPostDto: CreatePostDto): Promise<Post> {
+    console.log('DTO', createPostDto);
     return await this.postsService.create(user, createPostDto);
   }
 

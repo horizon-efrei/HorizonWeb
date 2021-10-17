@@ -7,6 +7,7 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
+import { plainToClass } from 'class-transformer';
 import { CurrentUser } from '../shared/decorators/current-user.decorator';
 import { UserInterceptor } from '../shared/interceptors/user.interceptor';
 import { User } from '../users/user.schema';
@@ -15,6 +16,7 @@ import type { TokenResponse } from './auth.service';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { UserPublicDto } from './dto/user-public.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
 @Controller({ path: 'auth', version: '1' })
@@ -25,15 +27,12 @@ export class AuthController {
   ) {}
 
   @Post('login')
-  public async login(@Body() body: LoginDto): Promise<TokenResponse> {
-    return this.authService.login(
-      await this.authService.validate(body.username, body.password),
-    );
-  }
-
-  @Post('google-login')
-  public async googleLogin(@Body('accessToken') accessToken: string): Promise<TokenResponse> {
-    return this.authService.loginWithGoogle(accessToken);
+  public async login(@Body() body: LoginDto): Promise<TokenResponse & UserPublicDto> {
+    const user = await this.authService.validate(body.username, body.password);
+    return {
+      ...plainToClass(UserPublicDto, user),
+      ...await this.authService.login(user),
+    };
   }
 
   @Post('refresh-token')

@@ -16,7 +16,7 @@
       </button>
       <div class="brand w-32 h-6 flex-shrink-0" />
     </div>
-    <SidebarBase @toggleLogin="$emit('toggleLogin')" />
+    <SidebarBase />
     <img>
   </aside>
 </template>
@@ -36,8 +36,7 @@ export default defineComponent({
     SidebarBase
   },
   emits: [
-    'closeSidebar',
-    'toggleLogin'
+    'closeSidebar'
   ]
 })
 </script>

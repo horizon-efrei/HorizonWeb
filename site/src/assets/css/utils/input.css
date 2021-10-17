@@ -16,6 +16,11 @@
     line-height: 1.43;
 }
 
+.input::placeholder, .placeholder::placeholder {
+    @apply dark:text-v-placeholder-light text-v-placeholder-dark;
+    opacity: 1;
+}
+
 .input[type=password] {
     @apply tracking-widest;
     font-weight: 900;
