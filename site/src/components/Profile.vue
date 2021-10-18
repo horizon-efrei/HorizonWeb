@@ -76,6 +76,73 @@
             />
           </div>
         </div>
+        <div class="mb-4">
+          <div class="text-lg">Associations</div>
+          <div class="flex mb-2">
+            <div class="mr-2">
+              <select
+                name="association"
+                id="asso"
+                class="w-full p-1 rounded-md bg-1 border-1"
+              >
+                <option>Association</option>
+                <option>Horizon</option>
+                <option>Efrei Sport Climbing</option>
+                <option>Horizon</option>
+              </select>
+            </div>
+            <div class="ml-2">
+              <select
+                name="role"
+                id="role"
+                class="w-full p-1 rounded-md bg-1 border-1"
+              >
+                <option>Role</option>
+                <option>Membre</option>
+                <option>Président</option>
+                <option>Secrétaire</option>
+              </select>
+            </div>
+          </div>
+          <div class="flex mb-2" v-for="i in assos" :key="i">
+            <div class="mr-2">
+              <select
+                :name="'asso' + i"
+                :id="'asso' + i"
+                class="w-full p-1 rounded-md bg-1 border-1"
+              >
+                <option>Association</option>
+                <option>Horizon</option>
+                <option>Efrei Sport Climbing</option>
+                <option>Horizon</option>
+              </select>
+            </div>
+            <div class="ml-2">
+              <select
+                :name="'role' + i"
+                :id="'role' + i"
+                class="w-full p-1 rounded-md bg-1 border-1"
+              >
+                <option>Role</option>
+                <option>Membre</option>
+                <option>Président</option>
+                <option>Secrétaire</option>
+              </select>
+            </div>
+            <button
+              class="text-red-300 hover:text red-500 h-8 w-8"
+              v-on:click="rmLine()"
+            >
+              <XIcon />
+            </button>
+          </div>
+          <button
+            v-on:click="addLine()"
+            class="p-1 bg-blue-500 text-black font-bold rounded-md ml-auto"
+          >
+            Ajouter une Association
+          </button>
+        </div>
         <div class="float-right flex">
           <button class="bg-gray-500 text-lg p-1 mb-4 rounded-md mr-4">
             Annuler
@@ -93,20 +160,32 @@
 
 <script lang="js">
 import { defineComponent } from 'vue'
-import { PencilIcon } from '@heroicons/vue/outline'
+import { PencilIcon, XIcon } from '@heroicons/vue/outline'
 
 export default defineComponent({
   name: 'Profile',
   components: {
-    PencilIcon
+    PencilIcon,
+    XIcon
   },
   props: {
     comment: {
       type: Object
     }
   },
+  data () {
+    return {
+      assos: []
+    }
+  },
 
   methods: {
+    addLine: function addLine () {
+      this.assos.push(this.assos.lenght)
+    },
+    rmLine: function rmLine () {
+      this.assos.pop()
+    }
   }
 })
 </script>
