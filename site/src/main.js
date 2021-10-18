@@ -5,6 +5,7 @@ import store from './store'
 
 import router from '@/router/index'
 import './assets/css/tailwind.css'
+import './validators.js'
 
 import VueTippy from 'vue-tippy'
 import 'tippy.js/dist/tippy.css'

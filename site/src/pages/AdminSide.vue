@@ -1,14 +1,108 @@
 <template>
   <div class="flex text-1">
-    <div class="w-2/12 bg-1 border-2 border-red-500">
+    <div class="w-1/12 bg-1 border-2 border-red-500">
       <ToolbarAdmin />
     </div>
-    <div class="w-10/12 bg-1 border-2 border-red-500">
+    <div class="w-3/12 bg-1 border-2 border-red-500">
+      <div class="w-full max-w-screen-xl mx-auto px-6">
+        <div class="flex justify-center p-4 px-3 py-10">
+          <div class="w-full max-w-md">
+            <div class="bg-white shadow-md rounded-lg px-3 py-2 mb-4">
+              <div class="block text-gray-700 text-lg font-semibold py-2 px-2">
+                Filtres
+              </div>
+              <div class="flex items-center bg-gray-200 rounded-md">
+                <div class="pl-2">
+                  <svg
+                    class="fill-current text-gray-500 w-6 h-6"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      class="heroicon-ui"
+                      d="M16.32 14.9l5.39 5.4a1 1 0 0 1-1.42 1.4l-5.38-5.38a8 8 0 1 1 1.41-1.41zM10 16a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"
+                    />
+                  </svg>
+                </div>
+                <input
+                  class="
+                    w-full
+                    rounded-md
+                    bg-gray-200
+                    text-gray-700
+                    leading-tight
+                    focus:outline-none
+                    py-2
+                    px-2
+                  "
+                  id="search"
+                  type="text"
+                  placeholder="Search teams or members"
+                />
+              </div>
+              <div class="py-3 text-sm">
+                <div
+                  class="
+                    flex
+                    justify-start
+                    cursor-pointer
+                    text-gray-700
+                    hover:text-blue-400 hover:bg-blue-100
+                    rounded-md
+                    px-2
+                    py-2
+                    my-2
+                  "
+                >
+                  <span class="bg-gray-400 h-2 w-2 m-2 rounded-full"></span>
+                  <div class="flex-grow font-medium px-2">
+                    Tous les messages
+                  </div>
+                </div>
+                <div
+                  class="
+                    flex
+                    justify-start
+                    cursor-pointer
+                    text-gray-700
+                    hover:text-blue-400 hover:bg-blue-100
+                    rounded-md
+                    px-2
+                    py-2
+                    my-2
+                  "
+                >
+                  <span class="bg-gray-400 h-2 w-2 m-2 rounded-full"></span>
+                  <div class="flex-grow font-medium px-2">Assignés à moi</div>
+                </div>
+                <div
+                  class="
+                    flex
+                    justify-start
+                    cursor-pointer
+                    text-gray-700
+                    hover:text-blue-400 hover:bg-blue-100
+                    rounded-md
+                    px-2
+                    py-2
+                    my-2
+                  "
+                >
+                  <span class="bg-gray-400 h-2 w-2 m-2 rounded-full"></span>
+                  <div class="flex-grow font-medium px-2">Mon département</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-9/12 bg-1 border-2 border-red-500">
       <body class="antialiased font-sans bg-gray-200">
         <div class="container mx-auto px-4 sm:px-8">
           <div class="py-8">
             <div>
-              <h2 class="text-2xl font-semibold leading-tight">Users</h2>
+              <h2 class="text-2xl font-semibold leading-tight">Tickets</h2>
             </div>
             <div class="my-2 flex sm:flex-row flex-col">
               <div class="flex flex-row mb-1 sm:mb-0">
@@ -29,9 +123,7 @@
                       px-4
                       pr-8
                       leading-tight
-                      focus:outline-none
-                      focus:bg-white
-                      focus:border-gray-500
+                      focus:outline-none focus:bg-white focus:border-gray-500
                     "
                   >
                     <option>5</option>
@@ -68,8 +160,7 @@
                       h-full
                       rounded-r
                       border-t
-                      sm:rounded-r-none
-                      sm:border-r-0
+                      sm:rounded-r-none sm:border-r-0
                       border-r border-b
                       block
                       appearance-none
@@ -82,7 +173,8 @@
                       pr-8
                       leading-tight
                       focus:outline-none
-                      focus:border-l focus:border-r
+                      focus:border-l
+                      focus:border-r
                       focus:bg-white
                       focus:border-gray-500
                     "
@@ -90,6 +182,54 @@
                     <option>All</option>
                     <option>Active</option>
                     <option>Inactive</option>
+                  </select>
+                  <div
+                    class="
+                      pointer-events-none
+                      absolute
+                      inset-y-0
+                      right-0
+                      flex
+                      items-center
+                      px-2
+                      text-gray-700
+                    "
+                  >
+                    <svg
+                      class="fill-current h-4 w-4"
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+                <div class="relative">
+                  <select
+                    class="
+                      appearance-none
+                      h-full
+                      rounded-l
+                      border
+                      block
+                      appearance-none
+                      w-full
+                      bg-white
+                      border-gray-400
+                      text-gray-700
+                      py-2
+                      px-4
+                      pr-8
+                      leading-tight
+                      focus:outline-none focus:bg-white focus:border-gray-500
+                    "
+                  >
+                    <option>Depuis toujours</option>
+                    <option>Aujourd'hui</option>
+                    <option>Cette semaine</option>
+                    <option>Ce mois</option>
                   </select>
                   <div
                     class="
@@ -173,20 +313,34 @@
                 <table class="min-w-full leading-normal">
                   <thead>
                     <tr>
-                      <th class="tab-title">Etat</th>
-                      <th class="tab-title">Auth</th>
-                      <th class="tab-title">Titre</th>
-                      <th class="tab-title">Created at</th>
-                      <th class="tab-title">Last Message</th>
-                      <th class="tab-title">Notes</th>
+                      <th class="tab-title">React</th>
+                      <th
+                        v-for="col in columns"
+                        :key="col"
+                        v-on:click="sortTable(col)"
+                        class="tab-title"
+                      >
+                        {{ col }}
+                        <div class="float-right" v-if="col == sortColumn">
+                          <div v-if="ascending">
+                            <ChevronUpIcon class="h-5 w-5" />
+                          </div>
+                          <div v-else>
+                            <ChevronDownIcon class="h-5 w-5" />
+                          </div>
+                        </div>
+                      </th>
+                      <th class="tab-title">Actions</th>
                     </tr>
                   </thead>
-                  <tbody
-                    v-for="i of [1, 2, 3, 4, 5, 6]"
-                    :key="i"
-                    class="max-h-16"
-                  >
+                  <tbody v-for="row of rows" :key="row" class="max-h-16">
                     <tr>
+                      <td class="tab-item">
+                        <div class="flex flex-col items-center">
+                          <BookmarkIcon class="h-6 w-6 my-auto" />
+                          <FlagIcon class="h-6 w-6 my-auto" />
+                        </div>
+                      </td>
                       <td class="tab-item">
                         <div
                           class="h-8 w-8 mx-auto rounded-full bg-green-500"
@@ -199,7 +353,7 @@
                               class="w-8 h-8 mx-auto rounded-full m-1"
                               src="https://ichef.bbci.co.uk/news/976/cpsprodpb/7727/production/_103330503_musk3.jpg"
                               alt="img_user"
-                              title="Pierre-Marie HERRBURGER--PIETRI"
+                              :title="row.Auth"
                             />
                           </div>
                           <div class="text-center">L2</div>
@@ -207,14 +361,7 @@
                       </td>
                       <td class="tab-item">
                         <div class="truncate font-bold h-6 max-w-xs">
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Facilis, tempora asperiores. Ratione dicta
-                          obcaecati optio, quia vero, voluptas amet quam est
-                          perspiciatis consectetur rerum dolorem illum laborum.
-                          Mollitia perspiciatis dolorem accusantium molestias
-                          sapiente eveniet quis. Illo, doloremque dolores rem
-                          animi modi ea facilis aspernatur sed sint nisi, ad
-                          explicabo in?
+                          {{ row.Titre }}
                         </div>
                         <div class="mt-1 texte-xs whitespace-nowrap">
                           XXX 👀 •XXX ⏫ •XXX 💌 •L1
@@ -225,7 +372,9 @@
                         <ExclamationIcon
                           class="h-6 w-6 mx-auto text-red-500 text-center"
                         />
-                        <div class="text-gray-900 text-center">21/01/2021</div>
+                        <div class="text-gray-900 text-center">
+                          {{ row.Creation.toISOString().split("T")[0] }}
+                        </div>
                       </td>
                       <td class="tab-item">
                         <div
@@ -235,14 +384,7 @@
                             text-gray-900
                           "
                         >
-                          Lorem ipsum dolor, sit amet consectetur adipisicing
-                          elit. Tempore unde, animi reiciendis sapiente quis
-                          atque quos veniam nam, iure, similique sint.
-                          Dolorum,Lorem ipsum dolor sit amet consectetur
-                          adipisicing elit. Similique nisi, enim mollitia
-                          expedita repudiandae maiores eum amet natus excepturi
-                          distinctio, debitis aliquid quidem perferendis
-                          necessitatibus!
+                          {{ row.Last }}
                         </div>
                       </td>
                       <td class="tab-item">
@@ -253,8 +395,35 @@
                             text-gray-900
                           "
                         >
-                          Lorem ipsum dolor, sit amet consectetur adipisicing
-                          elit. Tempore unde,
+                          {{ row.Notes }}
+                        </div>
+                      </td>
+                      <td class="tab-item">
+                        <div class="flex">
+                          <button
+                            class="
+                              border-2 border-sky-200
+                              p-1
+                              hover:border-sky-500
+                            "
+                          >
+                            Montrer
+                          </button>
+                          <select
+                            class="
+                              border-2 border-sky-200
+                              p-1
+                              hover:border-sky-500
+                              flex
+                              mx-1
+                            "
+                          >
+                            <ChevronDownIcon class="h-5 w-5 ml-1" />
+                            <option>Actions</option>
+                            <option>Actions</option>
+                            <option>Actions</option>
+                            <option>Actions</option>
+                          </select>
                         </div>
                       </td>
                     </tr>
@@ -319,25 +488,69 @@
 import { defineComponent } from 'vue'
 import ToolbarAdmin from '@/components/ToolbarAdmin.vue'
 // import Tag from '@/components/Tag.vue'
-import { ExclamationIcon } from '@heroicons/vue/outline'
+import { ExclamationIcon, ChevronUpIcon, ChevronDownIcon, BookmarkIcon, FlagIcon } from '@heroicons/vue/outline'
 export default defineComponent({
   name: 'AdminSide',
   components: {
     ToolbarAdmin,
+    ChevronUpIcon,
+    ChevronDownIcon,
     // Tag,
-    ExclamationIcon
+    ExclamationIcon,
+    BookmarkIcon,
+    FlagIcon
   },
   props: {
     threads: [
       {}
     ]
   },
+  data () {
+    return {
+      ascending: false,
+      sortColumn: '',
+      rows: [
+        { etat: 4, Auth: 'A', Titre: 'ALorem ipsum dolor sit amet consectetur adipisicing', Creation: new Date(2020, 8, 22), Last: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!', Notes: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!' },
+        { etat: 2, Auth: 'B', Titre: 'BLorem ipsum dolor sit amet consectetur adipisicing', Creation: new Date(2020, 8, 22), Last: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!', Notes: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!' },
+        { etat: 3, Auth: 'C', Titre: 'CLorem ipsum dolor sit amet consectetur adipisicing', Creation: new Date(2020, 8, 22), Last: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!', Notes: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!' },
+        { etat: 1, Auth: 'D', Titre: 'DLorem ipsum dolor sit amet consectetur adipisicing', Creation: new Date(2020, 8, 22), Last: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!', Notes: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!' }
+
+      ]
+    }
+  },
   methods: {
+    sortTable: function sortTable (col) {
+      if (this.sortColumn === col) {
+        this.ascending = !this.ascending
+      } else {
+        this.ascending = true
+        this.sortColumn = col
+      }
+
+      var ascending = this.ascending
+
+      this.rows.sort(function (a, b) {
+        if (a[col] > b[col]) {
+          return ascending ? 1 : -1
+        } else if (a[col] < b[col]) {
+          return ascending ? -1 : 1
+        }
+        return 0
+      })
+    }
     // showHover (evt) {
     //   // const objetRect = evt.target.getBoundingClientRect()
     //   // const newCard = document.createElement('div')
     //   // newCard.className = 'border-2 border-red-500 text-1 absolute'
     // }
+  },
+  computed: {
+    columns: function columns () {
+      if (this.rows.length === 0) {
+        return []
+      }
+      return Object.keys(this.rows[0])
+    }
   }
 })
 </script>

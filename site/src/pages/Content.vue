@@ -41,16 +41,16 @@
   "clickable": true
 }' :navigation="true">
             <swiper-slide>
-              <post-listing-card :post="{ title: 'test', body: 'test', author: { username: 'Sophie H.', avatar: 'http://localhost:5000/landing/girl_1.jpg', rep: 50200 }, favs: 33, likes: 243, views: 44653, dislikes: 3, createdAt: '2021-10-18T13:51:36.631Z', updatedAt: '2021-10-18T13:51:36.631Z' }"></post-listing-card>
+              <post-listing-card :post="{ title: 'test', body: '{}', author: { username: 'Sophie H.', avatar: 'http://localhost:5000/landing/girl_1.jpg', rep: 50200 }, favs: 33, likes: 243, views: 44653, dislikes: 3, createdAt: '2021-10-18T13:51:36.631Z', updatedAt: '2021-10-18T13:51:36.631Z' }"></post-listing-card>
             </swiper-slide>
             <swiper-slide>
-              <post-listing-card :post="{ title: 'test', body: 'test', author: { username: 'Jean R.', avatar: 'http://localhost:5000/landing/guy_1.jpg', rep: 2021 }, favs: 104, likes: 1255, views: 27553, dislikes: 3, createdAt: '2021-10-15T13:51:36.631Z', updatedAt: '2021-10-17T13:51:36.631Z' }"></post-listing-card>
+              <post-listing-card :post="{ title: 'test', body: '{}', author: { username: 'Jean R.', avatar: 'http://localhost:5000/landing/guy_1.jpg', rep: 2021 }, favs: 104, likes: 1255, views: 27553, dislikes: 3, createdAt: '2021-10-15T13:51:36.631Z', updatedAt: '2021-10-17T13:51:36.631Z' }"></post-listing-card>
             </swiper-slide>
             <swiper-slide>
-              <post-listing-card :post="{ title: 'test', body: 'test', author: { username: 'Emma L.', avatar: 'http://localhost:5000/landing/girl_2.jpg', rep: 1234 }, favs: 95, likes: 1004, views: 16993, dislikes: 3, createdAt: '2021-10-01T13:51:36.631Z', updatedAt: '2021-10-08T13:51:36.631Z' }"></post-listing-card>
+              <post-listing-card :post="{ title: 'test', body: '{}', author: { username: 'Emma L.', avatar: 'http://localhost:5000/landing/girl_2.jpg', rep: 1234 }, favs: 95, likes: 1004, views: 16993, dislikes: 3, createdAt: '2021-10-01T13:51:36.631Z', updatedAt: '2021-10-08T13:51:36.631Z' }"></post-listing-card>
             </swiper-slide>
             <swiper-slide>
-              <post-listing-card :post="{ title: 'test', body: 'test', author: { username: 'Stéphane M.', avatar: 'http://localhost:5000/landing/guy_2.jpg', rep: 234 }, favs: 12, likes: 430, views: 4683, dislikes: 3, createdAt: '2021-02-04T13:51:36.631Z', updatedAt: '2021-03-04T13:51:36.631Z' }"></post-listing-card>
+              <post-listing-card :post="{ title: 'test', body: '{}', author: { username: 'Stéphane M.', avatar: 'http://localhost:5000/landing/guy_2.jpg', rep: 234 }, favs: 12, likes: 430, views: 4683, dislikes: 3, createdAt: '2021-02-04T13:51:36.631Z', updatedAt: '2021-03-04T13:51:36.631Z' }"></post-listing-card>
             </swiper-slide>
           </swiper>
         </div>

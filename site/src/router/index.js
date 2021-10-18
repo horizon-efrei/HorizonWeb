@@ -1,4 +1,5 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
+import AdminSide from '@/pages/AdminSide.vue'
 import Content from '@/pages/Content.vue'
 import PostView from '@/pages/Post/PostView.vue'
 import PostNew from '@/pages/Post/PostNew.vue'
@@ -19,6 +20,11 @@ const routes = [
   {
     path: '/new_post',
     component: PostNew
+  },
+
+  {
+    path: '/dashboard',
+    component: AdminSide
   },
 
   {
