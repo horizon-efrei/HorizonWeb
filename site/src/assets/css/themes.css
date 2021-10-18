@@ -71,16 +71,9 @@
     @apply dark:bg-v-2-light bg-v-2-dark
 }
 
-.placeholder-1 {
-    @apply placeholder-black dark:placeholder-white
-}
-
-.placeholder-2 {
-    @apply placeholder-gray-700 dark:placeholder-gray-100
-}
-
-.placeholder-3 {
-    @apply placeholder-gray-500 dark:placeholder-gray-300
+.placeholder {
+    @apply placeholder-v-placeholder-dark dark:placeholder-v-placeholder-light;
+    opacity: 1;
 }
 
 .text-0 {

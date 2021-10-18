@@ -8,21 +8,23 @@
       </h3>
     </div>
     <div class="relative mt-32 mb-10 flex mx-auto w-11/12">
-    <div class="bg-1 flex flex-col space-y-4 box-card box-card-border min-w-2/3">
+      <Form class="bg-1 flex flex-col space-y-4 box-card box-card-border min-w-2/3">
         <div>
           <div class="label-title">
             Titre
           </div>
 
           <div class="label-desc">
-            Donnez un titre simple et complet afin de décrire votre ticket
+            Donnez un titre simple et complet afin de décrire votre Post
           </div>
-          <input
+          <Field
+            as="input"
             id="title"
             class="w-full input input-border bg-1"
             type="text"
             name="title"
             placeholder="Titre descriptif/complet"
+            rules="required|email"
           />
         </div>
 
@@ -33,8 +35,8 @@
           <div class="label-desc">
             Quel <u class="text-blue-400 hover:text-orange-400 cursor-help" v-tippy="{ content: typeHtml }">type</u> de Post voulez-vous créer ?
           </div>
-          <select id="type" class="input input-border bg-1">
-              <option selected disabled hidden>Type de Post</option>
+          <select id="type" class="input input-border bg-1 pr-4" required>
+              <option disabled value="" selected>Type de Post</option>
               <option value="1">Question</option>
               <option value="2">Suggestion</option>
               <option value="3">Problème</option>
@@ -51,7 +53,10 @@
             Décrivez le plus précisément possible votre Post
           </div>
           <div>
-            <tip-tap-editor ref="editorRef" :charCount="true" :buttons="editorButtons" inputPlaceholder="Décrivez votre question/suggestion/problème !">
+            <tip-tap-editor v-model="editorValue" ref="editorRef" :charCount="true" :buttons="editorButtons" inputPlaceholder="Décrivez votre question/suggestion/problème !">
+              <p :class="editorMeta.valid ? 'success-message' : 'error-message' " v-show="editorErrorMessage || editorMeta.valid">
+                {{ editorErrorMessage || '✓ Ce Post est valide' }}
+              </p>
             </tip-tap-editor>
           </div>
         </div>
@@ -69,7 +74,7 @@
         <div>
           <button class="button" @click="validate">Soumettre le Post pour validation</button>
         </div>
-      </div>
+      </Form>
 
       <div class="ml-6 flex-grow-0 flex-shrink-0 w-1/5">
         <TextCard title="Qu'est-ce qu'un Post ?">
@@ -100,6 +105,9 @@
 </template>
 
 <script lang="js">
+import { Form, Field, useField } from 'vee-validate'
+import * as yup from 'yup'
+
 import TagsInput from '@/components/Input/TagsInput.vue'
 import TextCard from '@/components/Card/TextCard.vue'
 import TipTapEditor from '@/components/TipTapEditor.vue'
@@ -109,6 +117,8 @@ import { ref, defineComponent } from 'vue'
 export default defineComponent({
   name: 'PostNew',
   components: {
+    Form,
+    Field,
     TagsInput,
     // eslint-disable-next-line vue/no-unused-components
     TextCard,
@@ -143,7 +153,24 @@ export default defineComponent({
   setup () {
     const tagsInputRef = ref(null)
     const editorRef = ref(null)
-    return { tagsInputRef, editorRef }
+
+    const {
+      value: editorValue,
+      errorMessage: editorErrorMessage,
+      handleBlur,
+      handleChange,
+      meta: editorMeta
+    } = useField('name', yup.string().email().required(), { initialValue: '<p></p>' })
+
+    return {
+      tagsInputRef,
+      editorRef,
+      handleChange,
+      handleBlur,
+      editorErrorMessage,
+      editorValue,
+      editorMeta
+    }
   }
 })
 </script>
@@ -153,4 +180,12 @@ export default defineComponent({
   @import "~@/assets/css/utils/box.css";
   @import "~@/assets/css/utils/button.css";
   @import "~@/assets/css/utils/section.css";
+
+  .success-message {
+    @apply text-blue-400;
+  }
+
+  .error-message {
+    @apply text-red-500;
+  }
 </style>

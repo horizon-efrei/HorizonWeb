@@ -6,8 +6,8 @@
               <i :class="btn.icon" v-tippy="{ content: btn.content }"></i>
           </div>
       </div>
-      <editor-content :editor="editor">
 
+      <editor-content :editor="editor">
       </editor-content>
 
       <div v-if="charCount" class="mt-1" :class="{'character-count': charCount, 'character-count--warning': editor.getCharacterCount() === charCountLimit}">
@@ -40,8 +40,11 @@
             fill="white"
           />
         </svg>
-        <div class="character-count__text">
-          {{ editor.getCharacterCount() }}/{{ charCountLimit }} characters
+        <div class="flex space-x-2">
+          <div class="character-count__text">
+            {{ editor.getCharacterCount() }}/{{ charCountLimit }} characters
+          </div>
+          <slot></slot>
         </div>
       </div>
     </div>
@@ -155,6 +158,7 @@ export default defineComponent({
       }
     }
   },
+  emits: ['update:modelValue'],
   methods: {
     circleFillCharCount () {
       return (Math.round((100 / this.charCountLimit) * this.editor.getCharacterCount()) * 31.4) / 100
@@ -171,9 +175,13 @@ export default defineComponent({
     charCountLimit: {
       type: Number,
       default: 250
+    },
+    modelValue: {
+      default: '',
+      type: String
     }
   },
-  setup (props, context) {
+  setup (props, ctx) {
     const extensions = [
       StarterKit.configure({
         heading: {
@@ -195,17 +203,29 @@ export default defineComponent({
     }
 
     const editor = useEditor({
-      content: '',
+      content: props.modelValue,
+      onUpdate: function () {
+        ctx.emit('update:modelValue', this.getHTML())
+      },
       extensions
     })
 
-    return { editor }
+    return {
+      editor
+    }
+  },
+  watch: {
+    modelValue: {
+      handler (modelValue) {
+        this.editor.commands.setContent(modelValue)
+      }
+    }
   }
 })
 </script>
 
 <style lang="scss">
-  @import "~@/assets/css/utils/input.css";
+  @import "~@/assets/css/utils/input";
   @import "~@/assets/css/utils/box.css";
   @import "~@/assets/css/utils/button.css";
 
@@ -241,14 +261,9 @@ export default defineComponent({
   }
 
   .ProseMirror {
-    @apply focus:outline-none;
-    @apply border rounded-b outline-none px-2 py-1 shadow-inner min-h-20 border-gray-300 dark:border-white
-  }
-
-  .ProseMirror-focused {
-    @apply rounded;
-    border: 1px solid #DD2A95 !important;
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(233, 102, 139, 0.6);
+    @extend .input-border;
+    @apply rounded-t-none focus:rounded-t focus:outline-none outline-none min-h-20 px-2 py-1;
+    // @apply border rounded-b outline-none px-2 py-1 shadow-inner min-h-20 border-gray-300 dark:border-white
   }
 
   .icon-button.is-active {

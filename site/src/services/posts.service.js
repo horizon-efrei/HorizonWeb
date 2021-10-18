@@ -12,7 +12,6 @@ class PostsService {
   }
 
   addPost (post) {
-    console.log('POST', post)
     return axios.post(API_URL + 'posts', post, { headers: authHeader() })
   }
 

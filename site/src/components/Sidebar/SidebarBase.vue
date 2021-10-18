@@ -107,7 +107,7 @@ export default defineComponent({
         [
           { to: '/', text: 'Accueil', icon: 'HomeIcon' },
           { to: '/todo_announce', text: 'Annonces', icon: 'SpeakerphoneIcon' },
-          { to: '/todo_dashboard', text: 'Dashboard site', icon: 'PresentationChartLineIcon' }
+          { to: '/dashboard', text: 'Dashboard site', icon: 'PresentationChartLineIcon' }
         ],
         [
           { to: '/new_post', text: 'Créer un post', icon: 'TicketIcon' },

@@ -7,14 +7,12 @@
         Liste des Posts
       </h3>
     </div>
-    <div class="relative mt-32 mb-10 flex mx-auto w-11/12">
-      <div>
-        <PostListingCard
-          v-for="post in posts" :key="post.id"
-          class="mb-4"
-          :post="post"
-        />
-      </div>
+    <div class="relative mt-32 mb-10 flex flex-col mx-auto w-11/12">
+      <PostListingCard
+        v-for="post in posts" :key="post.id"
+        class="mb-4"
+        :post="post"
+      />
     </div>
   </div>
 </template>
