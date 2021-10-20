@@ -3,6 +3,10 @@
     @apply shadow-inner dark:shadow-none;
 }
 
+.input-border-no-shadow {
+    @apply border-gray-300 dark:border-white border rounded;
+}
+
 .input-border:focus, .input-border[focused=true], .input-border[active] {
     @apply border-yellow-400;
     outline: 0;
@@ -10,7 +14,7 @@
 }
 
 .input {
-    @apply text-gray-500 dark:text-gray-200 py-2 px-3;
+    @apply text-gray-900 dark:text-gray-100 py-2 px-3;
     line-height: 1.43;
 }
 

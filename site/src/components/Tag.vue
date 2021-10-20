@@ -1,13 +1,7 @@
 <template>
   <div
     class="
-      rounded-full
-      text-white
-      space-x-0 md:space-x-1
-      font-medium
-      flex items-center justify-center
-      mr-1 md:mr-2 px-2 md:px-4
-      bg-opacity-80 cursor-pointer hover:bg-opacity-100
+      tag
     "
     :class="`bg-${color}`"
   >
@@ -33,3 +27,9 @@ export default defineComponent({
   }
 })
 </script>
+
+<style>
+  .tag {
+      @apply rounded-full text-white space-x-0 md:space-x-1 font-medium flex items-center justify-center mr-1 md:mr-2 px-2 md:px-4 bg-opacity-80 cursor-pointer hover:bg-opacity-100;
+  }
+</style>

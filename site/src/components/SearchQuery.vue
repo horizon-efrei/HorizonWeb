@@ -165,7 +165,7 @@ export default defineComponent({
   data () {
     return {
       categories: [
-        'Documents', 'Tickets', 'Pages, FAQ & Blog'
+        'Posts', 'Documents'
       ],
       searchText: '',
       searchVisible: false

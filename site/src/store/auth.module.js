@@ -1,4 +1,5 @@
 import AuthService from '../services/auth.service'
+import router from '@/router'
 
 const user = JSON.parse(localStorage.getItem('user'))
 const initialState = user
@@ -23,7 +24,7 @@ export const auth = {
     },
     logout ({ commit }) {
       AuthService.logout()
-      commit('logout')
+      commit('logoutSuccess')
     },
     register ({ commit }, user) {
       return AuthService.register(user).then(
@@ -47,9 +48,13 @@ export const auth = {
       state.status.loggedIn = false
       state.user = null
     },
-    logout (state) {
+    logoutSuccess (state) {
       state.status.loggedIn = false
       state.user = null
+      if (router.currentRoute.value.fullPath === '/my_account') {
+        router
+          .push('/')
+      }
     },
     registerSuccess (state) {
       state.status.loggedIn = false

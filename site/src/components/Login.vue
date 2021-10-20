@@ -31,10 +31,10 @@
                     OU
                 </p>
                 <button type="submit"
-                    class="m-0 flex items-center justify-center space-x-3 w-full py-3 bg-red-500 rounded-sm
+                    class="m-0 flex items-center justify-center space-x-3 w-full py-3 bg-blue-500 rounded-sm
                     font-medium text-white uppercase text-sm
-                    focus:outline-none hover:bg-red-600 hover:shadow-none">
-                    <i class="ri-google-fill ri-lg"></i><p class="pr-1">CONNEXION AVEC GOOGLE</p>
+                    focus:outline-none hover:bg-blue-600 hover:shadow-none">
+                    <img src="../assets/img/efrei.png" class="w-6 h-6"/><p class="pr-1">CONNEXION AVEC MYEFREI</p>
                 </button>
             </div>
             <!-- Another Auth Routes -->

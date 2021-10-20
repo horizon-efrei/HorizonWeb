@@ -8,7 +8,7 @@
       </h3>
     </div>
     <div class="relative mt-32 mb-10 flex mx-auto w-11/12">
-      <Form class="bg-1 flex flex-col space-y-4 box-card box-card-border min-w-2/3">
+      <form @submit="onSubmit" class="bg-1 flex flex-col space-y-4 box-card box-card-border min-w-2/3">
         <div>
           <div class="label-title">
             Titre
@@ -17,15 +17,15 @@
           <div class="label-desc">
             Donnez un titre simple et complet afin de décrire votre Post
           </div>
-          <Field
-            as="input"
-            id="title"
+          <input
             class="w-full input input-border bg-1"
             type="text"
             name="title"
+            v-model="titleValue"
             placeholder="Titre descriptif/complet"
-            rules="required|email"
+            rules="required|min:20"
           />
+          <ErrorWrapper :error="titleErrorMessage" success="Titre valide" :meta="titleMeta" />
         </div>
 
         <div>
@@ -35,14 +35,14 @@
           <div class="label-desc">
             Quel <u class="text-blue-400 hover:text-orange-400 cursor-help" v-tippy="{ content: typeHtml }">type</u> de Post voulez-vous créer ?
           </div>
-          <select id="type" class="input input-border bg-1 pr-4" required>
+          <select name="type" v-model="typeValue" class="input input-border bg-1 pr-4" required>
               <option disabled value="" selected>Type de Post</option>
               <option value="1">Question</option>
               <option value="2">Suggestion</option>
               <option value="3">Problème</option>
-              <option value="4">Opinion</option>
-              <option value="5">Discussion</option>
+              <option value="4">Discussion</option>
           </select>
+          <ErrorWrapper :error="typeErrorMessage" success="Type de Post valide" :meta="typeMeta" />
         </div>
 
         <div>
@@ -53,10 +53,8 @@
             Décrivez le plus précisément possible votre Post
           </div>
           <div>
-            <tip-tap-editor v-model="editorValue" ref="editorRef" :charCount="true" :buttons="editorButtons" inputPlaceholder="Décrivez votre question/suggestion/problème !">
-              <p :class="editorMeta.valid ? 'success-message' : 'error-message' " v-show="editorErrorMessage || editorMeta.valid">
-                {{ editorErrorMessage || '✓ Ce Post est valide' }}
-              </p>
+            <tip-tap-editor name="editor" v-model="editorValue" ref="editorRef" :charCount="true" :buttons="editorButtons" inputPlaceholder="Décrivez votre question/suggestion/problème !">
+              <ErrorWrapper :error="editorErrorMessage" success="Post valide" :meta="editorMeta" />
             </tip-tap-editor>
           </div>
         </div>
@@ -66,15 +64,16 @@
             Tags
           </div>
           <div class="label-desc">
-            Ajoutez 5 Tags qui décrivent le sujet de votre Post
+            Ajoutez 4 Tags (ou plus) qui décrivent le sujet de votre Post
           </div>
-          <tags-input ref="tagsInputRef" inputPlaceholder="Entrez le nom du tag et appuyez sur entrée..."></tags-input>
+          <tags-input name="tags" @error="tagsError" @inputUpdate="customTagError = undefined" v-model="tagsValue" ref="tagsInputRef" inputPlaceholder="Entrez le nom du tag et appuyez sur entrée..."></tags-input>
+          <ErrorWrapper :error="customTagError || tagsErrorMessage" success="Tags valides" :meta="tagsMeta" />
         </div>
 
         <div>
-          <button class="button" @click="validate">Soumettre le Post pour validation</button>
+          <button type="submit" class="button">Soumettre le Post pour validation</button>
         </div>
-      </Form>
+      </form>
 
       <div class="ml-6 flex-grow-0 flex-shrink-0 w-1/5">
         <TextCard title="Qu'est-ce qu'un Post ?">
@@ -105,28 +104,28 @@
 </template>
 
 <script lang="js">
-import { Form, Field, useField } from 'vee-validate'
-import * as yup from 'yup'
-
+import { useField, useForm } from 'vee-validate'
+import ErrorWrapper from '@/components/ErrorWrapper.vue'
+// import * as yup from 'yup'
 import TagsInput from '@/components/Input/TagsInput.vue'
 import TextCard from '@/components/Card/TextCard.vue'
 import TipTapEditor from '@/components/TipTapEditor.vue'
 
 import { ref, defineComponent } from 'vue'
+import { useStore } from 'vuex'
 
 export default defineComponent({
   name: 'PostNew',
   components: {
-    Form,
-    Field,
     TagsInput,
-    // eslint-disable-next-line vue/no-unused-components
     TextCard,
+    ErrorWrapper,
     TipTapEditor
   },
   inheritAttrs: false,
   data () {
     return {
+      customTagError: undefined,
       typeHtml: <ul>Types possibles: <li>Question: une question avec reponse </li> <li>Suggestion</li> <li>Problème</li> <li>Opinion</li> <li>Discussion</li></ul>,
       editorButtons: [
         { action: 'paragraph', icon: 'ri-paragraph ri-lg', content: 'Paragraphe (Ctrl+Alt+0)' },
@@ -140,36 +139,106 @@ export default defineComponent({
     }
   },
   methods: {
-    validate () {
-      const post = {
-        title: document.querySelector('#title').value,
-        body: JSON.stringify(this.$refs.editorRef.getJSON()),
-        type: document.querySelector('#type').value,
-        tags: [...this.$refs.tagsInputRef.tags]
+    tagsError (err) {
+      if (err === 'unique') {
+        this.customTagError = 'Ce tag est déjà présent dans la liste'
+      } else if (err === 'empty') {
+        this.customTagError = 'Un tag ne peut pas être vide'
+      } else {
+        this.customTagError = 'Erreur de tags'
       }
-      this.$store.dispatch('posts/addPost', post)
+    },
+    validate () {
+      // const post = {
+      //   title: this.titleValue,
+      //   body: JSON.stringify(this.$refs.editorRef.getJSON()),
+      //   type: document.querySelector('#type').value,
+      //   tags: [...this.$refs.tagsInputRef.tags]
+      // }
+      // this.$store.dispatch('posts/addPost', post)
     }
   },
-  setup () {
+  mounted () {
+    this.editorValidate()
+    this.titleValidate()
+    this.tagsValidate()
+    this.typeValidate()
+  },
+  setup (props, ctx) {
+    const store = useStore()
     const tagsInputRef = ref(null)
     const editorRef = ref(null)
 
     const {
       value: editorValue,
       errorMessage: editorErrorMessage,
-      handleBlur,
-      handleChange,
-      meta: editorMeta
-    } = useField('name', yup.string().email().required(), { initialValue: '<p></p>' })
+      meta: editorMeta,
+      validate: editorValidate
+    } = useField('editor', 'postBody:50,250', { initialValue: '<p></p>' })
+
+    const {
+      value: titleValue,
+      errorMessage: titleErrorMessage,
+      meta: titleMeta,
+      validate: titleValidate
+    } = useField('title', 'postTitle:20,100', { initialValue: '' })
+
+    const {
+      value: typeValue,
+      errorMessage: typeErrorMessage,
+      meta: typeMeta,
+      validate: typeValidate
+    } = useField('type', 'postType', { initialValue: '' })
+
+    const {
+      value: tagsValue,
+      errorMessage: tagsErrorMessage,
+      meta: tagsMeta,
+      validate: tagsValidate
+    } = useField('tags', 'postTags:4,20', { initialValue: [] })
+
+    const { handleSubmit } = useForm()
+
+    function onInvalidSubmit ({ values, errors, results }) {
+      console.log(values) // current form values
+      console.log(errors) // a map of field names and their first error message
+      console.log(results) // a detailed map of field names and their validation results
+    }
+
+    const onSubmit = handleSubmit(async function (values) {
+      if ((await editorValidate())?.errors?.length || (await titleValidate())?.errors?.length || (await typeValidate())?.errors?.length || (await tagsValidate())?.errors?.length) {
+        alert('Votre Post n\'est pas encore terminé.\nFinissez-le avant de le soumettre :) !')
+      } else {
+        const post = {
+          title: titleValue.value,
+          body: JSON.stringify(editorRef.value.getJSON()),
+          type: typeValue.value,
+          tags: tagsValue.value
+        }
+        store.dispatch('posts/addPost', post)
+      }
+    }, onInvalidSubmit)
 
     return {
       tagsInputRef,
       editorRef,
-      handleChange,
-      handleBlur,
       editorErrorMessage,
       editorValue,
-      editorMeta
+      editorMeta,
+      editorValidate,
+      titleValue,
+      titleErrorMessage,
+      titleMeta,
+      titleValidate,
+      typeValue,
+      typeErrorMessage,
+      typeMeta,
+      typeValidate,
+      tagsValue,
+      tagsErrorMessage,
+      tagsMeta,
+      tagsValidate,
+      onSubmit
     }
   }
 })

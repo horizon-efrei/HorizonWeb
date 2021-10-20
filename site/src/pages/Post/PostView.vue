@@ -1,30 +1,23 @@
 <template>
-  <div>
-    <div class="mb-2">
-      <Breadcrumb />
-    </div>
-    <div><Post :thread="thread" /></div>
-  </div>
+  <Post :post="post" />
 </template>
 
 <script lang="js">
 import { defineComponent } from 'vue'
-import Breadcrumb from '@/components/Breadcrumb.vue'
 import Post from '@/pages/Post/Post.vue'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'PostView',
   components: {
-    Post,
-    Breadcrumb
+    Post
   },
-  props: {
-  },
-
   data () {
     return {
-      thread: {
+      post: {
         views: 194,
+        createdAt: '2021-02-04T13:51:36.631Z',
+        updatedAt: '2021-03-04T13:51:36.631Z',
         post: {
           number: 194,
           upvotes: 69,
@@ -196,7 +189,9 @@ export default defineComponent({
       }
     }
   },
-  methods: {
+  setup () {
+    const route = useRoute()
+    console.log(route.params)
   }
 })
 </script>

@@ -12,6 +12,7 @@
         >
           <li>
             <router-link :to="link.to"
+              v-if="link.condition == undefined || condition(link.condition)"
               class="h-12 py-2 px-4 flex w-full items-center transition-colors bg-mouse-brand duration-300 cursor-pointer"
               :class="{ active: link.to === $route.path }"
             >
@@ -88,12 +89,26 @@ export default defineComponent({
     FolderIcon,
     MailIcon
   },
+  computed: {
+    loggedIn () {
+      return this.$store.state.auth.status.loggedIn
+    }
+  },
   mounted () {
     watch(() => this.$store.getters['userConfig/getTheme'], (newTheme) => {
       if ((newTheme === 'dark') !== this.theme) {
         this.theme = newTheme === 'dark'
       }
     })
+  },
+  methods: {
+    condition (type) {
+      if (type === 'loggedIn') {
+        return this.loggedIn
+      } else {
+        return false
+      }
+    }
   },
   data () {
     return {
@@ -107,14 +122,14 @@ export default defineComponent({
         [
           { to: '/', text: 'Accueil', icon: 'HomeIcon' },
           { to: '/todo_announce', text: 'Annonces', icon: 'SpeakerphoneIcon' },
-          { to: '/dashboard', text: 'Dashboard site', icon: 'PresentationChartLineIcon' }
+          { to: '/dashboard', text: 'Dashboard admin', icon: 'PresentationChartLineIcon' }
         ],
         [
           { to: '/new_post', text: 'Créer un post', icon: 'TicketIcon' },
           { to: '/posts', text: 'Tous les posts', icon: 'ClipboardCheckIcon' }
         ],
         [
-          { to: '/my_account', text: 'Mon compte', icon: 'UserIcon' },
+          { to: '/my_account', text: 'Mon compte', icon: 'UserIcon', condition: 'loggedIn' },
           { to: '/todo_rgpd', text: 'RGPD', icon: 'DatabaseIcon' },
           { to: '/todo_horizon', text: 'Horizon', icon: 'InformationCircleIcon' }
         ]
