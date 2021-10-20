@@ -1,6 +1,6 @@
 <template>
     <div v-if="editor">
-      <div class="space-x-2 px-3 py-3 flex items-center border border-b-0 rounded-t border-gray-300 dark:border-white"
+      <div class="space-x-2 px-3 py-3 flex flex-wrap items-center border border-b-0 rounded-t border-gray-300 dark:border-white"
       :class="buttonClasses">
           <div v-for="btn in buttons" :key="btn" @click="actionMap[btn.action].action()" :class="actionMap[btn.action].isActive ? { 'is-active': editor.isActive(...actionMap[btn.action].isActive) } : {}" class="flex items-center text-1 icon-button">
               <i :class="btn.icon" v-tippy="{ content: btn.content }"></i>
@@ -213,14 +213,14 @@ export default defineComponent({
     return {
       editor
     }
-  },
-  watch: {
-    modelValue: {
-      handler (modelValue) {
-        this.editor.commands.setContent(modelValue)
-      }
-    }
   }
+  // watch: {
+  //   modelValue: {
+  //     handler (modelValue) {
+  //       this.editor.commands.setContent(modelValue)
+  //     }
+  //   }
+  // }
 })
 </script>
 
@@ -262,7 +262,7 @@ export default defineComponent({
 
   .ProseMirror {
     @extend .input-border;
-    @apply rounded-t-none focus:rounded-t focus:outline-none outline-none min-h-20 px-2 py-1;
+    @apply text-gray-900 dark:text-gray-100 rounded-t-none focus:rounded-t focus:outline-none outline-none min-h-20 px-2 py-1;
     // @apply border rounded-b outline-none px-2 py-1 shadow-inner min-h-20 border-gray-300 dark:border-white
   }
 

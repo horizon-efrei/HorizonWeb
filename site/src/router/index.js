@@ -14,9 +14,10 @@ const routes = [
     component: Content
   },
   {
-    path: '/post',
+    path: '/post/:id',
     component: PostView
   },
+
   {
     path: '/new_post',
     component: PostNew

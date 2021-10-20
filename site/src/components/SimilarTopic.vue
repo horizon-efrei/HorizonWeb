@@ -4,13 +4,15 @@
       <div class="text-base font-bold">
         #{{ topic.number }} {{ topic.title }}
       </div>
-      <Tag
-        v-for="tag in topic.tags"
-        :key="tag"
-        :title="tag.title"
-        class="mr-2"
-        :color="tag.color"
-      />
+      <div class="flex flex-wrap">
+        <Tag
+          v-for="tag in topic.tags"
+          :key="tag"
+          :name="tag.title"
+          class="mr-2"
+          :color="tag.color"
+        />
+      </div>
       <div>Hotness</div>
       <div>Timeline Status</div>
     </div>

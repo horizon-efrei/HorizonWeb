@@ -22,7 +22,7 @@
         flex
       "
     >
-      <div class="mt-2">
+      <div class="mt-2 flex-shrink-0">
         <ul class="py-2">
           <template v-for="link of links" :key="link">
             <li
@@ -71,8 +71,8 @@ export default defineComponent({
       currentComponent: 'Profile',
       links: [
         { text: 'Profil', icon: 'ri-profile-line', component: 'Profile' },
-        { text: 'Intégration Discord', icon: 'ri-discord-fill', component: 'Discord' },
-        { text: "Rôles Ef'Réussite", icon: 'ri-book-mark-line', component: 'Roles' }
+        { text: 'Intégration Discord', icon: 'ri-discord-fill', component: 'Discord' }
+        // { text: "Rôles Ef'Réussite", icon: 'ri-book-mark-line', component: 'Roles' }
       ]
     }
   }

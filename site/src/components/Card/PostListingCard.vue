@@ -3,44 +3,35 @@
     <div class="flex gap-3">
         <!-- Meta Column -->
         <div class="text-1 text-center flex flex-col flex-shrink-0 w-14 pt-1 pb-2 bg-5 rounded-l-lg">
-            <i class="ri-add-line text-xl md:text-2xl mouse-icon"></i>
-            <div class="font-medium">{{ format(post?.likes - post?.dislikes) }}</div>
-            <i class="ri-subtract-line text-xl md:text-2xl -mt-1 mouse-icon"></i>
-            <i class="mt-1 ri-bookmark-line mouse-icon text-lg md:text-xl"></i>
-            <i class="mt-2 ri-star-line text-lg md:text-xl mouse-icon"></i>
-            <div class="text-sm font-medium">{{ format(post?.favs) }}</div>
-          </div>
+          <i class="ri-add-line text-xl md:text-2xl mouse-icon"></i>
+          <div class="font-medium">{{ format(post?.likes - post?.dislikes) }}</div>
+          <i class="ri-subtract-line text-xl md:text-2xl -mt-1 mouse-icon"></i>
+          <i class="mt-1 ri-bookmark-line mouse-icon text-lg md:text-xl"></i>
+          <i class="mt-2 ri-star-line text-lg md:text-xl mouse-icon"></i>
+          <div class="text-sm font-medium">{{ format(post?.favs) }}</div>
+        </div>
 
         <!-- Summary Column -->
         <div class="pl-1 pr-4 my-3 mr-2">
-            <div>
-                <span class="font-light text-3 flex space-x-1 items-center">
-                      <i class="ri-time-line"></i> <div>{{ timeAgo(post?.createdAt) }}</div> <div class="px-1">•</div> <i class="ri-refresh-line"></i> <div> {{ timeAgo(post?.updatedAt) }}</div> <div class="px-1">•</div>  <i class="ri-eye-line"></i> <div>{{ format(post?.views) }}</div>
-                </span>
-            </div>
+            <span class="font-light text-3 flex flex-wrap space-x-1 items-center h-6 whitespace-nowrap overflow-hidden">
+                <div class="flex space-x-1 pl-1"><i :class="headerTypes[post?.type]['icon']" class="text-1"></i> <div class="text-1 font-bold">{{ headerTypes[post?.type].type }}</div></div>  <div class="flex space-x-1 pl-1"><p class="pr-1">•</p> <div :class="solvedState[post?.state].class">{{ solvedState[post?.state].state }}</div></div>  <div class="flex space-x-1 pl-1"><p class="pr-1">•</p> <i class="ri-file-edit-fill"></i>  <div>{{ timeAgo(post?.createdAt) }}</div></div> <div class="flex space-x-1 pl-1"><p class="pr-1">•</p> <i class="ri-history-line"></i> <div> {{ timeAgo(post?.updatedAt) }}</div></div> <div class="flex space-x-1 pl-1"><p class="pr-1">•</p><i class="ri-eye-line"></i> <div>{{ format(post?.views) }}</div></div>
+            </span>
 
-            <div class="mt-3">
-                <a href="#" class="text-xl text-0 font-bold hover:underline">
+            <div class="mt-1">
+                <router-link :to="`/post/${post.id}`" class="text-xl text-0 font-semibold hover:underline line-clamp-1">
                     {{ post?.title }}
-                </a>
+                </router-link>
 
-                <p class="mt-1 text-2 text-md text-justify line-clamp-1">
+                <p class="mt-1 text-2 text-justify line-clamp-2">
                     {{ postPreview(JSON.parse(post?.body)) }}
                 </p>
             </div>
 
             <!-- Question Labels -->
-            <div>
+            <div class="relative">
                 <!-- Categories  -->
-                <div class="flex my-3 items-center space-x-2">
-                    <div class="font-medium text-lg text-1">Tags :</div>
-                    <div class="text-lg text-1" v-if="post?.tags?.length === 0 || post?.tags === undefined">N/A</div>
-                    <Tag v-else v-for="tag in post.tags" :key="tag" :name="tag" :color="'red-500'"/>
-                </div>
-
-                <!-- User -->
-                <div class="block">
-                    <a href="#" class="flex items-center">
+                <div class="flex flex-wrap items-start space-x-2 h-12 mt-4 space-y-2 overflow-hidden mr-4">
+                      <a href="#" class="flex items-center">
                         <img :src="post?.author?.avatar" alt="avatar"
                             class="mr-2 w-10 h-10 rounded-full">
 
@@ -51,7 +42,17 @@
                           <div class="text-sm text-2">{{ format(post?.author?.rep) }}</div>
                         </div>
                     </a>
+                    <div class="font-medium text-1 pl-2">Tags :</div>
+                    <div class="text-1" v-if="post?.tags?.length === 0 || post?.tags === undefined">N/A</div>
+                    <Tag v-else v-for="tag in post.tags" :key="tag" :name="tag" :color="'red-500'"/>
                 </div>
+                <div class="absolute left-40 text-blue-500" style="bottom: -10px;">
+                  + 5 tags
+                </div>
+                <!-- User
+                <div class="block">
+
+                </div> -->
             </div>
         </div>
     </div>
@@ -78,6 +79,47 @@ export default defineComponent({
   props: {
     post: {
       type: Object
+    }
+  },
+  data () {
+    return {
+      headerTypes: {
+        1: { type: 'Question', icon: 'ri-questionnaire-line' },
+        2: { type: 'Suggestion', icon: 'ri-lightbulb-line' },
+        3: { type: 'Problème', icon: 'ri-error-warning-line' },
+        4: { type: 'Discussion', icon: 'ri-discuss-line' }
+      },
+      solvedState: {
+        0: { state: 'Non-Résolu', class: 'text-red-500' },
+        1: { state: '✓ Résolu', class: 'text-green-500' }
+      }
+    }
+  },
+  setup () {
+    var detectWrap = function (className) {
+      var wrappedItems = []
+      var prevItem = {}
+      var currItem = {}
+      var items = document.getElementsByClassName(className)
+
+      for (var i = 0; i < items.length; i++) {
+        currItem = items[i].getBoundingClientRect()
+        if (prevItem && prevItem.top < currItem.top) {
+          wrappedItems.push(items[i])
+        } else {
+          items[i].classList.remove('wrapped')
+        }
+        prevItem = currItem
+      };
+
+      return wrappedItems
+    }
+
+    window.onresize = function (event) {
+      var wrappedItems = detectWrap('tag')
+      for (var k = 0; k < wrappedItems.length; k++) {
+        wrappedItems[k].classList.add('wrapped')
+      }
     }
   },
   methods: {

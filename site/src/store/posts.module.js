@@ -1,4 +1,5 @@
 import PostsService from '../services/posts.service'
+import router from '@/router'
 
 const initialState = { posts: [], page: 1 }
 
@@ -72,6 +73,7 @@ export const posts = {
     },
     addPostSuccess (state, newPost) {
       state.posts.unshift(newPost)
+      router.push('/')
     },
     modifyPostSuccess (state, id, modifedPost) {
       state.posts = state.posts.map(post => modifedPost ? post.id === id : post)
