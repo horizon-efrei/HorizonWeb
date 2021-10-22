@@ -1,9 +1,19 @@
 <template>
-    <div class="flex flex-row text-gray-600 focus-within:text-gray-900 dark:text-gray-400 dark:focus-within:text-white">
-        <span v-html="icon" class="flex items-center py-1 px-2 bg-3 rounded-l-md border-gray-300 dark:border-white border">
-        </span>
-        <input :name="name" :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" ref="input" :type="type" class="bg-2 input input-border text-md h-10 w-full rounded-l-none" :placeholder="placeholder">
-    </div>
+  <div class="flex flex-row text-gray-600 focus-within:text-gray-900 dark:text-gray-400 dark:focus-within:text-white">
+    <span
+      class="flex items-center py-1 px-2 bg-3 rounded-l-md border-gray-300 dark:border-white border"
+      v-html="icon"
+    />
+    <input
+      ref="input"
+      :name="name"
+      :value="modelValue"
+      :type="type"
+      class="bg-2 input input-border text-md h-10 w-full rounded-l-none"
+      :placeholder="placeholder"
+      @input="$emit('update:modelValue', $event.target.value)"
+    >
+  </div>
 </template>
 
 <script lang="js">
@@ -11,17 +21,29 @@ import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'InputWithIcon',
-  emits: ['update:modelValue'],
   props: {
-    name: String,
-    modelValue: String,
-    icon: String,
-    placeholder: String,
+    name: {
+      type: String,
+      default: ''
+    },
+    modelValue: {
+      type: String,
+      default: ''
+    },
+    icon: {
+      type: String,
+      default: 'ri-stack-line'
+    },
+    placeholder: {
+      type: String,
+      default: '<Placeholder>'
+    },
     type: {
       type: String,
       default: 'text'
     }
   },
+  emits: ['update:modelValue'],
 
   setup () {
     const input = ref(null)

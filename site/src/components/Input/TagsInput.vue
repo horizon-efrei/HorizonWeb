@@ -1,29 +1,40 @@
 <template>
-  <div ref="tagsContainer" class="flex flex-grow-0 flex-wrap items-center input input-border w-full cursor-text h-max" tabindex="0" @focus="tagsInput.focus()" :focused="focused">
+  <div
+    ref="tagsContainer"
+    class="flex flex-grow-0 flex-wrap items-center input input-border w-full cursor-text h-max"
+    tabindex="0"
+    :focused="focused"
+    @focus="tagsInput.focus()"
+  >
     <div class="flex flex-wrap">
-      <Tag v-for="(tag, idx) in tags" :key="idx" :name="tag" color="red-500">
-        <button class="text-white bg-opacity-0 outline-none border-none cursor-pointer font-bold text-lg" @click="removeTag(idx)"><i class="ri-close-line"></i></button>
+      <Tag
+        v-for="(tag, idx) in tags"
+        :key="idx"
+        :name="tag"
+        color="red-500"
+      >
+        <button
+          class="text-white bg-opacity-0 outline-none border-none cursor-pointer font-bold text-lg"
+          @click="removeTag(idx)"
+        >
+          <i class="ri-close-line" />
+        </button>
       </Tag>
     </div>
-    <input v-model="newTag" ref="tagsInput"
+    <input
+      ref="tagsInput"
+      v-model="newTag"
       :placeholder="inputPlaceholder"
+      class="placeholder h-8 min-w-1 w-full bg-opacity-0 flex-1 bg-white outline-none"
       @blur="focused = false"
       @focus="focused = true"
       @keydown="$emit('inputUpdate', $event)"
       @keydown.enter.prevent="addTag(newTag)"
       @keydown.space="addTag(newTag)"
       @keydown.delete="newTag.length || removeTag(tags.length - 1)"
-      class="placeholder h-8 min-w-1 w-full bg-opacity-0 flex-1 bg-white outline-none" />
+    >
   </div>
 </template>
-
-<style>
-  @import "~@/assets/css/utils/input.css";
-
-  .min-w-1 {
-    min-width: 1em;
-  }
-</style>
 
 <script>
 import Tag from '@/components/Tag.vue'
@@ -34,19 +45,17 @@ export default {
     // AutoSizeInputInner,
     Tag
   },
-  emits: ['update:modelValue', 'error', 'inputUpdate'],
   props: {
-    inputPlaceholder: String,
+    inputPlaceholder: {
+      type: String,
+      default: '<Placehodler>'
+    },
     modelValue: {
       type: Array,
       default: () => []
     }
   },
-  data: () => {
-    return {
-      focused: false
-    }
-  },
+  emits: ['update:modelValue', 'error', 'inputUpdate'],
   setup: (props, ctx) => {
     const tagsContainer = ref(null)
     const tagsInput = ref(null)
@@ -78,6 +87,19 @@ export default {
     }
 
     return { tags, newTag, addTag, removeTag, tagsContainer, tagsInput }
+  },
+  data: () => {
+    return {
+      focused: false
+    }
   }
 }
 </script>
+
+<style>
+  @import "~@/assets/css/utils/input.css";
+
+  .min-w-1 {
+    min-width: 1em;
+  }
+</style>

@@ -1,53 +1,67 @@
 <template>
-    <div v-if="editor">
-      <div class="space-x-2 px-3 py-3 flex flex-wrap items-center border border-b-0 rounded-t border-gray-300 dark:border-white"
-      :class="buttonClasses">
-          <div v-for="btn in buttons" :key="btn" @click="actionMap[btn.action].action()" :class="actionMap[btn.action].isActive ? { 'is-active': editor.isActive(...actionMap[btn.action].isActive) } : {}" class="flex items-center text-1 icon-button">
-              <i :class="btn.icon" v-tippy="{ content: btn.content }"></i>
-          </div>
-      </div>
-
-      <editor-content :editor="editor">
-      </editor-content>
-
-      <div v-if="charCount" class="mt-1" :class="{'character-count': charCount, 'character-count--warning': editor.getCharacterCount() === charCountLimit}">
-        <svg
-          height="20"
-          width="20"
-          viewBox="0 0 20 20"
-          class="character-count__graph"
-        >
-          <circle
-            r="10"
-            cx="10"
-            cy="10"
-            fill="#e9ecef"
-          />
-          <circle
-            r="5"
-            cx="10"
-            cy="10"
-            fill="transparent"
-            stroke="currentColor"
-            stroke-width="10"
-            :stroke-dasharray="`${circleFillCharCount()} 999`"
-            transform="rotate(-90) translate(-20)"
-          />
-          <circle
-            r="6"
-            cx="10"
-            cy="10"
-            fill="white"
-          />
-        </svg>
-        <div class="flex space-x-2">
-          <div class="character-count__text">
-            {{ editor.getCharacterCount() }}/{{ charCountLimit }} characters
-          </div>
-          <slot></slot>
-        </div>
+  <div v-if="editor">
+    <div
+      class="space-x-2 px-3 py-3 flex flex-wrap items-center border border-b-0 rounded-t border-gray-300 dark:border-white"
+      :class="buttonClasses"
+    >
+      <div
+        v-for="btn in buttons"
+        :key="btn"
+        :class="actionMap[btn.action].isActive ? { 'is-active': editor.isActive(...actionMap[btn.action].isActive) } : {}"
+        class="flex items-center text-1 icon-button"
+        @click="actionMap[btn.action].action()"
+      >
+        <i
+          v-tippy="{ content: btn.content }"
+          :class="btn.icon"
+        />
       </div>
     </div>
+
+    <editor-content :editor="editor" />
+
+    <div
+      v-if="charCount"
+      class="mt-1"
+      :class="{'character-count': charCount, 'character-count--warning': editor.getCharacterCount() === charCountLimit}"
+    >
+      <svg
+        height="20"
+        width="20"
+        viewBox="0 0 20 20"
+        class="character-count__graph"
+      >
+        <circle
+          r="10"
+          cx="10"
+          cy="10"
+          fill="#e9ecef"
+        />
+        <circle
+          r="5"
+          cx="10"
+          cy="10"
+          fill="transparent"
+          stroke="currentColor"
+          stroke-width="10"
+          :stroke-dasharray="`${circleFillCharCount()} 999`"
+          transform="rotate(-90) translate(-20)"
+        />
+        <circle
+          r="6"
+          cx="10"
+          cy="10"
+          fill="white"
+        />
+      </svg>
+      <div class="flex space-x-2">
+        <div class="character-count__text">
+          {{ editor.getCharacterCount() }}/{{ charCountLimit }} characters
+        </div>
+        <slot />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script lang="js">
@@ -65,6 +79,63 @@ export default defineComponent({
   name: 'PostNew',
   components: {
     EditorContent
+  },
+  props: {
+    buttons: {
+      type: Array,
+      default: () => []
+    },
+    buttonClasses: {
+      type: String,
+      default: () => ''
+    },
+    inputPlaceholder: {
+      type: String,
+      default: '<p><Placeholder></p>'
+    },
+    charCount: Boolean,
+    charCountLimit: {
+      type: Number,
+      default: 250
+    },
+    modelValue: {
+      default: '',
+      type: String
+    }
+  },
+  emits: ['update:modelValue'],
+  setup (props, ctx) {
+    const extensions = [
+      StarterKit.configure({
+        heading: {
+          levels: [1, 2, 3]
+        }
+      }),
+      Highlight,
+      Typography,
+      Placeholder.configure({
+        placeholder: props.inputPlaceholder
+      }),
+      Underline
+    ]
+
+    if (props.charCount) {
+      extensions.push(CharacterCount.configure({
+        limit: props.charCountLimit
+      }))
+    }
+
+    const editor = useEditor({
+      content: props.modelValue,
+      onUpdate: function () {
+        ctx.emit('update:modelValue', this.getHTML())
+      },
+      extensions
+    })
+
+    return {
+      editor
+    }
   },
   computed: {
     actionMap () {
@@ -158,7 +229,6 @@ export default defineComponent({
       }
     }
   },
-  emits: ['update:modelValue'],
   methods: {
     circleFillCharCount () {
       return (Math.round((100 / this.charCountLimit) * this.editor.getCharacterCount()) * 31.4) / 100
@@ -166,61 +236,7 @@ export default defineComponent({
     getJSON () {
       return this.editor.getJSON()
     }
-  },
-  props: {
-    buttons: Array,
-    buttonClasses: String,
-    inputPlaceholder: String,
-    charCount: Boolean,
-    charCountLimit: {
-      type: Number,
-      default: 250
-    },
-    modelValue: {
-      default: '',
-      type: String
-    }
-  },
-  setup (props, ctx) {
-    const extensions = [
-      StarterKit.configure({
-        heading: {
-          levels: [1, 2, 3]
-        }
-      }),
-      Highlight,
-      Typography,
-      Placeholder.configure({
-        placeholder: props.inputPlaceholder
-      }),
-      Underline
-    ]
-
-    if (props.charCount) {
-      extensions.push(CharacterCount.configure({
-        limit: props.charCountLimit
-      }))
-    }
-
-    const editor = useEditor({
-      content: props.modelValue,
-      onUpdate: function () {
-        ctx.emit('update:modelValue', this.getHTML())
-      },
-      extensions
-    })
-
-    return {
-      editor
-    }
   }
-  // watch: {
-  //   modelValue: {
-  //     handler (modelValue) {
-  //       this.editor.commands.setContent(modelValue)
-  //     }
-  //   }
-  // }
 })
 </script>
 
@@ -248,10 +264,6 @@ export default defineComponent({
     }
   }
 
-  /* Placeholder (at the top) */
-  /* *:focus {
-    outline: none !important;
-  } */
   .ProseMirror p.is-editor-empty:first-child::before {
       content: attr(data-placeholder);
       float: left;

@@ -11,13 +11,14 @@
           :key="link"
         >
           <li>
-            <router-link :to="link.to"
+            <router-link
               v-if="link.condition == undefined || condition(link.condition)"
+              :to="link.to"
               class="h-12 py-2 px-4 flex w-full items-center transition-colors bg-mouse-brand duration-300 cursor-pointer"
               :class="{ active: link.to === $route.path }"
             >
-              <component
-                :is="link.icon"
+              <i
+                :class="link.icon"
                 class="w-6 h-6 mr-4 flex-shrink-0"
               />
               <span>{{ link.text }}</span>
@@ -28,66 +29,60 @@
 
       <div class="flex py-4 items-center justify-center">
         <div class="topbar-icon">
-          <BellIcon />
+          <i class="ri-notification-2-line" />
         </div>
         <div class="topbar-icon">
-          <FolderIcon />
+          <i class="ri-folder-line" />
         </div>
         <div class="topbar-icon">
-          <MailIcon />
+          <i class="ri-mail-unread-line" />
         </div>
 
         <label
           class="switch mr-3 orange"
           @click="$store.dispatch('userConfig/switchTheme')"
         >
-          <input type="checkbox" v-model="theme">
+          <input
+            v-model="theme"
+            type="checkbox"
+          >
           <span class="slider round" />
         </label>
       </div>
-
-      <!-- <div class="p-2" >
-        <user-card avatar="http://cdn.onlinewebfonts.com/svg/img_83486.png" :user="user" status="green-500"></user-card>
-      </div> -->
     </div>
   </div>
 </template>
 
 <script lang="js">
-import {
-  HomeIcon,
-  SpeakerphoneIcon,
-  ClipboardCheckIcon,
-  ClipboardListIcon,
-  TicketIcon,
-  InformationCircleIcon,
-  UserIcon,
-  BriefcaseIcon,
-  PresentationChartLineIcon,
-  DatabaseIcon,
-  BellIcon,
-  FolderIcon,
-  MailIcon
-} from '@heroicons/vue/solid'
-
 import { defineComponent, watch } from 'vue'
 
 export default defineComponent({
   name: 'SidebarBase',
-  components: {
-    HomeIcon,
-    SpeakerphoneIcon,
-    ClipboardCheckIcon,
-    ClipboardListIcon,
-    TicketIcon,
-    InformationCircleIcon,
-    UserIcon,
-    BriefcaseIcon,
-    PresentationChartLineIcon,
-    DatabaseIcon,
-    BellIcon,
-    FolderIcon,
-    MailIcon
+  props: {
+    links: {
+      type: Array,
+      default: () => [
+        [
+          { to: '/', text: 'Accueil', icon: 'ri-home-3-line' },
+          { to: '/todo_announce', text: 'Annonces', icon: 'ri-alarm-warning-line' },
+          { to: '/dashboard', text: 'Dashboard admin', icon: 'ri-pie-chart-box-line' }
+        ],
+        [
+          { to: '/new_post', text: 'Créer un post', icon: 'ri-chat-new-line' },
+          { to: '/posts', text: 'Tous les posts', icon: 'ri-chat-check-line' }
+        ],
+        [
+          { to: '/my_account', text: 'Mon compte', icon: 'ri-account-box-line', condition: 'loggedIn' },
+          { to: '/todo_rgpd', text: 'RGPD', icon: 'ri-database-2-line' },
+          { to: '/todo_horizon', text: 'Horizon', icon: 'ri-information-line' }
+        ]
+      ]
+    }
+  },
+  data () {
+    return {
+      theme: this.$store.state.userConfig.theme === 'dark'
+    }
   },
   computed: {
     loggedIn () {
@@ -108,32 +103,6 @@ export default defineComponent({
       } else {
         return false
       }
-    }
-  },
-  data () {
-    return {
-      theme: this.$store.state.userConfig.theme === 'dark'
-    }
-  },
-  props: {
-    links: {
-      type: Array,
-      default: () => [
-        [
-          { to: '/', text: 'Accueil', icon: 'HomeIcon' },
-          { to: '/todo_announce', text: 'Annonces', icon: 'SpeakerphoneIcon' },
-          { to: '/dashboard', text: 'Dashboard admin', icon: 'PresentationChartLineIcon' }
-        ],
-        [
-          { to: '/new_post', text: 'Créer un post', icon: 'TicketIcon' },
-          { to: '/posts', text: 'Tous les posts', icon: 'ClipboardCheckIcon' }
-        ],
-        [
-          { to: '/my_account', text: 'Mon compte', icon: 'UserIcon', condition: 'loggedIn' },
-          { to: '/todo_rgpd', text: 'RGPD', icon: 'DatabaseIcon' },
-          { to: '/todo_horizon', text: 'Horizon', icon: 'InformationCircleIcon' }
-        ]
-      ]
     }
   }
 })

@@ -1,56 +1,88 @@
 <template>
-    <div class="w-11/12 p-12 sm:w-8/12 md:w-6/12 lg:w-5/12 2xl:w-4/12
+  <div
+    class="w-11/12 p-12 sm:w-8/12 md:w-6/12 lg:w-5/12 2xl:w-4/12
         px-10 pt-12 pb-10 sm:px-10 sm:pt-6 sm:pb-4 mx-auto box-card box-card-border
-        centered-fixed z-50 bg-2">
+        centered-fixed z-50 bg-2"
+  >
+    <!-- Card Title -->
 
-        <!-- Card Title -->
+    <div class="flex flex-col">
+      <h2 class="text-center font-semibold text-3xl text-1">
+        Connexion
+      </h2>
 
-        <div class="flex flex-col">
-            <h2 class="text-center font-semibold text-3xl text-1">
-                Connexion
-            </h2>
-
-            <div class="space-y-3 mt-4">
-                <div>
-                    <label for="email" class="block tracking-wider text-sm font-semibold text-gray-600 uppercase">E-mail</label>
-                    <input-with-icon :name="email" v-model="user.username" :icon="userIcon"></input-with-icon>
-                </div>
-                <div>
-                    <label for="password" class="block tracking-wider mt-2 text-sm font-semibold text-gray-600 uppercase">Password</label>
-                    <input-with-icon :name="password" v-model="user.password" :icon="passwordIcon" type="password"></input-with-icon>
-                </div>
-            </div>
-            <div class="flex flex-col mt-10 space-y-2 items-center justify-center">
-                <button type="submit" @click="handleLogin"
-                    class="w-full py-3 bg-gray-500 rounded-sm text-sm
-                    font-medium text-white uppercase
-                    focus:outline-none hover:bg-gray-400 hover:shadow-none">
-                    CONNEXION HORIZON
-                </button>
-                <p class="text-xs uppercase">
-                    OU
-                </p>
-                <button type="submit"
-                    class="m-0 flex items-center justify-center space-x-3 w-full py-3 bg-blue-500 rounded-sm
-                    font-medium text-white uppercase text-sm
-                    focus:outline-none hover:bg-blue-600 hover:shadow-none">
-                    <img src="../assets/img/efrei.png" class="w-6 h-6"/><p class="pr-1">CONNEXION AVEC MYEFREI</p>
-                </button>
-            </div>
-            <!-- Another Auth Routes -->
-            <div class="mt-5">
-                <div class="md:flex-none flex flex-col flex-wrap space-y-3 sm:mb-2 text-sm text-center">
-                    <a href="forgot-password" class="flex-2 underline text-xs">
-                        Mot de passe oublié ?
-                    </a>
-
-                    <a href="register" class="flex-2 underline text-xs">
-                        Création d'un compte
-                    </a>
-                </div>
-            </div>
+      <div class="space-y-3 mt-4">
+        <div>
+          <label
+            for="email"
+            class="block tracking-wider text-sm font-semibold text-gray-600 uppercase"
+          >E-mail</label>
+          <input-with-icon
+            v-model="user.username"
+            :name="email"
+            :icon="userIcon"
+          />
         </div>
+        <div>
+          <label
+            for="password"
+            class="block tracking-wider mt-2 text-sm font-semibold text-gray-600 uppercase"
+          >Password</label>
+          <input-with-icon
+            v-model="user.password"
+            :name="password"
+            :icon="passwordIcon"
+            type="password"
+          />
+        </div>
+      </div>
+      <div class="flex flex-col mt-10 space-y-2 items-center justify-center">
+        <button
+          type="submit"
+          class="w-full py-3 bg-gray-500 rounded-sm text-sm
+                    font-medium text-white uppercase
+                    focus:outline-none hover:bg-gray-400 hover:shadow-none"
+          @click="handleLogin"
+        >
+          CONNEXION HORIZON
+        </button>
+        <p class="text-xs uppercase">
+          OU
+        </p>
+        <button
+          type="submit"
+          class="m-0 flex items-center justify-center space-x-3 w-full py-3 bg-blue-500 rounded-sm
+                    font-medium text-white uppercase text-sm
+                    focus:outline-none hover:bg-blue-600 hover:shadow-none"
+        >
+          <img
+            src="../assets/img/efrei.png"
+            class="w-6 h-6"
+          ><p class="pr-1">
+            CONNEXION AVEC MYEFREI
+          </p>
+        </button>
+      </div>
+      <!-- Another Auth Routes -->
+      <div class="mt-5">
+        <div class="md:flex-none flex flex-col flex-wrap space-y-3 sm:mb-2 text-sm text-center">
+          <a
+            href="forgot-password"
+            class="flex-2 underline text-xs"
+          >
+            Mot de passe oublié ?
+          </a>
+
+          <a
+            href="register"
+            class="flex-2 underline text-xs"
+          >
+            Création d'un compte
+          </a>
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script lang="js">
@@ -66,6 +98,7 @@ export default defineComponent({
     InputWithIcon
     // UserIcon, KeyIcon
   },
+  emits: ['toggleLogin'],
   setup () {
     // Define a validation schema
     // const loginSchema = {
@@ -101,7 +134,6 @@ export default defineComponent({
     //   passwordError
     // }
   },
-  emits: ['toggleLogin'],
   data () {
     return {
       userIcon: "<i class='ri-shield-user-fill ri-xl'></i>",

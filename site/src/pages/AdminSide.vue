@@ -25,6 +25,7 @@
                   </svg>
                 </div>
                 <input
+                  id="search"
                   class="
                     w-full
                     rounded-md
@@ -35,10 +36,9 @@
                     py-2
                     px-2
                   "
-                  id="search"
                   type="text"
                   placeholder="Search teams or members"
-                />
+                >
               </div>
               <div class="py-3 text-sm">
                 <div
@@ -54,7 +54,7 @@
                     my-2
                   "
                 >
-                  <span class="bg-gray-400 h-2 w-2 m-2 rounded-full"></span>
+                  <span class="bg-gray-400 h-2 w-2 m-2 rounded-full" />
                   <div class="flex-grow font-medium px-2">
                     Tous les messages
                   </div>
@@ -72,8 +72,10 @@
                     my-2
                   "
                 >
-                  <span class="bg-gray-400 h-2 w-2 m-2 rounded-full"></span>
-                  <div class="flex-grow font-medium px-2">Assignés à moi</div>
+                  <span class="bg-gray-400 h-2 w-2 m-2 rounded-full" />
+                  <div class="flex-grow font-medium px-2">
+                    Assignés à moi
+                  </div>
                 </div>
                 <div
                   class="
@@ -88,8 +90,10 @@
                     my-2
                   "
                 >
-                  <span class="bg-gray-400 h-2 w-2 m-2 rounded-full"></span>
-                  <div class="flex-grow font-medium px-2">Mon département</div>
+                  <span class="bg-gray-400 h-2 w-2 m-2 rounded-full" />
+                  <div class="flex-grow font-medium px-2">
+                    Mon département
+                  </div>
                 </div>
               </div>
             </div>
@@ -102,7 +106,9 @@
         <div class="container mx-auto px-4 sm:px-8">
           <div class="py-8">
             <div>
-              <h2 class="text-2xl font-semibold leading-tight">Tickets</h2>
+              <h2 class="text-2xl font-semibold leading-tight">
+                Tickets
+              </h2>
             </div>
             <div class="my-2 flex sm:flex-row flex-col">
               <div class="flex flex-row mb-1 sm:mb-0">
@@ -273,7 +279,7 @@
                   >
                     <path
                       d="M10 4a6 6 0 100 12 6 6 0 000-12zm-8 6a8 8 0 1114.32 4.906l5.387 5.387a1 1 0 01-1.414 1.414l-5.387-5.387A8 8 0 012 10z"
-                    ></path>
+                    />
                   </svg>
                 </span>
                 <input
@@ -297,7 +303,7 @@
                     focus:text-gray-700
                     focus:outline-none
                   "
-                />
+                >
               </div>
             </div>
             <div class="-mx-4 sm:-mx-8 px-4 sm:px-8 py-4 overflow-x-auto">
@@ -313,32 +319,43 @@
                 <table class="min-w-full leading-normal">
                   <thead>
                     <tr>
-                      <th class="tab-title">React</th>
+                      <th class="tab-title">
+                        React
+                      </th>
                       <th
                         v-for="col in columns"
                         :key="col"
-                        v-on:click="sortTable(col)"
                         class="tab-title"
+                        @click="sortTable(col)"
                       >
                         {{ col }}
-                        <div class="float-right" v-if="col == sortColumn">
+                        <div
+                          v-if="col == sortColumn"
+                          class="float-right"
+                        >
                           <div v-if="ascending">
-                            <ChevronUpIcon class="h-5 w-5" />
+                            <i class="ri-arrow-up-s-line" />
                           </div>
                           <div v-else>
-                            <ChevronDownIcon class="h-5 w-5" />
+                            <i class="ri-arrow-down-s-line" />
                           </div>
                         </div>
                       </th>
-                      <th class="tab-title">Actions</th>
+                      <th class="tab-title">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
-                  <tbody v-for="row of rows" :key="row" class="max-h-16">
+                  <tbody
+                    v-for="row of rows"
+                    :key="row"
+                    class="max-h-16"
+                  >
                     <tr>
                       <td class="tab-item">
                         <div class="flex flex-col items-center">
-                          <BookmarkIcon class="h-6 w-6 my-auto" />
-                          <FlagIcon class="h-6 w-6 my-auto" />
+                          <i class="ri-bookmark-line my-auto" />
+                          <i class="ri-flag-line my-auto" />
                         </div>
                       </td>
                       <td class="tab-item">
@@ -354,9 +371,11 @@
                               src="https://ichef.bbci.co.uk/news/976/cpsprodpb/7727/production/_103330503_musk3.jpg"
                               alt="img_user"
                               :title="row.Auth"
-                            />
+                            >
                           </div>
-                          <div class="text-center">L2</div>
+                          <div class="text-center">
+                            L2
+                          </div>
                         </div>
                       </td>
                       <td class="tab-item">
@@ -369,9 +388,7 @@
                       </td>
 
                       <td class="tab-item">
-                        <ExclamationIcon
-                          class="h-6 w-6 mx-auto text-red-500 text-center"
-                        />
+                        <i class="ri-error-warning-line mx-auto text-red-500 text-center" />
                         <div class="text-gray-900 text-center">
                           {{ row.Creation.toISOString().split("T")[0] }}
                         </div>
@@ -418,7 +435,7 @@
                               mx-1
                             "
                           >
-                            <ChevronDownIcon class="h-5 w-5 ml-1" />
+                            <i class="ri-arrow-down-s-line ml-1" />
                             <option>Actions</option>
                             <option>Actions</option>
                             <option>Actions</option>
@@ -487,35 +504,35 @@
 <script lang="js">
 import { defineComponent } from 'vue'
 import ToolbarAdmin from '@/components/ToolbarAdmin.vue'
-// import Tag from '@/components/Tag.vue'
-import { ExclamationIcon, ChevronUpIcon, ChevronDownIcon, BookmarkIcon, FlagIcon } from '@heroicons/vue/outline'
 export default defineComponent({
   name: 'AdminSide',
   components: {
-    ToolbarAdmin,
-    ChevronUpIcon,
-    ChevronDownIcon,
-    // Tag,
-    ExclamationIcon,
-    BookmarkIcon,
-    FlagIcon
+    ToolbarAdmin
   },
   props: {
-    threads: [
-      {}
-    ]
+    threads: {
+      type: Array,
+      default: () => []
+    }
   },
   data () {
     return {
       ascending: false,
       sortColumn: '',
       rows: [
-        { etat: 4, Auth: 'A', Titre: 'ALorem ipsum dolor sit amet consectetur adipisicing', Creation: new Date(2020, 8, 22), Last: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!', Notes: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!' },
-        { etat: 2, Auth: 'B', Titre: 'BLorem ipsum dolor sit amet consectetur adipisicing', Creation: new Date(2020, 8, 22), Last: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!', Notes: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!' },
-        { etat: 3, Auth: 'C', Titre: 'CLorem ipsum dolor sit amet consectetur adipisicing', Creation: new Date(2020, 8, 22), Last: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!', Notes: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!' },
-        { etat: 1, Auth: 'D', Titre: 'DLorem ipsum dolor sit amet consectetur adipisicing', Creation: new Date(2020, 8, 22), Last: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!', Notes: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!' }
-
+        { etat: 4, Auth: 'A', Titre: 'A Lorem ipsum dolor sit amet consectetur adipisicing', Creation: new Date(2020, 8, 22), Last: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!', Notes: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!' },
+        { etat: 2, Auth: 'B', Titre: 'B Lorem ipsum dolor sit amet consectetur adipisicing', Creation: new Date(2020, 8, 22), Last: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!', Notes: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!' },
+        { etat: 3, Auth: 'C', Titre: 'C Lorem ipsum dolor sit amet consectetur adipisicing', Creation: new Date(2020, 8, 22), Last: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!', Notes: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!' },
+        { etat: 1, Auth: 'D', Titre: 'D Lorem ipsum dolor sit amet consectetur adipisicing', Creation: new Date(2020, 8, 22), Last: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!', Notes: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Tempore unde, animi reiciendis sapiente quis nam, iure, similique sint.necessitatibus!' }
       ]
+    }
+  },
+  computed: {
+    columns: function columns () {
+      if (this.rows.length === 0) {
+        return []
+      }
+      return Object.keys(this.rows[0])
     }
   },
   methods: {
@@ -537,19 +554,6 @@ export default defineComponent({
         }
         return 0
       })
-    }
-    // showHover (evt) {
-    //   // const objetRect = evt.target.getBoundingClientRect()
-    //   // const newCard = document.createElement('div')
-    //   // newCard.className = 'border-2 border-red-500 text-1 absolute'
-    // }
-  },
-  computed: {
-    columns: function columns () {
-      if (this.rows.length === 0) {
-        return []
-      }
-      return Object.keys(this.rows[0])
     }
   }
 })

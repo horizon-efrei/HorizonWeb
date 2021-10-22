@@ -1,15 +1,22 @@
 <template>
-  <sliding-sidebar @closeSidebar="sidebarHandler"/>
-  <div v-if="showLogin" class="fixed top-0 left-0 w-screen h-screen z-50" @click="toggleLogin">
-    <login @click.stop="() => {}" @toggleLogin="toggleLogin" ></login>
+  <sliding-sidebar @closeSidebar="sidebarHandler" />
+  <div
+    v-if="showLogin"
+    class="fixed top-0 left-0 w-screen h-screen z-50"
+    @click="toggleLogin"
+  >
+    <login
+      @click.stop="() => {}"
+      @toggleLogin="toggleLogin"
+    />
   </div>
   <div
     id="main-container"
     class="relative flex flex-row-reverse filter h-screen w-screen z-1"
   >
-      <search-query ref="searchQuery" />
+    <search-query ref="searchQuery" />
 
-      <div
+    <div
       id="content-wrapper"
       class="w-full bg-2 h-content flex flex-col relative top-tbar overflow-auto app-scrollbar"
     >
@@ -19,7 +26,7 @@
       >
         <router-view class="my-7 mx-9" />
       </div>
-      <Footer class="flex-shrink-0"/>
+      <Footer class="flex-shrink-0" />
     </div>
     <topbar
       ref="topbar"

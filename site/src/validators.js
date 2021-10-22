@@ -1,5 +1,4 @@
 import { defineRule } from 'vee-validate'
-// eslint-disable-next-line camelcase
 import { required, min, max } from '@vee-validate/rules'
 
 defineRule('required', required)

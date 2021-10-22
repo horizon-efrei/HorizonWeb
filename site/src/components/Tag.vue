@@ -8,7 +8,7 @@
     <span class="text-sm md:text-base pb-1">
       {{ name }}
     </span>
-    <slot></slot>
+    <slot />
   </div>
 </template>
 
@@ -19,10 +19,12 @@ export default defineComponent({
   name: 'Tag',
   props: {
     name: {
-      type: String
+      type: String,
+      default: '<Tag>'
     },
     color: {
-      type: String
+      type: String,
+      default: 'red-500'
     }
   }
 })

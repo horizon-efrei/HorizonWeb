@@ -17,9 +17,9 @@
       <div>Timeline Status</div>
     </div>
     <div class="w-1/6 flex flex-col items-center">
-      <BellIcon class="h-7 w-7 mt-1" />
-      <StarIcon class="h-7 w-7 mt-2" />
-      <FlagIcon class="h-7 w-7 mt-2" />
+      <i class="ri-notification-2-line mt-2" />
+      <i class="ri-star-line mt-2" />
+      <i class="ri-flag-line mt-2" />
     </div>
   </div>
 </template>
@@ -27,19 +27,16 @@
 <script lang="js">
 import { defineComponent } from 'vue'
 import Tag from '@/components/Tag.vue'
-import { BellIcon, StarIcon, FlagIcon } from '@heroicons/vue/outline'
 
 export default defineComponent({
   name: 'SimilarTopic',
   components: {
-    Tag,
-    BellIcon,
-    StarIcon,
-    FlagIcon
+    Tag
   },
   props: {
     topic: {
-      type: Object
+      type: Object,
+      default: () => {}
     }
   }
 })
