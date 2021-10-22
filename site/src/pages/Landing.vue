@@ -308,6 +308,6 @@ export default defineComponent({
   }
 
   .swiper-pagination-bullet {
-    // @include bg-1;
+    @extend .bg-1;
   }
 </style>
