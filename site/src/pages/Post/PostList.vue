@@ -3,13 +3,17 @@
     <div
       class="absolute py-12 hero h-52 w-full top-0 left-0"
     >
-      <h3 class="text-4xl font-bold text-0" style="padding-left: 5%; padding-right: 5%;">
+      <h3
+        class="text-4xl font-bold text-0"
+        style="padding-left: 5%; padding-right: 5%;"
+      >
         Liste des Posts
       </h3>
     </div>
     <div class="relative mt-32 mb-10 flex flex-col mx-auto w-11/12">
       <PostListingCard
-        v-for="post in posts" :key="post.id"
+        v-for="post in posts"
+        :key="post.id"
         class="mb-4"
         :post="post"
       />

@@ -1,0 +1,5 @@
+{
+    "git.ignoreLimitWarning": true,
+    "css.validate": false,
+    "scss.validate": false
+}

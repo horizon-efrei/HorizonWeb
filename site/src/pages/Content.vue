@@ -36,30 +36,39 @@
           </p>
         </div>
         <div class="w-full md:w-1/2">
-          <swiper :spaceBetween="30" :centeredSlides="true" :autoplay='{
-  "delay": 6000,
-  "disableOnInteraction": false
-}' :pagination='{
-  "clickable": true
-}' :navigation="true">
+          <swiper
+            :space-between="30"
+            :centered-slides="true"
+            :autoplay="{
+              &quot;delay&quot;: 6000,
+              &quot;disableOnInteraction&quot;: false
+            }"
+            :pagination="{
+              &quot;clickable&quot;: true
+            }"
+            :navigation="true"
+          >
             <swiper-slide>
-              <post-listing-card :post="posts[0]"></post-listing-card>
+              <post-listing-card :post="posts[0]" />
             </swiper-slide>
             <swiper-slide>
-              <post-listing-card :post="posts[1]"></post-listing-card>
+              <post-listing-card :post="posts[1]" />
             </swiper-slide>
             <swiper-slide>
-              <post-listing-card :post="posts[2]"></post-listing-card>
+              <post-listing-card :post="posts[2]" />
             </swiper-slide>
             <swiper-slide>
-              <post-listing-card :post="posts[3]"></post-listing-card>
+              <post-listing-card :post="posts[3]" />
             </swiper-slide>
           </swiper>
         </div>
       </div>
       <div class="flex items-center flex-wrap mb-20">
         <div class="w-full md:w-1/2 pr-6">
-          <img src="http://localhost:5000/github.png" class="w-3/4 mx-auto"/>
+          <img
+            src="http://localhost:5000/github.png"
+            class="w-3/4 mx-auto"
+          >
         </div>
         <div class="w-full md:w-1/2">
           <h4 class="text-3xl text-1 font-medium  mb-3">
@@ -84,9 +93,9 @@
         </div>
         <div>
           <div class="flex flex-row mb-2 space-x-2">
-              <div class="relative">
-                <select
-                  class="
+            <div class="relative">
+              <select
+                class="
                     rounded-l
                     input
                     input-border-no-shadow
@@ -95,15 +104,15 @@
                     px-4
                     pr-8
                   "
-                >
-                  <option>5</option>
-                  <option>10</option>
-                  <option>20</option>
-                </select>
-              </div>
-              <div class="relative">
-                <select
-                  class="
+              >
+                <option>5</option>
+                <option>10</option>
+                <option>20</option>
+              </select>
+            </div>
+            <div class="relative">
+              <select
+                class="
                     rounded-l
                     input
                     input-border-no-shadow
@@ -112,14 +121,14 @@
                     px-4
                     pr-8
                   "
-                >
-                  <option>Non-Résolu</option>
-                  <option>Résolu</option>
-                </select>
-              </div>
-              <div class="relative">
-                <select
-                  class="
+              >
+                <option>Non-Résolu</option>
+                <option>Résolu</option>
+              </select>
+            </div>
+            <div class="relative">
+              <select
+                class="
                     rounded-l
                     input
                     input-border-no-shadow
@@ -128,16 +137,16 @@
                     px-4
                     pr-8
                   "
-                >
-                  <option>Depuis toujours</option>
-                  <option>Aujourd'hui</option>
-                  <option>Cette semaine</option>
-                  <option>Ce mois</option>
-                </select>
-              </div>
-              <div class="relative">
-                <select
-                  class="
+              >
+                <option>Depuis toujours</option>
+                <option>Aujourd'hui</option>
+                <option>Cette semaine</option>
+                <option>Ce mois</option>
+              </select>
+            </div>
+            <div class="relative">
+              <select
+                class="
                     rounded-l
                     input
                     input-border-no-shadow
@@ -146,14 +155,14 @@
                     px-4
                     pr-8
                   "
-                >
-                  <option>Actif</option>
-                  <option>Très actif</option>
-                </select>
-              </div>
-              <div class="relative">
-                <select
-                  class="
+              >
+                <option>Actif</option>
+                <option>Très actif</option>
+              </select>
+            </div>
+            <div class="relative">
+              <select
+                class="
                     rounded-l
                     input
                     input-border
@@ -162,16 +171,16 @@
                     px-4
                     pr-8
                   "
-                >
-                  <option>> 500 vues</option>
-                  <option>> 200 vues</option>
-                  <option>> 1000 vues</option>
-                </select>
-              </div>
+              >
+                <option>> 500 vues</option>
+                <option>> 200 vues</option>
+                <option>> 1000 vues</option>
+              </select>
             </div>
-            <div class="block relative mb-2">
-              <span
-                class="
+          </div>
+          <div class="block relative mb-2">
+            <span
+              class="
                   h-full
                   absolute
                   inset-y-0
@@ -181,12 +190,12 @@
                   pl-3
                   text-1
                 "
-              >
-                  <i class="ri-search-line"></i>
-              </span>
-              <input
-                placeholder="Rechercher..."
-                class="
+            >
+              <i class="ri-search-line" />
+            </span>
+            <input
+              placeholder="Rechercher..."
+              class="
                   w-full
                   input
                   input-border
@@ -198,12 +207,12 @@
                   pr-6
                   py-2
                 "
-              />
-            </div>
-            <div class="w-full">
-              <tags-input inputPlaceholder="Contient les tags..."></tags-input>
-            </div>
+            >
           </div>
+          <div class="w-full">
+            <tags-input input-placeholder="Contient les tags..." />
+          </div>
+        </div>
       </div>
     </section>
   </div>
@@ -238,16 +247,6 @@ export default defineComponent({
     TagsInput
   },
   inheritAttrs: false,
-  data () {
-    return {
-      posts: [
-        { type: 3, state: 0, tags: ['émargement', 'présence', 'promo:l2', 'cours', 'importance:moyenne', 'fréquence:régulier'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Problème observé: les étudiants sont parfois notés absents à des cours auxquels ils sont présents (particulièrement en ligne)"}]},{"type":"paragraph","content":[{"type":"text","text":"Solution potentielle: mettre en place un système d’émargement électronique officiel"}]}]}', title: 'Problème avec le système d\'émargement en L2', author: { username: 'Sophie H.', avatar: 'http://localhost:5000/landing/girl_1.jpg', rep: 50200 }, favs: 33, likes: 243, views: 44653, dislikes: 3, createdAt: '2021-10-18T13:51:36.631Z', updatedAt: '2021-10-18T13:51:36.631Z' },
-        { type: 2, state: 1, tags: ['terrasse', 'promo:toutes', 'matériel', 'importance:moyenne', 'difficulté:facile'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Les poufs sur la terrasse au dessus du fab lab sont laissés en extérieur la nuit ce qui les salit quand il pleut."}]},{"type":"paragraph","content":[{"type":"text","text":"Peut-être que les étudiants pourraient être autorisés et encourager à les ranger dans le hall du Bât. C ou dans le Bât. A les soirs de pluie ?"}]}]}', title: 'Rangement des poufs sur la terrasse du Bât. I', author: { username: 'Jean R.', avatar: 'http://localhost:5000/landing/guy_1.jpg', rep: 2021 }, favs: 104, likes: 1255, views: 27553, dislikes: 3, createdAt: '2021-10-15T13:51:36.631Z', updatedAt: '2021-10-17T13:51:36.631Z' },
-        { type: 1, state: 1, tags: ['pave', 'déclaration pave', 'promo:toutes', 'urgence:haute'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"J\'ai entendu dire qu\'il y\'avait besoin de remplir une déclaration de PAVE pour avoir ses points pour un semestre donné, mais je ne la connais pas."}]},{"type":"paragraph","content":[{"type":"text","text":"Est-ce quelqu\'un pourrait me montrer comment faire, étape par étape ?"}]}]}', title: 'Comment déclarer sa PAVE ?', author: { username: 'Emma L.', avatar: 'http://localhost:5000/landing/girl_2.jpg', rep: 1234 }, favs: 95, likes: 1004, views: 16993, dislikes: 3, createdAt: '2021-10-01T13:51:36.631Z', updatedAt: '2021-10-08T13:51:36.631Z' },
-        { type: 4, state: 0, tags: ['stage', 'sopra steria', 'promo:m1', 'expérience'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Bonjour à tous ! J\'ai reçu une proposition de stage chez Sopra, mais j\'hésite encore à l\'accepter"}]},{"type":"paragraph","content":[{"type":"text","text":"Pour ceux qui ont déjà fait un stage chez eux, comment fut votre expérience là-bas ? Avez-vous des conseils ?"}]}]}', title: 'Retour d\'expérience Sopra Steria', author: { username: 'Stéphane M.', avatar: 'http://localhost:5000/landing/guy_2.jpg', rep: 234 }, favs: 12, likes: 430, views: 4683, dislikes: 3, createdAt: '2021-02-04T13:51:36.631Z', updatedAt: '2021-03-04T13:51:36.631Z' }
-      ]
-    }
-  },
   setup () {
     const onSwiper = (swiper) => {
       console.log(swiper)
@@ -258,6 +257,16 @@ export default defineComponent({
     return {
       onSwiper,
       onSlideChange
+    }
+  },
+  data () {
+    return {
+      posts: [
+        { type: 3, state: 0, tags: ['émargement', 'présence', 'promo:l2', 'cours', 'importance:moyenne', 'fréquence:régulier'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Problème observé: les étudiants sont parfois notés absents à des cours auxquels ils sont présents (particulièrement en ligne)"}]},{"type":"paragraph","content":[{"type":"text","text":"Solution potentielle: mettre en place un système d’émargement électronique officiel"}]}]}', title: 'Problème avec le système d\'émargement en L2', author: { username: 'Sophie H.', avatar: 'http://localhost:5000/landing/girl_1.jpg', rep: 50200 }, favs: 33, likes: 243, views: 44653, dislikes: 3, createdAt: '2021-10-18T13:51:36.631Z', updatedAt: '2021-10-18T13:51:36.631Z' },
+        { type: 2, state: 1, tags: ['terrasse', 'promo:toutes', 'matériel', 'importance:moyenne', 'difficulté:facile'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Les poufs sur la terrasse au dessus du fab lab sont laissés en extérieur la nuit ce qui les salit quand il pleut."}]},{"type":"paragraph","content":[{"type":"text","text":"Peut-être que les étudiants pourraient être autorisés et encourager à les ranger dans le hall du Bât. C ou dans le Bât. A les soirs de pluie ?"}]}]}', title: 'Rangement des poufs sur la terrasse du Bât. I', author: { username: 'Jean R.', avatar: 'http://localhost:5000/landing/guy_1.jpg', rep: 2021 }, favs: 104, likes: 1255, views: 27553, dislikes: 3, createdAt: '2021-10-15T13:51:36.631Z', updatedAt: '2021-10-17T13:51:36.631Z' },
+        { type: 1, state: 1, tags: ['pave', 'déclaration pave', 'promo:toutes', 'urgence:haute'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"J\'ai entendu dire qu\'il y\'avait besoin de remplir une déclaration de PAVE pour avoir ses points pour un semestre donné, mais je ne la connais pas."}]},{"type":"paragraph","content":[{"type":"text","text":"Est-ce quelqu\'un pourrait me montrer comment faire, étape par étape ?"}]}]}', title: 'Comment déclarer sa PAVE ?', author: { username: 'Emma L.', avatar: 'http://localhost:5000/landing/girl_2.jpg', rep: 1234 }, favs: 95, likes: 1004, views: 16993, dislikes: 3, createdAt: '2021-10-01T13:51:36.631Z', updatedAt: '2021-10-08T13:51:36.631Z' },
+        { type: 4, state: 0, tags: ['stage', 'sopra steria', 'promo:m1', 'expérience'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Bonjour à tous ! J\'ai reçu une proposition de stage chez Sopra, mais j\'hésite encore à l\'accepter"}]},{"type":"paragraph","content":[{"type":"text","text":"Pour ceux qui ont déjà fait un stage chez eux, comment fut votre expérience là-bas ? Avez-vous des conseils ?"}]}]}', title: 'Retour d\'expérience Sopra Steria', author: { username: 'Stéphane M.', avatar: 'http://localhost:5000/landing/guy_2.jpg', rep: 234 }, favs: 12, likes: 430, views: 4683, dislikes: 3, createdAt: '2021-02-04T13:51:36.631Z', updatedAt: '2021-03-04T13:51:36.631Z' }
+      ]
     }
   }
 })

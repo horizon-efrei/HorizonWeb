@@ -2,7 +2,7 @@
   <p
     :class="meta.valid ? 'success-message' : 'error-message' "
   >
-    {{ meta.valid ? `✓ ${success}` : (error === undefined ? '' : `✗ ${error}`)}}
+    {{ meta.valid ? `✓ ${success}` : (error === undefined ? '' : `✗ ${error}`) }}
   </p>
 </template>
 
@@ -13,13 +13,16 @@ export default defineComponent({
   name: 'Tag',
   props: {
     meta: {
-      type: Object
+      type: Object,
+      default: () => {}
     },
     error: {
-      type: String
+      type: String,
+      default: '<Error>'
     },
     success: {
-      type: String
+      type: String,
+      default: '<Success>'
     }
   }
 })

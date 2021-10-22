@@ -10,17 +10,12 @@
 </template>
 
 <script lang="js">
-import {
-  XIcon
-} from '@heroicons/vue/solid'
 import { defineComponent } from 'vue'
 import SidebarBase from '@/components/Sidebar/SidebarBase.vue'
 
 export default defineComponent({
   name: 'Sidebar',
   components: {
-    // eslint-disable-next-line vue/no-unused-components
-    XIcon,
     SidebarBase
   }
 })
@@ -28,15 +23,15 @@ export default defineComponent({
 
 <style scoped>
 #sidebar[opened] {
-  @apply lg-max:absolute lg-max:h-screen lg-max:top-0;
+  @apply lg-max:absolute lg-max:h-screen lg-max:top-0
 }
 
 #sidebar-top:not([opened]) {
-  @apply hidden;
+  @apply hidden
 }
 
 #sidebar-top[opened] {
-  @apply lg:hidden;
+  @apply lg:hidden
 }
 
 .tr-width {

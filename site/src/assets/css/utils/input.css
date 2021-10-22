@@ -1,10 +1,10 @@
 .input-border {
-    @apply border-gray-300 dark:border-white border rounded;
+    @apply border-gray-500 dark:border-white border rounded;
     @apply shadow-inner dark:shadow-none;
 }
 
 .input-border-no-shadow {
-    @apply border-gray-300 dark:border-white border rounded;
+    @apply border-gray-500 dark:border-white border rounded;
 }
 
 .input-border:focus, .input-border[focused=true], .input-border[active] {

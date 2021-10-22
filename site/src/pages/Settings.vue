@@ -24,7 +24,10 @@
     >
       <div class="mt-2 flex-shrink-0">
         <ul class="py-2">
-          <template v-for="link of links" :key="link">
+          <template
+            v-for="link of links"
+            :key="link"
+          >
             <li
               class="
                 h-12
@@ -43,7 +46,10 @@
               :class="{ active: currentComponent === link.component }"
               @click="currentComponent = link.component"
             >
-              <i class="ri-xl" :class="link.icon"></i>
+              <i
+                class="ri-xl"
+                :class="link.icon"
+              />
               <span>{{ link.text }}</span>
             </li>
           </template>
@@ -51,7 +57,7 @@
       </div>
 
       <div class="border-l-2 border-footer w-full">
-        <component :is="currentComponent"></component>
+        <component :is="currentComponent" />
       </div>
     </div>
   </div>

@@ -12,7 +12,7 @@
         aria-label="Open Menu"
         @click="$emit('closeSidebar')"
       >
-        <XIcon class="w-10 h-10" />
+        <i class="ri-close-line" />
       </button>
       <div class="brand w-32 h-6 flex-shrink-0" />
     </div>
@@ -22,17 +22,12 @@
 </template>
 
 <script lang="js">
-import {
-  XIcon
-} from '@heroicons/vue/solid'
 import { defineComponent } from 'vue'
 import SidebarBase from '@/components/Sidebar/SidebarBase.vue'
 
 export default defineComponent({
   name: 'Sidebar',
   components: {
-    // eslint-disable-next-line vue/no-unused-components
-    XIcon,
     SidebarBase
   },
   emits: [

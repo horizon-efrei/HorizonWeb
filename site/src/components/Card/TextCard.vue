@@ -4,7 +4,7 @@
       {{ title }}
     </div>
     <div class="bg-1 p-2 px-4 rounded-b-lg">
-      <slot></slot>
+      <slot />
     </div>
   </div>
 </template>
@@ -16,10 +16,12 @@ export default defineComponent({
   name: 'TextCard',
   props: {
     title: {
-      type: String
+      type: String,
+      default: '<Titre>'
     },
     desc: {
-      type: String
+      type: String,
+      default: '<Description>'
     }
   },
 
