@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import AdminSide from '@/pages/AdminSide.vue'
-import Content from '@/pages/Content.vue'
+import Landing from '@/pages/Landing.vue'
 import PostCompactView from '@/pages/Post/PostCompactView.vue'
 import PostNew from '@/pages/Post/PostNew.vue'
 import FileUpload from '@/pages/FileUpload.vue'
@@ -11,7 +11,7 @@ import Settings from '@/pages/Settings.vue'
 const routes = [
   {
     path: '/',
-    component: Content
+    component: Landing
   },
   {
     path: '/post/:id',
@@ -225,7 +225,7 @@ const routes = [
 
   {
     path: '/secret',
-    component: Content,
+    component: Filler,
     beforeEnter: (to, from, next) => {
       // ...
     }

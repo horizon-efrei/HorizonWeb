@@ -19,8 +19,7 @@ async function bootstrap(): Promise<void> {
   app.set('trust proxy', false);
 
   app.use(logger);
-  app.setGlobalPrefix('api');
-  await app.listen(apiConfig.get('port') as number);
+  await app.listen(apiConfig.get('port')!);
   Logger.log(`Server initialized on port ${apiConfig.get('port')}`, 'Bootstrap');
 }
 

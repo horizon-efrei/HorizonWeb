@@ -56,7 +56,7 @@
                     focus:outline-none hover:bg-blue-600 hover:shadow-none"
         >
           <img
-            src="../assets/img/efrei.png"
+            src="@/assets/img/logos/efrei.png"
             class="w-6 h-6"
           ><p class="pr-1">
             CONNEXION AVEC MYEFREI

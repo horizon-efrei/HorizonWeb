@@ -1,6 +1,6 @@
 :root {
     --expander-transition-time: 3s;
-    --brand-url: url("~@/assets/img/brand.png");
+    --brand-url: url("~@/assets/img/logos/horizon_brand.png");
 }
 
 @mixin tailwind-color($tailwind-property, $alt: false, $name: '', $tailwind-property-count: 6) {
