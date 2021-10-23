@@ -9,7 +9,7 @@
         >
       </div>
       <span
-        class="w-1/3 h-1/3 absolute bottom-0 right-0 rounded-full border-2 border-color-alt-2"
+        class="w-1/3 h-1/3 absolute bottom-0 right-0 rounded-full border border-color-alt-2"
         :class="`bg-${status}`"
       />
     </div>
@@ -63,5 +63,5 @@ export default defineComponent({
 </script>
 
 <style>
-  @import "~@/assets/css/utils/box.css";
+  /* @import "~@/assets/css/utils/box.css"; */
 </style>

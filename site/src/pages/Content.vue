@@ -40,11 +40,11 @@
             :space-between="30"
             :centered-slides="true"
             :autoplay="{
-              &quot;delay&quot;: 6000,
-              &quot;disableOnInteraction&quot;: false
+              'delay': 6000,
+              'disableOnInteraction': false
             }"
             :pagination="{
-              &quot;clickable&quot;: true
+              'clickable': true
             }"
             :navigation="true"
           >
@@ -272,7 +272,9 @@ export default defineComponent({
 })
 </script>
 
-<style>
+<style lang="scss">
+  @import "~@/assets/scss/themes.scss";
+
   .hero {
     background: linear-gradient(90deg, #ffe100 20%, #ffb800 100%)
   }
@@ -306,6 +308,6 @@ export default defineComponent({
   }
 
   .swiper-pagination-bullet {
-    @apply dark:bg-v-1-light bg-v-1-dark;
+    // @include bg-1;
   }
 </style>

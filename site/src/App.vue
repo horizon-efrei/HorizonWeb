@@ -166,8 +166,8 @@ export default defineComponent({
 })
 </script>
 
-<style>
-@import "~@/assets/css/themes.css";
+<style lang="scss">
+@import "~@/assets/scss/themes.scss";
 @import "~@/assets/css/utils/spacing.css";
 
 .icon {

@@ -96,8 +96,8 @@ export default {
 }
 </script>
 
-<style>
-  @import "~@/assets/css/utils/input.css";
+<style lang="scss">
+  @import "~@/assets/scss/components/input.scss";
 
   .min-w-1 {
     min-width: 1em;

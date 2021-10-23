@@ -20,37 +20,33 @@ module.exports = {
     },
     colors: {
       ...colors,
-      'v-0': {
+      0: {
         light: '#fff',
         dark: '#000'
       },
-      'v-1': {
+      1: {
         light: '#fafafa',
         dark: '#1d1e20'
       },
-      'v-2': {
+      2: {
         light: '#f6f6f6',
         dark: '#202225'
       },
-      'v-3': {
+      3: {
         light: '#e2e2e2',
         dark: '#2f3136'
       },
-      'v-4': {
+      4: {
         light: '#d4d4d4',
         dark: '#323030'
       },
-      'v-5': {
+      5: {
         light: '#c6c6c6',
         dark: '#444'
       },
-      'v-6': {
+      6: {
         light: '#bebebe',
         dark: '#5e5e5e'
-      },
-      'v-placeholder': {
-        light: '#a6a6a6',
-        dark: '#777777'
       }
     },
     spacing: {
@@ -635,7 +631,12 @@ module.exports = {
       black: ['2px dotted black', '2px']
     },
     padding: (theme) => theme('spacing'),
-    placeholderColor: (theme) => theme('colors'),
+    placeholderColor: {
+      primary: {
+        light: '#a6a6a6',
+        dark: '#777777'
+      }
+    },
     placeholderOpacity: (theme) => theme('opacity'),
     ringColor: (theme) => ({
       DEFAULT: theme('colors.blue.500', '#3b82f6'),
@@ -728,7 +729,13 @@ module.exports = {
       1: '1',
       2: '2'
     },
-    textColor: (theme) => theme('colors'),
+    textColor: (theme) => ({
+      ...theme('colors'),
+      placeholder: {
+        light: '#a6a6a6',
+        dark: '#777777'
+      }
+    }),
     textOpacity: (theme) => theme('opacity'),
     transformOrigin: {
       center: 'center',

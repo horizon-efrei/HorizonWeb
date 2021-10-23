@@ -1,7 +1,7 @@
 <template>
   <div
     class="w-11/12 p-12 sm:w-8/12 md:w-6/12 lg:w-5/12 2xl:w-4/12
-        px-10 pt-12 pb-10 sm:px-10 sm:pt-6 sm:pb-4 mx-auto box-card box-card-border
+        px-10 pt-12 pb-10 sm:px-10 sm:pt-6 sm:pb-4 mx-auto card
         centered-fixed z-50 bg-2"
   >
     <!-- Card Title -->
@@ -63,8 +63,8 @@
           </p>
         </button>
       </div>
-      <!-- Another Auth Routes -->
-      <div class="mt-5">
+
+      <div class="mt-5 text-0">
         <div class="md:flex-none flex flex-col flex-wrap space-y-3 sm:mb-2 text-sm text-center">
           <a
             href="forgot-password"
@@ -172,8 +172,8 @@ export default defineComponent({
 })
 </script>
 
-<style>
-@import "~@/assets/css/utils/box.css";
+<style lang="scss">
+@import "~@/assets/scss/components/card.scss";
 
 .centered-fixed {
   position: fixed;

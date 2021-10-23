@@ -1,5 +1,5 @@
 <template>
-  <div class="m-0">
+  <div class="m-0 text-2">
     <div class="m-0 absolute py-12 hero h-52 w-full top-0 left-0">
       <h3
         class="text-4xl font-bold mb-8 text-0"
@@ -14,7 +14,7 @@
         relative
         mt-32
         mb-10
-        box-card box-card-border
+        card
         p-0
         bg-1
         w-11/12
@@ -85,8 +85,9 @@ export default defineComponent({
 })
 </script>
 
-<style>
-@import "~@/assets/css/utils/box.css";
+<style lang="scss">
+@import "~@/assets/scss/components/card.scss";
+
 .height {
   min-height: 24rem;
 }
