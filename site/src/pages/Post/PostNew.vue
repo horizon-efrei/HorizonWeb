@@ -12,7 +12,7 @@
     </div>
     <div class="relative mt-32 mb-10 flex mx-auto w-11/12">
       <form
-        class="bg-1 flex flex-col space-y-4 box-card box-card-border min-w-2/3"
+        class="bg-1 flex flex-col space-y-4 card min-w-2/3"
         @submit="onSubmit"
       >
         <div>
@@ -139,16 +139,16 @@
       </form>
 
       <div class="ml-6 flex-grow-0 flex-shrink-0 w-1/5">
-        <TextCard title="Qu'est-ce qu'un Post ?">
+        <card-with-title title="Qu'est-ce qu'un Post ?">
           <div>
             Les Posts sont là pour faciliter les échanges entre
             l'établissement et les élèves, utilisez les quand vous avez un
             problème à faire remonter, besoin d'une aide, une question à
             poser...
           </div>
-        </TextCard>
+        </card-with-title>
         <br>
-        <TextCard
+        <card-with-title
           title="Étapes de création"
           desc=""
         >
@@ -163,7 +163,7 @@
               Ce que vous avez déjà essayé de faire pour répondre à votre besoin
             </li>
           </ul>
-        </TextCard>
+        </card-with-title>
       </div>
     </div>
   </div>
@@ -174,7 +174,7 @@ import { useField, useForm } from 'vee-validate'
 import ErrorWrapper from '@/components/ErrorWrapper.vue'
 // import * as yup from 'yup'
 import TagsInput from '@/components/Input/TagsInput.vue'
-import TextCard from '@/components/Card/TextCard.vue'
+import CardWithTitle from '@/components/Card/CardWithTitle.vue'
 import TipTapEditor from '@/components/TipTapEditor.vue'
 
 import { ref, defineComponent } from 'vue'
@@ -184,7 +184,7 @@ export default defineComponent({
   name: 'PostNew',
   components: {
     TagsInput,
-    TextCard,
+    CardWithTitle,
     ErrorWrapper,
     TipTapEditor
   },
@@ -310,11 +310,9 @@ export default defineComponent({
 })
 </script>
 
-<style>
-  @import "~@/assets/css/utils/input.css";
-  @import "~@/assets/css/utils/box.css";
-  @import "~@/assets/css/utils/button.css";
-  @import "~@/assets/css/utils/section.css";
+<style lang="scss">
+  @import "~@/assets/scss/components/input.scss";
+  @import "~@/assets/scss/components/card.scss";
 
   .success-message {
     @apply text-blue-400;

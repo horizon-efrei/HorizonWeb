@@ -1,6 +1,8 @@
+@import "~@/assets/scss/utils/get-color.scss";
+
 .input-border {
-    @apply border-gray-500 dark:border-white border rounded;
-    @apply shadow-inner dark:shadow-none;
+    @include get-color('border', 5, true);
+    @apply border rounded dark:border-opacity-25;
 }
 
 .input-border-no-shadow {
@@ -18,13 +20,16 @@
     line-height: 1.43;
 }
 
-.input::placeholder, .placeholder::placeholder, select:invalid {
-    @apply dark:text-v-placeholder-light text-v-placeholder-dark;
-    opacity: 1;
-}
-
 .input[type=password] {
     @apply tracking-widest;
     font-weight: 900;
-    /* font: small-caption; */
+}
+
+.input, .placeholder, .text-placeholder {
+    @apply dark:placeholder-primary-light placeholder-primary-dark;
+}
+
+select:invalid {
+    @apply dark:text-placeholder-light text-placeholder-dark;
+    opacity: 1;
 }

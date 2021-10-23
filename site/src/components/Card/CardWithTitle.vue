@@ -13,15 +13,11 @@
 import { defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'TextCard',
+  name: 'CardWithTitle',
   props: {
     title: {
       type: String,
       default: '<Titre>'
-    },
-    desc: {
-      type: String,
-      default: '<Description>'
     }
   },
 

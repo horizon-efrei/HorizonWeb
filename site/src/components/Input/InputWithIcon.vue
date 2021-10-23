@@ -52,6 +52,6 @@ export default defineComponent({
 })
 </script>
 
-<style>
-@import "~@/assets/css/utils/input.css";
+<style scoped lang="scss">
+  @import "~@/assets/scss/components/input.scss";
 </style>

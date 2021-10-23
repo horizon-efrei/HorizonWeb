@@ -241,9 +241,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-  @import "~@/assets/css/utils/input";
-  @import "~@/assets/css/utils/box.css";
-  @import "~@/assets/css/utils/button.css";
+  @import "~@/assets/scss/components/input";
+  // @import "~@/assets/css/utils/box.css";
+  // @import "~@/assets/css/utils/button.css";
 
   .character-count {
     margin-top: 1rem;
@@ -267,7 +267,7 @@ export default defineComponent({
   .ProseMirror p.is-editor-empty:first-child::before {
       content: attr(data-placeholder);
       float: left;
-      @apply dark:text-v-placeholder-light text-v-placeholder-dark;
+      @apply dark:text-placeholder-light text-placeholder-dark;
       pointer-events: none;
       height: 0;
   }

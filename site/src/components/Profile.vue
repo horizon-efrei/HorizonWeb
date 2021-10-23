@@ -1,5 +1,5 @@
 <template>
-  <div class="px-8 py-4">
+  <div class="px-8 py-4 text-2">
     <h2 class="text-xl">
       Profil
     </h2>
@@ -218,6 +218,6 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
-  @import "~@/assets/css/utils/input.css";
+<style lang="scss">
+  @import "~@/assets/scss/components/input.scss";
 </style>
