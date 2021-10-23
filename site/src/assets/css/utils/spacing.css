@@ -3,7 +3,6 @@
     --sidebar-width: 14rem;
     --collapse-width: 900px;
     --expander-transition-time: 3s;
-    --brand-url: url("~@/assets/img/brand.png");
 }
 
 .w-sbar {

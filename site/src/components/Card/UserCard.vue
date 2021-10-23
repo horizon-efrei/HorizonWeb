@@ -4,7 +4,7 @@
       <div>
         <img
           class="rounded-2xl"
-          :src="avatar"
+          :src="avatar ?? require('@/assets/img/default_avatars/user.png')"
           :alt="username"
         >
       </div>

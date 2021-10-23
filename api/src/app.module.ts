@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ServeStaticModule } from '@nestjs/serve-static';
-import { join } from 'node:path';
 import { AuthModule } from './auth/auth.module';
 import { CommentsModule } from './comments/comments.module';
 import { apiConfig } from './config';
@@ -16,15 +14,11 @@ import { UserModule } from './users/users.module';
     AuthModule,
     UserModule,
     ConfigModule.forRoot(),
-    MongooseModule.forRoot(apiConfig.get('mongoUri') as string),
+    MongooseModule.forRoot(apiConfig.get('mongoUri')),
     PostsModule,
     CommentsModule,
     RepliesModule,
     FilesModule,
-    ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
-      exclude: ['/api*'],
-    }),
   ],
   providers: [],
   controllers: [],
