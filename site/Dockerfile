@@ -11,8 +11,6 @@ WORKDIR /app
 # copie 'package.json' et 'package-lock.json' (si disponible)
 COPY package*.json ./
 
-RUN rm -rf node_modules
-
 # installe les dépendances du projet
 RUN npm install
 
