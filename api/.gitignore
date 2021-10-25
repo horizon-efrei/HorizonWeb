@@ -1,9 +1,6 @@
 # Environment variables
 .env
 
-# File uploads
-/uploads
-
 # Compiled output
 /dist
 /node_modules

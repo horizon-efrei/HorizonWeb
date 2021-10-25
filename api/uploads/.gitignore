@@ -1,0 +1,5 @@
+# Ignore all file uploads (don't ignore .gitignore)
+
+*
+*/
+!.gitignore
