@@ -1,10 +1,10 @@
 FROM node:16.12.0-alpine3.12
 
 WORKDIR /app
-ADD package.json /app/package.json
+ADD .env ./
+ADD package*.json ./
 RUN npm install
-
-ADD . /app
+ADD . ./
 
 EXPOSE 5000
 
