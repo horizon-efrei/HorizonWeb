@@ -51,7 +51,7 @@
           <div class="flex-shrink-0">
             <div class="relative">
               <img
-                src="http://localhost:5000/user.png"
+                src="@/assets/img/default_avatars/user.png"
                 alt="img"
                 class="rounded-full h-48 w-48"
               >
