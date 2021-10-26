@@ -2,7 +2,7 @@ import {
  IsDate, IsInt, IsNotEmpty, IsOptional, IsString,
 } from 'class-validator';
 
-export class CreateUploadDto {
+export class CreateFileUploadDto {
     @IsNotEmpty()
     @IsString()
     originalName: string;
@@ -12,6 +12,9 @@ export class CreateUploadDto {
 
     @IsString()
     encoding: string;
+
+    @IsString()
+    fileKind: string;
 
     @IsNotEmpty()
     @IsInt()
