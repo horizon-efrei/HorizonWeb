@@ -5,13 +5,15 @@ services:
   horizon-db:
     image: postgres
     restart: always
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_PASSWORD: root
       POSTGRES_USER: root
       POSTGRES_DB: horizon-db
-    ports:
-      - 5432:5432
-
+    
   adminer:
     image: adminer
     restart: always
@@ -33,3 +35,6 @@ services:
       - horizon-api
     ports:
       - 8080:8080
+
+volumes:
+  dbdata:
