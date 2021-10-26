@@ -1,7 +1,5 @@
 FROM node:14.18.1-alpine3.12
 
-RUN apk add python2 make gcc g++
-
 # définit le dossier 'app' comme dossier de travail
 WORKDIR /app
 
