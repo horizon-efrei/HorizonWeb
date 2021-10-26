@@ -2,10 +2,11 @@ import path from 'path';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes } from 'mongoose';
 import { uploadConfig } from '../../config';
+import { FileType } from '../../shared/types/file-types.enum';
 import { User } from '../../users/user.schema';
 
 @Schema({ timestamps: true })
-export class Upload extends Document {
+export class FileUpload extends Document {
   @Prop({ required: true, type: SchemaTypes.ObjectId, ref: 'User' })
   author: User;
 
@@ -30,22 +31,20 @@ export class Upload extends Document {
   @Prop({ default: false })
   visible?: boolean;
 
-  @Prop({ default: false })
-  deleted?: boolean;
-
-  @Prop()
+  @Prop({ default: null })
   deletedDate?: Date;
+
+  @Prop({ default: FileType.Unknown })
+  fileKind: string;
 
   filePath: () => string;
 
   createdAt: Date;
-  updatedAt: Date;
   _id: number;
 }
 
-export const UploadSchema = SchemaFactory.createForClass(Upload);
+export const FileUploadSchema = SchemaFactory.createForClass(FileUpload);
 
-UploadSchema.methods.filePath = function (): string {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-  return path.join(uploadConfig.uploadPath, this.id, this.originalName);
+FileUploadSchema.methods.filePath = function (): string {
+  return path.join(uploadConfig.uploadPath, this.fileKind, this._id.toString());
 };

@@ -4,7 +4,7 @@ import {
 import { IsObjectId } from 'class-validator-mongo-object-id';
 import { CourseSubject } from '../schemas/course-subject.schema';
 
-export class CreateCourseDocDto {
+export class CreateStudyDocDto {
     @IsOptional()
     @IsInt()
     year?: number;
@@ -19,7 +19,7 @@ export class CreateCourseDocDto {
 
     @IsOptional()
     @IsString()
-    name?: string;
+    docName?: string;
 
     @IsOptional()
     @IsString()

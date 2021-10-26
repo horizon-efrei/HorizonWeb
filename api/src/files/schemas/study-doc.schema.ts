@@ -1,12 +1,12 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { CourseSubject } from './course-subject.schema';
-import { Upload } from './file.schema';
+import { FileUpload } from './file-upload.schema';
 
 @Schema({ timestamps: true })
-export class CourseDoc extends Document {
-  @Prop({ required: true, type: Number, ref: 'Upload' })
-  file: Upload;
+export class StudyDoc extends Document {
+  @Prop({ required: true, type: Number, ref: 'FileUpload' })
+  file: FileUpload;
 
   @Prop()
   year?: number;
@@ -27,4 +27,4 @@ export class CourseDoc extends Document {
   updatedAt: Date;
 }
 
-export const CourseDocSchema = SchemaFactory.createForClass(CourseDoc);
+export const StudyDocSchema = SchemaFactory.createForClass(StudyDoc);

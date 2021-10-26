@@ -6,21 +6,21 @@ import { autoIncrement } from 'mongoose-plugin-autoinc';
 import { AuthModule } from '../auth/auth.module';
 import { UserModule } from '../users/users.module';
 import { FilesController } from './files.controller';
-import { CourseDoc, CourseDocSchema } from './schemas/course-doc.schema';
 import { CourseSchema, CourseSubject } from './schemas/course-subject.schema';
-import { Upload, UploadSchema } from './schemas/file.schema';
-import { CourseDocsService } from './services/course-docs.service';
-import { FilesService } from './services/files.service';
+import { FileUpload, FileUploadSchema } from './schemas/file-upload.schema';
+import { StudyDoc, StudyDocSchema } from './schemas/study-doc.schema';
+import { FilesService } from './services/file-uploads.service';
+import { StudyDocsService } from './services/study-docs.service';
 
 
 @Module({
   imports: [
     MongooseModule.forFeatureAsync([
       {
-        name: CourseDoc.name,
+        name: StudyDoc.name,
         useFactory: (): Schema => {
-          const schema = CourseDocSchema;
-          schema.plugin(autoIncrement, { model: 'CourseDoc', startAt: 1 });
+          const schema = StudyDocSchema;
+          schema.plugin(autoIncrement, { model: 'StudyDoc', startAt: 1 });
           schema.plugin(paginate);
           return schema;
         },
@@ -29,10 +29,10 @@ import { FilesService } from './services/files.service';
 
     MongooseModule.forFeatureAsync([
       {
-        name: Upload.name,
+        name: FileUpload.name,
         useFactory: (): Schema => {
-          const schema = UploadSchema;
-          schema.plugin(autoIncrement, { model: 'Upload', startAt: 1 });
+          const schema = FileUploadSchema;
+          schema.plugin(autoIncrement, { model: 'FileUpload', startAt: 1 });
           schema.plugin(paginate);
           return schema;
         },
@@ -48,7 +48,7 @@ import { FilesService } from './services/files.service';
     UserModule,
   ],
   controllers: [FilesController],
-  providers: [CourseDocsService, FilesService],
-  exports: [CourseDocsService],
+  providers: [StudyDocsService, FilesService],
+  exports: [StudyDocsService],
 })
 export class FilesModule {}
