@@ -1,24 +1,24 @@
 import axios from 'axios'
 
-const API_URL = 'http://localhost:5000/api/auth/'
+const API_URL = 'http://localhost:5000/auth/'
 
 class AuthService {
-  login (user) {
-    return axios
+  async login (user) {
+    const res = await axios
       .post(API_URL + 'login', {
         username: user.username,
         password: user.password
+      }, {
+        withCredentials: true,
+        credentials: 'include'
       })
-      .then(res => {
-        if (res.data.accessToken) {
-          localStorage.setItem('user', JSON.stringify(res.data))
-        }
 
-        return res.data
-      })
+    localStorage.setItem('user', JSON.stringify(res.data))
+    return res.data
   }
 
   logout () {
+    axios.get(API_URL + 'logout', { withCredentials: true, credentials: 'include' })
     localStorage.removeItem('user')
   }
 
@@ -27,6 +27,9 @@ class AuthService {
       username: user.username,
       email: user.email,
       password: user.password
+    }, {
+      withCredentials: true,
+      credentials: 'include'
     })
   }
 }

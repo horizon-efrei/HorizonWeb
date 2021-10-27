@@ -1,15 +1,14 @@
 import axios from 'axios'
-import authHeader from './auth-header'
 
-const API_URL = 'http://localhost:5000/api/'
+const API_URL = 'http://localhost:5000/'
 
 class UserService {
   getPublicContent () {
-    return axios.get(API_URL + 'posts')
+    return axios.get(API_URL + 'posts', { withCredentials: true })
   }
 
   getUserBoard () {
-    return axios.get(API_URL + 'users', { headers: authHeader() })
+    return axios.get(API_URL + 'users', { withCredentials: true })
   }
 }
 
