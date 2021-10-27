@@ -68,6 +68,9 @@ export default defineComponent({
           { to: '/dashboard', text: 'Dashboard admin', icon: 'ri-pie-chart-box-line' }
         ],
         [
+          { to: '/file_upload', text: 'Ajouter un doc', icon: 'ri-folder-upload-line' }
+        ],
+        [
           { to: '/new_post', text: 'Créer un post', icon: 'ri-chat-new-line' },
           { to: '/posts', text: 'Tous les posts', icon: 'ri-chat-check-line' }
         ],
