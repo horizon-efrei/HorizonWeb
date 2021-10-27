@@ -46,22 +46,6 @@
         >
           CONNEXION HORIZON
         </button>
-        <p class="text-xs uppercase">
-          OU
-        </p>
-        <button
-          type="submit"
-          class="m-0 flex items-center justify-center space-x-3 w-full py-3 bg-blue-500 rounded-sm
-                    font-medium text-white uppercase text-sm
-                    focus:outline-none hover:bg-blue-600 hover:shadow-none"
-        >
-          <img
-            src="@/assets/img/logos/efrei.png"
-            class="w-6 h-6"
-          ><p class="pr-1">
-            CONNEXION AVEC MYEFREI
-          </p>
-        </button>
       </div>
 
       <div class="mt-5 text-0">
