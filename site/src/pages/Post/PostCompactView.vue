@@ -18,7 +18,7 @@
       </div>
       <div class="box-border flex flex-col space-y-3 flex-shrink-0">
         <router-link
-          to="/new_post"
+          to="/new-post"
           class="
             text-center
             button

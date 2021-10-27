@@ -51,7 +51,7 @@ export const auth = {
     logoutSuccess (state) {
       state.status.loggedIn = false
       state.user = null
-      if (router.currentRoute.value.fullPath === '/my_account') {
+      if (router.currentRoute.value.fullPath === '/my-account') {
         router
           .push('/')
       }

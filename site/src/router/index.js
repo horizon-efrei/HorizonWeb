@@ -194,7 +194,7 @@ const routes = [
   },
 
   {
-    path: '/new_post',
+    path: '/new-post',
     component: PostNew
   },
 
@@ -204,7 +204,7 @@ const routes = [
   },
 
   {
-    path: '/file_upload',
+    path: '/file-upload',
     component: FileUpload
   },
 
@@ -219,7 +219,7 @@ const routes = [
   },
 
   {
-    path: '/my_account',
+    path: '/my-account',
     component: Settings
   },
 
