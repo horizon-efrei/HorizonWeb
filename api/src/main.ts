@@ -1,6 +1,7 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
+import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { apiConfig } from './config';
@@ -11,15 +12,16 @@ async function bootstrap(): Promise<void> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.use(helmet());
+  app.use(logger);
+  app.use(cookieParser(apiConfig.get('cookieSignature')));
 
-  app.enableCors();
+  app.enableCors({ origin: true, credentials: true });
   app.enableShutdownHooks();
   app.useGlobalPipes(new ValidationPipe({ transform: true, forbidUnknownValues: true }));
   app.useGlobalFilters(new ExceptionsFilter());
   app.set('trust proxy', false);
 
-  app.use(logger);
-  await app.listen(apiConfig.get('port')!);
+  await app.listen(apiConfig.get('port'));
   Logger.log(`Server initialized on port ${apiConfig.get('port')}`, 'Bootstrap');
 }
 
