@@ -67,7 +67,6 @@ export class FilesController {
   public async getAllUploads(
     @Query() query: PaginateDto,
   ): Promise<CustomPaginateResult<StudyDoc> | { items: StudyDoc[] }> {
-    console.log('yo');
     if (query.page) {
       return await this.studyDocsService.findAll({
         page: query.page,
