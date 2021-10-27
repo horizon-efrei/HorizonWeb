@@ -36,9 +36,7 @@ export default defineComponent({
   created () {
     this.$store.dispatch('posts/fetchPosts', { page: this.$store.state.posts.page }).then(
       data => {
-        this.message = data.toString()
         this.posts = this.$store.state.posts.posts
-        console.log('posts', this.posts)
       },
       error => {
         this.loading = false
