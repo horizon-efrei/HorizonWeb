@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes } from 'mongoose';
 import { uploadConfig } from '../../config';

@@ -1,5 +1,5 @@
-import { createReadStream, promises as fs, constants as fsConst } from 'fs';
-import { join } from 'path';
+import { createReadStream, promises as fs, constants as fsConst } from 'node:fs';
+import { join } from 'node:path';
 import {
   BadRequestException,
   Body,
