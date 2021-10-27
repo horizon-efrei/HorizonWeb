@@ -1,26 +1,24 @@
 import axios from 'axios'
-import authHeader from './auth-header'
 
-const API_URL = 'http://localhost:5000/api/'
+const API_URL = 'http://localhost:5000/'
 
 class PostsService {
   getPosts (query) {
-    console.log('queries', query, authHeader())
-    return axios.get(API_URL + 'posts', { params: query, headers: authHeader() }).then(
+    return axios.get(API_URL + 'posts', { params: query, withCredentials: true }).then(
       res => res.data.items
     )
   }
 
   addPost (post) {
-    return axios.post(API_URL + 'posts', post, { headers: authHeader() })
+    return axios.post(API_URL + 'posts', post, { withCredentials: true })
   }
 
   modifyPost (id, newPost) {
-    return axios.post(API_URL + 'posts', { id, newPost }, { headers: authHeader() })
+    return axios.patch(API_URL + 'posts', { id, newPost }, { withCredentials: true })
   }
 
   deletePost (id) {
-    return axios.delete(API_URL + 'posts', { id }, { headers: authHeader() })
+    return axios.delete(API_URL + 'posts', { params: { id }, withCredentials: true })
   }
 }
 
