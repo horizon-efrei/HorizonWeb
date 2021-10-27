@@ -1,57 +1,119 @@
 <template>
-  <div>
+  <div class="text-1">
     <input
-      id="myFile"
+      ref="fileInput"
       type="file"
-      name="filename"
     >
-    <input
-      type="submit"
+    <button
+      class="button ml-4"
       @click="upload"
     >
-    <pre id="response" />
-    <button @click="search">
-      BOUTON
+      Upload
     </button>
-    <pre id="receive" />
+
+    <pre
+      ref="response"
+      class="mb-4"
+    />
+
+    <button
+      class="button"
+      @click="search"
+    >
+      Search
+    </button>
+
+    <pre
+      ref="receive"
+      class="mb-4"
+    />
+
+    <input
+      ref="fileId"
+      type="number"
+      class="input input-border text-2 bg-2"
+    >
+    <button
+      class="button ml-4"
+      @click="show=`${filesEndpoint}/get-file/${fileId.value}`"
+    >
+      Show
+    </button>
+    <img
+      :src="show"
+      class="mt-4"
+      width="250"
+      height="500"
+    >
   </div>
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
-import axios from 'axios'
+import { defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'FileUpload',
-  props: {
+  setup () {
+    const fileInput = ref(null)
+    const fileId = ref(null)
+    const receive = ref(null)
+    const response = ref(null)
+
+    return {
+      fileInput, fileId, receive, response
+    }
+  },
+  data () {
+    return {
+      files: [],
+      filesEndpoint: 'http://localhost:5000/files',
+      studyDocsEndpoint: 'http://localhost:5000/files/study-docs',
+      show: 'https://images.unsplash.com/photo-1529778873920-4da4926a72c2?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8Y3V0ZSUyMGNhdHxlbnwwfHwwfHw%3D&ixlib=rb-1.2.1&w=1000&q=80'
+    }
+  },
+  computed: {
+    loggedIn () {
+      return this.$store.state.auth.status.loggedIn
+    }
   },
   methods: {
-    upload: async () => {
-      const input = document.getElementById('myFile')
-      const file = input.files[0]
+    async upload () {
+      const file = this.fileInput.files[0]
 
-      if (file) {
-        const data = new FormData()
-        data.append('file', file)
-
-        axios.post('http://localhost:5000/files/course-docs/upload', data, {
-          headers: {
-            Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MTU5YjE0MzY3NmIwOGViZWRlYzAyODQiLCJ1c2VybmFtZSI6InVzcm5fZWxsaW90IiwiaWF0IjoxNjMzODE4OTE4LCJleHAiOjE2MzM4MjI1MTh9.3rgnwPrXTbNsUA3Wgo0L-DLabZFOvHKkpglbVEMql_c'
-          }
-        }).then(res => { document.getElementById('response').innerHTML = JSON.stringify(res.data) })
+      if (this.loggedIn) {
+        if (file) {
+          const data = new FormData()
+          data.append('file', file)
+          this.$store.dispatch('files/addStudyDoc', data).then(
+            data => {
+              this.response.innerHTML = JSON.stringify(data)
+              this.studyDocs = this.$store.state.files.studyDocs
+            },
+            error => {
+              this.message = (error.response && error.response.data) || error.message || error.toString()
+            }
+          )
+        }
+      } else {
+        this.response.innerHTML = 'Upload : Vous devez être connecté pour uploader un fichier !'
       }
     },
 
-    search: async () => {
-      axios.get('http://localhost:5000/files/course-docs/search?page=1', {
-        headers: {
-          Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2MTU5YjE0MzY3NmIwOGViZWRlYzAyODQiLCJ1c2VybmFtZSI6InVzcm5fZWxsaW90IiwiaWF0IjoxNjMzODE4OTE4LCJleHAiOjE2MzM4MjI1MTh9.3rgnwPrXTbNsUA3Wgo0L-DLabZFOvHKkpglbVEMql_c'
-        }
-      }).then(res => { document.getElementById('receive').innerHTML = JSON.stringify(res.data) })
+    async search () {
+      if (this.loggedIn) {
+        this.$store.dispatch('files/searchStudyDocs', { page: this.$store.state.posts.page }).then(
+          data => {
+            this.receive.innerHTML = JSON.stringify(data)
+            this.studyDocs = this.$store.state.files.studyDocs
+          },
+          error => {
+            this.message = (error.response && error.response.data) || error.message || error.toString()
+          }
+        )
+      } else {
+        this.receive.innerHTML = 'Receive : Vous devez être connecté pour uploader un fichier !'
+      }
     }
   }
 })
 </script>
-
-<style scoped>
-</style>
