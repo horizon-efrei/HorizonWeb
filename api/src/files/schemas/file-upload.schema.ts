@@ -2,7 +2,7 @@ import path from 'path';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, SchemaTypes } from 'mongoose';
 import { uploadConfig } from '../../config';
-import { FileType } from '../../shared/types/file-types.enum';
+import { FileType } from '../../shared/types/file-kinds.enum';
 import { User } from '../../users/user.schema';
 
 @Schema({ timestamps: true })

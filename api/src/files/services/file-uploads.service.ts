@@ -5,7 +5,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import type { Express } from 'express';
 import { Model } from 'mongoose';
 import { uploadConfig } from '../../config';
-import type { FileType } from '../../shared/types/file-types.enum';
+import type { FileType } from '../../shared/types/file-kinds.enum';
 import type { User } from '../../users/user.schema';
 import type { CreateFileUploadDto } from '../dto/create-file-upload.dto';
 import { FileUpload } from '../schemas/file-upload.schema';
