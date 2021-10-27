@@ -64,20 +64,20 @@ export default defineComponent({
       default: () => [
         [
           { to: '/', text: 'Accueil', icon: 'ri-home-3-line' },
-          { to: '/todo_announce', text: 'Annonces', icon: 'ri-alarm-warning-line' },
+          { to: '/todo-announce', text: 'Annonces', icon: 'ri-alarm-warning-line' },
           { to: '/dashboard', text: 'Dashboard admin', icon: 'ri-pie-chart-box-line' }
         ],
         [
-          { to: '/file_upload', text: 'Ajouter un doc', icon: 'ri-folder-upload-line' }
+          { to: '/file-upload', text: 'Ajouter un doc', icon: 'ri-folder-upload-line' }
         ],
         [
-          { to: '/new_post', text: 'Créer un post', icon: 'ri-chat-new-line' },
+          { to: '/new-post', text: 'Créer un post', icon: 'ri-chat-new-line' },
           { to: '/posts', text: 'Tous les posts', icon: 'ri-chat-check-line' }
         ],
         [
-          { to: '/my_account', text: 'Mon compte', icon: 'ri-account-box-line', condition: 'loggedIn' },
-          { to: '/todo_rgpd', text: 'RGPD', icon: 'ri-database-2-line' },
-          { to: '/todo_horizon', text: 'Horizon', icon: 'ri-information-line' }
+          { to: '/my-account', text: 'Mon compte', icon: 'ri-account-box-line', condition: 'loggedIn' },
+          { to: '/todo-rgpd', text: 'RGPD', icon: 'ri-database-2-line' },
+          { to: '/todo-horizon', text: 'Horizon', icon: 'ri-information-line' }
         ]
       ]
     }
