@@ -33,13 +33,12 @@ export class PostsController {
   constructor(
     private readonly postsService: PostsService,
     private readonly postVotesService: PostVotesService,
-  ) {}
+  ) { }
 
   @UsePipes(new ValidationPipe({ transform: true }))
   @UseInterceptors(PostInterceptor)
   @PostRequest()
   public async create(@CurrentUser() user: User, @Body() createPostDto: CreatePostDto): Promise<Post> {
-    console.log('DTO', createPostDto);
     return await this.postsService.create(user, createPostDto);
   }
 

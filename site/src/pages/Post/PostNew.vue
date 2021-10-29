@@ -225,9 +225,9 @@ export default defineComponent({
     const { handleSubmit } = useForm()
 
     function onInvalidSubmit ({ values, errors, results }) {
-      console.log(values) // current form values
-      console.log(errors) // a map of field names and their first error message
-      console.log(results) // a detailed map of field names and their validation results
+      // console.log(values)
+      // console.log(errors)
+      // console.log(results)
     }
 
     const onSubmit = handleSubmit(async function (values) {

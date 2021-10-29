@@ -72,7 +72,6 @@
 <script lang="js">
 import { defineComponent } from 'vue'
 import InputWithIcon from '@/components/Input/InputWithIcon.vue'
-// import { UserIcon, KeyIcon } from '@heroicons/vue/outline'
 import User from '@/models/user'
 // import { useForm, useField } from 'vee-validate'
 
@@ -80,7 +79,6 @@ export default defineComponent({
   name: 'Login',
   components: {
     InputWithIcon
-    // UserIcon, KeyIcon
   },
   emits: ['toggleLogin'],
   setup () {
@@ -127,7 +125,6 @@ export default defineComponent({
   },
   methods: {
     handleLogin () {
-      console.log('handle', this.user.username, this.user.password)
       this.loading = true
 
       //   this.$validator.validateAll().then(isValid => {

@@ -161,9 +161,6 @@ export default defineComponent({
     }
   },
   methods: {
-    testKey (e) {
-      console.log(e)
-    },
     collapseSearch () {
       this.$data.searchVisible = false
       const searchScreen = document.getElementById('search-screen')
