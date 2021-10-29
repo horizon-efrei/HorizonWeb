@@ -2,27 +2,6 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./",
-    // TODO: path mapping
-    /*"paths": {
-      "@": [
-        "src/"
-      ],
-      "@users": [
-        "src/users"
-      ],
-      "@docs": [
-        "src/course-docs"
-      ],
-      "@posts": [
-        "src/posts"
-      ],
-      "@auth": [
-        "src/auth"
-      ],
-      "@shared": [
-        "src/shared"
-      ]
-    },*/
     "checkJs": true,
     "declaration": true,
     "emitDecoratorMetadata": true,
