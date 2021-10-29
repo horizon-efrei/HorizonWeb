@@ -48,7 +48,7 @@ export class Post extends Document {
   views: number;
 
   @Prop({ default: 0 })
-  favs: number;
+  favorites: number;
 
   @Prop({ default: 0 })
   upvotes: number;

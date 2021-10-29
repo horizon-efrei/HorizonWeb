@@ -17,9 +17,9 @@ export class User extends Document {
   password?: string;
 
   @Prop({ default: 0 })
-  rep?: number;
+  reputation?: number;
 
-  @Prop({ default: 'http://localhost:5000/user.png' })
+  @Prop({ default: '' })
   avatar?: string;
 
   createdAt: Date;

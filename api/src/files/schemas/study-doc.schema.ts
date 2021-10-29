@@ -9,6 +9,9 @@ export class StudyDoc extends Document {
   file: FileUpload;
 
   @Prop()
+  name?: string;
+
+  @Prop()
   year?: number;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'CourseSubject' })
@@ -16,9 +19,6 @@ export class StudyDoc extends Document {
 
   @Prop()
   tags?: string[];
-
-  @Prop()
-  docName?: string;
 
   @Prop()
   description?: string;

@@ -5,13 +5,13 @@
       <div class="text-1 text-center flex flex-col flex-shrink-0 w-14 pt-1 pb-2 bg-5 rounded-l-lg">
         <i class="ri-add-line text-xl md:text-2xl mouse-icon" />
         <div class="font-medium">
-          {{ format(post?.likes - post?.dislikes) }}
+          {{ format(post?.upvotes - post?.downvotes) }}
         </div>
         <i class="ri-subtract-line text-xl md:text-2xl -mt-1 mouse-icon" />
         <i class="mt-1 ri-bookmark-line mouse-icon text-lg md:text-xl" />
         <i class="mt-2 ri-star-line text-lg md:text-xl mouse-icon" />
         <div class="text-sm font-medium">
-          {{ format(post?.favs) }}
+          {{ format(post?.favorites) }}
         </div>
       </div>
 
@@ -46,7 +46,7 @@
               class="flex items-center"
             >
               <img
-                :src="post?.author?.avatar"
+                :src="post?.author?.avatar || require('@/assets/img/default_avatars/user.png')"
                 alt="avatar"
                 class="mr-2 w-10 h-10 rounded-full"
               >
@@ -55,7 +55,7 @@
                 <div class="text-1 font-bold text hover:underline">
                   {{ post?.author?.username }}
                 </div>
-                <div class="text-sm text-2">{{ format(post?.author?.rep) }}</div>
+                <div class="text-sm text-2">{{ format(post?.author?.reputation) }}</div>
               </div>
             </a>
             <div class="font-medium text-1 pl-2">
@@ -114,7 +114,7 @@ export default defineComponent({
       default: () => {}
     }
   },
-  setup () {
+  setup (props) {
     var detectWrap = function (className) {
       var wrappedItems = []
       var prevItem = {}

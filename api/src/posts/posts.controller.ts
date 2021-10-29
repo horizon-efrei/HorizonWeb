@@ -33,7 +33,7 @@ export class PostsController {
   constructor(
     private readonly postsService: PostsService,
     private readonly postVotesService: PostVotesService,
-  ) { }
+  ) {}
 
   @UsePipes(new ValidationPipe({ transform: true }))
   @UseInterceptors(PostInterceptor)

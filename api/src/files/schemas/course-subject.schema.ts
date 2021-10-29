@@ -7,10 +7,10 @@ export class CourseSubject extends Document {
   courseCode: string;
 
   @Prop()
-  fullName: string;
+  name: string;
 
   @Prop()
-  fullEnglishName: string;
+  englishName: string;
 
   @Prop()
   description?: string;
