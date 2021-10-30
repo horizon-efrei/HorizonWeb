@@ -6,7 +6,7 @@ services:
     image: postgres:13.4-alpine
     restart: always
     volumes:
-      - dbdata:/var/lib/postgresql/data
+      - ./data/db:/var/lib/postgresql/data
     environment:
       POSTGRES_PASSWORD: root
       POSTGRES_USER: root
@@ -37,6 +37,3 @@ services:
       - horizon-api
     ports:
       - 8080:8080
-
-volumes:
-  dbdata:
