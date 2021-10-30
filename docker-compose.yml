@@ -13,7 +13,7 @@ services:
       POSTGRES_DB: horizon-db
     
   adminer:
-    image: adminer
+    image: adminer:4.8.1-standalone
     restart: always
     depends_on:
       - horizon-db
