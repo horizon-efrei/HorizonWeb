@@ -7,8 +7,6 @@ services:
     restart: always
     volumes:
       - dbdata:/var/lib/postgresql/data
-    ports:
-      - 5432:5432
     environment:
       POSTGRES_PASSWORD: root
       POSTGRES_USER: root
