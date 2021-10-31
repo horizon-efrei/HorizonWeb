@@ -1,36 +1,33 @@
 <template>
   <nav
     id="topbar"
-    class="flex fixed top-0 left-0 w-full h-tbar border-bar text-1 items-center justify-between border-b"
-    :class="bg"
+    class="bg-1 flex fixed top-0 left-0 w-full h-tbar text-1 items-center justify-between border-b"
   >
     <div class="flex flex-shrink-0 px-4 w-sbar items-center justify-center">
       <button
-        class="mr-4"
         aria-label="Open Menu"
         @click="$emit('openSidebar')"
       >
-        <i class="ri-menu-line" />
+        <i class="ri-menu-line text-2xl" />
       </button>
-      <div class="brand w-32 h-6 mt-1.5" />
+      <!-- <div class="brand w-32 h-6 mt-1.5" /> -->
     </div>
 
     <div class="w-full h-full flex items-center">
       <div class="relative bg-transparent flex-grow px-6">
-        <span class="absolute inset-y-0 right-0 flex items-center pr-6">
-          <i
-            class="p-1 ri-file-search-line text-hover-brand transition-colors"
-            @click="() => $emit('launchSearch')"
-          />
-        </span>
         <input
           id="search-input"
           type="text"
-          class="w-full text-1 placeholder-3 p-1.5 pr-10 text-lg border-b-2 bc-alt-1 bc-mouse-brand outline-none"
-          :class="bg"
+          class="bg-1 w-full text-1 placeholder-3 px-3 py-1.5 pr-10 text-lg border-b-2 border-color-4 hover:border-indigo-500 focus-border-1 focus:ring-4 focus:rounded-md outline-none"
           placeholder="Rechercher..."
           @input="(e) => $emit('updateSearch', e.target.value)"
         >
+        <span class="absolute inset-y-0 right-0 flex items-center pr-6">
+          <i
+            class="p-1 ri-file-search-line hover:text-indigo-300 focus:text-blue-400 text-2xl"
+            @click="() => $emit('launchSearch')"
+          />
+        </span>
       </div>
     </div>
 
@@ -43,8 +40,10 @@
         @click="$emit('toggleLogin')"
       >
         <div class="flex space-x-2 items-center">
+          <p class="text-md">
+            SE CONNECTER
+          </p>
           <i class="ri-login-circle-line text-xl" />
-          <p>SE CONNECTER</p>
         </div>
       </button>
     </div>
@@ -80,11 +79,6 @@ export default {
     'closeSidebar',
     'toggleLogin'
   ],
-  data () {
-    return {
-      bg: 'bg-1'
-    }
-  },
   computed: {
     loggedIn () {
       return this.$store.state.auth.status.loggedIn
@@ -96,10 +90,10 @@ export default {
 }
 </script>
 
-<style>
-  @import "~@/assets/css/utils/switch.css";
+<style lang="scss">
+  @import "~@/assets/scss/utils/get-color.scss";
 
-  .topbar-icon {
-      @apply mr-6 w-6 h-6;
+  input.focus-border-1:focus {
+    @include get-color('border', 1, true);
   }
 </style>

@@ -190,7 +190,7 @@ export default defineComponent({
 * {
   font-family: AtkinsonHyperlegible;
   font-size: 14px;
-  transition: color 300ms, box-shadow 300ms, background-color 300ms linear, border 300ms, outline 300ms, fill 300ms, stroke 300ms, filter 200ms;
+  transition: color 300ms, box-shadow 300ms, background-color 300ms linear, border-color 300ms, border-radius 300ms, fill 300ms, stroke 300ms, filter 200ms;
 }
 
 @media (min-width: 720px) {
