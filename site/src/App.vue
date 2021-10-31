@@ -1,69 +1,108 @@
 <template>
-  <sliding-sidebar @closeSidebar="sidebarHandler" />
-  <div
-    v-if="showLogin"
-    class="fixed top-0 left-0 w-screen h-screen z-50"
-    @click="toggleLogin"
-  >
-    <login
-      @click.stop="() => {}"
-      @toggleLogin="toggleLogin"
-    />
-  </div>
-  <div
-    id="main-container"
-    class="relative flex flex-row-reverse filter h-screen w-screen z-1"
-  >
-    <search-query ref="searchQuery" />
+  <div>
+    <div
+      v-if="showLogin"
+      class="fixed top-0 left-0 w-screen h-screen z-50"
+      @click="toggleLogin"
+    >
+      <login
+        @click.stop="() => {}"
+        @toggleLogin="toggleLogin"
+      />
+    </div>
 
     <div
-      id="content-wrapper"
-      class="w-full bg-2 h-content flex flex-col relative top-tbar overflow-auto app-scrollbar"
+      class="relative flex flex-row filter h-screen w-screen z-1"
+      :class="{'brightness-50': showLogin}"
     >
+      <sidebar
+        ref="sidebar"
+        :closed="closedSidebar && !uncollapsedSidebar"
+        :uncollapsed="uncollapsedSidebar"
+        :collapsing="collapsingSidebar"
+        @closeSidebar="toggleSidebar"
+      />
       <div
-        id="content"
-        class="flex-grow-1 flex-shrink-0 flex-auto"
+        ref="content"
+        :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
+        class="deep-inner-shadow w-full bg-2 h-content flex flex-col relative top-tbar overflow-auto app-scrollbar filter"
       >
-        <router-view class="my-7 mx-9" />
+        <div
+          class="flex-grow-1 flex-shrink-0 flex-auto"
+        >
+          <router-view class="my-7 mx-9" />
+        </div>
+        <page-footer class="flex-shrink-0" />
       </div>
-      <Footer class="flex-shrink-0" />
+      <topbar
+        ref="topbar"
+        class="flex fixed top-0 left-0 w-full h-tbar border-bar
+      text-1 items-center justify-between border-b bg-1 filter"
+        :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
+        @toggleLogin="toggleLogin"
+        @launchSearch="launchSearch"
+        @updateSearch="updateSearch"
+        @openSidebar="toggleSidebar"
+      />
     </div>
-    <topbar
-      ref="topbar"
-      @toggleLogin="toggleLogin"
-      @launchSearch="launchSearch"
-      @updateSearch="updateSearch"
-      @openSidebar="sidebarHandler"
-    />
-    <sidebar @closeSidebar="sidebarHandler" />
   </div>
 </template>
 
 <script lang="js">
+import debounce from 'lodash/debounce'
 import Login from '@/components/Login.vue'
-import Footer from '@/components/Footer.vue'
+import PageFooter from '@/components/PageFooter.vue'
 
-import { defineComponent, watch } from 'vue'
+import { defineComponent, watch, ref } from 'vue'
 
 import Topbar from '@/components/Topbar.vue'
-import Sidebar from '@/components/Sidebar/Sidebar.vue'
-import SlidingSidebar from '@/components/Sidebar/SlidingSidebar.vue'
-import SearchQuery from '@/components/SearchQuery.vue'
-
+import Sidebar from '@/components/Sidebar.vue'
+const breakWidth = 1024
 export default defineComponent({
   components: {
     Login,
     Topbar,
     Sidebar,
-    SlidingSidebar,
-    SearchQuery,
-    Footer
+    PageFooter
+  },
+  setup () {
+    const sidebar = ref(null)
+    const topbar = ref(null)
+    const content = ref(null)
+    return { sidebar, topbar, content }
   },
   data () {
+    const isScreenSmall = () => Math.max(
+      document.documentElement.clientWidth ||
+        0, window.innerWidth || 0) <= breakWidth
+
+    const checkResize = debounce(() => {
+      if (!this.isScreenSmall() && this.smallScreen) {
+        this.smallScreen = false
+
+        if (this.uncollapsedSidebar) {
+          this.uncollapsedSidebar = false
+          this.topbar.$el.removeEventListener('mousedown', this.toggleSidebar)
+          this.content.removeEventListener('mousedown', this.toggleSidebar)
+        }
+        if (this.closedSidebar) {
+          this.closedSidebar = false
+        }
+      } else if (this.isScreenSmall() && !this.smallScreen) {
+        this.smallScreen = true
+        if (!this.closedSidebar) {
+          this.closedSidebar = true
+        }
+      }
+    }, 50)
+
     return {
-      showSidebar: false,
-      reachedBreak: false,
-      breakWidth: 1024,
+      checkResize,
+      isScreenSmall,
+      closedSidebar: isScreenSmall(),
+      uncollapsedSidebar: false,
+      collapsingSidebar: false,
+      smallScreen: isScreenSmall(),
       showLogin: false
     }
   },
@@ -89,107 +128,61 @@ export default defineComponent({
       }
     })
     window.addEventListener('resize', this.checkResize)
-    window.addEventListener('keydown', this.checkKeydown)
-    this.checkResize()
   },
   unmounted () {
     window.removeEventListener('resize', this.checkResize)
-    window.removeEventListener('keydown', this.checkKeydown)
   },
   methods: {
-    checkKeydown (e) {
-      if (e.key === 'Escape') {
-        if (this.$data.showSidebar) {
-          this.sidebarHandler()
-        } else if (this.$refs.searchQuery.$data.searchVisible) {
-          this.$refs.searchQuery.collapseSearch()
+    toggleSidebar () {
+      if (this.smallScreen) {
+        if (this.uncollapsedSidebar) {
+          this.topbar.$el.removeEventListener('mousedown', this.toggleSidebar)
+          this.content.removeEventListener('mousedown', this.toggleSidebar)
+          this.collapsingSidebar = true
+          console.log(this.sidebar)
+          this.sidebar.$el.addEventListener('transitionend', () => {
+            this.uncollapsedSidebar = false
+            this.collapsingSidebar = false
+          }, { once: true })
+        } else {
+          this.uncollapsedSidebar = true
+          this.topbar.$el.addEventListener('mousedown', this.toggleSidebar)
+          this.content.addEventListener('mousedown', this.toggleSidebar)
         }
-      }
-    },
-    checkResize () {
-      const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-      this.$refs.searchQuery.checkResize()
-      if (vw > this.$data.breakWidth && !this.$data.reachedBreak) {
-        const slideSidebar = document.getElementById('slide-sidebar')
-        if (!slideSidebar.classList.contains('-l-sbar')) {
-          slideSidebar.classList.add('-l-sbar')
-        }
-
-        if (!this.showLogin) {
-          const mainContainer = document.getElementById('main-container')
-          mainContainer.classList.remove('brightness-50')
-        }
-
-        this.$data.reachedBreak = true
-      } else if (vw <= this.$data.breakWidth && this.$data.reachedBreak) {
-        this.$data.reachedBreak = false
-      }
-    },
-    sidebarHandler () {
-      const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-      const slideSidebar = document.getElementById('slide-sidebar')
-      const mainContainer = document.getElementById('main-container')
-      if (vw > this.$data.breakWidth && !this.$refs.searchQuery.$data.searchVisible) {
-      //   this.$data.showSidebar = false
-      } else if (!this.$data.showSidebar) {
-        slideSidebar.classList.remove('-l-sbar')
-        mainContainer.classList.add('brightness-50')
-        this.$data.showSidebar = true
-        mainContainer.addEventListener('mousedown', this.sidebarHandler, { once: true })
-      } else if (this.$data.showSidebar) {
-        slideSidebar.classList.add('-l-sbar')
-        mainContainer.classList.remove('brightness-50')
-        this.$data.showSidebar = false
-        mainContainer.removeEventListener('mousedown', this.sidebarHandler, { once: true })
+      } else {
+        this.closedSidebar = !this.closedSidebar
       }
     },
     toggleLogin () {
-      const mainContainer = document.getElementById('main-container')
       this.showLogin = !this.showLogin
       if (this.showLogin) {
-        if (this.$data.showSidebar) {
-          this.sidebarHandler()
+        if (this.uncollapsedSidebar) {
+          this.toggleSidebar()
         }
-        mainContainer.classList.add('brightness-50')
-      } else {
-        mainContainer.classList.remove('brightness-50')
       }
-    },
-    updateSearch (e) {
-      this.$refs.searchQuery.updateQuery(e)
-    },
-    launchSearch (e) {
-      const input = document.getElementById('search-input')
-      this.$refs.searchQuery.launchSearch(input.value)
     }
   }
 })
 </script>
 
 <style lang="scss">
+
 @import "~@/assets/scss/themes.scss";
 @import "~@/assets/css/utils/spacing.css";
 
-.icon {
-  @apply h-6 float-right pl-6;
-}
-
-#content-wrapper::after {
+.deep-inner-shadow::after {
   content: '';
-  @apply shadow-inner-deep dark:shadow-dark-inner-deep h-full w-full absolute top-0 left-0 pointer-events-none
+  @apply shadow-inner-deep dark:shadow-dark-inner-deep h-full w-full absolute top-0 left-0 pointer-events-none;
 }
 
 * {
-  transition: color 300ms, box-shadow 300ms, background-color 300ms linear, border 300ms, outline 300ms, fill 300ms, stroke 300ms, filter 500ms;
-}
-
-html {
-  font-size: 13px;
+  font-size: 14px;
+  transition: color 300ms, box-shadow 300ms, background-color 300ms linear, border 300ms, outline 300ms, fill 300ms, stroke 300ms, filter 200ms;
 }
 
 @media (min-width: 720px) {
   html {
-    font-size: 15px;
+    font-size: 16px;
   }
 }
 </style>

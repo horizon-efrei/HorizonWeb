@@ -1,6 +1,6 @@
 :root {
     --topbar-height: 4.5rem;
-    --sidebar-width: 14rem;
+    --sidebar-width: 8rem;
     --collapse-width: 900px;
     --expander-transition-time: 3s;
 }
