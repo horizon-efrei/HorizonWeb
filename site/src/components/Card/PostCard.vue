@@ -1,7 +1,6 @@
 <template>
   <div class="bg-0 rounded-lg shadow hover:shadow-lg rounded-l-xl duration-500">
     <div class="flex gap-3">
-      <!-- Meta Column -->
       <div class="text-1 text-center flex flex-col flex-shrink-0 w-14 pt-1 pb-2 bg-5 rounded-l-lg">
         <i class="ri-add-line text-xl md:text-2xl mouse-icon" />
         <div class="font-medium">
@@ -15,7 +14,6 @@
         </div>
       </div>
 
-      <!-- Summary Column -->
       <div class="pl-1 pr-4 my-3 mr-2">
         <span class="font-light text-3 flex flex-wrap space-x-1 items-center h-6 whitespace-nowrap overflow-hidden">
           <div class="flex space-x-1 pl-1"><i
@@ -37,13 +35,11 @@
           </p>
         </div>
 
-        <!-- Question Labels -->
         <div class="relative">
-          <!-- Categories  -->
-          <div class="flex flex-wrap items-start space-x-2 h-12 mt-4 space-y-2 overflow-hidden mr-4">
+          <div class="flex items-start space-x-2 h-12 mt-4 space-y-2 mr-4">
             <a
               href="#"
-              class="flex items-center"
+              class="flex flex-shrink-0 items-center"
             >
               <img
                 :src="post?.author?.avatar || require('@/assets/img/default_avatars/user.png')"
@@ -58,33 +54,11 @@
                 <div class="text-sm text-2">{{ format(post?.author?.reputation) }}</div>
               </div>
             </a>
-            <div class="font-medium text-1 pl-2">
+            <div class="flex-shrink-0 font-medium text-1 pl-2">
               Tags :
             </div>
-            <div
-              v-if="post?.tags?.length === 0 || post?.tags === undefined"
-              class="text-1"
-            >
-              N/A
-            </div>
-            <Tag
-              v-for="tag in post.tags"
-              v-else
-              :key="tag"
-              :name="tag"
-              :color="'red-500'"
-            />
+            <tags-list :tags="post?.tags" />
           </div>
-          <div
-            class="absolute left-40 text-blue-500"
-            style="bottom: -10px;"
-          >
-            + 5 tags
-          </div>
-          <!-- User
-                <div class="block">
-
-                </div> -->
         </div>
       </div>
     </div>
@@ -94,7 +68,7 @@
 <script lang="js">
 import { defineComponent } from 'vue'
 import { generateHTML } from '@tiptap/html'
-import Tag from '@/components/Tag.vue'
+import TagsList from '@/components/List/TagsList.vue'
 import StarterKit from '@tiptap/starter-kit'
 import Highlight from '@tiptap/extension-highlight'
 import Typography from '@tiptap/extension-typography'
@@ -106,39 +80,12 @@ const abbrev = 'kmb'
 export default defineComponent({
   name: 'PostListingCard',
   components: {
-    Tag
+    TagsList
   },
   props: {
     post: {
       type: Object,
       default: () => {}
-    }
-  },
-  setup (props) {
-    var detectWrap = function (className) {
-      var wrappedItems = []
-      var prevItem = {}
-      var currItem = {}
-      var items = document.getElementsByClassName(className)
-
-      for (var i = 0; i < items.length; i++) {
-        currItem = items[i].getBoundingClientRect()
-        if (prevItem && prevItem.top < currItem.top) {
-          wrappedItems.push(items[i])
-        } else {
-          items[i].classList.remove('wrapped')
-        }
-        prevItem = currItem
-      }
-
-      return wrappedItems
-    }
-
-    window.onresize = function () {
-      var wrappedItems = detectWrap('tag')
-      for (var k = 0; k < wrappedItems.length; k++) {
-        wrappedItems[k].classList.add('wrapped')
-      }
     }
   },
   data () {

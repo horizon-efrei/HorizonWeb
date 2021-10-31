@@ -11,7 +11,7 @@
       </h3>
     </div>
     <div class="relative mt-32 mb-10 flex flex-col mx-auto w-11/12">
-      <PostListingCard
+      <post-card
         v-for="post in posts"
         :key="post.id"
         class="mb-4"
@@ -23,11 +23,11 @@
 
 <script lang="js">
 import { defineComponent } from 'vue'
-import PostListingCard from '@/components/Card/PostListingCard.vue'
+import PostCard from '@/components/Card/PostCard.vue'
 
 export default defineComponent({
   name: 'PostList',
-  components: { PostListingCard },
+  components: { PostCard },
   data () {
     return {
       posts: []

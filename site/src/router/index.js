@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import AdminSide from '@/pages/AdminSide.vue'
 import Landing from '@/pages/Landing.vue'
-import PostCompactView from '@/pages/Post/PostCompactView.vue'
+import ThreadCompactView from '@/pages/Post/ThreadCompactView.vue'
 import PostNew from '@/pages/Post/PostNew.vue'
 import FileUpload from '@/pages/FileUpload.vue'
 import PostList from '@/pages/Post/PostList.vue'
@@ -15,7 +15,7 @@ const routes = [
   },
   {
     path: '/post/:id',
-    component: PostCompactView,
+    component: ThreadCompactView,
     props: {
       post: {
         views: 194,
