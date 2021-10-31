@@ -5,14 +5,14 @@
     >
       <div class="px-6">
         <h2 class="text-2xl mb-2 text-2">
-          Forums Horizon
+          Horizon Web 🌐
         </h2>
         <h3 class="text-4xl font-bold mb-8 text-0">
           Résolution de problèmes &amp; collaboration étudiante.
         </h3>
         <router-link to="/new-post">
           <button
-            class="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider"
+            class="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-widest"
           >
             Créer un post
           </button>
@@ -22,7 +22,7 @@
 
     <!-- Features -->
     <section class="mx-auto px-8 py-10">
-      <h2 class="text-4xl font-bold text-center text-1 mb-12 uppercase">
+      <h2 class="text-4xl font-bold text-center text-1 mb-12 uppercase tracking-wider">
         Fonctionnalités
       </h2>
       <div class="flex items-center flex-wrap mb-20">
@@ -49,16 +49,16 @@
             :navigation="true"
           >
             <swiper-slide>
-              <post-listing-card :post="posts[0]" />
+              <post-card :post="posts[0]" />
             </swiper-slide>
             <swiper-slide>
-              <post-listing-card :post="posts[1]" />
+              <post-card :post="posts[1]" />
             </swiper-slide>
             <swiper-slide>
-              <post-listing-card :post="posts[2]" />
+              <post-card :post="posts[2]" />
             </swiper-slide>
             <swiper-slide>
-              <post-listing-card :post="posts[3]" />
+              <post-card :post="posts[3]" />
             </swiper-slide>
           </swiper>
         </div>
@@ -219,7 +219,7 @@
 </template>
 
 <script lang="js">
-import PostListingCard from '@/components/Card/PostListingCard'
+import PostCard from '@/components/Card/PostCard'
 import { defineComponent } from 'vue'
 import { Swiper, SwiperSlide } from 'swiper/vue'
 
@@ -243,29 +243,17 @@ export default defineComponent({
   components: {
     Swiper,
     SwiperSlide,
-    PostListingCard,
+    PostCard,
     TagsInput
   },
   inheritAttrs: false,
-  setup () {
-    const onSwiper = (swiper) => {
-      console.log(swiper)
-    }
-    const onSlideChange = () => {
-      console.log('slide change')
-    }
-    return {
-      onSwiper,
-      onSlideChange
-    }
-  },
   data () {
     return {
       posts: [
-        { type: 3, state: 0, tags: ['émargement', 'présence', 'promo:l2', 'cours', 'importance:moyenne', 'fréquence:régulier'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Problème observé: les étudiants sont parfois notés absents à des cours auxquels ils sont présents (particulièrement en ligne)"}]},{"type":"paragraph","content":[{"type":"text","text":"Solution potentielle: mettre en place un système d’émargement électronique officiel"}]}]}', title: 'Problème avec le système d\'émargement en L2', author: { username: 'Sophie H.', avatar: require('@/assets/img/landing/girl_1.jpg'), reputation: 50200 }, favorites: 33, likes: 243, views: 44653, dislikes: 3, createdAt: '2021-10-18T13:51:36.631Z', updatedAt: '2021-10-18T13:51:36.631Z' },
-        { type: 2, state: 1, tags: ['terrasse', 'promo:toutes', 'matériel', 'importance:moyenne', 'difficulté:facile'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Les poufs sur la terrasse au dessus du fab lab sont laissés en extérieur la nuit ce qui les salit quand il pleut."}]},{"type":"paragraph","content":[{"type":"text","text":"Peut-être que les étudiants pourraient être autorisés et encourager à les ranger dans le hall du Bât. C ou dans le Bât. A les soirs de pluie ?"}]}]}', title: 'Rangement des poufs sur la terrasse du Bât. I', author: { username: 'Jean R.', avatar: require('@/assets/img/landing/guy_1.jpg'), reputation: 2021 }, favorites: 104, likes: 1255, views: 27553, dislikes: 3, createdAt: '2021-10-15T13:51:36.631Z', updatedAt: '2021-10-17T13:51:36.631Z' },
-        { type: 1, state: 1, tags: ['pave', 'déclaration pave', 'promo:toutes', 'urgence:haute'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"J\'ai entendu dire qu\'il y\'avait besoin de remplir une déclaration de PAVE pour avoir ses points pour un semestre donné, mais je ne la connais pas."}]},{"type":"paragraph","content":[{"type":"text","text":"Est-ce quelqu\'un pourrait me montrer comment faire, étape par étape ?"}]}]}', title: 'Comment déclarer sa PAVE ?', author: { username: 'Emma L.', avatar: require('@/assets/img/landing/girl_2.jpg'), reputation: 1234 }, favorites: 95, likes: 1004, views: 16993, dislikes: 3, createdAt: '2021-10-01T13:51:36.631Z', updatedAt: '2021-10-08T13:51:36.631Z' },
-        { type: 4, state: 0, tags: ['stage', 'sopra steria', 'promo:m1', 'expérience'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Bonjour à tous ! J\'ai reçu une proposition de stage chez Sopra, mais j\'hésite encore à l\'accepter"}]},{"type":"paragraph","content":[{"type":"text","text":"Pour ceux qui ont déjà fait un stage chez eux, comment fut votre expérience là-bas ? Avez-vous des conseils ?"}]}]}', title: 'Retour d\'expérience Sopra Steria', author: { username: 'Stéphane M.', avatar: require('@/assets/img/landing/guy_2.jpg'), reputation: 234 }, favorites: 12, likes: 430, views: 4683, dislikes: 3, createdAt: '2021-02-04T13:51:36.631Z', updatedAt: '2021-03-04T13:51:36.631Z' }
+        { type: 3, state: 0, tags: ['émargement', 'présence', 'promo:l2', 'cours', 'importance:moyenne', 'fréquence:régulier'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Problème observé: les étudiants sont parfois notés absents à des cours auxquels ils sont présents (particulièrement en ligne)"}]},{"type":"paragraph","content":[{"type":"text","text":"Solution potentielle: mettre en place un système d’émargement électronique officiel"}]}]}', title: 'Problème avec le système d\'émargement en L2', author: { username: 'Sophie H.', avatar: require('@/assets/img/landing/girl_1.jpg'), reputation: 50200 }, favorites: 33, upvotes: 243, views: 44653, downvotes: 3, createdAt: '2021-10-18T13:51:36.631Z', updatedAt: '2021-10-18T13:51:36.631Z' },
+        { type: 2, state: 1, tags: ['terrasse', 'promo:toutes', 'matériel', 'importance:moyenne', 'difficulté:facile'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Les poufs sur la terrasse au dessus du fab lab sont laissés en extérieur la nuit ce qui les salit quand il pleut."}]},{"type":"paragraph","content":[{"type":"text","text":"Peut-être que les étudiants pourraient être autorisés et encourager à les ranger dans le hall du Bât. C ou dans le Bât. A les soirs de pluie ?"}]}]}', title: 'Rangement des poufs sur la terrasse du Bât. I', author: { username: 'Jean R.', avatar: require('@/assets/img/landing/guy_1.jpg'), reputation: 2021 }, favorites: 104, upvotes: 1255, views: 27553, downvotes: 3, createdAt: '2021-10-15T13:51:36.631Z', updatedAt: '2021-10-17T13:51:36.631Z' },
+        { type: 1, state: 1, tags: ['pave', 'déclaration pave', 'promo:toutes', 'urgence:haute'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"J\'ai entendu dire qu\'il y\'avait besoin de remplir une déclaration de PAVE pour avoir ses points pour un semestre donné, mais je ne la connais pas."}]},{"type":"paragraph","content":[{"type":"text","text":"Est-ce quelqu\'un pourrait me montrer comment faire, étape par étape ?"}]}]}', title: 'Comment déclarer sa PAVE ?', author: { username: 'Emma L.', avatar: require('@/assets/img/landing/girl_2.jpg'), reputation: 1234 }, favorites: 95, upvotes: 1004, views: 16993, downvotes: 3, createdAt: '2021-10-01T13:51:36.631Z', updatedAt: '2021-10-08T13:51:36.631Z' },
+        { type: 4, state: 0, tags: ['stage', 'sopra steria', 'promo:m1', 'expérience'], body: '{"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Bonjour à tous ! J\'ai reçu une proposition de stage chez Sopra, mais j\'hésite encore à l\'accepter"}]},{"type":"paragraph","content":[{"type":"text","text":"Pour ceux qui ont déjà fait un stage chez eux, comment fut votre expérience là-bas ? Avez-vous des conseils ?"}]}]}', title: 'Retour d\'expérience Sopra Steria', author: { username: 'Stéphane M.', avatar: require('@/assets/img/landing/guy_2.jpg'), reputation: 234 }, favorites: 12, upvotes: 430, views: 4683, downvotes: 3, createdAt: '2021-02-04T13:51:36.631Z', updatedAt: '2021-03-04T13:51:36.631Z' }
       ]
     }
   }
