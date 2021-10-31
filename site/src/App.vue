@@ -170,12 +170,25 @@ export default defineComponent({
 @import "~@/assets/scss/themes.scss";
 @import "~@/assets/css/utils/spacing.css";
 
+@font-face {
+  font-family: AtkinsonHyperlegible;
+  font-weight: 400;
+  src: url("~@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: AtkinsonHyperlegible;
+  font-weight: 800;
+  src: url("~@/assets/font/AtkinsonHyperlegible/AtkinsonHyperlegible-Bold.ttf") format("truetype");
+}
+
 .deep-inner-shadow::after {
   content: '';
   @apply shadow-inner-deep dark:shadow-dark-inner-deep h-full w-full absolute top-0 left-0 pointer-events-none;
 }
 
 * {
+  font-family: AtkinsonHyperlegible;
   font-size: 14px;
   transition: color 300ms, box-shadow 300ms, background-color 300ms linear, border 300ms, outline 300ms, fill 300ms, stroke 300ms, filter 200ms;
 }
