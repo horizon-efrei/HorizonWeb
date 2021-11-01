@@ -98,7 +98,7 @@
                 class="
                     rounded-l
                     input
-                    input-border-no-shadow
+                    input-border
                     bg-2
                     py-2
                     px-4
@@ -115,7 +115,7 @@
                 class="
                     rounded-l
                     input
-                    input-border-no-shadow
+                    input-border
                     bg-2
                     py-2
                     px-4
@@ -131,7 +131,7 @@
                 class="
                     rounded-l
                     input
-                    input-border-no-shadow
+                    input-border
                     bg-2
                     py-2
                     px-4
@@ -149,7 +149,7 @@
                 class="
                     rounded-l
                     input
-                    input-border-no-shadow
+                    input-border
                     bg-2
                     py-2
                     px-4

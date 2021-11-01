@@ -10,9 +10,9 @@
 }
 
 .input-border:focus, .input-border[focused=true], .input-border[active] {
-    @apply border-yellow-400;
+    @apply border-yellow-500 dark:border-yellow-400;
     outline: 0;
-    box-shadow: 0 1px 8px rgba(245, 121, 83, 0.6);
+    box-shadow: 0 1px 8px rgba(247, 190, 68, 0.6);
 }
 
 .input {
