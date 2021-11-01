@@ -176,7 +176,13 @@ export default defineComponent({
 <style lang="scss">
 
 @import "~@/assets/scss/themes.scss";
-@import "~@/assets/css/utils/spacing.css";
+
+@import "~@/assets/scss/components/button.scss";
+@import "~@/assets/scss/components/card.scss";
+@import "~@/assets/scss/components/input.scss";
+@import "~@/assets/scss/components/section.scss";
+
+@import "~@/assets/css/constants/spacing.css";
 
 @font-face {
   font-family: AtkinsonHyperlegible;

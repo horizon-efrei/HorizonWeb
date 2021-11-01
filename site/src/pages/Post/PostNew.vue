@@ -311,9 +311,6 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-  @import "~@/assets/scss/components/input.scss";
-  @import "~@/assets/scss/components/card.scss";
-
   .success-message {
     @apply text-blue-400;
   }

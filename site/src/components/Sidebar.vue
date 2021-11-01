@@ -142,8 +142,7 @@ export default defineComponent({
 </script>
 
 <style>
-@import "~@/assets/css/utils/button.css";
-@import "~@/assets/css/utils/switch.css";
+@import "~@/assets/css/components/switch.css";
 
 .tr-spacing {
   transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms, margin-left 500ms;

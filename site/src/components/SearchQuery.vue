@@ -63,7 +63,6 @@
             <div class="flex">
               <div
                 class="
-                  hover:bg-opaque
                   button
                   bc-2
                   mr-2
@@ -83,7 +82,7 @@
               </div>
 
               <div
-                class="previewer bg-opaque p-3 pb-0 pr-0 mb-2 rounded-lg"
+                class="previewer p-3 pb-0 pr-0 mb-2 rounded-lg"
                 @wheel="scrollHorizontal($event)"
                 @scroll="checkScrollersAfterScroll($event.currentTarget)"
               >

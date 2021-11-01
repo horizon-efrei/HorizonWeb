@@ -38,18 +38,6 @@
 @include tailwind-color('text', true);
 @include tailwind-color('border', true, 'border-color');
 
-.bg-opaque {
-    @apply bg-gray-300 dark:bg-gray-500
-}
-
-.bg-content {
-    @apply bg-gray-300 dark:bg-gray-600
-}
-
-.bg-alt-content {
-    @apply bg-gray-900 dark:bg-gray-300
-}
-
 .border-footer {
     @apply border-gray-300 dark:border-gray-400
 }
@@ -65,10 +53,6 @@
 
 .text-hover-brand {
     @apply hover:text-indigo-300 focus:outline-none focus:text-blue-400
-}
-
-.border-brand {
-    @apply hover:border-indigo-300 focus:outline-none focus:border-blue-400
 }
 
 .bg-mouse-brand {

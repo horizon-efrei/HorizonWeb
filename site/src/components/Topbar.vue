@@ -24,7 +24,7 @@
         >
         <span class="absolute inset-y-0 right-0 flex items-center pr-6">
           <i
-            class="p-1 ri-file-search-line hover:text-indigo-300 focus:text-blue-400 text-2xl"
+            class="p-1 ri-file-search-line mouse-icon text-2xl"
             @click="() => $emit('launchSearch')"
           />
         </span>
