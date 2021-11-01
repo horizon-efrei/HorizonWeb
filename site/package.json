@@ -22,6 +22,7 @@
     "axios": "^0.23.0",
     "core-js": "^3.6.5",
     "lodash": "^4.17.21",
+    "mitt": "^3.0.0",
     "remixicon": "^2.5.0",
     "swiper": "^6.8.4",
     "vee-validate": "^4.5.4",
