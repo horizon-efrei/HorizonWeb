@@ -15,4 +15,8 @@ export class UserPublicDto {
   @Expose()
   @IsNotEmpty()
   avatar: string;
+
+  @Expose()
+  @IsNotEmpty()
+  reputation: string;
 }

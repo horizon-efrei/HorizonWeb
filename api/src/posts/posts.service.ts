@@ -31,7 +31,7 @@ export class PostsService {
         limit: paginationOptions.itemsPerPage,
         populate: {
           path: 'author',
-          select: 'username avatar rep',
+          select: 'username avatar reputation',
         },
       }));
     }

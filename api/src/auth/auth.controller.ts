@@ -14,12 +14,12 @@ import type { CookieOptions } from 'express';
 import { Request as Req, Response as Res } from 'express';
 import { CurrentUser } from '../shared/decorators/current-user.decorator';
 import { UserInterceptor } from '../shared/interceptors/user.interceptor';
+import { UserPublicDto } from '../users/dto/user-public.dto';
 import { User } from '../users/user.schema';
 import { UserService } from '../users/users.service';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
-import { UserPublicDto } from './dto/user-public.dto';
 import { JwtAuthGuard } from './jwt-auth.guard';
 
 const cookieOptions: Partial<CookieOptions> = {
