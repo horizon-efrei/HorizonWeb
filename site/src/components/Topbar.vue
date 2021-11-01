@@ -6,7 +6,7 @@
     <div class="flex flex-shrink-0 px-4 w-sbar items-center justify-center">
       <button
         aria-label="Open Menu"
-        @click="$emit('openSidebar')"
+        @click="$emit('toggleSidebar')"
       >
         <i class="ri-menu-line text-2xl" />
       </button>
@@ -61,24 +61,41 @@
         />
       </div>
     </div>
+
+    <component
+      :is="loginComponent"
+      v-if="showLogin"
+    />
   </nav>
 </template>
 
 <script>
 
 import UserCard from '@/components/Card/UserCard.vue'
+import Login from '@/components/Login.vue'
 
 export default {
   components: {
-    UserCard
+    UserCard,
+    Login
+  },
+  props: {
+    showLogin: {
+      type: Boolean,
+      default: false
+    }
   },
   emits: [
     'launchSearch',
     'updateSearch',
-    'openSidebar',
-    'closeSidebar',
+    'toggleSidebar',
     'toggleLogin'
   ],
+  data () {
+    return {
+      loginComponent: null
+    }
+  },
   computed: {
     loggedIn () {
       return this.$store.state.auth.status.loggedIn
@@ -86,6 +103,9 @@ export default {
     user () {
       return this.$store.state.auth.user
     }
+  },
+  mounted () {
+    this.loginComponent = 'login'
   }
 }
 </script>

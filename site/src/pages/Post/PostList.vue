@@ -18,11 +18,17 @@
         :post="post"
       />
     </div>
+    <button
+      class="relative button"
+      @click="refreshPosts"
+    >
+      Refresh
+    </button>
   </div>
 </template>
 
 <script lang="js">
-import { defineComponent } from 'vue'
+import { defineComponent, watch } from 'vue'
 import PostCard from '@/components/Card/PostCard.vue'
 
 export default defineComponent({
@@ -30,22 +36,40 @@ export default defineComponent({
   components: { PostCard },
   data () {
     return {
-      posts: []
+      posts: this.$store.state.posts.posts
     }
   },
-  created () {
-    this.$store.dispatch('posts/fetchPosts', { page: this.$store.state.posts.page }).then(
-      data => {
-        this.posts = this.$store.state.posts.posts
-      },
-      error => {
-        this.loading = false
-        this.message =
-                (error.response && error.response.data) ||
-                error.message ||
-                error.toString()
+  computed: {
+    loggedIn () {
+      return this.$store.state.auth.status.loggedIn
+    }
+  },
+  mounted () {
+    this.emitter.on('login', () => {
+      this.loadPosts()
+    })
+
+    this.emitter.on('logout', () => {
+      this.$store.dispatch('posts/refreshPosts')
+    })
+
+    watch(() => this.$store.getters['posts/getPosts'], (posts) => {
+      this.posts = posts
+    })
+
+    if (this.loggedIn) {
+      this.loadPosts()
+    }
+  },
+  methods: {
+    refreshPosts () {
+      this.$store.dispatch('posts/newFetchPosts')
+    },
+    loadPosts () {
+      if (this.$store.state.posts.page === 0) {
+        this.$store.dispatch('posts/fetchPosts')
       }
-    )
+    }
   }
 })
 </script>

@@ -1,72 +1,73 @@
 <template>
-  <div
-    class="w-11/12 p-12 sm:w-8/12 md:w-6/12 lg:w-5/12 2xl:w-4/12
+  <teleport to="#global-modal">
+    <div
+      class="w-11/12 p-12 sm:w-8/12 md:w-6/12 lg:w-5/12 2xl:w-4/12
         px-10 pt-12 pb-10 sm:px-10 sm:pt-6 sm:pb-4 mx-auto card
         centered-fixed z-50 bg-2"
-  >
-    <!-- Card Title -->
+      @click.stop="() => { }"
+    >
+      <div class="flex flex-col">
+        <h2 class="text-center font-semibold text-3xl text-1">
+          Connexion
+        </h2>
 
-    <div class="flex flex-col">
-      <h2 class="text-center font-semibold text-3xl text-1">
-        Connexion
-      </h2>
-
-      <div class="space-y-3 mt-4">
-        <div>
-          <label
-            for="email"
-            class="block tracking-wider text-sm font-semibold text-gray-600 uppercase"
-          >E-mail</label>
-          <input-with-icon
-            v-model="user.username"
-            :name="email"
-            :icon="userIcon"
-          />
+        <div class="space-y-3 mt-4">
+          <div>
+            <label
+              for="email"
+              class="block tracking-wider text-sm font-semibold text-gray-600 uppercase"
+            >E-mail</label>
+            <input-with-icon
+              v-model="user.username"
+              name="email"
+              :icon="userIcon"
+            />
+          </div>
+          <div>
+            <label
+              for="password"
+              class="block tracking-wider mt-2 text-sm font-semibold text-gray-600 uppercase"
+            >Password</label>
+            <input-with-icon
+              v-model="user.password"
+              name="password"
+              :icon="passwordIcon"
+              type="password"
+            />
+          </div>
         </div>
-        <div>
-          <label
-            for="password"
-            class="block tracking-wider mt-2 text-sm font-semibold text-gray-600 uppercase"
-          >Password</label>
-          <input-with-icon
-            v-model="user.password"
-            :name="password"
-            :icon="passwordIcon"
-            type="password"
-          />
-        </div>
-      </div>
-      <div class="flex flex-col mt-10 space-y-2 items-center justify-center">
-        <button
-          type="submit"
-          class="w-full py-3 bg-gray-500 rounded-sm text-sm
+        <div class="flex flex-col mt-10 space-y-2 items-center justify-center">
+          <button
+            type="submit"
+            class="w-full py-3 bg-gray-500 rounded-sm text-sm
                     font-medium text-white uppercase
                     focus:outline-none hover:bg-gray-400 hover:shadow-none"
-          @click="handleLogin"
-        >
-          CONNEXION HORIZON
-        </button>
-      </div>
-
-      <div class="mt-5 text-0">
-        <div class="md:flex-none flex flex-col flex-wrap space-y-3 sm:mb-2 text-sm text-center">
-          <a
-            href="forgot-password"
-            class="flex-2 underline text-xs"
+            @click="handleLogin"
           >
-            Mot de passe oublié ?
-          </a>
+            CONNEXION HORIZON
+          </button>
+        </div>
 
-          <a
-            href="register"
-            class="flex-2 underline text-xs"
-          >
-            Création d'un compte
-          </a>
+        <div class="mt-5 text-0">
+          <div class="md:flex-none flex flex-col flex-wrap space-y-3 sm:mb-2 text-sm text-center">
+            <a
+              href="forgot-password"
+              class="flex-2 underline text-xs"
+            >
+              Mot de passe oublié ?
+            </a>
+
+            <a
+              href="register"
+              class="flex-2 underline text-xs"
+            >
+              Création d'un compte
+            </a>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+  </teleport>
 </template>
 
 <script lang="js">
@@ -80,7 +81,6 @@ export default defineComponent({
   components: {
     InputWithIcon
   },
-  emits: ['toggleLogin'],
   setup () {
     // Define a validation schema
     // const loginSchema = {
@@ -137,7 +137,7 @@ export default defineComponent({
         this.$store.dispatch('auth/login', this.user).then(
           (data) => {
             this.message = data.toString()
-            this.$emit('toggleLogin')
+            this.emitter.emit('login')
           },
           error => {
             this.loading = false

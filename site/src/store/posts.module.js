@@ -1,14 +1,20 @@
 import PostsService from '../services/posts.service'
 import router from '@/router'
 
-const initialState = { posts: [], page: 1 }
+const initialState = { posts: [], page: 0 }
 
 export const posts = {
   namespaced: true,
+  getters: {
+    getPosts (state) {
+      return state.posts
+    }
+  },
   state: initialState,
   actions: {
-    fetchPosts ({ commit }, query) {
-      return PostsService.getPosts(query).then(
+    fetchPosts ({ commit, state }, query) {
+      state.page++
+      return PostsService.getPosts({ page: state.page, ...query }).then(
         posts => {
           commit('fetchSuccess', posts)
           return Promise.resolve(posts)
@@ -18,18 +24,12 @@ export const posts = {
         }
       )
     },
-    newFetchPosts ({ commit }, query) {
+    refreshPosts ({ commit }) {
       commit('refreshPosts')
-      return PostsService.getPosts({ page: 1, ...query }).then(
-        posts => {
-          commit('fetchSuccess', posts)
-          return Promise.resolve(posts)
-        },
-        error => {
-          console.log(error)
-          return Promise.reject(error)
-        }
-      )
+    },
+    newFetchPosts ({ dispatch }, query) {
+      dispatch('refreshPosts')
+      return dispatch('fetchPosts', query)
     },
     addPost ({ commit }, post) {
       return PostsService.addPost(post).then(
@@ -57,19 +57,24 @@ export const posts = {
     },
     deletePost ({ commit }, id) {
       return PostsService.modifyPost(id).then(
-        success => { commit('deletePostSuccess', id) },
-        error => { console.log(error) }
+        success => {
+          commit('deletePostSuccess', id)
+          return Promise.resolve(success)
+        },
+        error => {
+          console.log(error)
+          return Promise.reject(error)
+        }
       )
     }
   },
   mutations: {
     refreshPosts (state) {
       state.posts = []
-      state.page = 1
+      state.page = 0
     },
     fetchSuccess (state, posts) {
       state.posts = [...new Set([...state.posts, ...posts])]
-      state.page++
     },
     addPostSuccess (state, newPost) {
       state.posts.unshift(newPost)

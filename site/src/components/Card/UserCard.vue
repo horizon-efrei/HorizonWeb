@@ -56,6 +56,7 @@ export default defineComponent({
   },
   methods: {
     logout () {
+      this.emitter.emit('logout')
       this.$store.dispatch('auth/logout')
     }
   }

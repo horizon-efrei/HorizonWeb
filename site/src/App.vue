@@ -1,19 +1,8 @@
 <template>
   <div>
     <div
-      v-if="showLogin"
-      class="fixed top-0 left-0 w-screen h-screen z-50"
-      @click="toggleLogin"
-    >
-      <login
-        @click.stop="() => {}"
-        @toggleLogin="toggleLogin"
-      />
-    </div>
-
-    <div
       class="relative flex flex-row filter h-screen w-screen z-1"
-      :class="{'brightness-50': showLogin}"
+      :class="{'brightness-50': showModal}"
     >
       <sidebar
         ref="sidebar"
@@ -38,19 +27,23 @@
         ref="topbar"
         class="flex fixed top-0 left-0 w-full h-tbar border-bar
       text-1 items-center justify-between border-b bg-1 filter"
+        :show-login="showLogin"
         :class="{'brightness-50': uncollapsedSidebar && !collapsingSidebar}"
+        @toggleSidebar="toggleSidebar"
         @toggleLogin="toggleLogin"
-        @launchSearch="launchSearch"
-        @updateSearch="updateSearch"
-        @openSidebar="toggleSidebar"
       />
     </div>
+    <div
+      v-show="showModal"
+      id="global-modal"
+      class="fixed top-0 left-0 w-screen h-screen"
+      @click="toggleModal"
+    />
   </div>
 </template>
 
 <script lang="js">
 import debounce from 'lodash/debounce'
-import Login from '@/components/Login.vue'
 import PageFooter from '@/components/PageFooter.vue'
 
 import { defineComponent, watch, ref } from 'vue'
@@ -60,7 +53,6 @@ import Sidebar from '@/components/Sidebar.vue'
 const breakWidth = 1024
 export default defineComponent({
   components: {
-    Login,
     Topbar,
     Sidebar,
     PageFooter
@@ -103,6 +95,7 @@ export default defineComponent({
       uncollapsedSidebar: false,
       collapsingSidebar: false,
       smallScreen: isScreenSmall(),
+      showModal: false,
       showLogin: false
     }
   },
@@ -115,6 +108,14 @@ export default defineComponent({
     }
   },
   mounted () {
+    this.emitter.on('login', () => {
+      this.toggleLogin()
+    })
+
+    this.emitter.on('toggleModal', () => {
+      this.toggleModal()
+    })
+
     watch(() => this.$store.getters['userConfig/getTheme'], (theme) => {
       const root = document.querySelector(':root')
       if (theme === 'dark') {
@@ -127,19 +128,23 @@ export default defineComponent({
         }
       }
     })
+
     window.addEventListener('resize', this.checkResize)
   },
   unmounted () {
     window.removeEventListener('resize', this.checkResize)
   },
   methods: {
+    toggleModal () {
+      this.showModal = !this.showModal
+    },
+
     toggleSidebar () {
       if (this.smallScreen) {
         if (this.uncollapsedSidebar) {
           this.topbar.$el.removeEventListener('mousedown', this.toggleSidebar)
           this.content.removeEventListener('mousedown', this.toggleSidebar)
           this.collapsingSidebar = true
-          console.log(this.sidebar)
           this.sidebar.$el.addEventListener('transitionend', () => {
             this.uncollapsedSidebar = false
             this.collapsingSidebar = false
@@ -154,10 +159,13 @@ export default defineComponent({
       }
     },
     toggleLogin () {
-      this.showLogin = !this.showLogin
       if (this.showLogin) {
-        if (this.uncollapsedSidebar) {
-          this.toggleSidebar()
+        this.showLogin = false
+        this.showModal = false
+      } else {
+        if (!this.showModal) {
+          this.showModal = true
+          this.showLogin = true
         }
       }
     }
