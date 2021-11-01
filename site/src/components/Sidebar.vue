@@ -91,7 +91,7 @@ export default defineComponent({
       default: () => [
         [
           { to: '/', text: 'Accueil', icon: 'ri-home-3-line' },
-          { to: '/todo-announce', text: 'Annonces', icon: 'ri-alarm-warning-line' },
+          { to: '/info', text: 'Annonces', icon: 'ri-alarm-warning-line' },
           { to: '/dashboard', text: 'Admin', icon: 'ri-pie-chart-box-line' }
         ],
         [
@@ -103,8 +103,8 @@ export default defineComponent({
         ],
         [
           { to: '/my-account', text: 'Mon compte', icon: 'ri-account-box-line', condition: 'loggedIn' },
-          { to: '/todo-rgpd', text: 'RGPD', icon: 'ri-database-2-line' },
-          { to: '/todo-horizon', text: 'Horizon', icon: 'ri-information-line' }
+          { to: '/rgpd', text: 'RGPD', icon: 'ri-database-2-line' },
+          { to: '/horizon', text: 'Horizon', icon: 'ri-information-line' }
         ]
       ]
     }
@@ -143,8 +143,9 @@ export default defineComponent({
 
 <style>
 @import "~@/assets/css/utils/button.css";
+@import "~@/assets/css/utils/switch.css";
 
 .tr-spacing {
-  transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms, margin-left 500ms, width 500ms;
+  transition: color 300ms, background-color 300ms linear, border-color 300ms, fill 300ms, stroke 300ms, margin-left 500ms;
 }
 </style>

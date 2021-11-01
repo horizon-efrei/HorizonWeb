@@ -14,6 +14,18 @@ const routes = [
     component: Landing
   },
   {
+    path: '/info',
+    component: Landing
+  },
+  {
+    path: '/rgpd',
+    component: Landing
+  },
+  {
+    path: '/horizon',
+    component: Landing
+  },
+  {
     path: '/post/:id',
     component: ThreadCompactView,
     props: {
