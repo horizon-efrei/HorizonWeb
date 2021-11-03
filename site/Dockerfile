@@ -1,4 +1,4 @@
-FROM node:14.18.1-alpine3.12
+FROM node:16.12.0-alpine3.12
 
 # définit le dossier 'app' comme dossier de travail
 WORKDIR /app
