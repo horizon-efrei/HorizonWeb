@@ -9,8 +9,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
-import { CurrentUser } from '../shared/decorators/current-user.decorator';
-import { VoteDto } from '../shared/vote-base/vote.dto';
+import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
+import { VoteDto } from '../shared/modules/vote/vote.dto';
 import { User } from '../users/user.entity';
 import { CreateReplyDto } from './dto/create-reply.dto';
 import { UpdateReplyDto } from './dto/update-reply.dto';
@@ -21,11 +21,8 @@ import { RepliesService } from './replies.service';
 @UseGuards(JwtAuthGuard)
 @Controller({
   path: [
-    'posts/:postId/comments/:commentId/replies',
-    'posts/:postId/comments/replies',
     'posts/comments/:commentId/replies',
     'posts/comments/replies',
-    'posts/replies',
   ],
 })
 export class RepliesController {
