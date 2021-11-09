@@ -29,7 +29,7 @@ async function createFileStructure(): Promise<void> {
 const setupSwagger = (app: NestExpressApplication): void => {
   const swaggerConfig = new DocumentBuilder()
       .setTitle('Horizon Web API')
-      .setDescription('ReST API for HorizonWeb')
+      .setDescription('REST API for HorizonWeb')
       .setVersion('1.0')
       .build();
 
