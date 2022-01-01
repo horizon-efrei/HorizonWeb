@@ -1,7 +1,9 @@
+import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import type { RegisterDto } from '../auth/dto/register.dto';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import type { UpdateUserDto } from './dto/update-user.dto';
 import { UserSearchService } from './user-search.service';
 import { User } from './user.entity';
 
@@ -35,6 +37,15 @@ export class UsersService {
     await user.setPassword(body.password);
     await this.userRepository.persistAndFlush(user);
     await this.userSearchService.add(user);
+    return user;
+  }
+
+  public async updateUser(userId: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.findOneById(userId);
+
+    wrap(user).assign(updateUserDto);
+    await this.userRepository.flush();
+
     return user;
   }
 }
