@@ -9,7 +9,8 @@ import {
   Unique,
 } from '@mikro-orm/core';
 import * as bcrypt from 'bcrypt';
-import { Exclude, Expose } from 'class-transformer';
+import { Exclude, Expose, Transform } from 'class-transformer';
+import { IsNotEmpty, Matches } from 'class-validator';
 import { nanoid } from 'nanoid';
 import type { BadgeUnlock } from '../badges/badge-unlock.entity';
 import { EMAIL_INCLUDED } from '../shared/lib/constants';
@@ -18,23 +19,23 @@ import { Role } from '../shared/modules/authorization/types/role.enum';
 
 @Entity()
 export class User extends BaseEntity {
-  @PrimaryKey()
-  userId: string = nanoid(10);
+	@PrimaryKey()
+	userId: string = nanoid(10);
 
-  @Property({ type: 'text' })
-  @Unique()
-  @Index()
-  username!: string;
+	@Property({ type: 'text' })
+	@Unique()
+	@Index()
+	username!: string;
 
-  @Property({ type: 'text' })
-  @Unique()
-  @Index()
-  @Expose({ groups: [EMAIL_INCLUDED] })
-  email!: string;
+	@Property({ type: 'text' })
+	@Unique()
+	@Index()
+	@Expose({ groups: [EMAIL_INCLUDED] })
+	email!: string;
 
-  @Property({ type: 'text' })
-  @Exclude()
-  password!: string;
+	@Property({ type: 'text' })
+	@Exclude()
+	password!: string;
 
   @OneToMany('BadgeUnlock', 'user')
   @Exclude()
@@ -44,12 +45,12 @@ export class User extends BaseEntity {
   @Property()
   reputation = 0;
 
-  // TODO: Add full 'avatar' support
-  @Property({ type: 'text' })
-  avatar?: string;
+	// TODO: Add full 'avatar' support
+	@Property({ type: 'text' })
+	avatarImageFilename?: string;
 
-  @Enum({ items: () => Role, array: true, default: [Role.User] })
-  roles: Role[] = [Role.User];
+	@Enum({ items: () => Role, array: true, default: [Role.User] })
+	roles: Role[] = [Role.User];
 
   @Property({ type: 'text' })
   color?: string;
@@ -67,11 +68,23 @@ export class User extends BaseEntity {
     this.email = email;
   }
 
-  public async setPassword(password: string): Promise<void> {
-    this.password = await bcrypt.hash(password, 10);
-  }
+	@Property({ type: 'text' })
+	signature?: string;
 
-  public async validatePassword(password: string): Promise<boolean> {
-    return await bcrypt.compare(password, this.password);
-  }
+	@Property({ type: 'text' })
+	bannerImageFilename?: string;
+
+	constructor(username: string, email: string) {
+		super();
+		this.username = username;
+		this.email = email;
+	}
+
+	public async setPassword(password: string): Promise<void> {
+		this.password = await bcrypt.hash(password, 10);
+	}
+
+	public async validatePassword(password: string): Promise<boolean> {
+		return await bcrypt.compare(password, this.password);
+	}
 }
