@@ -1,6 +1,4 @@
-import {
-	Entity, Enum, Index, PrimaryKey, Property, Unique
-} from '@mikro-orm/core';
+import { Entity, Enum, Index, PrimaryKey, Property, Unique } from '@mikro-orm/core';
 import * as bcrypt from 'bcrypt';
 import { Exclude, Expose, Transform } from 'class-transformer';
 import { IsNotEmpty, Matches } from 'class-validator';
