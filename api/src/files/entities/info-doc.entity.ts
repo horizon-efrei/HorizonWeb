@@ -15,8 +15,8 @@ import { FileUpload } from './file-upload.entity';
 
 @Entity()
 export class InfoDoc extends BaseEntity {
-  @PrimaryKey()
-  infoDocId!: number;
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+  infoDocId!: string;
 
   @OneToOne()
   file!: FileUpload;

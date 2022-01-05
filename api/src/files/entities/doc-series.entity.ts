@@ -11,14 +11,14 @@ import type { Tag } from '../../tags/tag.entity';
 
 @Entity()
 export class DocSeries extends BaseEntity {
-  @PrimaryKey()
-  docSeriesId!: number;
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+  docSeriesId!: string;
 
   @Property({ type: 'text' })
   name!: string;
 
   @Property({ type: 'text' })
-  englishName!: string;
+  englishName?: string;
 
   @Property({ type: 'text' })
   description?: string;
@@ -34,14 +34,15 @@ export class DocSeries extends BaseEntity {
 
   constructor(options: {
     name: string;
-    englishName: string;
+    englishName?: string;
     description?: string;
     isObsolete?: boolean;
   }) {
     super();
     this.name = options.name;
-    this.englishName = options.englishName;
 
+    if (options.englishName)
+      this.englishName = options.englishName;
     if (options.description)
       this.description = options.description;
     if (options.isObsolete)

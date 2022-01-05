@@ -13,11 +13,11 @@ import { User } from '../../users/user.entity';
 
 @Entity()
 export class FileUpload extends BaseEntity {
-  @PrimaryKey()
-  fileUploadId!: number;
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+  fileUploadId!: string;
 
   @ManyToOne()
-  author!: User;
+  user!: User;
 
   @Property({ type: 'text' })
   originalName!: string;
@@ -38,10 +38,10 @@ export class FileUpload extends BaseEntity {
   visible = false;
 
   @Enum(() => FileKind)
-  fileKind = FileKind.Unknown;
+  fileKind!: FileKind;
 
   constructor(options: {
-    author: User;
+    user: User;
     originalName: string;
     fileSize: number;
     mimeType: string;
@@ -49,14 +49,12 @@ export class FileUpload extends BaseEntity {
     fileKind?: FileKind;
   }) {
     super();
-    this.author = options.author;
+    this.user = options.user;
     this.originalName = options.originalName;
     this.fileSize = options.fileSize;
     this.mimeType = options.mimeType;
     this.fileLastModifiedAt = options.fileLastModifiedAt;
-
-    if (options.fileKind)
-      this.fileKind = options.fileKind;
+    this.fileKind = options.fileKind ?? FileKind.Unknown;
   }
 
   public getPath(): string {

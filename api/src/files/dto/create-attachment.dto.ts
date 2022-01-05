@@ -3,6 +3,7 @@ import {
   IsIn,
   IsInt,
   IsOptional,
+  IsString,
 } from 'class-validator';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { CreateFileUploadDto } from './create-file-upload.dto';
@@ -11,6 +12,10 @@ export class CreateAttachmentDto extends OmitType(CreateFileUploadDto, ['fileKin
   @IsOptional()
   @IsInt()
   postId?: number;
+
+  @IsOptional()
+  @IsString()
+  replyId?: number;
 
   @IsOptional()
   @IsIn([FileKind.Attachment])

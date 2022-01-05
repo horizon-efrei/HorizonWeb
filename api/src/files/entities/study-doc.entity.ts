@@ -16,8 +16,8 @@ import { FileUpload } from './file-upload.entity';
 
 @Entity()
 export class StudyDoc extends BaseEntity {
-  @PrimaryKey()
-  studyDocId!: number;
+  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
+  studyDocId!: string;
 
   @OneToOne()
   file!: FileUpload;
