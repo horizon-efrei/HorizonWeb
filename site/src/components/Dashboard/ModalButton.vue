@@ -43,7 +43,6 @@ export default {
                 isOpen.value = false
             },
             openModal() {
-                console.log('Hellooooo')
                 isOpen.value = true
             },
         }}
