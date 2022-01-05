@@ -1,20 +1,15 @@
 <template>
     <div class="flex border-t-1">
         <div
-            class="
-      text-1 text-sm
-      p-1
-    "
+            class="text-1 text-sm p-1"
         >
             <div class="flex">
                 <div>
                     {{ comment.content }}
-                    <p class="font-bold whitespace-nowrap">
-                        &nbsp;- {{ comment.author }}
-                    </p>
+                    &nbsp;- {{ comment.author }}
                     <span class="pl-2">
                         <i class="ri-heart-line" />
-                        <!-- TODO: Actions -->
+                        <!-- // TODO: Actions -->
                     </span>
                 </div>
             </div>
@@ -29,9 +24,6 @@ export default {
             type: Object,
             default: () => {}
         }
-    },
-
-    methods: {
     }
 }
 </script>

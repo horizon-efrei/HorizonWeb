@@ -86,11 +86,10 @@ export default {
                         comp: ['tags-list', '@/components/List/TagsList.vue'],
                         name: 'Tags' },
                     actions: { attrs: () => {},
-                        slot: () => 'Show',
+                        slot: () => {},
                         value: () => "",
-                        comp: ['div'],
+                        comp: ['ModalButton', '@/components/Dashboard/ModalButton.vue'],
                         name: 'Actions' }
-                    // TODO: Actions
                 }, posts],
                 users: [{
                     user: { attrs: (user) => { return {username: user.username, avatar: user.avatar, reputation: user.reputation }},
