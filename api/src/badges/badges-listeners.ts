@@ -2,59 +2,59 @@
 
 export const questionBadgeListeners = {
 	Altruist: {
-		// on bounty award
+		// On bounty award
 		honor: () => {},
 	},
 	Benefactor: {
-		// on bounty award
+		// On bounty award
 		honor: () => {},
 	},
 	Investor: {
-		// on bounty offer
+		// On bounty offer
 		honor: () => {},
 	},
 	Promoter: {
-		// on bounty offer
+		// On bounty offer
 		honor: () => {},
 	},
 	'Favorite Question': {
-		// on bookmark set
+		// On bookmark set
 		honor: () => {},
 	},
 	'Stellar Question': {
-		// on bookmark set
+		// On bookmark set
 		honor: () => {},
 	},
 	'Nice Question': {
-		// on question upvote
+		// On question upvote
 		honor: () => {},
 	},
 	'Good Question': {
-		// on question upvote
+		// On question upvote
 		honor: () => {},
 	},
 	'Great Question': {
-		// on question upvote
+		// On question upvote
 		honor: () => {},
 	},
 	Student: {
-		// on answer accept
+		// On answer accept
 		honor: () => {},
 	},
 	'Popular Question': {
-		// on question view
+		// On question view
 		honor: () => {},
 	},
 	'Notable Question': {
-		// on question view
+		// On question view
 		honor: () => {},
 	},
 	'Famous Question': {
-		// on question view
+		// On question view
 		honor: () => {},
 	},
 	Scholar: {
-		// on answer accept
+		// On answer accept
 		honor: () => {},
 	},
 };
