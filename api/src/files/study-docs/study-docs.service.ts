@@ -9,11 +9,11 @@ import type { PaginationOptions } from '../../shared/modules/pagination/paginati
 import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
 import { Subject } from '../../subjects/subject.entity';
 import type { User } from '../../users/user.entity';
-import type { CreateStudyDocDto } from '../dto/create-study-doc.dto';
-import type { UpdateStudyDocDto } from '../dto/update-study-doc.dto';
-import { DocSeries } from '../entities/doc-series.entity';
-import type { FileUpload } from '../entities/file-upload.entity';
-import { StudyDoc } from '../entities/study-doc.entity';
+import { DocSeries } from '../doc-series/doc-series.entity';
+import type { FileUpload } from '../file-uploads/file-upload.entity';
+import type { CreateStudyDocDto } from './dto/create-study-doc.dto';
+import type { UpdateStudyDocDto } from './dto/update-study-doc.dto';
+import { StudyDoc } from './study-doc.entity';
 
 @Injectable()
 export class StudyDocsService {
@@ -29,7 +29,10 @@ export class StudyDocsService {
 
     const docSeries = await this.docSeriesRepository.findOne({ docSeriesId: createStudyDocDto.docSeries }, ['tags']);
     const studyDoc = new StudyDoc({
-      ...createStudyDocDto, subject, file, docSeries,
+      ...createStudyDocDto,
+      subject,
+      file,
+      docSeries,
     });
     await this.studyDocRepository.persistAndFlush(studyDoc);
     return studyDoc;

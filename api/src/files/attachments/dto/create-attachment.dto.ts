@@ -5,8 +5,9 @@ import {
   IsOptional,
   IsString,
 } from 'class-validator';
-import { FileKind } from '../../shared/lib/types/file-kind.enum';
-import { CreateFileUploadDto } from './create-file-upload.dto';
+import { FileKind } from '../../../shared/lib/types/file-kind.enum';
+import { CreateFileUploadDto } from '../../file-uploads/dto/create-file-upload.dto';
+import type { ContentIdsOptions } from '../content-options-xor.type';
 
 export class CreateAttachmentDto extends OmitType(CreateFileUploadDto, ['fileKind']) {
   @IsOptional()
@@ -15,9 +16,11 @@ export class CreateAttachmentDto extends OmitType(CreateFileUploadDto, ['fileKin
 
   @IsOptional()
   @IsString()
-  replyId?: number;
+  replyId?: string;
 
   @IsOptional()
   @IsIn([FileKind.Attachment])
   fileKind?: FileKind.Attachment;
 }
+
+export type ValidCreateAttachmentDto = ContentIdsOptions & CreateFileUploadDto;

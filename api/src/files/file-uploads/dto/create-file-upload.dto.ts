@@ -3,7 +3,7 @@ import {
   IsEnum,
   IsOptional,
 } from 'class-validator';
-import { FileKind } from '../../shared/lib/types/file-kind.enum';
+import { FileKind } from '../../../shared/lib/types/file-kind.enum';
 
 export class CreateFileUploadDto {
   @IsEnum(FileKind)

@@ -61,7 +61,7 @@ export class FileUpload extends BaseEntity {
     return path.join(
       config.get('uploadPath'),
       this.fileKind,
-      `${this.fileUploadId.toString()}.${path.extname(this.originalName)}`,
+      `${this.fileUploadId.toString()}${path.extname(this.originalName)}`,
     );
   }
 }

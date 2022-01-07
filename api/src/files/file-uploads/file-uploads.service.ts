@@ -5,7 +5,7 @@ import type { Express } from 'express';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import type { FileKind } from '../../shared/lib/types/file-kind.enum';
 import type { User } from '../../users/user.entity';
-import { FileUpload } from '../entities/file-upload.entity';
+import { FileUpload } from './file-upload.entity';
 
 @Injectable()
 export class FileUploadsService {
