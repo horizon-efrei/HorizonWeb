@@ -5,7 +5,6 @@ import {
   IsInt,
   IsOptional,
   IsString,
-  IsUUID,
 } from 'class-validator';
 import { FileKind } from '../../../shared/lib/types/file-kind.enum';
 import { CreateFileUploadDto } from '../../file-uploads/dto/create-file-upload.dto';
@@ -19,7 +18,7 @@ export class CreateStudyDocDto extends OmitType(CreateFileUploadDto, ['fileKind'
   subject: string;
 
   @IsOptional()
-  @IsUUID()
+  @IsString()
   docSeries?: string;
 
   @IsOptional()

@@ -6,6 +6,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
+import { nanoid } from 'nanoid';
 import { config } from '../../config';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
@@ -13,8 +14,8 @@ import { User } from '../../users/user.entity';
 
 @Entity()
 export class FileUpload extends BaseEntity {
-  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
-  fileUploadId!: string;
+  @PrimaryKey()
+  fileUploadId: string = nanoid(32);
 
   @ManyToOne()
   user!: User;

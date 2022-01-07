@@ -4,6 +4,7 @@ import {
   OneToOne,
   PrimaryKey,
 } from '@mikro-orm/core';
+import { nanoid } from 'nanoid';
 import { Post } from '../../posts/entities/post.entity';
 import { Reply } from '../../replies/entities/reply.entity';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
@@ -12,8 +13,8 @@ import type { ContentOptions } from './content-options-xor.type';
 
 @Entity()
 export class Attachment extends BaseEntity {
-  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
-  attachmentId: string;
+  @PrimaryKey()
+  attachmentId: string = nanoid(32);
 
   @OneToOne()
   file!: FileUpload;

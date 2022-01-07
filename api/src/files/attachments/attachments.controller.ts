@@ -5,7 +5,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseUUIDPipe,
   Post,
   UploadedFile,
   UseGuards,
@@ -57,14 +56,14 @@ export class AttachmentsController {
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, Attachment))
-  public async findOneAttachment(@Param('id', ParseUUIDPipe) id: string): Promise<Attachment> {
+  public async findOneAttachment(@Param('id') id: string): Promise<Attachment> {
     return await this.attachmentsService.findOne(id);
   }
 
   @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Update, Attachment))
   public async removeAttachment(
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param('id') id: string,
     @CurrentUser() user: User,
   ): Promise<void> {
     await this.attachmentsService.remove(user, id);

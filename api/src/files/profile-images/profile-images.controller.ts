@@ -5,7 +5,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseUUIDPipe,
   Post,
   UploadedFile,
   UseGuards,
@@ -53,14 +52,14 @@ export class ProfileImagesController {
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, ProfileImage))
-  public async findOneProfileImage(@Param('id', ParseUUIDPipe) id: string): Promise<ProfileImage> {
+  public async findOneProfileImage(@Param('id') id: string): Promise<ProfileImage> {
     return await this.profileImagesService.findOne(id);
   }
 
   @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Update, ProfileImage))
   public async removeProfileImage(
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param('id') id: string,
     @CurrentUser() user: User,
   ): Promise<void> {
     await this.profileImagesService.remove(user, id);

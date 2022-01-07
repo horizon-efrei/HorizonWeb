@@ -5,7 +5,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -66,14 +65,14 @@ export class InfoDocsController {
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, InfoDoc))
-  public async findOneInfoDoc(@Param('id', ParseUUIDPipe) id: string): Promise<InfoDoc> {
+  public async findOneInfoDoc(@Param('id') id: string): Promise<InfoDoc> {
     return await this.infoDocsService.findOne(id);
   }
 
   @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, InfoDoc))
   public async updateInfoDoc(
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param('id') id: string,
     @Body() updateInfoDocDto: UpdateInfoDocDto,
     @CurrentUser() user: User,
   ): Promise<InfoDoc> {
@@ -83,7 +82,7 @@ export class InfoDocsController {
   @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Update, InfoDoc))
   public async removeInfoDoc(
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param('id') id: string,
     @CurrentUser() user: User,
   ): Promise<void> {
     await this.infoDocsService.remove(user, id);

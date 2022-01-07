@@ -4,7 +4,6 @@ import {
   Get,
   InternalServerErrorException,
   Param,
-  ParseUUIDPipe,
   Response,
   StreamableFile,
 } from '@nestjs/common';
@@ -21,7 +20,7 @@ export class FileUploadsController {
 
   @Get(':id')
   public async findFile(
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param('id') id: string,
     @Response({ passthrough: true }) res: Res,
   ): Promise<StreamableFile> {
     const file = await this.filesService.findOne(id);

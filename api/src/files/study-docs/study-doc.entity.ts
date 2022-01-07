@@ -7,6 +7,7 @@ import {
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
+import { nanoid } from 'nanoid';
 import { TransformTags } from '../../shared/lib/decorators/transform-tags.decorator';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { Subject } from '../../subjects/subject.entity';
@@ -16,8 +17,8 @@ import { FileUpload } from '../file-uploads/file-upload.entity';
 
 @Entity()
 export class StudyDoc extends BaseEntity {
-  @PrimaryKey({ type: 'uuid', defaultRaw: 'uuid_generate_v4()' })
-  studyDocId!: string;
+  @PrimaryKey()
+  studyDocId: string = nanoid(32);
 
   @OneToOne()
   file!: FileUpload;

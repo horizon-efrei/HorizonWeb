@@ -5,7 +5,6 @@ import {
   Delete,
   Get,
   Param,
-  ParseUUIDPipe,
   Patch,
   Post,
   Query,
@@ -66,14 +65,14 @@ export class StudyDocsController {
 
   @Get(':id')
   @CheckPolicies(ability => ability.can(Action.Read, StudyDoc))
-  public async findOneStudyDoc(@Param('id', ParseUUIDPipe) id: string): Promise<StudyDoc> {
+  public async findOneStudyDoc(@Param('id') id: string): Promise<StudyDoc> {
     return await this.studyDocsService.findOne(id);
   }
 
   @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, StudyDoc))
   public async updateStudyDoc(
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param('id') id: string,
     @Body() updateStudyDocDto: UpdateStudyDocDto,
     @CurrentUser() user: User,
   ): Promise<StudyDoc> {
@@ -83,7 +82,7 @@ export class StudyDocsController {
   @Delete(':id')
   @CheckPolicies(ability => ability.can(Action.Update, StudyDoc))
   public async removeStudyDoc(
-    @Param('id', ParseUUIDPipe) id: string,
+    @Param('id') id: string,
     @CurrentUser() user: User,
   ): Promise<void> {
     await this.studyDocsService.remove(user, id);
