@@ -1,6 +1,10 @@
 import { Transform } from 'class-transformer';
 import {
- IsNotEmpty, IsOptional, IsString, Length, Matches,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+  Matches,
 } from 'class-validator';
 
 const opaqueHexColor = /^(?:[\da-f]{3}|[\da-f]{6})$/i;

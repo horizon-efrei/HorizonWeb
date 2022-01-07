@@ -1,4 +1,9 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
@@ -10,13 +15,13 @@ import { CreateBadgesDto } from './dto/create-badges.dto';
 @UseGuards(JwtAuthGuard, PoliciesGuard)
 @Controller('badges')
 export class BadgesController {
-	constructor(private readonly badgesService: BadgesService) {}
+  constructor(private readonly badgesService: BadgesService) {}
 
-	// Create badges
-	// Be careful : everybody can create a badge now
-	@Post('/create')
-	@CheckPolicies((ability) => ability.can(Action.Create, Badge))
-	public create(@Body() createTagDto: CreateBadgesDto): Promise<Badge[]> {
-		return this.badgesService.createMany(createTagDto);
-	}
+  // Create badges
+  // Be careful : everybody can create a badge now
+  @Post('/create')
+  @CheckPolicies(ability => ability.can(Action.Create, Badge))
+  public async create(@Body() createTagDto: CreateBadgesDto): Promise<Badge[]> {
+    return this.badgesService.createMany(createTagDto);
+  }
 }
