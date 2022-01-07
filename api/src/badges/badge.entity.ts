@@ -1,5 +1,4 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
-import { METALS } from '../shared/lib/constants';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { Level } from '../shared/lib/types/level.enum';
 
@@ -17,33 +16,36 @@ export class Badge extends BaseEntity {
   @Property()
   value!: number;
 
-  @Property({ type: 'text' })
-  type!: string;
-
-  @Property({ type: 'text' })
-  class!: string;
-
   @Property({})
   level!: Level;
 
   @Property({ type: 'text' })
   iconFilename!: string;
 
-  // https://stackoverflow.com/questions/47893110/typescript-mapped-types-class-to-interface-without-methods
-  // For auto typing
+  @Property({ type: 'text' })
+  serie!: string;
+
+  @Property({ type: 'text' })
+  category!: string;
+
   constructor(options: {
     name: string;
     slug: string;
     description: string;
     value: number;
-    type: string;
-    class: string;
-    level: typeof METALS[number];
+    level: Level;
     iconFilename: string;
+    serie: string;
+    category: string;
   }) {
     super();
-    const { level, ...others } = options;
-    Object.assign(this, others);
-    this.level = METALS.indexOf(level) + 1;
+    this.name = options.name;
+    this.slug = options.slug;
+    this.description = options.description;
+    this.value = options.value;
+    this.level = options.level;
+    this.iconFilename = options.iconFilename;
+    this.serie = options.serie;
+    this.category = options.category;
   }
 }
