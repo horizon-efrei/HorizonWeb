@@ -4,13 +4,18 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import type { User } from '../users/user.entity';
+import { BadgeUnlock } from './badge-unlock.entity';
 import { Badge } from './badge.entity';
 import type { CreateBadgeDto } from './dto/create-badge.dto';
 import type { UpdateBadgeDto } from './dto/update-badge.dto';
 
 @Injectable()
 export class BadgesService {
-  constructor(@InjectRepository(Badge) private readonly badgeRepository: BaseRepository<Badge>) {}
+  constructor(
+    @InjectRepository(Badge) private readonly badgeRepository: BaseRepository<Badge>,
+    @InjectRepository(BadgeUnlock) private readonly badgeUnlockRepository: BaseRepository<BadgeUnlock>,
+    ) {}
 
   public async create(createBadgeDto: CreateBadgeDto): Promise<Badge> {
     const badge = new Badge(createBadgeDto);
@@ -45,5 +50,12 @@ export class BadgesService {
   public async remove(name: string): Promise<void> {
     const badge = await this.badgeRepository.findOneOrFail({ name });
     await this.badgeRepository.removeAndFlush(badge);
+  }
+
+  public async unlockForUser(badgeName: string, user: User): Promise<BadgeUnlock> {
+    const badge = await this.findOne(badgeName);
+    const badgeUnlock = new BadgeUnlock({ badge, user });
+    await this.badgeUnlockRepository.persistAndFlush(badgeUnlock);
+    return badgeUnlock;
   }
 }

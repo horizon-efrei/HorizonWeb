@@ -1,7 +1,9 @@
 import {
+  Collection,
   Entity,
   Enum,
   Index,
+  OneToMany,
   PrimaryKey,
   Property,
   Unique,
@@ -10,6 +12,7 @@ import * as bcrypt from 'bcrypt';
 import { Exclude, Expose, Transform } from 'class-transformer';
 import { IsNotEmpty, Matches } from 'class-validator';
 import { nanoid } from 'nanoid';
+import type { BadgeUnlock } from '../badges/badge-unlock.entity';
 import { EMAIL_INCLUDED, OPAQUE_HEX_COLOR_REGEX } from '../shared/lib/constants';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { Role } from '../shared/modules/authorization/types/role.enum';
@@ -33,6 +36,10 @@ export class User extends BaseEntity {
   @Property({ type: 'text' })
   @Exclude()
   password!: string;
+
+  @OneToMany('BadgeUnlock', 'user')
+  @Exclude()
+  badges = new Collection<BadgeUnlock>(this);
 
   // TODO: Add full 'reputation' support
   @Property({}) // Type : "integer"

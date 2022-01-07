@@ -2,6 +2,7 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import type { RegisterDto } from '../auth/dto/register.dto';
+import { BadgeUnlock } from '../badges/badge-unlock.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import type { UpdateUserDto } from './dto/update-user.dto';
 import { UserSearchService } from './user-search.service';
@@ -11,6 +12,7 @@ import { User } from './user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    @InjectRepository(BadgeUnlock) private readonly badgeUnlockRepository: BaseRepository<BadgeUnlock>,
     private readonly userSearchService: UserSearchService,
   ) {}
 
@@ -47,5 +49,10 @@ export class UsersService {
     await this.userRepository.flush();
 
     return user;
+  }
+
+  public async findBadges(userId: string): Promise<BadgeUnlock[]> {
+    const user = await this.findOneById(userId);
+    return await this.badgeUnlockRepository.find({ user }, ['badge', 'user']);
   }
 }
