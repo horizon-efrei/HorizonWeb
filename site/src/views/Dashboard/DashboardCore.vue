@@ -6,6 +6,14 @@
             button-name="Voir les colonnes..."
             input-placeholder="Filtrer les colonnes..."
         />
+        <div class="px-5">
+            <input
+                v-model="search"
+                class="h-10 w-102 pr-8 pl-5 rounded focus:shadow focus:outline-none input"
+                type="text"
+                placeholder="Search by title"
+            >
+        </div>
     </div>
     <table class="w-full overflow-x-scroll rounded-table">
         <thead>
@@ -49,7 +57,7 @@
 </template>
 
 <script lang="js">
-import { defineAsyncComponent } from 'vue'
+import { defineAsyncComponent, ref } from 'vue'
 import SelectMultiCheckbox from '@/components/Input/SelectMultiCheckbox.vue'
 import {
     TransitionRoot,
@@ -79,6 +87,12 @@ export default {
             default: () => {}
         }
     },
+    setup() {
+        const search = ref("");
+        return {
+            search,
+        };
+    },
     data () {
         return {
             selectedCols: this.startSelectedCols === undefined ? this.getCols() : [...this.startSelectedCols],
@@ -90,18 +104,20 @@ export default {
     },
     computed: {
         itemsSorted() {
-            return [...this.items].sort((a, b) => {
-                if (this.sortColumn !== "") {
-                    a = this.columns[this.sortColumn].value(a)
-                    b = this.columns[this.sortColumn].value(b)
-                    if (a > b) {
-                        return this.columnsSort[this.sortColumn] ? 1 : -1
-                    } else if (a < b) {
-                        return this.columnsSort[this.sortColumn] ? -1 : 1
+            return [...this.items]
+                .filter(item => JSON.stringify(item).toLowerCase().includes(this.search.toLowerCase()) || this.search.length == 0)
+                .sort((a, b) => {
+                    if (this.sortColumn !== "") {
+                        a = this.columns[this.sortColumn].value(a)
+                        b = this.columns[this.sortColumn].value(b)
+                        if (a > b) {
+                            return this.columnsSort[this.sortColumn] ? 1 : -1
+                        } else if (a < b) {
+                            return this.columnsSort[this.sortColumn] ? -1 : 1
+                        }
                     }
-                }
-                return 0
-            })
+                    return 0
+                })
         }
     },
     beforeCreate () {
@@ -135,6 +151,19 @@ export default {
                 this.sortColumn = colName
             }
             this.columnsSort[this.sortColumn] = this.columnsSort[this.sortColumn] === -1 ? 0 : (this.columnsSort[this.sortColumn] === 1 ? -1 : 1)
+        },
+        containString: function containString(input, text){
+            for (let i = 0; i < text.length; i++) {
+                let check = ''
+                for (let j = 0; j < input.length; j++) {
+                    check += text[i]
+
+                }
+                if (check === input) {
+                    return true
+                }
+            }
+            return false
         }
     }
 }
