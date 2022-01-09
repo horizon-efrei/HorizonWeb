@@ -151,19 +151,6 @@ export default {
                 this.sortColumn = colName
             }
             this.columnsSort[this.sortColumn] = this.columnsSort[this.sortColumn] === -1 ? 0 : (this.columnsSort[this.sortColumn] === 1 ? -1 : 1)
-        },
-        containString: function containString(input, text){
-            for (let i = 0; i < text.length; i++) {
-                let check = ''
-                for (let j = 0; j < input.length; j++) {
-                    check += text[i]
-
-                }
-                if (check === input) {
-                    return true
-                }
-            }
-            return false
         }
     }
 }
