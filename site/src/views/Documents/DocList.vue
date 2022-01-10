@@ -2,7 +2,7 @@
     <div class="w-21/24 flex gap-4 mx-auto my-6">
         <CustomModal
             :show="filePreview != null"
-            :class="'block md:hidden'"
+            :custom-class="'block md:hidden'"
             @close="filePreview = null"
         >
             <div class="card w-3/4">
@@ -86,7 +86,7 @@
                                     @dblclick.prevent="openFile(file.file.fileUploadId)"
                                 >
                                     <DocImg
-                                        class="h-8 w-8 uppercase"
+                                        class="h-8 w-8"
                                         :mime="file.file.mimeType"
                                         :file-name="file.file.originalName"
                                     />
@@ -150,14 +150,7 @@
                         Study Docs
                     </div>
                     <hr class="py-2">
-                    <VPopper>
-                        dsd
-                        <template #content>
-                            <div>
-                                ds
-                            </div>
-                        </template>
-                    </VPopper>
+
                     <div
 
                         class="grid grid-cols-6 auto-rows-min gap-4"
@@ -181,11 +174,12 @@
                                 @dblclick="openFile(file.studyDocId)"
                             >
                                 <div class="flex flex-col items-center justify-center">
-                                    <img
+                                    <DocImg
                                         class="h-12 w-12"
-                                        :src="fileIcon"
-                                        alt=""
-                                    >
+
+                                        :mime="file.file.mimeType"
+                                        :file-name="file.file.originalName"
+                                    />
                                     <div class="truncate w-full text-center">
                                         {{ file.file.originalName }}
                                     </div>

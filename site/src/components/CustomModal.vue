@@ -4,7 +4,7 @@
         <div
             v-if="show"
             class="absolute top-0 h-screen w-screen z-50"
-            :class="class"
+            :class="clas"
         >
             <div
                 class="w-full h-full absolute bg-gray-800 opacity-50"
@@ -22,7 +22,7 @@ export default {
             type: Boolean,
             require: true
         },
-        class:{
+        customClass:{
             type: String,
             default(){
                 return ''

@@ -58,7 +58,9 @@
             ><tspan
                 id="tspan1334"
                 style="font-weight:bold;font-family:Arial;-inkscape-font-specification:'Arial, Bold'"
+                class="uppercase"
             >
+
                 {{ fileName.split(".").pop() }}
             </tspan></tspan></text>
         </g>
