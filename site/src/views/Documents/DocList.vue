@@ -83,7 +83,6 @@
                                 <div
                                     class="flex justify-center items-center"
                                     @click="setFilePreview(file)"
-                                    @dblclick.prevent="openFile(file.file.fileUploadId)"
                                 >
                                     <DocImg
                                         class="h-8 w-8"
@@ -96,7 +95,6 @@
                                 <div
                                     class="flex justify-center items-center"
                                     @click="setFilePreview(file)"
-                                    @dblclick.prevent="openFile(file.file.fileUploadId)"
                                 >
                                     {{ file.file.originalName }}
                                 </div>
@@ -105,7 +103,6 @@
                                 <div
                                     class="flex justify-center items-center"
                                     @click="setFilePreview(file)"
-                                    @dblclick.prevent="openFile(file.file.fileUploadId)"
                                 >
                                     {{ file.file.fileKind }}
                                 </div>
@@ -114,7 +111,6 @@
                                 <div
                                     class="flex justify-center items-center"
                                     @click="setFilePreview(file)"
-                                    @dblclick.prevent="openFile(file.file.fileUploadId)"
                                 >
                                     {{ new Date(file.createdAt).toLocaleDateString() }}
                                 </div>
@@ -123,7 +119,6 @@
                                 <div
                                     class="flex justify-center items-center"
                                     @click="setFilePreview(file)"
-                                    @dblclick.prevent="openFile(file.file.fileUploadId)"
                                 >
                                     {{ formatBytes(file.file.fileSize) }}
                                 </div>
@@ -170,8 +165,6 @@
                             <VPopper
                                 :offset-distance="'0'"
                                 :interactive="false"
-
-                                @dblclick="openFile(file.studyDocId)"
                             >
                                 <div class="flex flex-col items-center justify-center">
                                     <DocImg
