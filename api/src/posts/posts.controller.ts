@@ -72,7 +72,11 @@ export class PostsController {
 
   @Patch(':id')
   @CheckPolicies(ability => ability.can(Action.Update, Post))
-  public async update(@CurrentUser() user: User, @Param('id', ParseIntPipe) id: number, @Body() updatePostDto: UpdatePostDto): Promise<Post> {
+  public async update(
+    @CurrentUser() user: User,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updatePostDto: UpdatePostDto,
+  ): Promise<Post> {
     return this.postsService.update(user, id, updatePostDto);
   }
 

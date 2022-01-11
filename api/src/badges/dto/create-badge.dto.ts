@@ -1,10 +1,9 @@
 import {
   IsEnum,
   IsInt,
-  IsNumber,
   IsString,
 } from 'class-validator';
-import { Level } from '../../shared/lib/types/level.enum';
+import { BadgeLevel } from '../../shared/lib/types/badge-level.enum';
 
 export class CreateBadgeDto {
   @IsString()
@@ -17,11 +16,10 @@ export class CreateBadgeDto {
   description: string;
 
   @IsInt()
-  @IsNumber()
   value: number;
 
-  @IsEnum(Level)
-  level: Level;
+  @IsEnum(BadgeLevel)
+  level: BadgeLevel;
 
   @IsString()
   iconFilename: string;

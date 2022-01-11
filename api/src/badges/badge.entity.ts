@@ -1,6 +1,6 @@
 import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
-import { Level } from '../shared/lib/types/level.enum';
+import { BadgeLevel } from '../shared/lib/types/badge-level.enum';
 
 @Entity()
 export class Badge extends BaseEntity {
@@ -17,10 +17,11 @@ export class Badge extends BaseEntity {
   value!: number;
 
   @Property({})
-  level!: Level;
+  level!: BadgeLevel;
 
+  // TODO: Full Icon Support
   @Property({ type: 'text' })
-  iconFilename!: string;
+  icon!: string;
 
   @Property({ type: 'text' })
   serie!: string;
@@ -33,8 +34,8 @@ export class Badge extends BaseEntity {
     slug: string;
     description: string;
     value: number;
-    level: Level;
-    iconFilename: string;
+    level: BadgeLevel;
+    icon: string;
     serie: string;
     category: string;
   }) {
@@ -44,7 +45,7 @@ export class Badge extends BaseEntity {
     this.description = options.description;
     this.value = options.value;
     this.level = options.level;
-    this.iconFilename = options.iconFilename;
+    this.icon = options.icon;
     this.serie = options.serie;
     this.category = options.category;
   }
