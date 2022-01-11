@@ -8,14 +8,12 @@ import {
   Patch,
   Post,
   Query,
-  ServiceUnavailableException,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
-import { TypesenseError } from 'typesense/lib/Typesense/Errors';
-import { config } from '../config';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
+import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
 import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
@@ -48,24 +46,16 @@ export class ClubsController {
     return await this.clubsService.create(createTagDto);
   }
 
+  @UseGuards(TypesenseGuard)
   @Get('/search')
   @CheckPolicies(ability => ability.can(Action.Read, Club))
   public async search(
     @Query('full') full: boolean,
     @Query() query: SearchDto,
   ): Promise<SearchResponse<Club> | SearchResponse<IndexedClub>> {
-    if (!config.get('typesenseEnabled'))
-      throw new ServiceUnavailableException('Search is disabled');
-
-    try {
-      if (full)
-        return await this.clubSearchService.searchAndPopulate(query);
-      return await this.clubSearchService.search(query);
-    } catch (error: unknown) {
-      if (error instanceof TypesenseError)
-        this.clubSearchService.throwHttpExceptionFromTypesenseError(error);
-      throw error;
-    }
+    if (full)
+      return await this.clubSearchService.searchAndPopulate(query);
+    return await this.clubSearchService.search(query);
   }
 
 

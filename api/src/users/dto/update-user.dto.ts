@@ -1,8 +1,10 @@
 import { Transform } from 'class-transformer';
 import {
- IsEmail, IsOptional, IsString, Matches,
+  IsEmail,
+  IsHexColor,
+  IsOptional,
+  IsString,
 } from 'class-validator';
-import { OPAQUE_HEX_COLOR_REGEX } from '../../shared/lib/constants';
 
 export class UpdateUserDto {
   @IsOptional()
@@ -15,7 +17,7 @@ export class UpdateUserDto {
   signature: string;
 
   @IsOptional()
-  @Matches(OPAQUE_HEX_COLOR_REGEX)
+  @IsHexColor()
   @Transform(({ value }: { value: string }) => (value.startsWith('#') ? value.slice(1) : value))
   color: string;
 }
