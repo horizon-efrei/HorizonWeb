@@ -23,8 +23,9 @@ export class Club extends BaseEntity {
   @Property({ type: 'text' })
   clubDescription!: string;
 
+  // TODO: Full 'icon' support
   @Property({ type: 'text' })
-  iconFilename!: string;
+  icon!: string;
 
   @Property({ type: ArrayType })
   socials!: string[];
@@ -37,7 +38,7 @@ export class Club extends BaseEntity {
     slug: string;
     clubType: string;
     clubDescription: string;
-    iconFilename: string;
+    icon: string;
     socials: string[];
   }) {
     super();
@@ -45,7 +46,7 @@ export class Club extends BaseEntity {
     this.slug = options.slug;
     this.clubType = options.clubType;
     this.clubDescription = options.clubDescription;
-    this.iconFilename = options.iconFilename;
+    this.icon = options.icon;
     this.socials = options.socials;
   }
 }
