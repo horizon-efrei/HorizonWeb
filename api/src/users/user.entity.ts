@@ -9,8 +9,7 @@ import {
   Unique,
 } from '@mikro-orm/core';
 import * as bcrypt from 'bcrypt';
-import { Exclude, Expose, Transform } from 'class-transformer';
-import { IsNotEmpty, Matches } from 'class-validator';
+import { Exclude, Expose } from 'class-transformer';
 import { nanoid } from 'nanoid';
 import type { BadgeUnlock } from '../badges/badge-unlock.entity';
 import { EMAIL_INCLUDED } from '../shared/lib/constants';
