@@ -30,7 +30,7 @@ export class ClubSearchService extends SearchService<Club, IndexedClub> {
 
   constructor(
     @InjectRepository(Club) private readonly clubRepository: BaseRepository<Club>,
-  ) { super(ClubSearchService.schema, 'subjects'); }
+  ) { super(ClubSearchService.schema, 'clubs'); }
 
   public async init(): Promise<void> {
     const clubs = await this.clubRepository.findAll();

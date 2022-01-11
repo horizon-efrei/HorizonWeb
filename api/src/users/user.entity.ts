@@ -41,12 +41,12 @@ export class User extends BaseEntity {
   badges = new Collection<BadgeUnlock>(this);
 
   // TODO: Add full 'reputation' support
-  @Property({}) // Type : "integer"
+  @Property()
   reputation = 0;
 
   // TODO: Add full 'avatar' support
   @Property({ type: 'text' })
-  avatarImageFilename?: string;
+  avatar?: string;
 
   @Enum({ items: () => Role, array: true, default: [Role.User] })
   roles: Role[] = [Role.User];

@@ -16,7 +16,7 @@ export class ClubMember extends BaseEntity {
   @ManyToOne({ onDelete: 'CASCADE' })
   user!: User;
 
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   club!: Club;
 
   @Property({ type: 'text' })

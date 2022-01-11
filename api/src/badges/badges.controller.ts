@@ -7,10 +7,9 @@ import {
   Patch,
   Post,
   Query,
-  UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
+import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { Badge } from './badge.entity';
@@ -19,7 +18,6 @@ import { CreateBadgeDto } from './dto/create-badge.dto';
 import { UpdateBadgeDto } from './dto/update-badge.dto';
 
 @ApiTags('Badges')
-@UseGuards(PoliciesGuard)
 @Controller({ path: 'badges' })
 export class BadgesController {
   constructor(private readonly badgesService: BadgesService) {}
@@ -46,8 +44,8 @@ export class BadgesController {
 
   @Patch(':name')
   @CheckPolicies(ability => ability.can(Action.Update, Badge))
-  public async update(@Param('name') name: string, @Body() updateSubjectDto: UpdateBadgeDto): Promise<Badge> {
-    return await this.badgesService.update(name, updateSubjectDto);
+  public async update(@Param('name') name: string, @Body() updateBadgeDto: UpdateBadgeDto): Promise<Badge> {
+    return await this.badgesService.update(name, updateBadgeDto);
   }
 
   @Delete(':name')

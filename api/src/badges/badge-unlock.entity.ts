@@ -16,7 +16,7 @@ export class BadgeUnlock extends BaseEntity {
   @ManyToOne({ onDelete: 'CASCADE' })
   user!: User;
 
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   badge!: Badge;
 
   @Property()

@@ -29,7 +29,6 @@ export class CreateBadgeDto {
   @IsString()
   serie: string;
 
-
   @IsString()
   category: string;
 }

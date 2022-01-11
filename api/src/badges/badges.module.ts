@@ -8,7 +8,7 @@ import { BadgesController } from './badges.controller';
 import { BadgesService } from './badges.service';
 
 @Module({
-  imports: [MikroOrmModule.forFeature([Badge, BadgeUnlock, Post])],
+  imports: [MikroOrmModule.forFeature([Badge, BadgeUnlock])],
   controllers: [BadgesController],
   providers: [CaslAbilityFactory, BadgesService],
   exports: [BadgesService],

@@ -8,7 +8,6 @@ import {
 
 export class UpdateUserDto {
   @IsOptional()
-  @IsString()
   @IsEmail()
   email: string;
 

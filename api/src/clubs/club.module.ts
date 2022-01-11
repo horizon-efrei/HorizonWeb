@@ -11,7 +11,7 @@ import { ClubsService } from './club.service';
 
 @Module({
   imports: [
-    MikroOrmModule.forFeature([Club, ClubMember, Post]),
+    MikroOrmModule.forFeature([Club, ClubMember]),
     UsersModule,
   ],
   controllers: [ClubsController],

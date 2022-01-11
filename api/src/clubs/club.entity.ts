@@ -1,5 +1,8 @@
 import {
- ArrayType, Entity, PrimaryKey, Property,
+  ArrayType,
+  Entity,
+  PrimaryKey,
+  Property,
 } from '@mikro-orm/core';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 
