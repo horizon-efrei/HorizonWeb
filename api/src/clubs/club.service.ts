@@ -16,8 +16,8 @@ import type { UpdateClubDto } from './dto/update-club.dto';
 export class ClubsService {
   constructor(
     @InjectRepository(Club) private readonly clubRepository: BaseRepository<Club>,
-    @InjectRepository(ClubMember) private readonly clubMemberRepository:
-     BaseRepository<ClubMember>,
+    @InjectRepository(ClubMember)
+    private readonly clubMemberRepository: BaseRepository<ClubMember>,
     ) {}
 
   public async create(createClubDto: CreateClubDto): Promise<Club> {
@@ -71,10 +71,9 @@ export class ClubsService {
   }
 
   public async updateRole(clubId: number, user: User, updateClubMemberDto: UpdateClubMemberDto): Promise <ClubMember> {
-    const club = await this.clubRepository.findOneOrFail({ clubId });
-    const clubJoined = await this.clubMemberRepository.findOneOrFail({ club, user });
+    const clubMember = await this.clubMemberRepository.findOneOrFail({ club: { clubId }, user });
 
-    wrap(clubJoined).assign(updateClubMemberDto);
+    wrap(clubMember).assign(updateClubMemberDto);
     await this.clubMemberRepository.flush();
     return clubJoined;
   }

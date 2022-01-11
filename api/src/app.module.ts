@@ -37,7 +37,6 @@ import { UsersModule } from './users/users.module';
     FilesModule,
     HealthModule,
     PostsModule,
-    ClubsModule,
     ReactionsModule,
     RepliesModule,
     ReportsModule,

@@ -46,7 +46,7 @@ export class User extends BaseEntity {
 
   // TODO: Add full 'avatar' support
   @Property({ type: 'text' })
-  avatarImageFilename?: string;
+  avatar?: string;
 
   @Enum({ items: () => Role, array: true, default: [Role.User] })
   roles: Role[] = [Role.User];

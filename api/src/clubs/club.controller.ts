@@ -14,7 +14,7 @@ import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
-import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
+import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../shared/modules/search/search.dto';
@@ -31,7 +31,6 @@ import { UpdateClubMemberDto } from './dto/update-club-member.dto';
 import { UpdateClubDto } from './dto/update-club.dto';
 
 @ApiTags('Clubs')
-@UseGuards(PoliciesGuard)
 @Controller({ path: 'clubs' })
 export class ClubsController {
   constructor(
@@ -68,16 +67,16 @@ export class ClubsController {
   }
 
   @Get('/member/:userId')
-  public async findUnlocked(@Param('userId')userId: string): Promise<ClubMember[]> {
+  public async findUnlocked(@Param('userId') userId: string): Promise<ClubMember[]> {
     const user = await this.userService.findOneById(userId);
     return this.clubsService.findJoined(user);
   }
 
   @Patch('/member/:clubId/:userId')
   public async updateRole(
-    @Param('clubId', ParseIntPipe)clubId: number,
-    @Param('userId')userId: string,
-    @Body()updateClubMemberDto: UpdateClubMemberDto,
+    @Param('clubId', ParseIntPipe) clubId: number,
+    @Param('userId') userId: string,
+    @Body() updateClubMemberDto: UpdateClubMemberDto,
   ): Promise<ClubMember> {
     const user = await this.userService.findOneById(userId);
     return await this.clubsService.updateRole(clubId, user, updateClubMemberDto);
@@ -112,7 +111,11 @@ export class ClubsController {
 
   @Post(':clubId')
   @CheckPolicies(ability => ability.can(Action.Create, Club))
-  public async unlockForUser(@Param('clubId', ParseIntPipe) clubId: number, @CurrentUser() user: User, @Body() createClubMemberDto: CreateClubMemberDto): Promise<ClubMember> {
+  public async unlockForUser(
+    @Param('clubId', ParseIntPipe) clubId: number,
+    @CurrentUser() user: User,
+    @Body() createClubMemberDto: CreateClubMemberDto,
+  ): Promise<ClubMember> {
     return await this.clubsService.joinClub(clubId, user, createClubMemberDto);
   }
 }
