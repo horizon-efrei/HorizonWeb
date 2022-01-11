@@ -58,7 +58,7 @@ export class User extends BaseEntity {
   signature?: string;
 
   @Property({ type: 'text' })
-  bannerImageFilename?: string;
+  banner?: string;
 
   constructor(username: string, email: string) {
     super();

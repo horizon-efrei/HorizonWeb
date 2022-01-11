@@ -22,7 +22,7 @@ export class CreateBadgeDto {
   level: BadgeLevel;
 
   @IsString()
-  iconFilename: string;
+  icon: string;
 
   @IsString()
   serie: string;
