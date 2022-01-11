@@ -8,16 +8,23 @@ import {
   Patch,
   Post,
   Query,
+  ServiceUnavailableException,
   UseGuards,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
+import { TypesenseError } from 'typesense/lib/Typesense/Errors';
+import { config } from '../config';
 import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { Action, CheckPolicies, PoliciesGuard } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { SearchDto } from '../shared/modules/search/search.dto';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import type { ClubMember } from './club-member.entity';
+import { ClubSearchService } from './club-search.service';
+import type { IndexedClub } from './club-search.service';
 import { Club } from './club.entity';
 import { ClubsService } from './club.service';
 import { CreateClubMemberDto } from './dto/create-club-member.dto';
@@ -29,13 +36,38 @@ import { UpdateClubDto } from './dto/update-club.dto';
 @UseGuards(PoliciesGuard)
 @Controller({ path: 'clubs' })
 export class ClubsController {
-  constructor(private readonly clubsService: ClubsService, private readonly userService: UsersService) {}
+  constructor(
+    private readonly clubsService: ClubsService,
+    private readonly userService: UsersService,
+    private readonly clubSearchService: ClubSearchService,
+) {}
 
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Club))
   public async create(@Body() createTagDto: CreateClubDto): Promise<Club> {
     return await this.clubsService.create(createTagDto);
   }
+
+  @Get('/search')
+  @CheckPolicies(ability => ability.can(Action.Read, Club))
+  public async search(
+    @Query('full') full: boolean,
+    @Query() query: SearchDto,
+  ): Promise<SearchResponse<Club> | SearchResponse<IndexedClub>> {
+    if (!config.get('typesenseEnabled'))
+      throw new ServiceUnavailableException('Search is disabled');
+
+    try {
+      if (full)
+        return await this.clubSearchService.searchAndPopulate(query);
+      return await this.clubSearchService.search(query);
+    } catch (error: unknown) {
+      if (error instanceof TypesenseError)
+        this.clubSearchService.throwHttpExceptionFromTypesenseError(error);
+      throw error;
+    }
+  }
+
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Club))
@@ -45,28 +77,28 @@ export class ClubsController {
     return await this.clubsService.findAll();
   }
 
-  @Get('/member/:memberId')
-  public async findUnlocked(@Param('memberId')memberId: string): Promise<ClubMember[]> {
-    const user = await this.userService.findOneById(memberId);
+  @Get('/member/:userId')
+  public async findUnlocked(@Param('userId')userId: string): Promise<ClubMember[]> {
+    const user = await this.userService.findOneById(userId);
     return this.clubsService.findJoined(user);
   }
 
-  @Patch('/member/:memberId/:clubId')
+  @Patch('/member/:clubId/:userId')
   public async updateRole(
     @Param('clubId', ParseIntPipe)clubId: number,
-    @Param('memberId')memberId: string,
+    @Param('userId')userId: string,
     @Body()updateClubMemberDto: UpdateClubMemberDto,
   ): Promise<ClubMember> {
-    const user = await this.userService.findOneById(memberId);
+    const user = await this.userService.findOneById(userId);
     return await this.clubsService.updateRole(clubId, user, updateClubMemberDto);
   }
 
-  @Delete('/member/:memberId/:clubId')
+  @Delete('/member/:clubId/:userId')
   public async leaveClub(
     @Param('clubId', ParseIntPipe)clubId: number,
-    @Param('memberId')memberId: string,
+    @Param('userId')userId: string,
   ): Promise<void> {
-    const user = await this.userService.findOneById(memberId);
+    const user = await this.userService.findOneById(userId);
     await this.clubsService.leaveClub(clubId, user);
   }
 

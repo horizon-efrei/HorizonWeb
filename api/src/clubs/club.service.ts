@@ -61,7 +61,6 @@ export class ClubsService {
     createClubMemberDto: CreateClubMemberDto,
 ): Promise<ClubMember> {
     const club = await this.findOne(clubId);
-    console.log("Jambon");
     const clubMember = new ClubMember({ club, user, ...createClubMemberDto });
     await this.clubMemberRepository.persistAndFlush(clubMember);
     return clubMember;
