@@ -17,6 +17,7 @@ import { ReactionsModule } from './reactions/reactions.module';
 import { RepliesModule } from './replies/replies.module';
 import { PoliciesGuard } from './shared/modules/authorization';
 import { CaslModule } from './shared/modules/casl/casl.module';
+import { SocialsModule } from './socials/socials.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { TagsModule } from './tags/tags.module';
 import { UsersModule } from './users/users.module';
@@ -40,6 +41,7 @@ import { UsersModule } from './users/users.module';
     SubjectsModule,
     TagsModule,
     UsersModule,
+    SocialsModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },

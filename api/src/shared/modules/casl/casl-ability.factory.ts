@@ -11,6 +11,7 @@ import { ProfileImage } from '../../../files/profile-images/profile-image.entity
 import { StudyDoc } from '../../../files/study-docs/study-doc.entity';
 import { Post } from '../../../posts/entities/post.entity';
 import { Reply } from '../../../replies/entities/reply.entity';
+import type { Social } from '../../../socials/entities/social.entity';
 import { Subject } from '../../../subjects/subject.entity';
 import { Tag } from '../../../tags/tag.entity';
 import type { User } from '../../../users/user.entity';
@@ -27,6 +28,7 @@ export type Subjects = InferSubjects<
   | typeof Post
   | typeof ProfileImage
   | typeof Reply
+  | typeof Social
   | typeof StudyDoc
   | typeof Subject
   | typeof Tag>
