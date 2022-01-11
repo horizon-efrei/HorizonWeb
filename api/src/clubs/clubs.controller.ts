@@ -24,7 +24,7 @@ import type { ClubMember } from './club-member.entity';
 import { ClubSearchService } from './club-search.service';
 import type { IndexedClub } from './club-search.service';
 import { Club } from './club.entity';
-import { ClubsService } from './club.service';
+import { ClubsService } from './clubs.service';
 import { CreateClubMemberDto } from './dto/create-club-member.dto';
 import { CreateClubDto } from './dto/create-club.dto';
 import { UpdateClubMemberDto } from './dto/update-club-member.dto';
