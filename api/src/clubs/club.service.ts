@@ -75,7 +75,7 @@ export class ClubsService {
 
     wrap(clubMember).assign(updateClubMemberDto);
     await this.clubMemberRepository.flush();
-    return clubJoined;
+    return clubMember;
   }
 
   public async leaveClub(clubId: number, user: User): Promise<void> {
