@@ -14,7 +14,7 @@ export class CreateClubDto {
   clubDescription: string;
 
   @IsString()
-  iconFilename: string;
+  icon: string;
 
   @IsArray()
   @IsString({ each: true })

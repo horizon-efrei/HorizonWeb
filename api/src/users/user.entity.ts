@@ -57,6 +57,7 @@ export class User extends BaseEntity {
   @Property({ type: 'text' })
   signature?: string;
 
+  // TODO: Add full 'banner' support
   @Property({ type: 'text' })
   banner?: string;
 
