@@ -31,10 +31,10 @@
 </template>
 
 <script lang="js">
-import { users } from '@/fake/users'
-import { posts } from '@/fake/posts'
 
 import DashboardCore from './DashboardCore.vue'
+let posts = []
+let users = []
 export default {
     components: {
         DashboardCore
@@ -50,8 +50,8 @@ export default {
                         comp: ['div'],
                         name: 'Votes' },
                     status: { attrs: () => {},
-                        slot: (post) => post.state,
-                        value: (post) => post.state,
+                        slot: (post) => post.solved,
+                        value: (post) => post.solved,
                         comp: ['div'],
                         name: 'État' },
                     title: { attrs: () => {},
@@ -116,6 +116,12 @@ export default {
                 }, users]
             }
         }
+    },
+    async mounted() {
+        const posts = await this.$store.dispatch("posts/fetchPosts")
+        this.tabColumns.posts[1] = posts
+        const users = await this.$store.dispatch("users/fetchUsers")
+        this.tabColumns.users[1] = users
     }
 }
 </script>

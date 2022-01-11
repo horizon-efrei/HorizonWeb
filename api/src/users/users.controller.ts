@@ -8,6 +8,8 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
 import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
+import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
+import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../shared/modules/search/search.dto';
 import { UserSearchService } from './user-search.service';
 import type { IndexedUser } from './user-search.service';
@@ -21,6 +23,13 @@ export class UsersController {
     private readonly usersService: UsersService,
     private readonly userSearchService: UserSearchService,
   ) {}
+
+  @Get()
+  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<User>> {
+    if (query.page)
+      return await this.usersService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 5 });
+    return await this.usersService.findAll();
+  }
 
   @Get(':username')
   public async findOne(@Param('username') username: string): Promise<User> {

@@ -2,6 +2,8 @@ import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import type { RegisterDto } from '../auth/dto/register.dto';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
+import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { UserSearchService } from './user-search.service';
 import { User } from './user.entity';
 
@@ -11,6 +13,10 @@ export class UsersService {
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     private readonly userSearchService: UserSearchService,
   ) {}
+
+  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<User>> {
+    return await this.userRepository.findWithPagination(paginationOptions, {});
+  }
 
   public async findOne(username: string): Promise<User> {
     return await this.userRepository.findOneOrFail({ username: { $ilike: username } });

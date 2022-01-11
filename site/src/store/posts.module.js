@@ -7,14 +7,14 @@ const initialState = { posts: [], page: 0 }
 export const posts = {
     namespaced: true,
     getters: {
-        getPosts (state) {
+        getPosts(state) {
             return state.posts
         }
     },
     state: initialState,
     actions: {
-        fetchPosts ({ commit, state }, query) {
-            state.page++
+        fetchPosts({ commit, state }, query) {
+            state.page = 1
             return PostsService.getPosts({ page: state.page, ...query }).then(
                 posts => {
                     commit('fetchSuccess', posts)
@@ -25,14 +25,14 @@ export const posts = {
                 }
             )
         },
-        refreshPosts ({ commit }) {
+        refreshPosts({ commit }) {
             commit('refreshPosts')
         },
-        newFetchPosts ({ dispatch }, query) {
+        newFetchPosts({ dispatch }, query) {
             dispatch('refreshPosts')
             return dispatch('fetchPosts', query)
         },
-        addPost ({ commit }, post) {
+        addPost({ commit }, post) {
             return PostsService.addPost(post).then(
                 newPost => {
                     commit('addPostSuccess', newPost)
@@ -44,7 +44,7 @@ export const posts = {
                 }
             )
         },
-        modifyPost ({ commit }, id, newPost) {
+        modifyPost({ commit }, id, newPost) {
             return PostsService.modifyPost(id, newPost).then(
                 modifiedPost => {
                     commit('modifyPostSuccess', id, modifiedPost)
@@ -56,8 +56,8 @@ export const posts = {
                 }
             )
         },
-        deletePost ({ commit }, id) {
-            return PostsService.modifyPost(id).then(
+        deletePost({ commit }, id) {
+            return PostsService.deletePost(id).then(
                 success => {
                     commit('deletePostSuccess', id)
                     return Promise.resolve(success)
@@ -70,20 +70,20 @@ export const posts = {
         }
     },
     mutations: {
-        refreshPosts (state) {
+        refreshPosts(state) {
             state.posts = []
             state.page = 0
         },
-        fetchSuccess (state, posts) {
+        fetchSuccess(state, posts) {
             state.posts = uniqBy([...state.posts, ...posts], (a, b) => a.postId === b.postId)
         },
-        addPostSuccess (state, newPost) {
+        addPostSuccess(state, newPost) {
             router.push(`/post/${newPost.id}`)
         },
-        modifyPostSuccess (state, id, modifedPost) {
+        modifyPostSuccess(state, id, modifedPost) {
             state.posts = state.posts.map(post => modifedPost ? post.id === id : post)
         },
-        deletePostSuccess (state, id) {
+        deletePostSuccess(state, id) {
             state.posts = state.posts.filter(post => post.id !== id)
         }
     }
