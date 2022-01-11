@@ -21,15 +21,15 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="mm"
      showgrid="false"
-     inkscape:zoom="1.0323096"
-     inkscape:cx="181.14721"
-     inkscape:cy="114.30679"
+     inkscape:zoom="1.7900242"
+     inkscape:cx="126.25528"
+     inkscape:cy="112.84764"
      inkscape:window-width="1323"
      inkscape:window-height="782"
      inkscape:window-x="0"
      inkscape:window-y="25"
      inkscape:window-maximized="0"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      fit-margin-top="0"
      fit-margin-left="0"
      fit-margin-right="0"
@@ -64,21 +64,13 @@
      transform="translate(-125.27686,-45.257224)">
     <path
        id="rect846"
-       style="fill:#ffaaaa;stroke-width:0.88566;stroke-linecap:round;stroke-linejoin:round"
-       d="m 125.27686,93.264549 v 9.204611 c 0,2.06626 2.12054,3.73001 4.75476,3.73001 h 37.69227 c 2.63421,0 4.75474,-1.66374 4.75474,-3.73 v -9.204621 z" />
-    <text
-       xml:space="preserve"
-       transform="matrix(0.26458333,0,0,0.26458333,125.16989,45.854257)"
-       id="text6828"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect6830);fill:#ffffff;fill-opacity:1;stroke:none"
-       x="21.005859"
-       y="0"><tspan
-         x="47.524414"
-         y="217.93853"
-         id="tspan1030"><tspan
-           style="font-weight:bold;font-family:Arial;-inkscape-font-specification:'Arial, Bold'"
-           id="tspan1028">CSV</tspan></tspan></text>
+       style="fill:#ffaaaa;stroke-width:0.974572;stroke-linecap:round;stroke-linejoin:round"
+       d="m 125.27686,90.537172 v 11.145478 c 0,2.50195 2.12054,4.51652 4.75476,4.51652 h 37.69227 c 2.63421,0 4.75474,-2.01455 4.75474,-4.5165 V 90.537172 Z" />
   </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Calque 3" />
 </svg>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
 

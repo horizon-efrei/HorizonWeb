@@ -1,69 +1,37 @@
 <template>
     <svg
-        id="svg5"
-        width="47.201771mm"
-        height="60.991116mm"
-        viewBox="0 0 47.201772 60.991117"
+        width="47.202mm"
+        height="60.991mm"
         version="1.1"
+        viewBox="0 0 47.202 60.991"
         xmlns="http://www.w3.org/2000/svg"
-        xmlns:svg="http://www.w3.org/2000/svg"
     >
-        <defs
-            id="defs2"
-        >
-            <rect
-                id="rect6830"
-                x="0"
-                y="181.44501"
-                width="177.39272"
-                height="48.824379"
-            />
-        </defs>
-        <g
-            id="layer1"
-            transform="translate(-125.27686,-45.257224)"
-        >
+        <g transform="translate(-125.28 -45.257)">
             <path
-                id="rect846-2"
-                style="fill:#e5e7eb;stroke-width:1;stroke-linecap:round;stroke-linejoin:round"
-                d="m 130.03161,45.257224 c -2.63421,0 -4.75475,2.120535 -4.75475,4.754751 v 51.481095 c 0,2.63421 2.12054,4.75527 4.75475,4.75527 h 37.69228 c 2.63421,0 4.75474,-2.12106 4.75474,-4.75527 V 55.79715 L 162.45702,45.257224 Z"
+                d="m130.03 45.257c-2.6342 0-4.7548 2.1205-4.7548 4.7548v51.481c0 2.6342 2.1205 4.7553 4.7548 4.7553h37.692c2.6342 0 4.7547-2.1211 4.7547-4.7553v-45.696l-10.022-10.54z"
+                fill="#e5e7eb"
+                stroke-linecap="round"
+                stroke-linejoin="round"
             />
             <path
-                id="path2193"
-                style="fill:#cccccc;fill-opacity:1;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-                d="m 172.47863,55.79715 -10.02161,-10.539926 0.0804,10.439024 z"
+                d="m172.48 55.797-10.022-10.54 0.0804 10.439z"
+                fill="#ccc"
             />
-        </g>
-        <g
-            id="layer2"
-            transform="translate(-125.27686,-45.257224)"
-        >
-            <path
-                id="rect846"
-                style="stroke-width:0.88566;stroke-linecap:round;stroke-linejoin:round"
-                :style="{fill: colors(mime)}"
-                d="m 125.27686,93.264549 v 9.204611 c 0,2.06626 2.12054,3.73001 4.75476,3.73001 h 37.69227 c 2.63421,0 4.75474,-1.66374 4.75474,-3.73 v -9.204621 z"
-            />
-            <text
-                id="text6828"
-                xml:space="preserve"
-                transform="matrix(0.26458333,0,0,0.26458333,125.16989,45.854257)"
-                style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;text-align:center;white-space:pre;shape-inside:url(#rect6830);fill:#ffffff;fill-opacity:1;stroke:none"
-                x="21.005859"
-                y="0"
-            ><tspan
-                id="tspan1336"
-                x="47.524414"
-                y="217.93853"
-            ><tspan
-                id="tspan1334"
-                style="font-weight:bold;font-family:Arial;-inkscape-font-specification:'Arial, Bold'"
-                class="uppercase"
-            >
 
-                {{ fileName.split(".").pop() }}
-            </tspan></tspan></text>
         </g>
+        <foreignObject
+            x="0"
+            y="40"
+            width="47.202"
+            height="20.991"
+        >
+            <div
+                class="flex items-center justify-center text-white uppercase rounded-b-lg"
+                :class="colors(mime)"
+            >
+                {{ fileName.split('.').pop() }}
+            </div>
+        </foreignObject>
     </svg>
 </template>
 
@@ -87,19 +55,18 @@ export default {
     methods: {
         colors(mime){
             const dic = [
-                {cond: new RegExp("^image/(.)+"), color: "#ffAAAA"},
-                {cond: new RegExp("^audio/(.)+"), color: "#497AAD"},
-                {cond: new RegExp("^text/(.)+"), color: "#A6AD6E"},
-                {cond: new RegExp("^video/(.)+"), color: "#DD79FA"},
-                {cond: new RegExp("^application/(.)+"), color: "#FAB357"}
+                {cond: new RegExp("^image/(.)+"), color: "bg-orange-500"},
+                {cond: new RegExp("^audio/(.)+"), color: "bg-sky-500"},
+                {cond: new RegExp("^text/(.)+"), color: "bg-blue-500"},
+                {cond: new RegExp("^video/(.)+"), color: "bg-green-500"},
+                {cond: new RegExp("^application/(.)+"), color: "bg-pink-500"}
             ]
             for(const el of dic){
-
                 if(el.cond.test(mime)){
                     return el.color
                 }
             }
-            return '#bbb'
+            return 'bg-gray-500'
         }
     }
 }
