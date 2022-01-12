@@ -50,9 +50,4 @@ export class UsersService {
 
     return user;
   }
-
-  public async findBadges(userId: string): Promise<BadgeUnlock[]> {
-    const user = await this.findOneById(userId);
-    return await this.badgeUnlockRepository.find({ user }, ['badge', 'user']);
-  }
 }

@@ -12,6 +12,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import type { BadgeUnlock } from './badge-unlock.entity';
 import { Badge } from './badge.entity';
 import { BadgesService } from './badges.service';
 import { CreateBadgeDto } from './dto/create-badge.dto';
@@ -36,21 +37,34 @@ export class BadgesController {
     return await this.badgesService.findAll();
   }
 
-  @Get(':name')
+  @Get('/user/:userId')
   @CheckPolicies(ability => ability.can(Action.Read, Badge))
-  public async findOne(@Param('name') name: string): Promise<Badge> {
-    return await this.badgesService.findOne(name);
+  public async findAllForUser(
+    @Param('userId') userId: string,
+    @Query() query: PaginateDto,
+  ): Promise<PaginatedResult<BadgeUnlock>> {
+    if (query.page) {
+      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
+      return await this.badgesService.findAllForUser(userId, options);
+    }
+    return await this.badgesService.findAllForUser(userId);
   }
 
-  @Patch(':name')
+  @Get(':slug')
+  @CheckPolicies(ability => ability.can(Action.Read, Badge))
+  public async findOne(@Param('slug') slug: string): Promise<Badge> {
+    return await this.badgesService.findOne(slug);
+  }
+
+  @Patch(':slug')
   @CheckPolicies(ability => ability.can(Action.Update, Badge))
-  public async update(@Param('name') name: string, @Body() updateBadgeDto: UpdateBadgeDto): Promise<Badge> {
-    return await this.badgesService.update(name, updateBadgeDto);
+  public async update(@Param('slug') slug: string, @Body() updateBadgeDto: UpdateBadgeDto): Promise<Badge> {
+    return await this.badgesService.update(slug, updateBadgeDto);
   }
 
-  @Delete(':name')
+  @Delete(':slug')
   @CheckPolicies(ability => ability.can(Action.Delete, Badge))
-  public async remove(@Param('name') name: string): Promise<void> {
-    await this.badgesService.remove(name);
+  public async remove(@Param('slug') slug: string): Promise<void> {
+    await this.badgesService.remove(slug);
   }
 }

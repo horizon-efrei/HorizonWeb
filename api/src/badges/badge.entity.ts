@@ -5,10 +5,10 @@ import { BadgeLevel } from '../shared/lib/types/badge-level.enum';
 @Entity()
 export class Badge extends BaseEntity {
   @PrimaryKey({ type: 'text' })
-  name!: string;
+  slug!: string;
 
   @Property({ type: 'text' })
-  slug!: string;
+  name!: string;
 
   @Property({ type: 'text' })
   description!: string;
@@ -19,7 +19,7 @@ export class Badge extends BaseEntity {
   @Property({})
   level!: BadgeLevel;
 
-  // TODO: Full Icon Support
+  // TODO: Add full 'icon' support
   @Property({ type: 'text' })
   icon!: string;
 
