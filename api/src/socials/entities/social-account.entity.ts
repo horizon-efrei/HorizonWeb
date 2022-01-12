@@ -25,14 +25,14 @@ export abstract class SocialAccount extends BaseEntity {
   social!: Social;
 
   @Property({ type: 'text' })
-  link!: string;
+  link?: string;
 
   @Property({ type: 'text' })
   pseudo!: string;
 
   constructor(options: {
     social: Social;
-    link: string;
+    link?: string;
     pseudo: string;
   }) {
     super();

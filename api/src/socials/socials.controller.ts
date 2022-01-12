@@ -7,11 +7,12 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { ClubsService } from '../clubs/clubs.service';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { UsersService } from '../users/users.service';
+import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
+import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { CreateSocialAccountDto } from './dto/create-social-account.dto';
 import { CreateSocialDto } from './dto/create-social.dto';
 import { UpdateSocialAccountDto } from './dto/update-social-account.dto';
@@ -26,9 +27,7 @@ import { SocialsService } from './socials.service';
 export class SocialsController {
   constructor(
     private readonly socialsService: SocialsService,
-    private readonly usersService: UsersService,
-    private readonly clubsService: ClubsService,
-    ) {}
+  ) {}
 
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, Social))
@@ -38,72 +37,87 @@ export class SocialsController {
 
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Social))
-  public async findAll(): Promise<Social[]> {
+  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Social>> {
+    if (query.page)
+      return await this.socialsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
     return await this.socialsService.findAll();
   }
 
-  @Post('/user/:userId')
-  public async addUserSocial(@Param('userId') userId: string, @Body() createSocialAccountDto: CreateSocialAccountDto): Promise<UserSocialAccount> {
-    const user = await this.usersService.findOneById(userId);
-    return await this.socialsService.addUserSocial(user, createSocialAccountDto);
+  @Post('/user/:userId/:socialId')
+  public async addUserSocialAccount(
+    @Param('userId') userId: string,
+    @Param('socialId', ParseIntPipe) socialId: number,
+    @Body() createSocialAccountDto: CreateSocialAccountDto,
+  ): Promise<UserSocialAccount> {
+    return await this.socialsService.addUserSocialAccount(userId, socialId, createSocialAccountDto);
   }
 
   @Get('/user/:userId')
-  public async getUserSocials(@Param('userId')userId: string): Promise<UserSocialAccount[]> {
-    const user = await this.usersService.findOneById(userId);
-    return await this.socialsService.findAllAccounts(user);
+  public async findAllUserSocialAccounts(
+    @Param('userId') userId: string,
+    @Query() query: PaginateDto,
+  ): Promise<PaginatedResult<UserSocialAccount>> {
+    if (query.page) {
+      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
+      return await this.socialsService.findAllUserSocialAccounts(userId, options);
+    }
+    return await this.socialsService.findAllUserSocialAccounts(userId);
   }
 
-  @Patch('/user/:socialAccountId')
-  public async updateUserAccount(@Param('socialAccountId', ParseIntPipe)socialAccountId: number, @Body()updateSocialAccountDto: UpdateSocialAccountDto): Promise<UserSocialAccount > {
-    return await this.socialsService.updateUserAccount(socialAccountId, updateSocialAccountDto);
+  @Post('/club/:clubId/:socialId')
+  public async addClubSocial(
+    @Param('clubId', ParseIntPipe) clubId: number,
+    @Param('socialId', ParseIntPipe) socialId: number,
+    @Body() createSocialAccountDto: CreateSocialAccountDto,
+  ): Promise<ClubSocialAccount> {
+    return await this.socialsService.addClubSocialAccount(clubId, socialId, createSocialAccountDto);
   }
-
-
-  @Delete('/user/:socialAccountId')
-  public async deleteUserAccount(@Param('socialAccountId', ParseIntPipe)socialAccountId: number): Promise<void> {
-    await this.socialsService.deleteUserAccount(socialAccountId);
-  }
-
-  @Post('/club/:clubId')
-  public async addClubSocial(@Param('clubId', ParseIntPipe) clubId: number, @Body() createSocialAccountDto: CreateSocialAccountDto): Promise<ClubSocialAccount> {
-    const club = await this.clubsService.findOne(clubId);
-    return await this.socialsService.addClubSocial(club, createSocialAccountDto);
-  }
-
 
   @Get('/club/:clubId')
-  public async findAllClubs(@Param('clubId', ParseIntPipe)clubId: number): Promise<ClubSocialAccount[]> {
-    const club = await this.clubsService.findOne(clubId);
-    return await this.socialsService.findAllClubs(club);
+  public async findAllClubSocialAccounts(
+    @Param('clubId', ParseIntPipe) clubId: number,
+    @Query() query: PaginateDto,
+  ): Promise<PaginatedResult<ClubSocialAccount>> {
+    if (query.page) {
+      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
+      return await this.socialsService.findAllClubSocialAccounts(clubId, options);
+    }
+    return await this.socialsService.findAllClubSocialAccounts(clubId);
   }
 
-  @Patch('/club/:socialAccountId')
-  public async updateClubAccount(@Param('socialAccountId', ParseIntPipe)socialAccountId: number, @Body()updateSocialAccountDto: UpdateSocialAccountDto): Promise<ClubSocialAccount > {
-    return await this.socialsService.updateClubAccount(socialAccountId, updateSocialAccountDto);
+  @Patch('/account/:socialAccountId')
+  public async updateUserSocialAccount(
+    @Param('socialAccountId', ParseIntPipe) socialAccountId: number,
+    @Body() updateSocialAccountDto: UpdateSocialAccountDto,
+  ): Promise<UserSocialAccount > {
+    return await this.socialsService.updateSocialAccount(socialAccountId, updateSocialAccountDto);
   }
 
-
-  @Delete('/club/:socialAccountId')
-  public async deleteClubAccount(@Param('socialAccountId', ParseIntPipe)socialAccountId: number): Promise<void> {
-    await this.socialsService.deleteClubAccount(socialAccountId);
+  @Delete('/account/:socialAccountId')
+  public async deleteSocialAccount(
+    @Param('socialAccountId', ParseIntPipe) socialAccountId: number,
+  ): Promise<void> {
+    await this.socialsService.deleteSocialAccount(socialAccountId);
   }
 
-  @Get(':name')
+  @Get(':socialId')
   @CheckPolicies(ability => ability.can(Action.Read, Social))
-  public async findOne(@Param('name') name: string): Promise<Social | null> {
-    return await this.socialsService.findOne(name);
+  public async findOne(@Param('socialId', ParseIntPipe) socialId: number): Promise<Social | null> {
+    return await this.socialsService.findOne(socialId);
   }
 
-  @Patch(':name')
+  @Patch(':socialId')
   @CheckPolicies(ability => ability.can(Action.Update, Social))
-  public async update(@Param('name') name: string, @Body() updateSocialDto: UpdateSocialDto): Promise<Social> {
-    return await this.socialsService.update(name, updateSocialDto);
+  public async update(
+    @Param('socialId', ParseIntPipe) socialId: number,
+    @Body() updateSocialDto: UpdateSocialDto,
+  ): Promise<Social> {
+    return await this.socialsService.update(socialId, updateSocialDto);
   }
 
-  @Delete(':name')
+  @Delete(':socialId')
   @CheckPolicies(ability => ability.can(Action.Delete, Social))
-  public async remove(@Param('name') name: string): Promise<void> {
-    await this.socialsService.remove(name);
+  public async remove(@Param('socialId', ParseIntPipe) socialId: number): Promise<void> {
+    await this.socialsService.remove(socialId);
   }
 }

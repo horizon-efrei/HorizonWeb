@@ -10,7 +10,7 @@ export class ClubSocialAccount extends SocialAccount {
 
   constructor(options: {
     social: Social;
-    link: string;
+    link?: string;
     pseudo: string;
     club: Club;
   }) {

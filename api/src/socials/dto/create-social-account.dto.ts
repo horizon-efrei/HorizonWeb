@@ -1,12 +1,10 @@
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class CreateSocialAccountDto {
   @IsString()
-  link: string;
+  @IsOptional()
+  link?: string;
 
   @IsString()
   pseudo: string;
-
-  @IsString()
-  name: string;
 }

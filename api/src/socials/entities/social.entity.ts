@@ -4,6 +4,9 @@ import { BaseEntity } from '../../shared/lib/entities/base.entity';
 @Entity()
 export class Social extends BaseEntity {
   @PrimaryKey()
+  socialId: number;
+
+  @Property()
   name!: string;
 
   @Property({ type: 'text' })
