@@ -1,6 +1,7 @@
 import { Logger } from '@nestjs/common';
+import type { CollectionFieldSchema } from 'typesense/lib/Typesense/Collection';
 import type { CollectionCreateSchema } from 'typesense/lib/Typesense/Collections';
-import type { SearchParams, SearchResponse } from 'typesense/lib/Typesense/Documents';
+import type { ImportResponse, SearchParams, SearchResponse } from 'typesense/lib/Typesense/Documents';
 import type { TypesenseError } from 'typesense/lib/Typesense/Errors';
 import { config } from '../../config/config';
 import { client } from '../../config/typesense.config';
@@ -23,7 +24,9 @@ export abstract class SearchService<Entity, IndexedEntity> {
     try {
       const collection = await client.collections(this.collectionName).retrieve();
       logger.log('Found existing schema');
-      if (collection.num_documents !== entities.length || config.get('typesenseForceReindex')) {
+      if (config.get('typesenseForceReindex')
+        || collection.num_documents !== entities.length
+        || this.hasChanges(collection.fields, this.schema.fields)) {
         reindexNeeded = true;
         await client.collections(this.collectionName).delete();
       }
@@ -40,17 +43,39 @@ export abstract class SearchService<Entity, IndexedEntity> {
     await client.collections().create(this.schema);
 
     if (entities.length > 0) {
-      const returnData = await client
-        .collections<IndexedEntity>(this.collectionName)
-        .documents()
-        .import(entities.map(entity => toIndexedEntity(entity)));
+      let returnData: ImportResponse[] = [];
+      try {
+        returnData = await client
+          .collections<IndexedEntity>(this.collectionName)
+          .documents()
+          .import(entities.map(toIndexedEntity));
+      } catch (error) {
+        throw new Error(`Error importing documents ${JSON.stringify(error, null, 2)}`);
+      }
 
       const failedItems = returnData.filter(item => !item.success);
       if (failedItems.length > 0)
-        throw new Error(`Error indexing items ${JSON.stringify(failedItems, null, 2)}`);
+        throw new Error(`Error indexing documents ${JSON.stringify(failedItems, null, 2)}`);
     }
 
     logger.log('Indexing finished.');
+  }
+
+  private hasChanges(existingFields: CollectionFieldSchema[], newFields: CollectionFieldSchema[]): boolean {
+    if (existingFields.length !== newFields.length)
+      return true;
+
+    for (const [i, existingField] of existingFields.entries()) {
+      const newField = newFields[i];
+      if (existingField.name !== newField.name
+        || existingField.type !== newField.type
+        || existingField.optional !== newField.optional
+        || existingField.facet !== newField.facet
+        || existingField.index !== newField.index)
+        return true;
+    }
+
+    return false;
   }
 
   public abstract add(entity: Entity): Promise<void>;
