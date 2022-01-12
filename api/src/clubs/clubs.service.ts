@@ -4,7 +4,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
-import type { User } from '../users/user.entity';
+import { User } from '../users/user.entity';
 import { ClubMember } from './club-member.entity';
 import { Club } from './club.entity';
 import type { CreateClubMemberDto } from './dto/create-club-member.dto';
@@ -16,8 +16,8 @@ import type { UpdateClubDto } from './dto/update-club.dto';
 export class ClubsService {
   constructor(
     @InjectRepository(Club) private readonly clubRepository: BaseRepository<Club>,
-    @InjectRepository(ClubMember)
-    private readonly clubMemberRepository: BaseRepository<ClubMember>,
+    @InjectRepository(ClubMember) private readonly clubMemberRepository: BaseRepository<ClubMember>,
+    @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     ) {}
 
   public async create(createClubDto: CreateClubDto): Promise<Club> {
@@ -55,22 +55,40 @@ export class ClubsService {
     await this.clubRepository.removeAndFlush(club);
   }
 
-  public async joinClub(
+  public async findAllUsersInClub(
     clubId: number,
-    user: User,
+    paginationOptions?: PaginationOptions,
+  ): Promise<PaginatedResult<ClubMember>> {
+    const club = await this.clubRepository.findOneOrFail({ clubId });
+    return await this.clubMemberRepository.findWithPagination(paginationOptions, { club });
+  }
+
+  public async addUserToClub(
+    clubId: number,
+    userId: string,
     createClubMemberDto: CreateClubMemberDto,
 ): Promise<ClubMember> {
-    const club = await this.findOne(clubId);
-    const clubMember = new ClubMember({ club, user, ...createClubMemberDto });
+    const club = await this.clubRepository.findOneOrFail({ clubId });
+    const user = await this.userRepository.findOneOrFail({ userId });
+    const existing = await this.clubMemberRepository.count({ club, user });
+    if (existing)
+      throw new BadRequestException('User is already in club');
+
+    const clubMember = new ClubMember({ ...createClubMemberDto, club, user });
     await this.clubMemberRepository.persistAndFlush(clubMember);
     return clubMember;
   }
 
-  public async findJoined(user: User): Promise<ClubMember[]> {
+  public async findClubMembership(user: User): Promise<ClubMember[]> {
     return await this.clubMemberRepository.findAll(user);
   }
 
-  public async updateRole(clubId: number, user: User, updateClubMemberDto: UpdateClubMemberDto): Promise <ClubMember> {
+  public async updateUserRole(
+    clubId: number,
+    userId: string,
+    updateClubMemberDto: UpdateClubMemberDto,
+  ): Promise<ClubMember> {
+    const user = await this.userRepository.findOneOrFail({ userId });
     const clubMember = await this.clubMemberRepository.findOneOrFail({ club: { clubId }, user });
 
     wrap(clubMember).assign(updateClubMemberDto);
@@ -78,7 +96,7 @@ export class ClubsService {
     return clubMember;
   }
 
-  public async leaveClub(clubId: number, user: User): Promise<void> {
+  public async removeUserFromClub(clubId: number, user: User): Promise<void> {
     const clubMember = await this.clubMemberRepository.findOneOrFail({ club: { clubId }, user });
     await this.clubMemberRepository.removeAndFlush(clubMember);
   }

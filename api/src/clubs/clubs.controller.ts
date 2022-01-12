@@ -12,13 +12,11 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
-import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
 import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
 import { Action, CheckPolicies } from '../shared/modules/authorization';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../shared/modules/search/search.dto';
-import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
 import type { ClubMember } from './club-member.entity';
 import { ClubSearchService } from './club-search.service';
@@ -45,6 +43,14 @@ export class ClubsController {
     return await this.clubsService.create(createTagDto);
   }
 
+  @Get()
+  @CheckPolicies(ability => ability.can(Action.Read, Club))
+  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Club>> {
+    if (query.page)
+      return await this.clubsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
+    return await this.clubsService.findAll();
+  }
+
   @UseGuards(TypesenseGuard)
   @Get('/search')
   @CheckPolicies(ability => ability.can(Action.Read, Club))
@@ -57,38 +63,51 @@ export class ClubsController {
     return await this.clubSearchService.search(query);
   }
 
-
-  @Get()
-  @CheckPolicies(ability => ability.can(Action.Read, Club))
-  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Club>> {
-    if (query.page)
-      return await this.clubsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.clubsService.findAll();
-  }
-
   @Get('/member/:userId')
-  public async findUnlocked(@Param('userId') userId: string): Promise<ClubMember[]> {
+  public async findClubMemberships(@Param('userId') userId: string): Promise<ClubMember[]> {
     const user = await this.userService.findOneById(userId);
-    return this.clubsService.findJoined(user);
+    return this.clubsService.findClubMembership(user);
   }
 
-  @Patch('/member/:clubId/:userId')
-  public async updateRole(
+  @Get(':clubId/members')
+  @CheckPolicies(ability => ability.can(Action.Read, Club))
+  public async findAllUsersInClub(
+    @Param('clubId', ParseIntPipe) clubId: number,
+    @Query() query: PaginateDto,
+  ): Promise<PaginatedResult<ClubMember>> {
+    if (query.page) {
+      const options = { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 };
+      return await this.clubsService.findAllUsersInClub(clubId, options);
+    }
+    return await this.clubsService.findAllUsersInClub(clubId);
+  }
+
+  @Post(':clubId/members/:userId')
+  @CheckPolicies(ability => ability.can(Action.Create, Club))
+  public async addUserToClub(
+    @Param('clubId', ParseIntPipe) clubId: number,
+    @Param('userId') userId: string,
+    @Body() createClubMemberDto: CreateClubMemberDto,
+  ): Promise<ClubMember> {
+    return await this.clubsService.addUserToClub(clubId, userId, createClubMemberDto);
+  }
+
+  @Patch(':clubId/members/:userId')
+  public async updateUserRole(
     @Param('clubId', ParseIntPipe) clubId: number,
     @Param('userId') userId: string,
     @Body() updateClubMemberDto: UpdateClubMemberDto,
   ): Promise<ClubMember> {
-    const user = await this.userService.findOneById(userId);
-    return await this.clubsService.updateRole(clubId, user, updateClubMemberDto);
+    return await this.clubsService.updateUserRole(clubId, userId, updateClubMemberDto);
   }
 
-  @Delete('/member/:clubId/:userId')
-  public async leaveClub(
-    @Param('clubId', ParseIntPipe)clubId: number,
-    @Param('userId')userId: string,
+  @Delete(':clubId/members/:userId')
+  public async removeUserFromClub(
+    @Param('clubId', ParseIntPipe) clubId: number,
+    @Param('userId') userId: string,
   ): Promise<void> {
     const user = await this.userService.findOneById(userId);
-    await this.clubsService.leaveClub(clubId, user);
+    await this.clubsService.removeUserFromClub(clubId, user);
   }
 
   @Get(':clubId')
@@ -99,7 +118,10 @@ export class ClubsController {
 
   @Patch(':clubId')
   @CheckPolicies(ability => ability.can(Action.Update, Club))
-  public async update(@Param('clubId', ParseIntPipe) clubId: number, @Body() updateSubjectDto: UpdateClubDto): Promise<Club> {
+  public async update(
+    @Param('clubId', ParseIntPipe) clubId: number,
+    @Body() updateSubjectDto: UpdateClubDto,
+  ): Promise<Club> {
     return await this.clubsService.update(clubId, updateSubjectDto);
   }
 
@@ -107,15 +129,5 @@ export class ClubsController {
   @CheckPolicies(ability => ability.can(Action.Delete, Club))
   public async remove(@Param('clubId', ParseIntPipe) clubId: number): Promise<void> {
     await this.clubsService.remove(clubId);
-  }
-
-  @Post(':clubId')
-  @CheckPolicies(ability => ability.can(Action.Create, Club))
-  public async unlockForUser(
-    @Param('clubId', ParseIntPipe) clubId: number,
-    @CurrentUser() user: User,
-    @Body() createClubMemberDto: CreateClubMemberDto,
-  ): Promise<ClubMember> {
-    return await this.clubsService.joinClub(clubId, user, createClubMemberDto);
   }
 }

@@ -2,16 +2,13 @@ import { IsArray, IsString } from 'class-validator';
 
 export class CreateClubDto {
   @IsString()
-  clubName: string;
+  name: string;
 
   @IsString()
-  clubType: string;
+  category: string;
 
   @IsString()
-  slug: string;
-
-  @IsString()
-  clubDescription: string;
+  description: string;
 
   @IsString()
   icon: string;
