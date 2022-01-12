@@ -16,7 +16,7 @@ morgan.token('status-text', (_req, { statusCode }) => status(statusCode).toStrin
 const getMorganLine = morgan.compile(':method :url :response-time ms — :status-colored (:status-text)');
 const routeLogger = new Logger('Endpoint');
 
-export const logger = morgan((tokens, req, res) => {
+export const logger = (): ReturnType<typeof morgan> => morgan((tokens, req, res) => {
   const line = getMorganLine(tokens, req, res);
   routeLogger.log(`Request finished: ${line}`);
   return null;

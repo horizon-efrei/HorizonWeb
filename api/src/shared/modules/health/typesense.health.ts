@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import type { HealthIndicatorResult } from '@nestjs/terminus';
 import { HealthCheckError, HealthIndicator } from '@nestjs/terminus';
-import { client } from '../../../typesense.config';
+import { client } from '../../config/typesense.config';
 
 @Injectable()
 export class TypesenseHealthIndicator extends HealthIndicator {

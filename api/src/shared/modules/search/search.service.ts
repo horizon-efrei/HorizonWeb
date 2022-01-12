@@ -2,7 +2,8 @@ import { Logger } from '@nestjs/common';
 import type { CollectionCreateSchema } from 'typesense/lib/Typesense/Collections';
 import type { SearchParams, SearchResponse } from 'typesense/lib/Typesense/Documents';
 import type { TypesenseError } from 'typesense/lib/Typesense/Errors';
-import { client } from '../../../typesense.config';
+import { config } from '../../config/config';
+import { client } from '../../config/typesense.config';
 
 export const authorizeNotFound = (error: TypesenseError): void => {
   if (error.httpStatus !== 404)
@@ -22,7 +23,7 @@ export abstract class SearchService<Entity, IndexedEntity> {
     try {
       const collection = await client.collections(this.collectionName).retrieve();
       logger.log('Found existing schema');
-      if (collection.num_documents !== entities.length || process.env.FORCE_REINDEX === 'true') {
+      if (collection.num_documents !== entities.length || config.get('typesenseForceReindex')) {
         reindexNeeded = true;
         await client.collections(this.collectionName).delete();
       }
