@@ -12,16 +12,13 @@ export class Club extends BaseEntity {
   clubId!: number;
 
   @Property({ type: 'text' })
-  slug!: string;
+  name!: string;
 
   @Property({ type: 'text' })
-  clubName!: string;
+  category!: string;
 
   @Property({ type: 'text' })
-  clubType!: string;
-
-  @Property({ type: 'text' })
-  clubDescription!: string;
+  description!: string;
 
   // TODO: Full 'icon' support
   @Property({ type: 'text' })
@@ -34,18 +31,16 @@ export class Club extends BaseEntity {
   membersCount = 0;
 
   constructor(options: {
-    clubName: string;
-    slug: string;
-    clubType: string;
-    clubDescription: string;
+    name: string;
+    category: string;
+    description: string;
     icon: string;
     socials: string[];
   }) {
     super();
-    this.clubName = options.clubName;
-    this.slug = options.slug;
-    this.clubType = options.clubType;
-    this.clubDescription = options.clubDescription;
+    this.name = options.name;
+    this.category = options.category;
+    this.description = options.description;
     this.icon = options.icon;
     this.socials = options.socials;
   }
