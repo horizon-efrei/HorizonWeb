@@ -12,12 +12,12 @@
         "matchPaths": ["api/**"],
         "groupName": "Backend dependencies",
         "addLabels": ["target: backend"],
-        "reviewers": "noftaly"
+        "reviewers": ["noftaly"]
       }, {
         "matchPaths": ["site/**"],
         "groupName": "Frontend dependencies",
         "addLabels": ["target: frontend"],
-        "reviewers": "iv-stpn"
+        "reviewers": ["iv-stpn"]
       }, {
         "matchDepTypes": ["engines"],
         "enabled": false
