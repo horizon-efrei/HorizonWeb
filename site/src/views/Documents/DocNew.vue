@@ -245,7 +245,6 @@ export default {
                     const data = new FormData()
                     data.append('file', el)
                     data.append('subject',this.stepsModel[0].docSubject)
-                    data.append('type',this.stepsModel[0].filiere)
                     this.$store.dispatch('files/addStudyDoc', data)
                 }
             }
