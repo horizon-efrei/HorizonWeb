@@ -62,10 +62,17 @@
 </template>
 
 <script lang="js">
-import Profile from '@/components/UserProfile.vue'
+import Profile from '@/components/Settings/UserProfile.vue'
+import Badge from '@/components/Settings/Badge.vue'
+import ExternalAccount from '@/components/Settings/ExternalAccount.vue'
+import Association from '@/components/Settings/Association.vue'
+import AccessibilitySettings from '@/components/Settings/AccessibilitySettings.vue'
 export default {
     components: {
-        Profile
+        Profile,
+        Badge,
+        ExternalAccount,
+        Association
     },
     inheritAttrs: false,
     data () {
@@ -73,8 +80,19 @@ export default {
             currentComponent: 'Profile',
             links: [
                 { text: 'Profil', icon: 'ri-profile-line', component: 'Profile' },
-                { text: 'Intégration Discord', icon: 'ri-discord-fill', component: 'Discord' }
+                { text: 'Intégration Discord', icon: 'ri-discord-fill', component: 'Discord' },
+                { text: 'Badges', icon: 'ri-profile-line', component: Badge },
+                { text: 'Compte lié', icon: 'ri-links-line', component: ExternalAccount },
+                { text: 'Assos', icon: 'ri-discord-fill', component: Association },
+                { text: 'Accessibilité', icon: 'ri-hand-heart-fill', component: AccessibilitySettings }
                 // TODO: { text: "Rôles Ef'Réussite", icon: 'ri-book-mark-line', component: 'Roles' }
+            ],
+            accounts : [
+                { name:'Mail', icon: 'ri-mail-line'},
+                { name:'LinkedIn', icon: 'ri-linkedin-fill'},
+                { name:'Discord', icon: 'ri-discord-fill'},
+                { name:'Instagram', icon: 'ri-instagram-fill'},
+                { name:'GitHub', icon: 'ri-github-fill'},
             ]
         }
     }

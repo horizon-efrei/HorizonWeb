@@ -37,6 +37,18 @@ export const auth = {
                     return Promise.reject(error)
                 }
             )
+        },
+        getUser ({ commit }) {
+            return AuthService.getUser().then(
+                response => {
+                    commit('fetchSuccess')
+                    return  Promise.resolve(response.data)
+                },
+                error => {
+                    return Promise.reject(error)
+                }
+            )
+
         }
     },
     mutations: {
@@ -64,6 +76,9 @@ export const auth = {
         },
         registerFailure (state) {
             state.status.loggedIn = false
+        },
+        fetchSuccess (state, user) {
+            state.me = user
         }
     }
 }
