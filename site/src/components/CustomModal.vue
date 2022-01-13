@@ -5,11 +5,11 @@
             v-if="show"
             class="absolute top-0 h-screen w-screen z-40"
             :class="customClass"
-        >   
+        >
             <div class="centered-fixed z-50">
                 <slot class="" />
             </div>
-            
+
             <div
                 class="w-full h-full absolute bg-gray-800 opacity-50"
                 @click.prevent="$emit('close')"

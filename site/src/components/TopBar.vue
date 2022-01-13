@@ -1,4 +1,73 @@
 <template>
+    <CustomModal
+        :show="showSearchBar"
+        @close="showSearchBar = false"
+    >
+        <div class="card w-3/4">
+            <ais-instant-search
+                :search-client="searchClient"
+                index-name="posts"
+            >
+                <ais-search-box>
+                    <template #default="{ currentRefinement, isSearchStalled, refine }">
+                        <input
+                            type="search"
+                            :value="currentRefinement"
+                            placeholder="Rechercher..."
+                            class="p-2 w-full"
+                            :focus="showSearchBar"
+                            @input="refine($event.currentTarget.value)"
+                        >
+                        <span :hidden="!isSearchStalled">Chargement...</span>
+                    </template>
+                </ais-search-box>
+
+                <ais-hits :transform-items="test">
+                    <template #default="{ items }">
+                        <div v-if="items.length != 0">
+                            <div class="flex items-center text-lg my-2 gap-2">
+                                <i class="ri-chat-check-line" />Tous les posts
+                            </div>
+
+                            <div
+
+                                class="flex flex-col gap-2"
+                            >
+                                <transition-group
+                                    v-for="(item, i) in items"
+                                    :key="i"
+                                    class="flex flex-col bg-2 gap-1 rounded-lg p-2"
+                                    tag="div"
+                                    name="flip-list"
+                                >
+                                    <div class="flex items-center gap-2">
+                                        <i class="ri-hashtag ri-lg" />
+                                        <div>
+                                            <div class="">
+                                                {{ item.title }}
+                                            </div>
+                                            <div class="text-2 text-sm">
+                                                {{ item.body }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </transition-group>
+                            </div>
+                        </div>
+                    </template>
+                </ais-hits>
+
+
+                <!-- <ais-index index-name="articles">
+                    <ais-hits>
+                        <template #item="{ item, index }">
+                            {{ index }} - {{ item.title }}
+                        </template>
+                    </ais-hits>
+                </ais-index> -->
+            </ais-instant-search>
+        </div>
+    </CustomModal>
     <nav
         id="topbar"
         class="bg-0 flex fixed top-0 left-0 w-full h-topbar text-1 items-center justify-between border-b
@@ -18,6 +87,7 @@
             <bottom-border-input
                 class="md:text-lg lg:text-xl"
                 input-placeholder="Rechercher une ressource sur Horizon Efrei..."
+                @click.stop="showSearchBar = true"
             >
                 <i
                     class="ri-file-search-line mouse-icon text-2xl"
@@ -60,16 +130,45 @@
 
 import UserCard from '@/components/Card/UserCard.vue'
 import BottomBorderInput from '@/components/Input/BottomBorderInput.vue'
+import CustomModal from '@/components/CustomModal.vue'
+
+import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
+
+const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
+    server: {
+        //TODO: Private Key!!!!
+        apiKey: "xyz",
+        nodes: [
+            {
+                host: "localhost",
+                port: "18108",
+                protocol: "http",
+            },
+        ],
+    },
+    cacheSearchResultsForSeconds: 2 * 60,
+    additionalSearchParameters: {
+        queryBy: "title",
+    },
+});
+const searchClient = typesenseInstantsearchAdapter.searchClient;
 
 export default {
     components: {
         UserCard,
-        BottomBorderInput
+        BottomBorderInput,
+        CustomModal
     },
     emits: [
         'toggle-side-bar',
         'toggle-login'
     ],
+    data() {
+        return {
+            showSearchBar: false,
+            searchClient
+        }
+    },
     computed: {
         loggedIn () {
             return this.$store.state.auth.status.loggedIn
@@ -77,7 +176,13 @@ export default {
         user () {
             return this.$store.state.auth.user
         }
-    }
+    },
+    methods: {
+        test(data){
+            console.log(data)
+            return data
+        }
+    },
 }
 </script>
 
