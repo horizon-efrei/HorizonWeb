@@ -108,6 +108,9 @@
                     <div class="text-lg">
                         Associations
                     </div>
+                    <div v-if="userClubs.length === 0">
+                        Vous n'avez pas encore d'Association
+                    </div>
                     <div
                         v-for="(club, idx) in userClubs"
                         :key="idx"
@@ -130,9 +133,8 @@
                             />
                         </div>
                         <button
-                            v-if="idx ===userClubs.length-1"
                             class="text-1 text-xl red-500 h-8 w-8 my-auto"
-                            @click="rmLineClub()"
+                            @click="rmLineClub(idx)"
                         >
                             <i class="ri-close-line" />
                         </button>
@@ -147,6 +149,9 @@
                 <div class="mb-4 w-96">
                     <div class="text-lg">
                         Comptes Externes
+                    </div>
+                    <div v-if="socialsAccounts.items.length === 0">
+                        Vous n'avez pas encore de compte externe
                     </div>
                     <div
                         v-for="(social, idx) in socialsAccounts.items"
@@ -172,9 +177,8 @@
                                 placeholder="Compte"
                             >
                             <button
-                                v-if="idx === socialsAccounts.items.length-1"
                                 class="text-1 text-xl red-500 h-8 w-8"
-                                @click="rmLineAccount()"
+                                @click="rmLineAccount(idx)"
                             >
                                 <i class="ri-close-line" />
                             </button>
@@ -281,14 +285,14 @@ export default {
         addLineClub: function addLineClub() {
             this.userClubs.push({role:null,club:{clubId:null}});
         },
-        rmLineClub: function rmLineClub() {
-            this.userClubs.pop();
+        rmLineClub: function rmLineClub(indx) {
+            this.userClubs.splice(indx,1);
         },
         addLineAccount: function addLineAccount() {
             this.socialsAccounts.items.push({social:{socialId:null},pseudo:null,link:null});
         },
-        rmLineAccount: function rmLineAccount() {
-            this.socialsAccounts.items.pop();
+        rmLineAccount: function rmLineAccount(indx) {
+            this.socialsAccounts.items.splice(indx,1);
         },
         loadContent: async function loadContent() {
 
