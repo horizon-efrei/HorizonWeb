@@ -103,7 +103,7 @@
         <div class="flex mt-4">
             <div class="w-1/2 mr-2 border rounded">
                 <div class="text-center m-1">
-                    Affiché sur votre profile
+                    Affiché sur votre profil
                 </div>
                 <div
                     class="flex p-3 min-h-20"
