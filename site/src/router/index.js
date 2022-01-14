@@ -254,6 +254,11 @@ const routes = [
         path: '/profile/:userId',
         component: () => import('@/views/ProfileShow.vue')
     },
+
+    {
+        path: '/favorites',
+        component : () => import('@/views/FavoritesPage.vue')
+    },
 ]
 
 const router = createRouter({

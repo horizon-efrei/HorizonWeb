@@ -32,11 +32,11 @@ class UserService {
             .then(res => res.data)
     }
 
-    patchUser ( newUser ) {
+    updateUser ( newUser ) {
         return axios.patch(API_URL + `users/update`,newUser, {withCredentials:true}).then(res=>res.data)
     }
 
-    postSocialAccount(request){
+    addSocialAccount(request){
         return axios.post(API_URL + `socials/user/${request[0]}/${request[1]}`,{pseudo:request[2],link:request[3]}, {withCredentials:true}).then(res => res.data)
     }
 
@@ -46,6 +46,10 @@ class UserService {
 
     removeSocialAccount(socialAccountId){
         return axios.delete(API_URL + `socials/account/${socialAccountId}`, {withCredentials:true})
+    }
+
+    getFavorites(){
+        return axios.get(API_URL + `favorites`, {withCredentials: true}).then(res => res.data.items)
     }
 
 }

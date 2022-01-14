@@ -1,6 +1,6 @@
 import UserService from '@/services/users.service';
 
-const initialState = { users: null, socialsAccounts: [], socials:[], userClubs:[] }
+const initialState = { users: null, socialsAccounts: [], socials:[], userClubs:[], favorites: [] }
 
 export const users = {
     namespaced: true,
@@ -65,9 +65,9 @@ export const users = {
                     return Promise.reject(error)
                 })
         },
-        patchUser({commit}, newUser) {
+        updateUser({commit}, newUser) {
             newUser = {description: newUser.description}
-            return UserService.patchUser(newUser).then(
+            return UserService.updateUser(newUser).then(
                 success => {
                     commit('modifyUserSuccess', success)
                     return Promise.resolve(success)
@@ -78,10 +78,10 @@ export const users = {
                 }
             )
         },
-        postSocialAccount({commit},request){
-            return UserService.postSocialAccount(request).then(
+        addSocialAccount({commit},request){
+            return UserService.addSocialAccount(request).then(
                 success => {
-                    commit('postSocialAccountSuccess',success)
+                    commit('addSocialAccountSuccess',success)
                     return Promise.resolve(success)
                 },
                 error => {
@@ -114,10 +114,10 @@ export const users = {
                 }
             )
         },
-        replaceSocialAccount({commit},request){
+        replaceSocialAccount({commit}, request){
             UserService.removeSocialAccount(request[1].socialAccountId).then(
                 () => {
-                    return UserService.postSocialAccount([request[0],request[1].social.socialId,request[1].pseudo,request[1].link]).then(
+                    return UserService.addSocialAccount([request[0],request[1].social.socialId,request[1].pseudo,request[1].link]).then(
                         success =>{
                             console.log("success remove",success)
                             commit("replaceSocialAccountSuccess",{socialAccount:success,socialAccountId:request[1].socialAccountId})
@@ -134,8 +134,18 @@ export const users = {
                     return Promise.reject(error)
                 }
             )
-
-
+        },
+        getFavorites({commit}){
+            return UserService.getFavorites().then(
+                success => {
+                    commit("fetchUserFavorites",success)
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
         }
 
     },
@@ -158,7 +168,7 @@ export const users = {
         modifyUserSuccess(state,user){
             state.user = user
         },
-        postSocialAccountSuccess(state, socialAccount){
+        addSocialAccountSuccess(state, socialAccount){
             state.socialsAccounts.push(socialAccount)
         },
         patchSocialAccountSuccess(state,socialAccount){
@@ -177,6 +187,9 @@ export const users = {
                 }
                 return socialAccount
             })
+        },
+        fetchUserFavorites(state,favorites){
+            state.favorites = favorites
         }
     }
 }

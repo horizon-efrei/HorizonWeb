@@ -323,14 +323,14 @@ export default {
                 }
                 return true
             }
-            this.$store.dispatch('users/patchUser',this.user)
+            this.$store.dispatch('users/updateUser',this.user)
 
             for( let i =0; i < this.socialsAccounts.length; i++) {
                 console.log(this.socialsAccounts[i])
                 if(canSocialBePosted(this.socialsAccounts[i])){
                     if(!this.$store.state.users.socialsAccounts.find((a)=> _.isEqual(a,this.socialsAccounts[i]))){
                         if(this.socialsAccounts[i].socialAccountId == null){
-                            this.$store.dispatch('users/postSocialAccount',[this.user.userId, this.socialsAccounts[i].social.socialId,this.socialsAccounts[i].pseudo,this.socialsAccounts[i].link])
+                            this.$store.dispatch('users/addSocialAccount',[this.user.userId, this.socialsAccounts[i].social.socialId,this.socialsAccounts[i].pseudo,this.socialsAccounts[i].link])
                         }else{
                             if(this.socialsAccounts[i].social.socialId != this.$store.state.users.socialsAccounts.find((a) => a.socialAccountId === this.socialsAccounts[i].socialAccountId ).social.socialId){
                                 this.$store.dispatch('users/replaceSocialAccount',[this.user.userId, this.socialsAccounts[i]])
