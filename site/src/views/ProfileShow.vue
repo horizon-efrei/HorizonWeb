@@ -98,7 +98,7 @@
                             <div>{{ user.email }}</div>
                         </div>
                         <div v-if="socialsAccounts === undefined || socialsAccounts === null">
-                            Probleme dans les socials
+                            Problème dans les comptes des réseaux sociaux
                         </div>
                         <div
                             v-for="social in socialsAccounts"
