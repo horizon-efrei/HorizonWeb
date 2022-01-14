@@ -67,7 +67,6 @@ export default {
             default: function () {
                 return [
                     'viewComments',
-                    'bookmark',
                     'favorite',
                     'flag'
                 ]
@@ -79,7 +78,6 @@ export default {
             // TODO: Actions
             return {
                 viewComments: { name: () => { return "3 Commentaires" }, icon: 'ri-chat-2-line', action: function () { console.log('Commentaire') } },
-                bookmark: { name: () => { return 'Enregistrer' }, icon: 'ri-bookmark-line', action: function () { console.log('Enregistrer') } },
                 favorite: { name: () => { return 'Favori' }, icon: 'ri-star-line', action: function () { console.log('Favori') } },
                 flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } },
             }

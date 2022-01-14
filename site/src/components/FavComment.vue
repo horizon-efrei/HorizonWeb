@@ -95,7 +95,13 @@ export default {
                 duration /= division.amount;
             }
         },
-        extractTextFromJSONBody
+        extractTextFromJSONBody,
+        sendVote(vote) {
+            this.$store.dispatch('thread/voteReply', {
+                replyId: this.reply.replyId,
+                value: vote
+            })
+        }
     }
 
 }
