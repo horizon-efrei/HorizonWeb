@@ -112,32 +112,47 @@
                         Vous n'avez pas encore d'Association
                     </div>
                     <div
-                        v-for="(club, idx) in userClubs"
-                        :key="idx"
-                        class="flex mb-2 items-center"
+                        v-else
+                        class="flex"
                     >
-                        <div class="mr-2">
-                            <SelectInput
-                                v-model="userClubs[idx].club"
-                                button-name="Association"
-                                :choices="clubs.map(a=>a.name)"
-                                :model-value="clubs.indexOf(clubs.find((a)=> a.clubId === club.club.clubId))"
-                            />
+                        <div class="flex flex-col">
+                            <div
+                                v-for="(club, idx) in userClubs"
+                                :key="idx"
+                                class="flex mb-2 items-center"
+                            >
+                                <div class="mr-2">
+                                    <SelectInput
+                                        v-model="userClubs[idx].club"
+                                        button-name="Association"
+                                        :choices="clubs.map(a=>a.name)"
+                                        :model-value="clubs.indexOf(clubs.find((a)=> a.clubId === club.club.clubId))"
+                                    />
+                                </div>
+                            </div>
                         </div>
-                        <div class="ml-2">
-                            <SelectInput
-                                v-model="userClubs[idx].role"
-                                button-name="Role"
-                                :choices="roles"
-                                :model-value="roles.indexOf(club.role)"
-                            />
+                        <div class="flex flex-col">
+                            <div
+                                v-for="(club, idx) in userClubs"
+                                :key="idx"
+                                class="flex mb-2 items-center"
+                            >
+                                <div class="ml-2">
+                                    <SelectInput
+                                        v-model="userClubs[idx].role"
+                                        button-name="Role"
+                                        :choices="roles"
+                                        :model-value="roles.indexOf(club.role)"
+                                    />
+                                </div>
+                                <button
+                                    class="text-1 text-xl red-500 h-8 w-8 my-auto"
+                                    @click="rmLineClub(idx)"
+                                >
+                                    <i class="ri-close-line" />
+                                </button>
+                            </div>
                         </div>
-                        <button
-                            class="text-1 text-xl red-500 h-8 w-8 my-auto"
-                            @click="rmLineClub(idx)"
-                        >
-                            <i class="ri-close-line" />
-                        </button>
                     </div>
                     <button
                         class="button my-2"
@@ -151,60 +166,82 @@
                         Comptes Externes
                     </div>
                     <div v-if="socialsAccounts.length === 0">
-                        Vous n'avez pas encore de compte externe
+                        Vous n'avez pas encore lié de compte externe
                     </div>
-                    <div
-                        v-for="(social, idx) in socialsAccounts"
-                        :key="idx"
-                        class="flex mb-2 items-center"
-                    >
-                        <div class="flex">
-                            <i
-                                v-if="social.social.socialId!=null"
-                                class="mr-2 my-auto"
-                                :class="socials.find((a)=> a.socialId === social.social.socialId).icon"
-                            />
-                            <SelectInput
-                                v-model="social.social"
-                                :choices="socials.map(sos=> sos.name)"
-                                :model-value="socials.indexOf(socials.find((a)=> a.socialId === social.social.socialId))"
-                            />
+
+                    <div class="flex">
+                        <div class="flex flex-col">
+                            <div
+                                v-for="(social, idx) in socialsAccounts"
+                                :key="idx"
+                                class="flex mb-2 items-center"
+                            >
+                                <div class="flex">
+                                    <i
+                                        v-if="social.social.socialId!=null"
+                                        class="mr-2 my-auto"
+                                        :class="socials.find((a)=> a.socialId === social.social.socialId).icon"
+                                    />
+                                    <SelectInput
+                                        v-model="social.social"
+                                        :choices="socials.map(sos=> sos.name)"
+                                        :model-value="socials.indexOf(socials.find((a)=> a.socialId === social.social.socialId))"
+                                    />
+                                </div>
+                            </div>
                         </div>
-                        <input
-                            v-model="social.pseudo"
-                            class="input ml-2"
-                            placeholder="Pseudo"
-                        >
-                        <div class="">
-                            <input
-                                v-model="social.link"
-                                class="input ml-2"
-                                placeholder="Lien"
+                        <div class="flex flex-col">
+                            <div
+                                v-for="(social, idx) in socialsAccounts"
+                                :key="idx"
+                                class="flex mb-2 items-center"
                             >
-                            <button
-                                class="text-1 text-xl red-500 h-8 w-8"
-                                @click="rmLineAccount(idx)"
+                                <input
+                                    v-model="social.pseudo"
+                                    class="input ml-2"
+                                    placeholder="Pseudo"
+                                >
+                            </div>
+                        </div>
+                        <div class="flex flex-col">
+                            <div
+                                v-for="(social, idx) in socialsAccounts"
+                                :key="idx"
+                                class="flex mb-2 items-center"
                             >
-                                <i class="ri-close-line" />
-                            </button>
+                                <div class="">
+                                    <input
+                                        v-model="social.link"
+                                        class="input ml-2"
+                                        placeholder="Lien"
+                                    >
+                                    <button
+                                        class="text-1 text-xl red-500 h-8 w-8"
+                                        @click="rmLineAccount(idx)"
+                                    >
+                                        <i class="ri-close-line" />
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <button
-                        class="
+                </div>
+
+                <button
+                    class="
                             button
                             my-2"
-                        @click="addLineAccount()"
-                    >
-                        <p>Ajouter un compte externe</p>
-                    </button>
-                </div>
-                <button
-                    class="button mb-4"
-                    @click="submit()"
+                    @click="addLineAccount()"
                 >
-                    <p>Enregistrer</p>
+                    <p>Ajouter un compte externe</p>
                 </button>
             </div>
+            <button
+                class="button mb-4"
+                @click="submit()"
+            >
+                <p>Enregistrer</p>
+            </button>
         </div>
     </div>
 </template>

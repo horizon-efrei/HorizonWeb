@@ -63,16 +63,16 @@
 
 <script lang="js">
 import Profile from '@/components/Settings/UserProfile.vue'
-import Badge from '@/components/Settings/Badge.vue'
+import BadgeSettings from '@/components/Settings/BadgeSettings.vue'
 import ExternalAccount from '@/components/Settings/ExternalAccount.vue'
-import Association from '@/components/Settings/Association.vue'
+import AssociationSettings from '@/components/Settings/AssociationSettings.vue'
 import AccessibilitySettings from '@/components/Settings/AccessibilitySettings.vue'
 export default {
     components: {
         Profile,
-        Badge,
+        BadgeSettings,
         ExternalAccount,
-        Association
+        AssociationSettings
     },
     inheritAttrs: false,
     data () {
@@ -81,9 +81,9 @@ export default {
             links: [
                 { text: 'Profil', icon: 'ri-profile-line', component: 'Profile' },
                 { text: 'Intégration Discord', icon: 'ri-discord-fill', component: 'Discord' },
-                { text: 'Badges', icon: 'ri-profile-line', component: Badge },
+                { text: 'Badges', icon: 'ri-profile-line', component: BadgeSettings },
                 { text: 'Compte lié', icon: 'ri-links-line', component: ExternalAccount },
-                { text: 'Assos', icon: 'ri-discord-fill', component: Association },
+                { text: 'Assos', icon: 'ri-discord-fill', component: AssociationSettings },
                 { text: 'Accessibilité', icon: 'ri-hand-heart-fill', component: AccessibilitySettings }
                 // TODO: { text: "Rôles Ef'Réussite", icon: 'ri-book-mark-line', component: 'Roles' }
             ],
