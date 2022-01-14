@@ -4,7 +4,7 @@
             Paramètres d'Accessibilité
         </h2>
         <p class="text-sm mb-6">
-            Améliorer votre accesibilité en fonction de vos préférences
+            Améliorer votre accessibilité en fonction de vos préférences
         </p>
         <form>
             <h3 class="text-xl mb-2">
