@@ -36,15 +36,15 @@ class UserService {
         return axios.patch(API_URL + `users/update`,newUser, {withCredentials:true}).then(res=>res.data)
     }
 
-    addSocialAccount(request){
-        return axios.post(API_URL + `socials/user/${request[0]}/${request[1]}`,{pseudo:request[2],link:request[3]}, {withCredentials:true}).then(res => res.data)
+    addSocialAccount({userId,socialId,pseudo,link}){
+        return axios.post(API_URL + `socials/user/${userId}/${socialId}`,{pseudo,link}, {withCredentials:true}).then(res => res.data)
     }
 
-    patchSocialAccount(request){
-        return axios.patch(API_URL + `socials/account/${request[0]}`,{pseudo:request[1],link:request[2]}, {withCredentials:true}).then(res => res.data)
+    updateSocialAccount({socialAccountId,pseudo,link}){
+        return axios.patch(API_URL + `socials/account/${socialAccountId}`,{pseudo,link}, {withCredentials:true}).then(res => res.data)
     }
 
-    removeSocialAccount(socialAccountId){
+    deleteSocialAccount(socialAccountId){
         return axios.delete(API_URL + `socials/account/${socialAccountId}`, {withCredentials:true})
     }
 

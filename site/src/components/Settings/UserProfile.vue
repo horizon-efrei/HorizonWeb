@@ -367,13 +367,13 @@ export default {
                 if(canSocialBePosted(this.socialsAccounts[i])){
                     if(!this.$store.state.users.socialsAccounts.find((a)=> _.isEqual(a,this.socialsAccounts[i]))){
                         if(this.socialsAccounts[i].socialAccountId == null){
-                            this.$store.dispatch('users/addSocialAccount',[this.user.userId, this.socialsAccounts[i].social.socialId,this.socialsAccounts[i].pseudo,this.socialsAccounts[i].link])
+                            this.$store.dispatch('users/addSocialAccount',{userId:this.user.userId, socialId:this.socialsAccounts[i].social.socialId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link})
                         }else{
                             if(this.socialsAccounts[i].social.socialId != this.$store.state.users.socialsAccounts.find((a) => a.socialAccountId === this.socialsAccounts[i].socialAccountId ).social.socialId){
-                                this.$store.dispatch('users/replaceSocialAccount',[this.user.userId, this.socialsAccounts[i]])
+                                this.$store.dispatch('users/replaceSocialAccount',{userId:this.user.userId, socialAccountId:this.socialsAccounts[i].socialAccountId,socialId:this.socialsAccounts[i].social.socialId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link})
                             }
                             else {
-                                this.$store.dispatch('users/patchSocialAccount',[ this.socialsAccounts[i].socialAccountId,this.socialsAccounts[i].pseudo,this.socialsAccounts[i].link])
+                                this.$store.dispatch('users/updateSocialAccount',{ socialAccountId:this.socialsAccounts[i].socialAccountId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link})
                             }
                         }
                     }
@@ -381,7 +381,7 @@ export default {
             }
             for( let i =0; i < this.$store.state.users.socialsAccounts.length; i++){
                 if(!this.socialsAccounts.find((a)=>a.socialAccountId === this.$store.state.users.socialsAccounts[i].socialAccountId)){
-                    this.$store.dispatch('users/removeSocialAccount',this.$store.state.users.socialsAccounts[i].socialAccountId)
+                    this.$store.dispatch('users/deleteSocialAccount',this.$store.state.users.socialsAccounts[i].socialAccountId)
                 }
             }
         }

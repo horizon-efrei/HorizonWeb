@@ -78,8 +78,8 @@ export const users = {
                 }
             )
         },
-        addSocialAccount({commit},request){
-            return UserService.addSocialAccount(request).then(
+        addSocialAccount({commit},{userId,socialId,pseudo,link}){
+            return UserService.addSocialAccount({userId,socialId,pseudo,link}).then(
                 success => {
                     commit('addSocialAccountSuccess',success)
                     return Promise.resolve(success)
@@ -90,10 +90,10 @@ export const users = {
                 }
             )
         },
-        patchSocialAccount({commit},request){
-            return UserService.patchSocialAccount(request).then(
+        updateSocialAccount({commit},{socialAccountId,pseudo,link}){
+            return UserService.updateSocialAccount({socialAccountId,pseudo,link}).then(
                 success => {
-                    commit('patchSocialAccountSuccess',success)
+                    commit('updateSocialAccountSuccess',success)
                     return Promise.resolve(success)
                 },
                 error => {
@@ -102,10 +102,10 @@ export const users = {
                 }
             )
         },
-        removeSocialAccount({commit},socialAccountId){
-            return UserService.removeSocialAccount(socialAccountId).then(
+        deleteSocialAccount({commit},socialAccountId){
+            return UserService.deleteSocialAccount(socialAccountId).then(
                 success => {
-                    commit('removeSocialAccountSuccess',socialAccountId)
+                    commit('deleteSocialAccountSuccess',socialAccountId)
                     return Promise.resolve(success)
                 },
                 error => {
@@ -114,13 +114,12 @@ export const users = {
                 }
             )
         },
-        replaceSocialAccount({commit}, request){
-            UserService.removeSocialAccount(request[1].socialAccountId).then(
+        replaceSocialAccount({commit}, {userId,socialId,socialAccountId,pseudo,link}){
+            UserService.deleteSocialAccount(socialAccountId).then(
                 () => {
-                    return UserService.addSocialAccount([request[0],request[1].social.socialId,request[1].pseudo,request[1].link]).then(
+                    return UserService.addSocialAccount({userId,socialId,pseudo,link}).then(
                         success =>{
-                            console.log("success remove",success)
-                            commit("replaceSocialAccountSuccess",{socialAccount:success,socialAccountId:request[1].socialAccountId})
+                            commit("replaceSocialAccountSuccess",{socialAccount:success,socialAccountId})
                             return Promise.resolve(success)
                         },
                         error =>{
@@ -171,13 +170,13 @@ export const users = {
         addSocialAccountSuccess(state, socialAccount){
             state.socialsAccounts.push(socialAccount)
         },
-        patchSocialAccountSuccess(state,socialAccount){
+        updateSocialAccountSuccess(state,socialAccount){
             state.socialsAccounts = state.socialsAccounts.map((a)=> {
                 if(a.socialAccountId != socialAccount.socialAccountId){
                     return a
                 }return socialAccount})
         },
-        removeSocialAccountSuccess(state,socialAccountId){
+        deleteSocialAccountSuccess(state,socialAccountId){
             state.socialsAccounts = state.socialsAccounts.filter((a)=> a.socialAccountId!=socialAccountId)
         },
         replaceSocialAccountSuccess(state,{socialAccount,socialAccountId}){
