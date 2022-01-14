@@ -57,14 +57,6 @@ export class ClubsController {
     return await this.clubsService.findAll();
   }
 
-  @Get()
-  @CheckPolicies(ability => ability.can(Action.Read, Club))
-  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Club>> {
-    if (query.page)
-      return await this.clubsService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.clubsService.findAll();
-  }
-
   @UseGuards(TypesenseGuard)
   @Get('/search')
   @CheckPolicies(ability => ability.can(Action.Read, Club))

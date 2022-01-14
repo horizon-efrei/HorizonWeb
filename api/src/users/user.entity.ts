@@ -70,18 +70,6 @@ export class User extends BaseEntity {
     this.email = email;
   }
 
-  @Property({ type: 'text' })
-  signature?: string;
-
-  @Property({ type: 'text' })
-  banner?: string;
-
-  constructor(username: string, email: string) {
-    super();
-    this.username = username;
-    this.email = email;
-  }
-
   public async setPassword(password: string): Promise<void> {
     this.password = await bcrypt.hash(password, 10);
   }
