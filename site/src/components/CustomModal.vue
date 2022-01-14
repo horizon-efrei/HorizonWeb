@@ -4,9 +4,12 @@
         <div
             v-if="show"
             class="absolute top-0 h-screen w-screen z-40"
-            :class="customClass"
+            :class="globalCustomClass"
         >
-            <div class="centered-fixed z-50">
+            <div
+                :class="modalCustomClass"
+                class="centered-fixed z-50"
+            >
                 <slot class="" />
             </div>
 
@@ -25,7 +28,13 @@ export default {
             type: Boolean,
             require: true
         },
-        customClass:{
+        modalCustomClass:{
+            type: String,
+            default(){
+                return ''
+            }
+        },
+        globalCustomClass:{
             type: String,
             default(){
                 return ''
