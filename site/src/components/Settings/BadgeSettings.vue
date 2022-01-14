@@ -71,7 +71,7 @@
                     />
                 </div>
                 <div class="">
-                    Evenement
+                    Évènement
                 </div>
             </div>
         </div>
