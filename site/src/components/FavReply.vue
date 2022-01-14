@@ -70,7 +70,7 @@ export default {
             type: Array,
             default: function () {
                 return [
-                    'viewreplys',
+                    'viewreplies',
                     'favorite',
                     'flag'
                 ]
@@ -81,7 +81,7 @@ export default {
         actionsMap () {
             // TODO: Actions
             return {
-                viewreplys: { name: () => { return "3 Réponses" }, icon: 'ri-chat-2-line', action: function () { console.log('replyaire') } },
+                viewreplies: { name: () => { return "3 Réponses" }, icon: 'ri-chat-2-line', action: function () { console.log('Reply') } },
                 favorite: { name: () => { return 'Favori' }, icon: 'ri-star-line', action: function () { console.log('Favori') } },
                 flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } },
             }
