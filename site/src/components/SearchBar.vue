@@ -1,4 +1,5 @@
 <template>
+    <!-- TODO: Local Storage pour voir les recherches recentes + Comonent pour afficher chaque hits -->
     <div>
         <CustomModal
             :show="showSearchBar"
