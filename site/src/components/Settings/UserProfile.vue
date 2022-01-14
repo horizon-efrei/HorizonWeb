@@ -55,9 +55,9 @@
                             >Description</label>
                             <textarea
                                 id="description"
+                                v-model="user.description"
                                 name="description"
                                 class="input"
-                                :value="user.description"
                             />
                         </div>
                     </div>
@@ -120,8 +120,8 @@
                             <SelectInput
                                 v-model="userClubs[idx].club"
                                 button-name="Association"
-                                :choices="clubs.items.map(a=>a.name)"
-                                :model-value="clubs.items.indexOf(clubs.items.find((a)=> a.clubId === club.club.clubId))"
+                                :choices="clubs.map(a=>a.name)"
+                                :model-value="clubs.indexOf(clubs.find((a)=> a.clubId === club.club.clubId))"
                             />
                         </div>
                         <div class="ml-2">
@@ -146,15 +146,15 @@
                         <p>Ajouter une Association</p>
                     </button>
                 </div>
-                <div class="mb-4 w-96">
+                <div class="mb-4 ">
                     <div class="text-lg">
                         Comptes Externes
                     </div>
-                    <div v-if="socialsAccounts.items.length === 0">
+                    <div v-if="socialsAccounts.length === 0">
                         Vous n'avez pas encore de compte externe
                     </div>
                     <div
-                        v-for="(social, idx) in socialsAccounts.items"
+                        v-for="(social, idx) in socialsAccounts"
                         :key="idx"
                         class="flex mb-2 items-center"
                     >
@@ -162,19 +162,24 @@
                             <i
                                 v-if="social.social.socialId!=null"
                                 class="mr-2 my-auto"
-                                :class="socials.items.find((a)=> a.socialId === social.social.socialId).icon"
+                                :class="socials.find((a)=> a.socialId === social.social.socialId).icon"
                             />
                             <SelectInput
-                                v-model="socialsAccounts.items[idx].social"
-                                :choices="socials.items.map(sos=> sos.name)"
-                                :model-value="socials.items.indexOf(socials.items.find((a)=> a.socialId === social.social.socialId))"
+                                v-model="social.social"
+                                :choices="socials.map(sos=> sos.name)"
+                                :model-value="socials.indexOf(socials.find((a)=> a.socialId === social.social.socialId))"
                             />
                         </div>
+                        <input
+                            v-model="social.pseudo"
+                            class="input ml-2"
+                            placeholder="Pseudo"
+                        >
                         <div class="">
                             <input
-                                v-model="social.pseudo"
+                                v-model="social.link"
                                 class="input ml-2"
-                                placeholder="Compte"
+                                placeholder="Lien"
                             >
                             <button
                                 class="text-1 text-xl red-500 h-8 w-8"
@@ -193,7 +198,10 @@
                         <p>Ajouter un compte externe</p>
                     </button>
                 </div>
-                <button class="button mb-4">
+                <button
+                    class="button mb-4"
+                    @click="submit()"
+                >
                     <p>Enregistrer</p>
                 </button>
             </div>
@@ -204,11 +212,12 @@
 <script lang="js">
 import SelectInput from '@/components/Input/SelectInput.vue'
 import { watch } from 'vue';
+import _ from 'lodash'
 export default {
     components: { SelectInput },
     data() {
         return {
-            user:null,
+            user:this.$store.state.auth.user,
             roles: ['Membre','President','Secretaire','Chef de Pôle'],
             parcours: null,
             promotion: null,
@@ -221,30 +230,37 @@ export default {
     },
 
     mounted(){
+        this.$store.dispatch('auth/getUser',this.user.userId )
+        watch(
+            () => this.$store.state.auth.me,
+            (newUser) => {
+                this.user = newUser
+            }
+        )
         this.user = this.$store.state.auth.user
         watch(
             () => this.$store.state.users.socialsAccounts,
             (newSocials) => {
-                this.socialsAccounts = newSocials
+                this.socialsAccounts = _.cloneDeep(newSocials)
             }
         )
 
         watch(
             () => this.$store.state.users.socials,
             (newSocials) => {
-                this.socials = newSocials
+                this.socials = [...newSocials]
             }
         )
         watch(
             () => this.$store.state.users.userClubs,
             (newClubs) => {
-                this.userClubs = newClubs
+                this.userClubs = [...newClubs]
             }
         )
         watch(
             () => this.$store.state.users.clubs,
             (newClubs) =>{
-                this.clubs = newClubs
+                this.clubs = [...newClubs]
             }
         )
         watch(
@@ -265,12 +281,15 @@ export default {
         watch(
             () => this.socialsAccounts,
             (updSocial) => {
-                for(let i=0;i<updSocial.items.length; i++){
-                    if(typeof(updSocial.items[i].social)==="number"){
-                        updSocial.items[i].social = {socialId:this.socials.items[updSocial.items[i].social].socialId}
+                console.log("update")
+                for(let i=0;i<updSocial.length; i++){
+                    if(typeof(updSocial[i].social)==="number"){
+                        updSocial[i].social = {socialId:this.socials[updSocial[i].social].socialId}
                     }
-
-                    this.socialsAccounts = updSocial}
+                }
+                if(_.isEqual(this.socialsAccounts ,updSocial)){
+                    this.socialsAccounts = updSocial
+                }
             },
             {deep: true}
         )
@@ -289,14 +308,45 @@ export default {
             this.userClubs.splice(indx,1);
         },
         addLineAccount: function addLineAccount() {
-            this.socialsAccounts.items.push({social:{socialId:null},pseudo:null,link:null});
+            this.socialsAccounts.push({social:{socialId:null},pseudo:null,link:null});
         },
         rmLineAccount: function rmLineAccount(indx) {
-            this.socialsAccounts.items.splice(indx,1);
+            this.socialsAccounts.splice(indx,1);
         },
-        loadContent: async function loadContent() {
+        submit: function submit() {
+            function canSocialBePosted(social){
+                if (social.pseudo === null){
+                    return false
+                }
+                if (social.social.socialId===null){
+                    return false
+                }
+                return true
+            }
+            this.$store.dispatch('users/patchUser',this.user)
 
-            console.log(this.clubs,this.user,this.userClubs)
+            for( let i =0; i < this.socialsAccounts.length; i++) {
+                console.log(this.socialsAccounts[i])
+                if(canSocialBePosted(this.socialsAccounts[i])){
+                    if(!this.$store.state.users.socialsAccounts.find((a)=> _.isEqual(a,this.socialsAccounts[i]))){
+                        if(this.socialsAccounts[i].socialAccountId == null){
+                            this.$store.dispatch('users/postSocialAccount',[this.user.userId, this.socialsAccounts[i].social.socialId,this.socialsAccounts[i].pseudo,this.socialsAccounts[i].link])
+                        }else{
+                            if(this.socialsAccounts[i].social.socialId != this.$store.state.users.socialsAccounts.find((a) => a.socialAccountId === this.socialsAccounts[i].socialAccountId ).social.socialId){
+                                this.$store.dispatch('users/replaceSocialAccount',[this.user.userId, this.socialsAccounts[i]])
+                            }
+                            else {
+                                this.$store.dispatch('users/patchSocialAccount',[ this.socialsAccounts[i].socialAccountId,this.socialsAccounts[i].pseudo,this.socialsAccounts[i].link])
+                            }
+                        }
+                    }
+                }
+            }
+            for( let i =0; i < this.$store.state.users.socialsAccounts.length; i++){
+                if(!this.socialsAccounts.find((a)=>a.socialAccountId === this.$store.state.users.socialsAccounts[i].socialAccountId)){
+                    this.$store.dispatch('users/removeSocialAccount',this.$store.state.users.socialsAccounts[i].socialAccountId)
+                }
+            }
         }
     }
 }

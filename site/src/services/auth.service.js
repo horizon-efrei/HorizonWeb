@@ -32,7 +32,7 @@ class AuthService {
         })
     }
     getUser (query) {
-        return axios.get(API_URL + 'auth/me', { params: query, withCredentials: true }).then(
+        return axios.get(API_URL + 'me', { params: query, withCredentials: true }).then(
             res => res.data
         )
     }

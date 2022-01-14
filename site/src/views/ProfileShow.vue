@@ -51,7 +51,7 @@
                                 </p>
                                 <div class="ml-2">
                                     <div class="text-lg font-bold">
-                                        {{ clubs.items.filter(a => a.clubId === club.club.clubId)[0].name }}
+                                        {{ clubs.filter(a => a.clubId === club.club.clubId)[0].name }}
                                     </div>
                                     {{ club.role }}
                                 </div>
@@ -101,14 +101,14 @@
                             Probleme dans les socials
                         </div>
                         <div
-                            v-for="social in socialsAccounts.items"
+                            v-for="social in socialsAccounts"
                             v-else
                             :key="social"
                         >
                             <div class="flex space-x-2">
                                 <i
                                     class="ri-md"
-                                    :class=" socials.items.filter(a=> a.socialId === social.social.socialId)[0].icon"
+                                    :class=" socials.filter(a=> a.socialId === social.social.socialId)[0].icon"
                                 />
                                 <a :href="social.link">{{ social.pseudo }}</a>
                             </div>

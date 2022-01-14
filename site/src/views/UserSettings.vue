@@ -48,7 +48,7 @@
                                 class="ri-xl"
                                 :class="link.icon"
                             />
-                            <span>{{ link.text }}</span>
+                            <span class="hidden lg:block">{{ link.text }}</span>
                         </li>
                     </template>
                 </ul>

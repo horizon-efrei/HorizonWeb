@@ -41,8 +41,8 @@ export const auth = {
         getUser ({ commit }) {
             return AuthService.getUser().then(
                 response => {
-                    commit('fetchSuccess')
-                    return  Promise.resolve(response.data)
+                    commit('fetchSuccess',response)
+                    return  Promise.resolve(response)
                 },
                 error => {
                     return Promise.reject(error)
@@ -79,6 +79,7 @@ export const auth = {
         },
         fetchSuccess (state, user) {
             state.me = user
+            console.log("state me",state.me)
         }
     }
 }
