@@ -2,7 +2,7 @@
     <div class="p-8 grid grid-cols-2 gap-6">
         <div class="flex items-center">
             <img
-                src="../assets/img/logos/linkedin.png"
+                src=""
                 alt=""
                 class="w-10 h-10 mr-2"
             >
@@ -10,7 +10,7 @@
         </div>
         <div class="flex items-center">
             <img
-                src="../assets/img/logos/discord.png"
+                src=""
                 alt=""
                 class="w-10 h-10 mr-2"
             >
@@ -18,7 +18,7 @@
         </div>
         <div class="flex items-center">
             <img
-                src="../assets/img/logos/linkedin.png"
+                src=""
                 alt=""
                 class="w-10 h-10 mr-2"
             >
@@ -26,7 +26,7 @@
         </div>
         <div class="flex items-center">
             <img
-                src="../assets/img/logos/discord.png"
+                src=""
                 alt=""
                 class="w-10 h-10 mr-2"
             >
