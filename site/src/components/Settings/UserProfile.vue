@@ -21,216 +21,221 @@
                 <div class="flex mb-4">
                     <div class="mr-6 w-full">
                         <div class="flex mb-4">
+                            <<<<<<< HEAD
                             <div class="w-1/2">
-                                <div
-                                    for="lastname"
-                                    class="text-lg"
-                                >
-                                    Prénom
-                                </div>
-                                <div
-
-                                    class="w-full bg-1 capitalize"
-                                >
-                                    {{ user.username }}
-                                </div>
-                            </div>
-                            <div class="ml-2 w-1/2">
-                                <div
-                                    for="lastname"
-                                    class="text-lg"
-                                >
-                                    Nom
-                                </div>
-                                <div
-
-                                    class="w-full bg-1 uppercase"
-                                >
-                                    {{ user.username }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col">
-                            <label
-                                for="description"
-                                class="text-lg"
-                            >Description</label>
-                            <textarea
-                                v-model="user.description"
-                                name="description"
-                                class="input"
-                            />
-                        </div>
-                    </div>
-                    <div class="flex-shrink-0">
-                        <div class="relative">
-                            <img
-                                :src="user.avatar ? user.avatar : default_avatar"
-                                alt="img"
-                                class="rounded-full h-48 w-48"
-                            >
-                            <i class="ri-camera-line text-2xl border rounded-full py-1 px-2 bg-2 border-color-2 absolute bottom-0 right-2" />
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-4">
-                    <div class="text-lg">
-                        Associations
-                    </div>
-                    <div v-if="userClubs.length === 0">
-                        Vous n'avez pas encore d'Association
-                    </div>
-                    <div
-                        v-else
-                        class="flex"
-                    >
-                        <div class="flex flex-col">
-                            <div
-                                v-for="(club, idx) in userClubs"
-                                :key="idx"
-                                class="flex mb-2 items-center"
-                            >
-                                <div class="mr-2">
-                                    <SelectInput
-                                        v-model="club.club"
-                                        button-name="Association"
-                                        :choices="clubs.map(a=>a.name)"
-                                        :model-value="clubs.indexOf(clubs.find((a)=> a.clubId === club.club.clubId))"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col">
-                            <div
-                                v-for="(club, idx) in userClubs"
-                                :key="idx"
-                                class="flex mb-2 items-center"
-                            >
-                                <div class="ml-2">
-                                    <SelectInput
-                                        v-model="club.role"
-                                        button-name="Role"
-                                        :choices="Object.keys(roles)"
-                                        :model-value="Object.keys(roles).indexOf(Object.keys(roles).find((role) => roles[role] === club.role))"
-                                    />
-                                </div>
-                                <button
-                                    class="text-1 text-xl red-500 h-8 w-8 my-auto"
-                                    @click="rmLineClub(idx)"
-                                >
-                                    <i class="ri-close-line" />
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <button
-                        class="button my-2"
-                        @click="addLineClub()"
-                    >
-                        <p>Ajouter une association</p>
-                    </button>
-                </div>
-                <div class="mb-4 ">
-                    <div class="text-lg">
-                        Comptes Externes
-                    </div>
-                    <div v-if="socialsAccounts.length === 0">
-                        Vous n'avez pas encore lié de compte externe
-                    </div>
-
-                    <div class="flex">
-                        <div class="flex flex-col">
-                            <div
-                                v-for="(social, idx) in socialsAccounts"
-                                :key="idx"
-                                class="flex sm:mb-2 items-center mb-8"
-                            >
-                                <div class=" ">
-                                    <div class="flex">
-                                        <i
-                                            v-if="social.social.socialId!=null"
-                                            class="mr-2 my-auto"
-                                            :class="socials.find((a)=> a.socialId === social.social.socialId).icon"
-                                        />
-                                        <SelectInput
-                                            v-model="social.social"
-                                            :choices="socials.map(sos=> sos.name)"
-                                            :model-value="socials.indexOf(socials.find((a)=> a.socialId === social.social.socialId))"
-                                        />
-                                        <button
-                                            class="text-1 block sm:hidden text-xl my-auto red-500 h-8 w-8"
-                                            @click="rmLineAccount(idx)"
-                                        >
-                                            <i class="ri-close-line" />
-                                        </button>
-                                    </div>
-                                    <div class="flex flex-col sm:hidden">
-                                        <input
-                                            v-model="social.pseudo"
-                                            class="input mt-2"
-                                            placeholder="Pseudo"
-                                        >
-                                        <input
-                                            v-model="social.link"
-                                            class="input mt-2"
-                                            placeholder="Lien"
-                                        >
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="hidden sm:flex flex-col">
-                            <div
-                                v-for="(social, idx) in socialsAccounts"
-                                :key="idx"
-                                class="flex mb-2 items-center"
-                            >
-                                <input
-                                    v-model="social.pseudo"
-                                    class="input ml-2"
-                                    placeholder="Pseudo"
-                                >
-                            </div>
-                        </div>
-                        <div class="hidden sm:flex flex-col">
-                            <div
-                                v-for="(social, idx) in socialsAccounts"
-                                :key="idx"
-                                class="flex mb-2 items-center"
-                            >
-                                <div class="">
-                                    <input
-                                        v-model="social.link"
-                                        class="input ml-2"
-                                        placeholder="Lien"
+                                =======
+                                <div class="ml-2 w-1/2">
+                                    >>>>>>> ab5b565 (Responsive Settings + Changes on Settings + delete console.log())
+                                    <div
+                                        for="lastname"
+                                        class="text-lg"
                                     >
+                                        Prénom
+                                    </div>
+                                    <div
+
+                                        class="w-full bg-1 capitalize"
+                                    >
+                                        {{ user.username }}
+                                    </div>
+                                </div>
+                                <div class="ml-2 w-1/2">
+                                    <div
+                                        for="lastname"
+                                        class="text-lg"
+                                    >
+                                        Nom
+                                    </div>
+                                    <div
+
+                                        class="w-full bg-1 uppercase"
+                                    >
+                                        {{ user.username }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col">
+                                <label
+                                    for="description"
+                                    class="text-lg"
+                                >Description</label>
+                                <textarea
+                                    v-model="user.description"
+                                    name="description"
+                                    class="input"
+                                />
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="relative">
+                                <img
+                                    :src="user.avatar ? user.avatar : default_avatar"
+                                    alt="img"
+                                    class="rounded-full h-48 w-48"
+                                >
+                                <i class="ri-camera-line text-2xl border rounded-full py-1 px-2 bg-2 border-color-2 absolute bottom-0 right-2" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="text-lg">
+                            Associations
+                        </div>
+                        <div v-if="userClubs.length === 0">
+                            Vous n'avez pas encore d'Association
+                        </div>
+                        <div
+                            v-else
+                            class="flex"
+                        >
+                            <div class="flex flex-col">
+                                <div
+                                    v-for="(club, idx) in userClubs"
+                                    :key="idx"
+                                    class="flex mb-2 items-center"
+                                >
+                                    <div class="mr-2">
+                                        <SelectInput
+                                            v-model="club.club"
+                                            button-name="Association"
+                                            :choices="clubs.map(a=>a.name)"
+                                            :model-value="clubs.indexOf(clubs.find((a)=> a.clubId === club.club.clubId))"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col">
+                                <div
+                                    v-for="(club, idx) in userClubs"
+                                    :key="idx"
+                                    class="flex mb-2 items-center"
+                                >
+                                    <div class="ml-2">
+                                        <SelectInput
+                                            v-model="club.role"
+                                            button-name="Role"
+                                            :choices="Object.keys(roles)"
+                                            :model-value="Object.keys(roles).indexOf(Object.keys(roles).find((role) => roles[role] === club.role))"
+                                        />
+                                    </div>
                                     <button
-                                        class="text-1 text-xl red-500 h-8 w-8"
-                                        @click="rmLineAccount(idx)"
+                                        class="text-1 text-xl red-500 h-8 w-8 my-auto"
+                                        @click="rmLineClub(idx)"
                                     >
                                         <i class="ri-close-line" />
                                     </button>
                                 </div>
                             </div>
                         </div>
+                        <button
+                            class="button my-2"
+                            @click="addLineClub()"
+                        >
+                            <p>Ajouter une association</p>
+                        </button>
                     </div>
-                </div>
+                    <div class="mb-4 ">
+                        <div class="text-lg">
+                            Comptes Externes
+                        </div>
+                        <div v-if="socialsAccounts.length === 0">
+                            Vous n'avez pas encore lié de compte externe
+                        </div>
 
-                <button
-                    class="
+                        <div class="flex">
+                            <div class="flex flex-col">
+                                <div
+                                    v-for="(social, idx) in socialsAccounts"
+                                    :key="idx"
+                                    class="flex sm:mb-2 items-center mb-8"
+                                >
+                                    <div class=" ">
+                                        <div class="flex">
+                                            <i
+                                                v-if="social.social.socialId!=null"
+                                                class="mr-2 my-auto"
+                                                :class="socials.find((a)=> a.socialId === social.social.socialId).icon"
+                                            />
+                                            <SelectInput
+                                                v-model="social.social"
+                                                :choices="socials.map(sos=> sos.name)"
+                                                :model-value="socials.indexOf(socials.find((a)=> a.socialId === social.social.socialId))"
+                                            />
+                                            <button
+                                                class="text-1 block sm:hidden text-xl my-auto red-500 h-8 w-8"
+                                                @click="rmLineAccount(idx)"
+                                            >
+                                                <i class="ri-close-line" />
+                                            </button>
+                                        </div>
+                                        <div class="flex flex-col sm:hidden">
+                                            <input
+                                                v-model="social.pseudo"
+                                                class="input mt-2"
+                                                placeholder="Pseudo"
+                                            >
+                                            <input
+                                                v-model="social.link"
+                                                class="input mt-2"
+                                                placeholder="Lien"
+                                            >
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="hidden sm:flex flex-col">
+                                <div
+                                    v-for="(social, idx) in socialsAccounts"
+                                    :key="idx"
+                                    class="flex mb-2 items-center"
+                                >
+                                    <input
+                                        v-model="social.pseudo"
+                                        class="input ml-2"
+                                        placeholder="Pseudo"
+                                    >
+                                </div>
+                            </div>
+                            <div class="hidden sm:flex flex-col">
+                                <div
+                                    v-for="(social, idx) in socialsAccounts"
+                                    :key="idx"
+                                    class="flex mb-2 items-center"
+                                >
+                                    <div class="">
+                                        <input
+                                            v-model="social.link"
+                                            class="input ml-2"
+                                            placeholder="Lien"
+                                        >
+                                        <button
+                                            class="text-1 text-xl red-500 h-8 w-8"
+                                            @click="rmLineAccount(idx)"
+                                        >
+                                            <i class="ri-close-line" />
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button
+                        class="
                             button
                             my-2"
-                    @click="addLineAccount()"
+                        @click="addLineAccount()"
+                    >
+                        <p>Ajouter un compte externe</p>
+                    </button>
+                </div>
+                <button
+                    class="button mb-4"
+                    @click="submit()"
                 >
-                    <p>Ajouter un compte externe</p>
+                    <p>Enregistrer</p>
                 </button>
             </div>
-            <button
-                class="button mb-4"
-                @click="submit()"
-            >
-                <p>Enregistrer</p>
-            </button>
         </div>
     </div>
 </template>
