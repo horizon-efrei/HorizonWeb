@@ -37,8 +37,8 @@ export class SocialsService {
     return social;
   }
 
-  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Social>> {
-    return await this.socialsRepository.findWithPagination(paginationOptions);
+  public async findAll(): Promise<Social[]> {
+    return await this.socialsRepository.findAll();
   }
 
   public async findOne(socialId: number): Promise<Social> {
