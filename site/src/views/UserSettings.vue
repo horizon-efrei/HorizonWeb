@@ -14,16 +14,19 @@
         relative
         mt-32
         mb-10
-        card
+        text-0
+        sm:shadow-md
+        sm:rounded-lg
         p-0
         bg-1
-        w-11/12
+        w-full
+        sm:w-11/12
         mx-auto
-        flex
+        sm:flex
       "
         >
             <div class="mt-2 flex-shrink-0">
-                <ul class="py-2">
+                <ul class="py-2 flex sm:block">
                     <template
                         v-for="link of links"
                         :key="link"
@@ -33,7 +36,7 @@
                 h-12
                 py-2
                 pl-8
-                pr-20
+                sm:pr-20
                 flex
                 w-full
                 space-x-2
@@ -54,7 +57,7 @@
                 </ul>
             </div>
 
-            <div class="border-l-2 border-footer w-full">
+            <div class="sm:border-l-2 sm:border-0 border-t-2 border-footer w-full">
                 <component :is="currentComponent" />
             </div>
         </div>
