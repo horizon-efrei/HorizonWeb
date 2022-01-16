@@ -106,13 +106,12 @@ import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     server: {
-        //TODO: Private Key!!!!
-        apiKey: "xyz",
+        apiKey: import.meta.env.VITE_TYPESENSE_API_KEY,
         nodes: [
             {
-                host: "localhost",
-                port: "18108",
-                protocol: "http",
+                host: import.meta.env.VITE_TYPESENSE_HOST,
+                port: import.meta.env.VITE_TYPESENSE_PORT,
+                protocol: import.meta.env.VITE_TYPESENSE_SCHEME,
             },
         ],
     },
