@@ -97,7 +97,7 @@ export default {
         actionsMap () {
             return {
                 viewComments: { name: () => { return "Commentaires" }, icon: 'ri-chat-2-line', action: function () { console.log('Commentaire') } },
-                favorite: { name:()=> 'Répondre', icon: this.post.favorited ? 'ri-star-fill' : 'ri-star-line', class: [this.post.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
+                favorite: { name:()=> 'Favoris', icon: this.post.favorited ? 'ri-star-fill text-yellow-500' : 'ri-star-line', class: [this.post.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
                     action: () => { this.post.favorited ? this.deleteFavorite() : this.addFavorite() } },
                 flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } },
             }
