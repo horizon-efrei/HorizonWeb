@@ -38,7 +38,7 @@
             <div>
                 <div class="flex">
                     <router-link
-                        :to="`/post/${postId}`"
+                        :to="`/post/${post.postId}`"
                         class="text-0 text-xl font-semibold mr-4 whitespace-nowrap "
                     >
                         {{ post.title }}
@@ -96,7 +96,7 @@ export default {
     computed: {
         actionsMap () {
             return {
-                viewComments: { name: () => { return "3 Commentaires" }, icon: 'ri-chat-2-line', action: function () { console.log('Commentaire') } },
+                viewComments: { name: () => { return "Commentaires" }, icon: 'ri-chat-2-line', action: function () { console.log('Commentaire') } },
                 favorite: { name:()=> 'Répondre', icon: this.post.favorited ? 'ri-star-fill' : 'ri-star-line', class: [this.post.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
                     action: () => { this.post.favorited ? this.deleteFavorite() : this.addFavorite() } },
                 flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } },
