@@ -15,7 +15,6 @@ export interface IndexedPost {
   body: string;
   author: string;
   tags: string[];
-  type: string;
   id: string;
   createdAt: string;
 }
@@ -28,7 +27,6 @@ export class PostSearchService extends SearchService<Post, IndexedPost> {
       { name: 'title', type: 'string' },
       { name: 'body', type: 'string' },
       { name: 'author', type: 'string' },
-      { name:'type', type:'string'},
       { name: 'tags', type: 'string[]' },
       { name: 'createdAt', type: 'string' },
     ],
@@ -90,7 +88,6 @@ export class PostSearchService extends SearchService<Post, IndexedPost> {
       tags: post.tags.toArray().map(tag => tag.name),
       id: post.postId.toString(),
       createdAt: post.createdAt.toString(),
-      type: post.type.toString()
     };
   }
 }
