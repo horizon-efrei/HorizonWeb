@@ -10,12 +10,9 @@
                     <p class="text-5">
                         Publié par {{ comment.author.username }} {{ dateSince(new Date(comment.createdAt)) }}
                     </p>
-                    <router-link
-                        :to="`/post/${comment.post.postId}`"
-                        class="text-0 text-lg mr-4 line-clamp-2 "
-                    >
+                    <a class="text-0 text-lg mr-4 line-clamp-2 ">
                         {{ extractTextFromJSONBody(JSON.parse(comment.body)) }}
-                    </router-link>
+                    </a>
                 </div>
                 <div class="flex items-center ri-lg gap-2">
                     <div class="flex gap-2">
@@ -74,7 +71,7 @@ export default {
         actionsMap () {
             // TODO: Actions
             return {
-                favorite: { name:()=> 'Favoris', icon: this.comment.favorited ? 'ri-star-fill text-yellow-500' : 'ri-star-line', class: [this.comment.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
+                favorite: { name:()=> 'Répondre', icon: this.comment.favorited ? 'ri-star-fill' : 'ri-star-line', class: [this.comment.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
                     action: () => { this.comment.favorited ? this.deleteFavorite() : this.addFavorite() } },
                 flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } },
             }

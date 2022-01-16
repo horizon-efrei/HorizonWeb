@@ -9,12 +9,9 @@
                     <p class="text-5">
                         Publié par {{ reply.author.username }} {{ dateSince(new Date(reply.createdAt)) }}
                     </p>
-                    <router-link
-                        :to="`/post/${reply.post.postId}`"
-                        class="text-0 text-lg mr-4 line-clamp-2 "
-                    >
+                    <a class="text-0 text-lg mr-4 line-clamp-2 ">
                         {{ extractTextFromJSONBody(JSON.parse(reply.body)) }}
-                    </router-link>
+                    </a>
                 </div>
                 <div class="flex items-center ri-lg gap-2">
                     <div class="flex gap-2">
@@ -84,8 +81,8 @@ export default {
         actionsMap () {
             // TODO: Actions
             return {
-                viewreplies: { name: () => { return "Réponses" }, icon: 'ri-chat-2-line', action: function () { console.log('Reply') } },
-                favorite: { name:()=> 'Favoris', icon: this.reply.favorited ? 'ri-star-fill text-yellow-500' : 'ri-star-line', class: [this.reply.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
+                viewreplies: { name: () => { return "3 Réponses" }, icon: 'ri-chat-2-line', action: function () { console.log('Reply') } },
+                favorite: { name:()=> 'Répondre', icon: this.reply.favorited ? 'ri-star-fill' : 'ri-star-line', class: [this.reply.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
                     action: () => { this.reply.favorited ? this.deleteFavorite() : this.addFavorite() } },
                 flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } },
             }
