@@ -21,7 +21,7 @@
                 <div class="flex mb-4">
                     <div class="mr-6 w-full">
                         <div class="flex mb-4">
-                            <div class="ml-2 w-1/2">
+                            <div class="w-1/2">
                                 <div
                                     for="lastname"
                                     class="text-lg"
@@ -128,7 +128,7 @@
                         class="button my-2"
                         @click="addLineClub()"
                     >
-                        <p>Ajouter une Association</p>
+                        <p>Ajouter une association</p>
                     </button>
                 </div>
                 <div class="mb-4 ">
