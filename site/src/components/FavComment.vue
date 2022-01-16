@@ -10,9 +10,12 @@
                     <p class="text-5">
                         Publié par {{ comment.author.username }} {{ dateSince(new Date(comment.createdAt)) }}
                     </p>
-                    <a class="text-0 text-lg mr-4 line-clamp-2 ">
+                    <router-link
+                        :to="`/post/${comment.post.postId}`"
+                        class="text-0 text-lg mr-4 line-clamp-2 "
+                    >
                         {{ extractTextFromJSONBody(JSON.parse(comment.body)) }}
-                    </a>
+                    </router-link>
                 </div>
                 <div class="flex items-center ri-lg gap-2">
                     <div class="flex gap-2">
