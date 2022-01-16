@@ -66,7 +66,7 @@
                     <div class="flex-shrink-0">
                         <div class="relative">
                             <img
-                                src="@/assets/img/default_avatars/user.png"
+                                :src="user.avatar ? user.avatar : default_avatar"
                                 alt="img"
                                 class="rounded-full h-48 w-48"
                             >
@@ -240,6 +240,7 @@
 import SelectInput from '@/components/Input/SelectInput.vue'
 import { watch } from 'vue';
 import _ from 'lodash'
+import default_avatar from '@/assets/img/default_avatars/user.png'
 export default {
     components: { SelectInput },
     data() {
@@ -257,7 +258,8 @@ export default {
             promotion: null,
             group: null,
             userClubs:null,
-            socialsAccounts:null
+            socialsAccounts:null,
+            default_avatar:default_avatar
         };
     },
     computed: {
