@@ -85,7 +85,7 @@ export default {
             // TODO: Actions
             return {
                 viewreplies: { name: () => { return "Réponses" }, icon: 'ri-chat-2-line', action: function () { console.log('Reply') } },
-                favorite: { name:()=> 'Répondre', icon: this.reply.favorited ? 'ri-star-fill' : 'ri-star-line', class: [this.reply.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
+                favorite: { name:()=> 'Favoris', icon: this.reply.favorited ? 'ri-star-fill text-yellow-500' : 'ri-star-line', class: [this.reply.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
                     action: () => { this.reply.favorited ? this.deleteFavorite() : this.addFavorite() } },
                 flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } },
             }
