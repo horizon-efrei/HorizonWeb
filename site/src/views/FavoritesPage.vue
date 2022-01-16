@@ -22,10 +22,10 @@
 
 <script>
 import FavPost from '@/components/FavPost.vue'
-import FavComment from '@/components/FavComment.vue';
 import FavReply from '@/components/FavReply.vue';
+import FavComment from '@/components/FavComment.vue';
 export default {
-    components: { FavPost, FavComment, FavReply },
+    components: { FavPost, FavReply, FavComment },
     props:{
     },
     data() {

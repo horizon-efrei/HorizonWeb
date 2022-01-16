@@ -17,21 +17,21 @@
                     <div class="flex gap-2">
                         <div class="flex items-center text-5 hover:bg-3-light hover:dark:bg-3-dark px-2 py-1.5 rounded">
                             <i
-                                class=" cursor-pointer  ri-sm tracking-tighter pl-1 hidden md:block"
+                                class=" cursor-pointer  ri-sm tracking-tighter pl-1 block"
                                 :class="[reply.currentVote === 1 ? 'ri-thumb-up-fill text-green-600' : 'ri-thumb-up-line']"
                                 @click="reply.currentVote === 1 ? sendVote(0) : sendVote(1)"
                             />
-                            <p class="text-2 text-sm ml-1 tracking-tighter pl-1 hidden md:block">
+                            <p class="text-2 text-sm ml-1 tracking-tighter pl-1 block">
                                 {{ reply.upvotes }}
                             </p>
                         </div>
                         <div class="flex items-center text-5 hover:bg-3-light hover:dark:bg-3-dark px-2 py-1.5 rounded">
                             <i
-                                class=" cursor-pointer ri-sm tracking-tighter pl-1 hidden md:block"
+                                class=" cursor-pointer ri-sm tracking-tighter pl-1 "
                                 :class="[reply.currentVote === -1 ? 'ri-thumb-down-fill text-red-600' : 'ri-thumb-down-line']"
-                                @click="reply.currentVote === -1 ? sendVote(0) : sendVote(1)"
+                                @click="reply.currentVote === -1 ? sendVote(0) : sendVote(-1)"
                             />
-                            <p class=" text-sm ml-1 tracking-tighter pl-1 hidden md:block">
+                            <p class=" text-sm ml-1 tracking-tighter pl-1 ">
                                 {{ reply.downvotes }}
                             </p>
                         </div>
@@ -82,7 +82,8 @@ export default {
             // TODO: Actions
             return {
                 viewreplies: { name: () => { return "3 Réponses" }, icon: 'ri-chat-2-line', action: function () { console.log('Reply') } },
-                favorite: { name: () => { return 'Favori' }, icon: 'ri-star-line', action: function () { console.log('Favori') } },
+                favorite: { name:()=> 'Répondre', icon: this.reply.favorited ? 'ri-star-fill' : 'ri-star-line', class: [this.reply.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
+                    action: () => { this.reply.favorited ? this.deleteFavorite() : this.addFavorite() } },
                 flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } },
             }
         }
@@ -112,10 +113,16 @@ export default {
         },
         extractTextFromJSONBody,
         sendVote(vote) {
-            this.$store.dispatch('thread/voteReply', {
+            this.$store.dispatch('users/voteReplyFav', {
                 replyId: this.reply.replyId,
                 value: vote
             })
+        },
+        addFavorite() {
+            this.$store.dispatch('users/addFavoriteReply', this.reply.replyId)
+        },
+        deleteFavorite() {
+            this.$store.dispatch('users/deleteFavoriteReply', this.reply.replyId)
         }
     }
 
