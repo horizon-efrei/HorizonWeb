@@ -73,10 +73,10 @@
 </template>
 
 <script>
-import TagsList from '@/components/List/TagsList.vue'
+// import TagsList from '@/components/List/TagsList.vue'
 
 export default {
-    components: { TagsList },
+    // components: { TagsList },
     props: {
         post: {
             type: Object,
