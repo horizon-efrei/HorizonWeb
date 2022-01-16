@@ -2,6 +2,7 @@
     <!-- TODO: Local Storage pour voir les recherches recentes + Comonent pour afficher chaque hits -->
     <div>
         <CustomModal
+            ref="input"
             :show="showSearchBar"
             :modal-custom-class="'w-3/4 h-3/4'"
             @close="showSearchBar = false"
@@ -24,6 +25,7 @@
                                             class="border-b-2 flex-grow text-4 md:text-lg lg:text-xl bg-1 p-2"
                                             placeholder="Rechercher une ressource sur Horizon Efrei..."
                                             type="search"
+                                            autofocus
                                             :value="currentRefinement"
                                             @input="refine($event.currentTarget.value)"
                                         >
@@ -47,90 +49,22 @@
                             </template>
                         </ais-search-box>
 
-                        <div class="overflow-y-scroll h-full">
-                            <ais-hits :transform-items="test">
-                                <template #default="{ items }">
-                                    <div v-if="items.length != 0">
-                                        <div class="flex items-center text-lg my-2 gap-2">
-                                            <i class="ri-chat-check-line" />
-                                            Tous les posts
-                                            <i class="ri-arrow-down-s-line" />
-                                        </div>
-                                        <div
-                                            class="flex flex-col gap-2"
-                                        >
-                                            <transition-group
-                                                name="search-fade"
-                                            >
-                                                <router-link
-                                                    v-for="(post, i) in items"
-                                                    :key="i"
-                                                    :to="'/post/'+post.id"
-                                                    @click="showSearchBar = false"
-                                                >
-                                                    <div class="flex flex-col bg-2 gap-1 rounded-lg p-2">
-                                                        <div
-                                                            class="flex items-center gap-2"
-                                                        >
-                                                            <i class="ri-hashtag ri-lg" />
-                                                            <div class="flex flex-col">
-                                                                <div class="">
-                                                                    {{ post.title }}
-                                                                </div>
-                                                                <div class="text-2 text-sm">
-                                                                    {{ post.body }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </router-link>
-                                            </transition-group>
-                                        </div>
-                                    </div>
-                                </template>
-                            </ais-hits>
-                            <ais-index index-name="study-docs">
-                                <ais-hits :transform-items="test">
+                        <div
+
+                            class="overflow-y-scroll h-full"
+                        >
+                            <ais-index
+                                v-for="(index, i) in indexList"
+                                :key="i"
+                                :index-name="index.indexName"
+                            >
+                                <ais-hits>
                                     <template #default="{ items }">
-                                        <div v-if="items.length != 0">
-                                            <div class="flex items-center text-lg my-2 gap-2">
-                                                <i class="ri-file-line" />
-                                                Tous les fichiers
-                                                <i class="ri-arrow-down-s-line" />
-                                            </div>
-                                            <div
-                                                class="flex flex-col gap-2"
-                                            >
-                                                <transition-group
-                                                    name="search-fade"
-                                                >
-                                                    <router-link
-                                                        v-for="(file, i) in items"
-                                                        :key="i"
-                                                        :to="'/file/'+file.id"
-                                                        @click="showSearchBar = false"
-                                                    >
-                                                        <div
-                                                            class="flex flex-col bg-2 gap-1 rounded-lg p-2"
-                                                        >
-                                                            <div
-                                                                class="flex items-center gap-2"
-                                                            >
-                                                                <i class="ri-file-line ri-lg" />
-                                                                <div class="flex flex-col">
-                                                                    <div class="">
-                                                                        {{ file.originalName }}
-                                                                    </div>
-                                                                    <div class="">
-                                                                        {{ file.originalName }}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </router-link>
-                                                </transition-group>
-                                            </div>
-                                        </div>
+                                        <SearchCategory
+                                            :items="items"
+                                            :index-type="indexList[i]"
+                                            @close-modal="showSearchBar=false"
+                                        />
                                     </template>
                                 </ais-hits>
                             </ais-index>
@@ -161,12 +95,13 @@
                 />
             </svg>
         </div>
+        {{ $refs.modal }}
     </div>
 </template>
 
 <script>
 import CustomModal from './CustomModal.vue'
-
+import SearchCategory from "@/components/Card/SearchCategory.vue"
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
@@ -183,8 +118,8 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     },
     cacheSearchResultsForSeconds: 2 * 60,
     additionalSearchParameters:{
-        limit_hits:5,
-        per_page:5
+        limit_hits:25,
+        per_page:25
     },
     collectionSpecificSearchParameters: {
         posts: {
@@ -195,33 +130,91 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
             queryBy: "originalName,subjectEnglishName,subjectName",
             queryByWeights:"10, 5, 5"
         },
-        'club':{
-            queryBy:"name, category, description",
-            queryByWeights:"10, "
+        clubs:{
+            queryBy:"name",
+            queryByWeights:"10"
         },
         'info-docs':{
-            queryBy: "name,subjectEnglishName,subjectName",
-            queryByWeights:"10, 5, 5"
+            queryBy: "originalName",
+            queryByWeights:"10"
+        },
+        articles:{
+            queryBy: "title,body,tags,category",
+            queryByWeights:"10, 1, 5, 5"
         }
 
     },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
-
 export default {
     components:{
-        CustomModal
+        CustomModal,
+        SearchCategory
     },
+
     data() {
         return {
             searchClient,
-            showSearchBar : false
-        }
-    },
-    methods: {
-        test(a){
-            console.log(a)
-            return a
+            showSearchBar : false,
+            indexList:[
+                {
+                    indexName: "posts",
+                    title: "Tous les posts",
+                    titleIcon:"ri-chat-check-line",
+                    routerBase:"post",
+                    resultTitle: (item)=>{ return item.title},
+                    resultBody: (item)=>{ return item.body},
+                    resultIcon: (item)=>{
+                        switch(item.type){
+                        case '0':
+                            return 'ri-questionnaire-line'
+                        case '1':
+                            return 'ri-lightbulb-line'
+                        case '2':
+                            return 'ri-error-warning-line'
+                        case '3':
+                            return 'ri-discuss-line'
+                        }
+                        return 'ri-hashtag'
+                    }
+                },
+                {
+                    indexName: "study-docs",
+                    title: "Tous les documents",
+                    titleIcon:"ri-file-line",
+                    routerBase:"file",
+                    resultTitle: (item)=>{return item.originalName},
+                    resultBody:(item)=>{return item.subjectName},
+                    resultIcon:()=>{return 'ri-file-line'}
+                },
+                {
+                    indexName: "info-docs",
+                    title: "Tous les documents informatifs",
+                    titleIcon:"ri-file-line",
+                    routerBase:"file",
+                    resultTitle: (item)=>{return item.originalName},
+                    resultBody:(item)=>{return item.subjectName},
+                    resultIcon:()=>{return 'ri-file-line'}
+                },
+                {
+                    indexName: "articles",
+                    title: "Tous les articles",
+                    titleIcon:"ri-newspaper-line",
+                    routerBase:"article",
+                    resultTitle: (item)=>{return item.title },
+                    resultBody:(item)=>{return item.body},
+                    resultIcon:()=>{return 'ri-newspaper-line'}
+                },
+                {
+                    indexName: "clubs",
+                    title: "Toutes les associations",
+                    titleIcon:"ri-group-line",
+                    routerBase:"club",
+                    resultTitle: (item)=>{return item.title },
+                    resultBody:(item)=>{return item.description},
+                    resultIcon:()=>{return 'ri-group-line'}
+                }
+            ]
         }
     },
 }

@@ -78,12 +78,7 @@ export default {
             return this.$store.state.auth.user
         }
     },
-    methods: {
-        test(data){
-            console.log(data)
-            return data
-        }
-    },
+
 }
 </script>
 
