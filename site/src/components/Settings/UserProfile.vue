@@ -282,18 +282,22 @@ export default {
         watch(
             () => this.$store.state.users.socials,
             (newSocials) => {
+                console.log("socials",newSocials)
                 this.socials = [...newSocials]
             }
         )
         watch(
             () => this.$store.state.users.userClubs,
             (newClubs) => {
+
+                console.log("userClubs",newClubs)
                 this.userClubs = [...newClubs]
             }
         )
         watch(
             () => this.$store.state.users.clubs,
             (newClubs) =>{
+                console.log("clubs",newClubs)
                 this.clubs = [...newClubs]
             }
         )
