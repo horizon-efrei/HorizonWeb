@@ -65,11 +65,11 @@
                     </div>
                     <div class="flex-shrink-0">
                         <div class="relative">
-                            <img
-                                :src="user.avatar ? user.avatar : default_avatar"
-                                alt="img"
-                                class="rounded-full h-48 w-48"
-                            >
+                            <avatar-image
+                                :src="user.avatar"
+                                :alt="user.username + ' profile image'"
+                                :size="48"
+                            />
                             <font-awesome-icon
                                 icon="camera"
                                 class="text-2xl border rounded-full bg-2 border-color-2 absolute bottom-0 right-2"
@@ -77,9 +77,20 @@
                         </div>
                     </div>
                 </div>
-                <div class="mb-4">
-                    <div class="text-lg">
-                        Associations
+                <div class="mb-2">
+                    <div class="flex">
+                        <div class="text-lg">
+                            Associations
+                        </div>
+                        <button
+                            class="text-blue-500 ml-4 text-sm flex my-auto"
+                            @click="addLineClub()"
+                        >
+                            <i class="ri-add-fill" />
+                            <div>
+                                Ajouter une association
+                            </div>
+                        </button>
                     </div>
                     <div v-if="userClubs.length === 0">
                         Vous n'avez pas encore d'Association
@@ -92,15 +103,22 @@
                             <div
                                 v-for="(club, idx) in userClubs"
                                 :key="idx"
-                                class="flex mb-2 items-center"
+                                class="flex mb-2 items-center h-8 mt-2"
                             >
-                                <div class="mr-2">
-                                    <SelectInput
-                                        v-model="club.club"
-                                        button-name="Association"
-                                        :choices="clubs.map(a=>a.name)"
-                                        :model-value="clubs.indexOf(clubs.find((a)=> a.clubId === club.club.clubId))"
-                                    />
+                                <div class="mr-2 flex">
+                                    <img
+                                        v-if="club.club.clubId!=null"
+                                        class="h-8 w-8 my-auto rounded-full"
+                                        :src="clubs.find((a)=> a.clubId === club.club.clubId).icon!='' ? clubs.find((a)=> a.clubId === club.club.clubId).icon : default_avatar"
+                                    >
+                                    <div class="my-auto ml-2">
+                                        <SelectInput
+                                            v-model="club.club"
+                                            button-name="Association"
+                                            :choices="clubs.map(a=>a.name)"
+                                            :model-value="clubs.indexOf(clubs.find((a)=> a.clubId === club.club.clubId))"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -108,7 +126,7 @@
                             <div
                                 v-for="(club, idx) in userClubs"
                                 :key="idx"
-                                class="flex mb-2 items-center"
+                                class="flex mb-2 items-center h-8 mt-2"
                             >
                                 <div class="ml-2">
                                     <SelectInput
@@ -127,16 +145,21 @@
                             </div>
                         </div>
                     </div>
-                    <button
-                        class="button my-2"
-                        @click="addLineClub()"
-                    >
-                        <p>Ajouter une association</p>
-                    </button>
                 </div>
                 <div class="mb-4 ">
-                    <div class="text-lg">
-                        Comptes Externes
+                    <div class="flex">
+                        <div class="text-lg">
+                            Comptes Externes
+                        </div>
+                        <button
+                            class="text-blue-500 ml-4 text-sm flex my-auto"
+                            @click="addLineAccount()"
+                        >
+                            <i class="ri-add-fill" />
+                            <div>
+                                Ajouter un compte
+                            </div>
+                        </button>
                     </div>
                     <div v-if="socialsAccounts.length === 0">
                         Vous n'avez pas encore lié de compte externe
@@ -147,7 +170,7 @@
                             <div
                                 v-for="(social, idx) in socialsAccounts"
                                 :key="idx"
-                                class="flex sm:mb-2 items-center mb-8"
+                                class="flex lg:mb-2 items-center mb-8"
                             >
                                 <div class=" ">
                                     <div class="flex">
@@ -162,13 +185,13 @@
                                             :model-value="socials.indexOf(socials.find((a)=> a.socialId === social.social.socialId))"
                                         />
                                         <button
-                                            class="text-1 block sm:hidden text-xl my-auto red-500 h-8 w-8"
+                                            class="text-1 block lg:hidden text-xl my-auto red-500 h-8 w-8"
                                             @click="rmLineAccount(idx)"
                                         >
                                             <i class="ri-close-line" />
                                         </button>
                                     </div>
-                                    <div class="flex flex-col sm:hidden">
+                                    <div class="flex flex-col lg:hidden">
                                         <input
                                             v-model="social.pseudo"
                                             class="input mt-2"
@@ -183,7 +206,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="hidden sm:flex flex-col">
+                        <div class="hidden lg:flex flex-col">
                             <div
                                 v-for="(social, idx) in socialsAccounts"
                                 :key="idx"
@@ -196,7 +219,7 @@
                                 >
                             </div>
                         </div>
-                        <div class="hidden sm:flex flex-col">
+                        <div class="hidden lg:flex flex-col">
                             <div
                                 v-for="(social, idx) in socialsAccounts"
                                 :key="idx"
@@ -219,21 +242,16 @@
                         </div>
                     </div>
                 </div>
-
-                <button
-                    class="
-                            button
-                            my-2"
-                    @click="addLineAccount()"
-                >
-                    <p>Ajouter un compte externe</p>
-                </button>
             </div>
             <button
-                class="button mb-4"
+                class="button mb-4 mt-16"
                 @click="submit()"
             >
-                <p>Enregistrer</p>
+                <div>
+                    <p class="px-5">
+                        Enregistrer
+                    </p>
+                </div>
             </button>
         </div>
     </div>
@@ -244,8 +262,9 @@ import SelectInput from '@/components/Input/SelectInput.vue'
 import { watch } from 'vue';
 import _ from 'lodash'
 import default_avatar from '@/assets/img/default_avatars/user.png'
+import AvatarImage from '@/components/AvatarImage.vue';
 export default {
-    components: { SelectInput },
+    components: { SelectInput, AvatarImage },
     data() {
         return {
             user:this.$store.state.auth.user,

@@ -4,7 +4,7 @@
     </div>
     <div v-else>
         <div
-            class="mx-auto pb-6 text-1"
+            class="mx-auto pb-2 text-1"
         >
             <div
                 class="card rounded-b-none p-0 pb-6"
@@ -14,21 +14,32 @@
                     <!-- <div class="flex absolute top-0 bg-gray-500 opacity-50 rounded items-center justify-center w-full h-full">
                     Changer votre banniere
                   </div> -->
-                    <img
-                        :src="user.avatar ? user.avatar : default_avatar"
-                        class="absolute left-10 bg-1 -bottom-1/4 h-32 w-32 rounded-full"
-                    >
+                    <avatar-image
+                        :src="user.avatar"
+                        :size="32"
+                        :alt="user.username + ' profile image'"
+                        class="absolute left-10 -bottom-1/4"
+                    />
                 </div>
                 <div class="mt-20 px-4 w-full">
                     <div class="flex flex-col pr-8 space-y-4 mb-4 ">
                         <div>
-                            <div>
-                                <div class="inline-block text-2xl">
+                            <div class="flex">
+                                <div class="text-2xl">
                                     {{ user.username }} {{ user.username.toUpperCase() }}
                                 </div>
-                                <div class="text-gray-500 inline-block ml-2 mb-4">
+                                <div class="text-gray-500 ml-2 my-auto">
                                     {{ 'M2-F' }}
                                 </div>
+                                <router-link
+                                    v-if="connected.userId == user.userId"
+                                    to="/users/me"
+                                    class="ml-8 my-auto"
+                                >
+                                    <div class="flex items-center hover:bg-3-light hover:dark:bg-3-dark px-2 py-1.5 rounded">
+                                        <i class="ri-lg ri-pencil-line" />
+                                    </div>
+                                </router-link>
                             </div>
                             <div>{{ user.description }}</div>
                         </div>
@@ -36,23 +47,30 @@
                             <div class="text-lg">
                                 Associations
                             </div>
-                            <div
-                                v-for="club in userClubs"
-                                :key="club"
-                                class="flex mt-2"
-                            >
-                                <p>
-                                    <img
-                                        :src="club.icon ? club.icon : default_avatar"
-                                        alt="#"
-                                        class="h-16 w-16"
-                                    >
-                                </p>
-                                <div class="ml-2">
-                                    <div class="text-lg font-bold">
-                                        {{ clubs.filter(a => a.clubId === club.club.clubId)[0].name }}
+                            <div class="flex flex-wrap mt-2">
+                                <div
+                                    v-for="club in userClubs"
+                                    :key="club"
+                                    class="flex mr-4 h-16 mb-4"
+                                >
+                                    <p class="w-16 h-16 my-auto">
+                                        <img
+                                            :src="clubs.find(a => a.clubId === club.club.clubId).icon ? clubs.find(a => a.clubId === club.club.clubId).icon : default_avatar"
+                                            :alt="`${clubs.find(a => a.clubId === club.club.clubId).name} Logo`"
+                                            class="rounded-full shadow-inner"
+                                        >
+                                    </p>
+                                    <div class="ml-2 w-32 ">
+                                        <div class="text-lg font-bold truncate -mb-1">
+                                            {{ clubs.find(a => a.clubId === club.club.clubId).name }}
+                                        </div>
+                                        <div class=" -mb-1">
+                                            {{ Object.keys(roles).find((role) => roles[role] = club.role) }}
+                                        </div>
+                                        <div class="text-sm text-5 truncates">
+                                            {{ club.roleLabel }}
+                                        </div>
                                     </div>
-                                    {{ club.role }}
                                 </div>
                             </div>
                         </div>
@@ -74,14 +92,6 @@
                 </div>
             </div>
             <div class="flex flex-col space-y-4 md:w-1/2 lg:w-1/3">
-                <div
-                    v-if="connected.userId == user.userId"
-                    class="card"
-                >
-                    <router-link to="/users/me">
-                        Modifier le Profil
-                    </router-link>
-                </div>
                 <div class="card">
                     Badges
                     <div class="flex mt-2 space-x-1">
@@ -128,14 +138,24 @@
 import { posts } from '@/fake/posts'
 import PostCard from '../components/Card/PostCard.vue'
 import default_avatar from '@/assets/img/default_avatars/user.png'
+import AvatarImage from '@/components/AvatarImage.vue'
 
 export default {
     components: {
-        PostCard
+        PostCard,
+        AvatarImage
     },
     data () {
         return {
             activitys: posts,
+            roles :{
+                "Président" : 'president',
+                "Vice-Président" : 'vice-president',
+                "Secretaire" : 'secretary',
+                "Trésorier" : 'treasurer',
+                "Manager" : 'manager',
+                "Membre" : 'member',
+            },
             default_avatar : default_avatar
         }
     },
