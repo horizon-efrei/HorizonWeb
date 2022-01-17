@@ -2,7 +2,7 @@
     <div class="w-21/24 flex gap-4 mx-auto my-6">
         <CustomModal
             :show="filePreview != null"
-            :custom-class="'block md:hidden'"
+            :global-custom-class="'block md:hidden'"
             @close="filePreview = null"
         >
             <div class="card flex gap-2">
@@ -328,13 +328,11 @@ export default {
         dropDownButtons(studyDocId){
             return [
                 {name:'Télécharger', icon:'ri-download-line', class:"hover:bg-blue-500 hover:text-white", action: ()=>{filesService.downloadFile({query: studyDocId.file.fileUploadId, label:studyDocId.file.originalName})}},
-                {name:'Supprimer', icon:'ri-close-line', class:"hover:bg-red-500 hover:text-white", action: ()=>{console.log("Delete",studyDocId)}}
+                {name:'Supprimer', icon:'ri-close-line', class:"hover:bg-red-500 hover:text-white", action: ()=>{ console.log("Delete (placeholder)", studyDocId) }}
             ]
         },
-        seeDropdown(e, studyDocId){
+        seeDropdown() {
             this.showDropDownFileCard = true
-            this.$refs.dropDownButtonCard
-            console.log(e, studyDocId)
         },
         setFilePreview(file){
             this.filePreview = file

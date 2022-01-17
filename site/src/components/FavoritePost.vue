@@ -73,10 +73,10 @@
 </template>
 
 <script>
-//import TagsList from '@/components/List/TagsList.vue'
+// import TagsList from '@/components/List/TagsList.vue'
 
 export default {
-    //components: { TagsList },
+    // components: { TagsList },
     props: {
         post: {
             type: Object,
@@ -95,7 +95,6 @@ export default {
     },
     computed: {
         actionsMap () {
-            // TODO: Actions
             return {
                 viewComments: { name: () => { return "Commentaires" }, icon: 'ri-chat-2-line', action: function () { console.log('Commentaire') } },
                 favorite: { name:()=> 'Favoris', icon: this.post.favorited ? 'ri-star-fill text-yellow-500' : 'ri-star-line', class: [this.post.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
