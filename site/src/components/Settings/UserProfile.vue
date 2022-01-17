@@ -56,7 +56,6 @@
                                 class="text-lg"
                             >Description</label>
                             <textarea
-                                id="description"
                                 v-model="user.description"
                                 name="description"
                                 class="input"
@@ -385,6 +384,7 @@ export default {
                     this.$store.dispatch('users/deleteSocialAccount',this.$store.state.users.socialsAccounts[i].socialAccountId)
                 }
             }
+            alert("Le profil a bien été modifié")
         }
     }
 }
