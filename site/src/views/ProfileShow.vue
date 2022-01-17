@@ -78,9 +78,7 @@
                     v-if="connected.userId == user.userId"
                     class="card"
                 >
-                    <router-link to="/users/me">
-                        Modifier le Profil
-                    </router-link>
+                    <a href="#/settings">Modifier le Profil</a>
                 </div>
                 <div class="card">
                     Badges
