@@ -16,7 +16,7 @@
                   </div> -->
                     <img
                         :src="user.avatar ? user.avatar : default_avatar"
-                        class="absolute left-10 -bottom-1/4 h-32 w-32 rounded-full"
+                        class="absolute left-10 -bottom-1/4 h-32 w-32 rounded-full bg-1"
                     >
                 </div>
                 <div class="mt-20 px-4 w-full">
