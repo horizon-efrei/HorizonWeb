@@ -16,7 +16,7 @@
                   </div> -->
                     <img
                         :src="user.avatar ? user.avatar : default_avatar"
-                        class="absolute left-10 -bottom-1/4 h-32 w-32 rounded-full"
+                        class="absolute left-10 bg-1 -bottom-1/4 h-32 w-32 rounded-full"
                     >
                 </div>
                 <div class="mt-20 px-4 w-full">
@@ -78,7 +78,9 @@
                     v-if="connected.userId == user.userId"
                     class="card"
                 >
-                    <a href="#/users/me">Modifier le Profil</a>
+                    <router-link to="/users/me">
+                        Modifier le Profil
+                    </router-link>
                 </div>
                 <div class="card">
                     Badges

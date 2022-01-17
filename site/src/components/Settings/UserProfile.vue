@@ -269,78 +269,82 @@ export default {
     },
 
     mounted(){
-        this.$store.dispatch('auth/getUser',this.user.userId )
-        watch(
-            () => this.$store.state.auth.me,
-            (newUser) => {
-                this.user = newUser
-            }
-        )
-        this.user = this.$store.state.auth.user
-        watch(
-            () => this.$store.state.users.socialsAccounts,
-            (newSocials) => {
-                this.socialsAccounts = _.cloneDeep(newSocials)
-            }
-        )
-
-        watch(
-            () => this.$store.state.users.socials,
-            (newSocials) => {
-                console.log("socials",newSocials)
-                this.socials = [...newSocials]
-            }
-        )
-        watch(
-            () => this.$store.state.users.userClubs,
-            (newClubs) => {
-
-                console.log("userClubs",newClubs)
-                this.userClubs = [...newClubs]
-            }
-        )
-        watch(
-            () => this.$store.state.users.clubs,
-            (newClubs) =>{
-                console.log("clubs",newClubs)
-                this.clubs = [...newClubs]
-            }
-        )
-        watch(
-            () => this.userClubs,
-            (updClubs) => {
-                for(let i= 0; i<updClubs.length;i++){
-                    if(Number.isInteger(updClubs[i].role)){
-                        updClubs[i].role = this.roles[updClubs[i].role]
-                    }
-                    if(Number.isInteger(updClubs[i].club)){
-                        updClubs[i].club = {clubId:this.clubs.items[updClubs[i].club].clubId}
-                    }
+        if(this.user != null && this.user != undefined){
+            this.$store.dispatch('auth/getUser',this.user.userId )
+            watch(
+                () => this.$store.state.auth.me,
+                (newUser) => {
+                    this.user = newUser
                 }
-                this.userClubs = updClubs
-            },
-            {deep: true}
-        )
-        watch(
-            () => this.socialsAccounts,
-            (updSocial) => {
-                for(let i=0;i<updSocial.length; i++){
-                    if(typeof(updSocial[i].social)==="number"){
-                        updSocial[i].social = {socialId:this.socials[updSocial[i].social].socialId}
-                    }
+            )
+            this.user = this.$store.state.auth.user
+            watch(
+                () => this.$store.state.users.socialsAccounts,
+                (newSocials) => {
+                    this.socialsAccounts = _.cloneDeep(newSocials)
                 }
-                if(_.isEqual(this.socialsAccounts ,updSocial)){
-                    this.socialsAccounts = updSocial
-                }
-            },
-            {deep: true}
-        )
+            )
 
-        this.$store.dispatch('users/getUserById',this.user.userId )
-        this.$store.dispatch('users/getUserClubs', this.user.userId)
-        this.$store.dispatch('users/getUserSocials',this.user.userId)
-        this.$store.dispatch('users/getSocials')
-        this.$store.dispatch('users/getClubs')
+            watch(
+                () => this.$store.state.users.socials,
+                (newSocials) => {
+                    console.log("socials",newSocials)
+                    this.socials = [...newSocials]
+                }
+            )
+            watch(
+                () => this.$store.state.users.userClubs,
+                (newClubs) => {
+
+                    console.log("userClubs",newClubs)
+                    this.userClubs = [...newClubs]
+                }
+            )
+            watch(
+                () => this.$store.state.users.clubs,
+                (newClubs) =>{
+                    console.log("clubs",newClubs)
+                    this.clubs = [...newClubs]
+                }
+            )
+            watch(
+                () => this.userClubs,
+                (updClubs) => {
+                    for(let i= 0; i<updClubs.length;i++){
+                        if(Number.isInteger(updClubs[i].role)){
+                            updClubs[i].role = this.roles[updClubs[i].role]
+                        }
+                        if(Number.isInteger(updClubs[i].club)){
+                            updClubs[i].club = {clubId:this.clubs.items[updClubs[i].club].clubId}
+                        }
+                    }
+                    this.userClubs = updClubs
+                },
+                {deep: true}
+            )
+            watch(
+                () => this.socialsAccounts,
+                (updSocial) => {
+                    for(let i=0;i<updSocial.length; i++){
+                        if(typeof(updSocial[i].social)==="number"){
+                            updSocial[i].social = {socialId:this.socials[updSocial[i].social].socialId}
+                        }
+                    }
+                    if(_.isEqual(this.socialsAccounts ,updSocial)){
+                        this.socialsAccounts = updSocial
+                    }
+                },
+                {deep: true}
+            )
+
+            this.$store.dispatch('users/getUserById',this.user.userId )
+            this.$store.dispatch('users/getUserClubs', this.user.userId)
+            this.$store.dispatch('users/getUserSocials',this.user.userId)
+            this.$store.dispatch('users/getSocials')
+            this.$store.dispatch('users/getClubs')
+        }else {
+            this.$router.push("/")
+        }
     },
     methods: {
         addLineClub: function addLineClub() {
