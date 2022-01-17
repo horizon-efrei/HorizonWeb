@@ -74,7 +74,7 @@ export default {
         actionsMap () {
             // TODO: Actions
             return {
-                favorite: { name:()=> 'Répondre', icon: this.comment.favorited ? 'ri-star-fill' : 'ri-star-line', class: [this.comment.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
+                favorite: { name:()=> 'Favoris', icon: this.comment.favorited ? 'ri-star-fill text-yellow-500' : 'ri-star-line', class: [this.comment.favorited ? 'hover:text-blue-500 text-yellow-500' : 'hover:text-yellow-500', 'cursor-pointer'],
                     action: () => { this.comment.favorited ? this.deleteFavorite() : this.addFavorite() } },
                 flag: { name: () => { return 'Signaler' }, icon: 'ri-flag-line', action: function () { console.log('Signaler') } },
             }
