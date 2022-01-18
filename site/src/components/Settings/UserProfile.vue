@@ -19,47 +19,45 @@
         <div>
             <div>
                 <div class="flex mb-4">
-                    <div class="mr-6 w-full">
-                        <div class="flex mb-4">
-                            <div class="w-1/2">
-                                <div
-                                    for="lastname"
-                                    class="text-lg"
+                    <div class="flex mr-6 w-full">
+                        <div class="flex flex-col w-fit mr-8 mb-4">
+                            <div class="relative mx-auto mb-2">
+                                <avatar-image
+                                    :src="user.avatar"
+                                    :alt="user.username + ' profile image'"
+                                    :size="32"
+                                />
+                                <button
+                                    class="absolute md:block hidden bottom-0 left-24 "
+                                    @click="showEditor"
                                 >
-                                    Prénom
-                                </div>
+                                    <i class="ri-camera-line text-2xl absolute bottom-0 rounded-full border px-1 bg-2 border-color-2" />
+                                </button>
+                            </div>
+                            <div class="flex mx-auto justify-between">
                                 <div
-
-                                    class="w-full bg-1 capitalize"
+                                    class="w-full bg-1 mr-2 capitalize"
                                 >
                                     {{ user.username }}
                                 </div>
-                            </div>
-                            <div class="ml-2 w-1/2">
-                                <div
-                                    for="lastname"
-                                    class="text-lg"
-                                >
-                                    Nom
-                                </div>
-                                <div
 
+                                <div
                                     class="w-full bg-1 uppercase"
                                 >
                                     {{ user.username }}
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col">
+                        <div class="flex w-full flex-col">
                             <label
                                 for="description"
                                 class="text-lg"
                             >Description</label>
                             <textarea
-                                id="description"
                                 v-model="user.description"
                                 name="description"
-                                class="input"
+                                class="input resize-none"
+                                rows="5"
                             />
                         </div>
                     </div>
@@ -190,7 +188,7 @@
                                             :model-value="socials.indexOf(socials.find((a)=> a.socialId === social.social.socialId))"
                                         />
                                         <button
-                                            class="text-1 block lg:hidden text-xl my-auto red-500 h-8 w-8"
+                                            class="text-1 block lg:hidden text-xl my-auto red-500 h-8 w-8 "
                                             @click="rmLineAccount(idx)"
                                         >
                                             <i class="ri-close-line" />
@@ -278,6 +276,7 @@ import _ from 'lodash'
 import default_avatar from '@/assets/img/default_avatars/user.png'
 import AvatarImage from '@/components/AvatarImage.vue';
 import myUpload from 'vue-image-crop-upload';
+
 
 export default {
     components: { SelectInput, AvatarImage,myUpload },

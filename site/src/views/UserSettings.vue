@@ -15,18 +15,16 @@
         mt-32
         mb-10
         text-0
-        sm:shadow-md
+        md:w-9/12
         sm:rounded-lg
         p-0
         bg-1
         w-full
-        sm:w-11/12
         mx-auto
-        sm:flex
       "
         >
             <div class="mt-2 flex-shrink-0">
-                <ul class="py-2 flex sm:block">
+                <ul class="py-2 flex">
                     <template
                         v-for="link of links"
                         :key="link"
@@ -36,7 +34,6 @@
                 h-12
                 py-2
                 pl-8
-                sm:pr-20
                 flex
                 w-full
                 space-x-2
@@ -57,7 +54,7 @@
                 </ul>
             </div>
 
-            <div class="sm:border-l-2 sm:border-0 border-t-2 border-footer w-full">
+            <div class=" border-t-2 border-footer w-full">
                 <component :is="currentComponent" />
             </div>
         </div>
@@ -83,7 +80,7 @@ export default {
             currentComponent: 'Profile',
             links: [
                 { text: 'Profil', icon: 'ri-profile-line', component: 'Profile' },
-                { text: 'Intégration Discord', icon: 'ri-discord-fill', component: 'Discord' },
+                { text: 'Discord', icon: 'ri-discord-fill', component: 'Discord' },
                 { text: 'Badges', icon: 'ri-medal-line', component: BadgeSettings },
                 { text: 'Compte lié', icon: 'ri-links-line', component: ExternalAccount },
                 { text: 'Assos', icon: 'ri-team-fill', component: AssociationSettings },
