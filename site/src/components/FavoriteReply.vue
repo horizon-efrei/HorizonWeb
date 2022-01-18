@@ -10,7 +10,7 @@
                         Publié par {{ reply.author.username }} {{ dateSince(new Date(reply.createdAt)) }}
                     </p>
                     <router-link
-                        :to="`/post/${reply.post.postId}`"
+                        :to="`/posts/${reply.post.postId}`"
                         class="text-0 text-lg mr-4 line-clamp-2 "
                     >
                         {{ extractTextFromTipTapJSON(JSON.parse(reply.body)) }}

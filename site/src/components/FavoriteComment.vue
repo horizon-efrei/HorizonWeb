@@ -11,7 +11,7 @@
                         Publié par {{ comment.author.username }} {{ dateSince(new Date(comment.createdAt)) }}
                     </p>
                     <router-link
-                        :to="`/post/${comment.post.postId}`"
+                        :to="`/posts/${comment.post.postId}`"
                         class="text-0 text-lg mr-4 line-clamp-2 "
                     >
                         {{ extractTextFromTipTapJSON(JSON.parse(comment.body)) }}

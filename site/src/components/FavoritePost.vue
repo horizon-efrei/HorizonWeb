@@ -38,7 +38,7 @@
             <div>
                 <div class="flex">
                     <router-link
-                        :to="`/post/${post.postId}`"
+                        :to="`/posts/${post.postId}`"
                         class="text-0 text-xl font-semibold mr-4 whitespace-nowrap "
                     >
                         {{ post.title }}
