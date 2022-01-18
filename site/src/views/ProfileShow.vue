@@ -1,6 +1,6 @@
 <template>
     <div v-if="user === undefined || user === null">
-        Impossible de charger l'utilisateur
+        <loading-component />
     </div>
     <div v-else>
         <div
@@ -139,11 +139,13 @@ import { posts } from '@/fake/posts'
 import PostCard from '../components/Card/PostCard.vue'
 import default_avatar from '@/assets/img/default_avatars/user.png'
 import AvatarImage from '@/components/AvatarImage.vue'
+import LoadingComponent from './LoadingComponent.vue'
 
 export default {
     components: {
         PostCard,
-        AvatarImage
+        AvatarImage,
+        LoadingComponent
     },
     data () {
         return {

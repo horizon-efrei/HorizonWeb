@@ -11,7 +11,7 @@
                 ref="select"
                 class="overflow-hidden whitespace-nowrap"
                 :class="(modelValue === null || modelValue === undefined ? 'text-placeholder' : 'text-1')"
-                :style="`width: ${max}px`"
+                :style="maxContentWidth ? `width: ${max}px` : ''"
             >
                 {{ choices[values.indexOf(modelValue)] || buttonName }}
             </div>
@@ -126,7 +126,6 @@ export default {
             }
         }
         this.max = Math.ceil(this.max)
-        console.log(this.max)
     },
     methods: {
         getTextWidthInElement

@@ -1,10 +1,9 @@
 <template>
-    <div
+    <LoadingComponent
         v-if="user===undefined || user===null || clubs === undefined || clubs === null || socials === undefined || socials === null || userClubs === undefined || userClubs === null "
-        :class="$store.state.users "
-    >
-        Loading
-    </div>
+        :class="$store.state.users"
+        bg="bg-2"
+    />
     <div
         v-else
         class="px-4 sm:px-8 py-4 text-2"
@@ -116,6 +115,7 @@
                                     <div class="my-auto ml-2">
                                         <SelectInput
                                             v-model="club.club"
+                                            max-content-width="true"
                                             button-name="Association"
                                             :choices="clubs.map(a=>a.name)"
                                             :model-value="clubs.indexOf(clubs.find((a)=> a.clubId === club.club.clubId))"
@@ -133,6 +133,7 @@
                                 <div class="ml-2">
                                     <SelectInput
                                         v-model="club.role"
+                                        max-content-width="true"
                                         button-name="Role"
                                         :choices="Object.keys(roles)"
                                         :model-value="Object.keys(roles).indexOf(Object.keys(roles).find((role) => roles[role] === club.role))"
@@ -183,6 +184,8 @@
                                         />
                                         <SelectInput
                                             v-model="social.social"
+
+                                            max-content-width="true"
                                             :choices="socials.map(sos=> sos.name)"
                                             :model-value="socials.indexOf(socials.find((a)=> a.socialId === social.social.socialId))"
                                         />
@@ -275,10 +278,11 @@ import _ from 'lodash'
 import default_avatar from '@/assets/img/default_avatars/user.png'
 import AvatarImage from '@/components/AvatarImage.vue';
 import myUpload from 'vue-image-crop-upload';
+import LoadingComponent from '@/views/LoadingComponent.vue';
 
 
 export default {
-    components: { SelectInput, AvatarImage,myUpload },
+    components: { SelectInput, AvatarImage, myUpload, LoadingComponent },
     data() {
         return {
             user:this.$store.state.auth.user,

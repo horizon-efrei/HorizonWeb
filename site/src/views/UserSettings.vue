@@ -67,12 +67,14 @@ import BadgeSettings from '@/components/Settings/BadgeSettings.vue'
 import ExternalAccount from '@/components/Settings/ExternalAccount.vue'
 import AssociationSettings from '@/components/Settings/AssociationSettings.vue'
 import AccessibilitySettings from '@/components/Settings/AccessibilitySettings.vue'
+import LoadingComponentVue from './LoadingComponent.vue'
 export default {
     components: {
         Profile,
         BadgeSettings,
         ExternalAccount,
-        AssociationSettings
+        AssociationSettings,
+        LoadingComponentVue
     },
     inheritAttrs: false,
     data () {
@@ -80,7 +82,7 @@ export default {
             currentComponent: 'Profile',
             links: [
                 { text: 'Profil', icon: 'ri-profile-line', component: 'Profile' },
-                { text: 'Discord', icon: 'ri-discord-fill', component: 'Discord' },
+                { text: 'Discord', icon: 'ri-discord-fill', component: 'Settings' },
                 { text: 'Badges', icon: 'ri-medal-line', component: BadgeSettings },
                 { text: 'Accessibilité', icon: 'ri-hand-heart-fill', component: AccessibilitySettings }
                 // TODO: { text: "Rôles Ef'Réussite", icon: 'ri-book-mark-line', component: 'Roles' }
