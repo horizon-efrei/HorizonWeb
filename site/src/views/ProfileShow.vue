@@ -78,8 +78,8 @@
                 </div>
             </div>
         </div>
-        <div class="md:flex">
-            <div class=" md:w-1/2 lg:w-2/3 mt-0 m-4 space-y-4">
+        <div class="flex-col md:flex-row flex">
+            <div class="order-2 md:order-1 md:w-1/2 lg:w-2/3 mt-0 md:m-x-4 mb-4 space-y-4">
                 <div class="flex flex-col card flex-grow space-y-4">
                     <div class="text-xl">
                         Activité
@@ -91,7 +91,7 @@
                     />
                 </div>
             </div>
-            <div class="flex flex-col space-y-4 md:w-1/2 lg:w-1/3">
+            <div class="flex order-1 md:order-2 flex-col space-y-4 mb-4 md:w-1/2 lg:w-1/3">
                 <div class="card">
                     Badges
                     <div class="flex mt-2 space-x-1">
