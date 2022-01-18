@@ -1,5 +1,4 @@
 <template>
-    {{ }}
     <div
         v-if="user===undefined || user===null || clubs === undefined || clubs === null || socials === undefined || socials === null || userClubs === undefined || userClubs === null "
         :class="$store.state.users "
@@ -29,7 +28,7 @@
                                 />
                                 <button
                                     class="absolute md:block hidden bottom-0 left-24 "
-                                    @click="showEditor"
+                                    @click="showImage()"
                                 >
                                     <i class="ri-camera-line text-2xl absolute bottom-0 rounded-full border px-1 bg-2 border-color-2" />
                                 </button>
@@ -386,13 +385,12 @@ export default {
         addLineClub: function addLineClub() {
             this.userClubs.push({role:null,club:{clubId:null}});
         },
-        showEditor: function showEditor() {
+        showImage: function showImage() {
             if(this.avatarShown){
                 this.avatarShown = false
             }else{
                 this.avatarShown = true
             }
-            console.log(this.avatarShown)
         },
         rmLineClub: function rmLineClub(indx) {
             this.userClubs.splice(indx,1);

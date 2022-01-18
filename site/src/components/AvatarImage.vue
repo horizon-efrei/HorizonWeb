@@ -1,5 +1,5 @@
 <template>
-    <div class="shadow rounded-full bg-1">
+    <div class="shadow rounded-full">
         <img
             :src="(src==='' || src=== null ||src === undefined) ? default_avatar :src"
             :alt="alt"
@@ -23,7 +23,6 @@ export default {
         },
         size: {
             type: Number,
-            require:true,
             default: () => 16
         },
     },

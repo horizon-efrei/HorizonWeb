@@ -82,8 +82,6 @@ export default {
                 { text: 'Profil', icon: 'ri-profile-line', component: 'Profile' },
                 { text: 'Discord', icon: 'ri-discord-fill', component: 'Discord' },
                 { text: 'Badges', icon: 'ri-medal-line', component: BadgeSettings },
-                { text: 'Compte lié', icon: 'ri-links-line', component: ExternalAccount },
-                { text: 'Assos', icon: 'ri-team-fill', component: AssociationSettings },
                 { text: 'Accessibilité', icon: 'ri-hand-heart-fill', component: AccessibilitySettings }
                 // TODO: { text: "Rôles Ef'Réussite", icon: 'ri-book-mark-line', component: 'Roles' }
             ],
