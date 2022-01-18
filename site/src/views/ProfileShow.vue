@@ -79,7 +79,7 @@
             </div>
         </div>
         <div class="flex-col md:flex-row flex">
-            <div class="order-2 md:order-1 md:w-1/2 lg:w-2/3 mt-0 md:mx-4 mb-4 space-y-4">
+            <div class="order-2 md:order-1 md:w-1/2 lg:w-2/3 mt-0 md:ml-2 md:mr-4 mb-4 space-y-4">
                 <div class="flex flex-col card flex-grow space-y-4">
                     <div class="text-xl">
                         Activité
