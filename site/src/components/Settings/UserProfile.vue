@@ -70,10 +70,15 @@
                                 :alt="user.username + ' profile image'"
                                 :size="48"
                             />
-                            <font-awesome-icon
-                                icon="camera"
-                                class="text-2xl border rounded-full bg-2 border-color-2 absolute bottom-0 right-2"
-                            />
+                            <button
+                                class="absolute bottom-0 right-2 "
+                                @click="showEditor"
+                            >
+                                <font-awesome-icon
+                                    icon="camera"
+                                    class="text-2xl border rounded-full bg-2 border-color-2 absolute bottom-0 right-2"
+                                />
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -253,6 +258,15 @@
                     </p>
                 </div>
             </button>
+
+            <my-upload
+                v-model="avatarShown"
+                field="file"
+                img-format="jpg"
+                :url="`${API_URL}files/profile-images`"
+                lang-type="fr"
+                :with-credentials="true"
+            />
         </div>
     </div>
 </template>
@@ -263,8 +277,10 @@ import { watch } from 'vue';
 import _ from 'lodash'
 import default_avatar from '@/assets/img/default_avatars/user.png'
 import AvatarImage from '@/components/AvatarImage.vue';
+import myUpload from 'vue-image-crop-upload';
+
 export default {
-    components: { SelectInput, AvatarImage },
+    components: { SelectInput, AvatarImage,myUpload },
     data() {
         return {
             user:this.$store.state.auth.user,
@@ -281,7 +297,9 @@ export default {
             group: null,
             userClubs:null,
             socialsAccounts:null,
-            default_avatar:default_avatar
+            default_avatar:default_avatar,
+            avatarShown: false,
+            API_URL: `${import.meta.env.VITE_API_URL}/`
         };
     },
     computed: {
@@ -368,6 +386,14 @@ export default {
     methods: {
         addLineClub: function addLineClub() {
             this.userClubs.push({role:null,club:{clubId:null}});
+        },
+        showEditor: function showEditor() {
+            if(this.avatarShown){
+                this.avatarShown = false
+            }else{
+                this.avatarShown = true
+            }
+            console.log(this.avatarShown)
         },
         rmLineClub: function rmLineClub(indx) {
             this.userClubs.splice(indx,1);

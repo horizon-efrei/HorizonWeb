@@ -10,8 +10,8 @@
 </template>
 <script>
 import default_avatar from '@/assets/img/default_avatars/user.png'
-
 export default {
+
     props: {
         src: {
             type: String,
