@@ -1,7 +1,7 @@
 <template>
     <div class="m-4 flex bg-1 rounded-md">
-        <div class="border-dashed border-l-2 border-color-3 ml-2 " />
-        <div class="flex border-dashed border-l-2 border-color-3 flex-col  justify-center object-cover ml-2 px-8">
+        <div class="border-dashed border-l-2 border-color-2-alt ml-2 " />
+        <div class="flex border-dashed border-l-2 border-color-2-alt flex-col  justify-center object-cover ml-2 px-8">
             <i class="ri-chat-4-line text-2 text-4xl text-center hidden md:block" />
         </div>
         <div class="flex w-full">

@@ -1,6 +1,6 @@
 import UserService from '@/services/users.service';
 
-const initialState = { users: null, socialsAccounts: [], socials:[], userClubs:[], favorites: [] }
+const initialState = { users: null, socialsAccounts: [], socials:[], userClubs:[], favorites: [], clubMembers: [] }
 
 export const users = {
     namespaced: true,
@@ -254,6 +254,18 @@ export const users = {
                 }
             )
         },
+        getClubMembers({commit}, clubId) {
+            return UserService.getClubMembers(clubId).then(
+                success => {
+                    commit('fetchClubMembersSuccess',success)
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    Promise.reject(error)
+                }
+            )
+        }
 
     },
     mutations: {
@@ -388,5 +400,8 @@ export const users = {
                 return a
             } )
         },
+        fetchClubMembersSuccess(state,success){
+            state.clubMembers = success
+        }
     }
 }

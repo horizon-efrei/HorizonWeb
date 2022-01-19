@@ -1,6 +1,6 @@
 <template>
     <LoadingComponent
-        v-if="user===undefined || user===null || clubs === undefined || clubs === null || socials === undefined || socials === null || userClubs === undefined || userClubs === null "
+        v-if=" clubs === undefined || clubs === null || socials === undefined || socials === null || userClubs === undefined || userClubs === null "
         :class="$store.state.users"
         background="bg-1"
     />
@@ -74,77 +74,6 @@
                                     class="text-2xl border rounded-full bg-2 border-color-2 absolute bottom-0 right-2"
                                 />
                             </button>
-                        </div>
-                    </div>
-                </div>
-                <div class="mb-2">
-                    <div class="flex">
-                        <div class="text-lg">
-                            Associations
-                        </div>
-                        <button
-                            class="text-blue-500 ml-4 text-sm flex my-auto"
-                            @click="addLineClub()"
-                        >
-                            <i class="ri-add-fill" />
-                            <div>
-                                Ajouter une association
-                            </div>
-                        </button>
-                    </div>
-                    <div v-if="userClubs.length === 0">
-                        Vous n'avez pas encore d'Association
-                    </div>
-                    <div
-                        v-else
-                        class="flex"
-                    >
-                        <div class="flex flex-col">
-                            <div
-                                v-for="(club, idx) in userClubs"
-                                :key="idx"
-                                class="flex mb-2 items-center h-8 mt-2"
-                            >
-                                <div class="mr-2 flex">
-                                    <img
-                                        v-if="club.club.clubId!=null"
-                                        class="h-8 w-8 my-auto rounded-full"
-                                        :src="clubs.find((a)=> a.clubId === club.club.clubId).icon!='' ? clubs.find((a)=> a.clubId === club.club.clubId).icon : default_avatar"
-                                    >
-                                    <div class="my-auto ml-2">
-                                        <SelectInput
-                                            v-model="club.club"
-                                            max-content-width="true"
-                                            button-name="Association"
-                                            :choices="clubs.map(a=>a.name)"
-                                            :model-value="clubs.indexOf(clubs.find((a)=> a.clubId === club.club.clubId))"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="flex flex-col">
-                            <div
-                                v-for="(club, idx) in userClubs"
-                                :key="idx"
-                                class="flex mb-2 items-center h-8 mt-2"
-                            >
-                                <div class="ml-2">
-                                    <SelectInput
-                                        v-model="club.role"
-                                        max-content-width="true"
-                                        button-name="Role"
-                                        :choices="Object.keys(roles)"
-                                        :model-value="Object.keys(roles).indexOf(Object.keys(roles).find((role) => roles[role] === club.role))"
-                                    />
-                                </div>
-                                <button
-                                    class="text-1 text-xl red-500 h-8 w-8 my-auto"
-                                    @click="rmLineClub(idx)"
-                                >
-                                    <i class="ri-close-line" />
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -257,15 +186,6 @@
                     </p>
                 </div>
             </button>
-
-            <!-- <my-upload
-                v-model="avatarShown"
-                field="file"
-                img-format="jpg"
-                :url="`${API_URL}files/profile-images`"
-                lang-type="fr"
-                :with-credentials="true"
-            /> -->
             <AvatarCropper
                 v-model="avatarShown"
                 field="file"
@@ -284,7 +204,6 @@ import { watch } from 'vue';
 import _ from 'lodash'
 import default_avatar from '@/assets/img/default_avatars/user.png'
 import AvatarImage from '@/components/AvatarImage.vue';
-// import myUpload from 'vue-image-crop-upload';
 import LoadingComponent from '@/views/LoadingComponent.vue';
 import AvatarCropper from '../AvatarCropper/AvatarCropper.vue';
 
@@ -300,17 +219,7 @@ export default {
     data() {
         return {
             user:this.$store.state.auth.user,
-            roles :{
-                "Président" : 'president',
-                "Vice-Président" : 'vice-president',
-                "Secretaire" : 'secretary',
-                "Trésorier" : 'treasurer',
-                "Manager" : 'manager',
-                "Membre" : 'member',
-            },
-            parcours: null,
-            promotion: null,
-            group: null,
+
             userClubs:null,
             socialsAccounts:null,
             default_avatar:default_avatar,
@@ -400,18 +309,12 @@ export default {
         }
     },
     methods: {
-        addLineClub: function addLineClub() {
-            this.userClubs.push({role:null,club:{clubId:null}});
-        },
         showImage: function showImage() {
             if(this.avatarShown){
                 this.avatarShown = false
             }else{
                 this.avatarShown = true
             }
-        },
-        rmLineClub: function rmLineClub(indx) {
-            this.userClubs.splice(indx,1);
         },
         addLineAccount: function addLineAccount() {
             this.socialsAccounts.push({social:{socialId:null},pseudo:null,link:null});

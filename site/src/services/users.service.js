@@ -110,6 +110,10 @@ class UserService {
     deleteFavoriteComment(commentId) {
         return axios.delete(`${API_URL}favorites/comments/${commentId}`, { withCredentials: true }).then(() => true).catch(() => false)
     }
+
+    getClubMembers(clubId) {
+        return axios.get(`${API_URL}clubs/${clubId}/members`, {withCredentials:true}).then((res) => res.data.items)
+    }
 }
 
 export default new UserService()

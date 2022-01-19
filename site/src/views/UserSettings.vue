@@ -55,7 +55,7 @@
                 </ul>
             </div>
 
-            <div class=" border-t-2 border-footer w-full">
+            <div class=" border-t-2 border-color-2-alt w-full">
                 <component :is="currentComponent" />
             </div>
         </div>
@@ -66,7 +66,7 @@
 import Profile from '@/components/Settings/UserProfile.vue'
 import BadgeSettings from '@/components/Settings/BadgeSettings.vue'
 import ExternalAccount from '@/components/Settings/ExternalAccount.vue'
-import AssociationSettings from '@/components/Settings/AssociationSettings.vue'
+import Associations from '@/components/Settings/AssociationSettings.vue'
 import AccessibilitySettings from '@/components/Settings/AccessibilitySettings.vue'
 import LoadingComponentVue from './LoadingComponent.vue'
 export default {
@@ -74,7 +74,7 @@ export default {
         Profile,
         BadgeSettings,
         ExternalAccount,
-        AssociationSettings,
+        Associations,
         LoadingComponentVue
     },
     inheritAttrs: false,
@@ -84,6 +84,8 @@ export default {
             links: [
                 { text: 'Profil', icon: 'ri-profile-line', component: 'Profile' },
                 { text: 'Discord', icon: 'ri-discord-fill', component: 'Settings' },
+                { text: 'Associations', icon: 'ri-team-fill', component: 'Associations' },
+
                 { text: 'Badges', icon: 'ri-medal-line', component: BadgeSettings },
                 { text: 'Accessibilité', icon: 'ri-hand-heart-fill', component: AccessibilitySettings }
                 // TODO: { text: "Rôles Ef'Réussite", icon: 'ri-book-mark-line', component: 'Roles' }
