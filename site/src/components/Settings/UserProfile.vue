@@ -2,7 +2,7 @@
     <LoadingComponent
         v-if="user===undefined || user===null || clubs === undefined || clubs === null || socials === undefined || socials === null || userClubs === undefined || userClubs === null "
         :class="$store.state.users"
-        bg="bg-2"
+        background="bg-1"
     />
     <div
         v-else
@@ -34,13 +34,12 @@
                             </div>
                             <div class="flex mx-auto justify-between">
                                 <div
-                                    class="w-full bg-1 mr-2 capitalize"
+                                    class="w-full bg-1 mr-2 capitalize whitespace-nowrap"
                                 >
                                     {{ user.username }}
                                 </div>
-
                                 <div
-                                    class="w-full bg-1 uppercase"
+                                    class="w-full bg-1 uppercase whitespace-nowrap"
                                 >
                                     {{ user.username }}
                                 </div>
