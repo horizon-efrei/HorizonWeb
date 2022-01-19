@@ -10,30 +10,6 @@
     }
 }
 
-@keyframes vicp_progress {
-    0% {
-        background-position-y: 0;
-    }
-
-    100% {
-        background-position-y: 40px;
-    }
-}
-
-@keyframes vicp {
-    0% {
-        opacity: 0;
-        transform: scale(0) translateY(-60px);
-        transform: scale(0) translateY(-60px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-        transform: scale(1) translateY(0);
-    }
-}
-
 @keyframes vicp {
     0% {
         opacity: 0;
@@ -52,7 +28,6 @@
     position: fixed;
     display: block;
     box-sizing: border-box;
-    box-sizing: border-box;
     z-index: 10000;
     top: 0;
     bottom: 0;
@@ -67,10 +42,8 @@
 
 .vue-image-crop-upload .vicp-wrap {
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 23%);
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 23%);
     position: fixed;
     display: block;
-    box-sizing: border-box;
     box-sizing: border-box;
     z-index: 10000;
     top: 0;
@@ -83,7 +56,6 @@
     padding: 25px;
     background-color: #fff;
     border-radius: 2px;
-    animation: vicp 0.12s ease-in;
     animation: vicp 0.12s ease-in;
 }
 
@@ -100,17 +72,13 @@
     height: 30px;
     cursor: pointer;
     transition: -webkit-transform 0.18s;
-    transition: -webkit-transform 0.18s;
     transition: transform 0.18s;
     transition: transform 0.18s, -webkit-transform 0.18s;
-    transform: rotate(0);
-    transform: rotate(0);
     transform: rotate(0);
 }
 
 .vue-image-crop-upload .vicp-wrap .vicp-close .vicp-icon4::after,
 .vue-image-crop-upload .vicp-wrap .vicp-close .vicp-icon4::before {
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 23%);
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 23%);
     content: "";
     position: absolute;
@@ -119,26 +87,19 @@
     width: 20px;
     height: 3px;
     transform: rotate(45deg);
-    transform: rotate(45deg);
-    transform: rotate(45deg);
     background-color: #fff;
 }
 
 .vue-image-crop-upload .vicp-wrap .vicp-close .vicp-icon4::after {
     transform: rotate(-45deg);
-    transform: rotate(-45deg);
-    transform: rotate(-45deg);
 }
 
 .vue-image-crop-upload .vicp-wrap .vicp-close .vicp-icon4:hover {
-    transform: rotate(90deg);
-    transform: rotate(90deg);
     transform: rotate(90deg);
 }
 
 .vue-image-crop-upload .vicp-wrap .vicp-step1 .vicp-drop-area {
     position: relative;
-    box-sizing: border-box;
     box-sizing: border-box;
     padding: 35px;
     height: 170px;
@@ -175,7 +136,6 @@
 }
 
 .vue-image-crop-upload .vicp-wrap .vicp-step1 .vicp-drop-area .vicp-icon1 .vicp-icon1-bottom {
-    box-sizing: border-box;
     box-sizing: border-box;
     display: block;
     height: 12.6px;
@@ -234,13 +194,9 @@
     display: block;
     cursor: move;
     user-select: none;
-    user-select: none;
-    user-select: none;
-    user-select: none;
 }
 
 .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-img-container .vicp-img-shade {
-    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 18%);
     box-shadow: 0 2px 6px 0 rgb(0 0 0 / 18%);
     position: absolute;
     background-color: rgb(241 242 243 / 80%);
@@ -277,7 +233,6 @@
 }
 
 .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-rotate i:hover {
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 12%);
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 12%);
     cursor: pointer;
     background-color: rgb(0 0 0 / 14%);
@@ -366,15 +321,7 @@
     vertical-align: top;
     background: transparent;
     appearance: none;
-    appearance: none;
-    appearance: none;
     cursor: pointer;
-
-    /* 滑块
-							 --------------------------------------------------------------- */
-
-    /* 轨道
-							 --------------------------------------------------------------- */
 }
 
 .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type="range"]:focus {
@@ -383,8 +330,6 @@
 
 .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type="range"]::-webkit-slider-thumb {
     box-shadow: 0 2px 6px 0 rgb(0 0 0 / 18%);
-    box-shadow: 0 2px 6px 0 rgb(0 0 0 / 18%);
-    appearance: none;
     appearance: none;
     margin-top: -3px;
     width: 12px;
@@ -393,19 +338,16 @@
     border-radius: 100%;
     border: none;
     transition: 0.2s;
-    transition: 0.2s;
 }
 
 .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type="range"]::-moz-range-thumb {
     box-shadow: 0 2px 6px 0 rgb(0 0 0 / 18%);
-    appearance: none;
     appearance: none;
     width: 12px;
     height: 12px;
     background-color: #61c091;
     border-radius: 100%;
     border: none;
-    transition: 0.2s;
     transition: 0.2s;
 }
 
@@ -417,7 +359,6 @@
     background-color: #61c091;
     border: none;
     border-radius: 100%;
-    transition: 0.2s;
     transition: 0.2s;
 }
 
@@ -435,14 +376,12 @@
 
 .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type="range"]:active::-webkit-slider-thumb {
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 23%);
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 23%);
     margin-top: -4px;
     width: 14px;
     height: 14px;
 }
 
 .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-left .vicp-range input[type="range"]::-webkit-slider-runnable-track {
-    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 12%);
     box-shadow: 0 1px 3px 0 rgb(0 0 0 / 12%);
     width: 100%;
     height: 6px;
@@ -539,9 +478,6 @@
     border: 1px solid rgb(0 0 0 / 15%);
     overflow: hidden;
     user-select: none;
-    user-select: none;
-    user-select: none;
-    user-select: none;
 }
 
 .vue-image-crop-upload .vicp-wrap .vicp-step2 .vicp-crop .vicp-crop-right .vicp-preview .vicp-preview-item.vicp-preview-item-circle {
@@ -554,7 +490,6 @@
 
 .vue-image-crop-upload .vicp-wrap .vicp-step3 .vicp-upload {
     position: relative;
-    box-sizing: border-box;
     box-sizing: border-box;
     padding: 35px;
     height: 170px;
@@ -584,13 +519,10 @@
     border-radius: 3px;
     background-color: #4a7;
     box-shadow: 0 2px 6px 0 rgb(68 170 119 / 30%);
-    box-shadow: 0 2px 6px 0 rgb(68 170 119 / 30%);
-    transition: width 0.15s linear;
     transition: width 0.15s linear;
     background-image: linear-gradient(135deg, rgb(255 255 255 / 20%) 25%, transparent 25%, transparent 50%, rgb(255 255 255 / 20%) 50%, rgb(255 255 255 / 20%) 75%, transparent 75%, transparent);
     background-image: linear-gradient(-45deg, rgb(255 255 255 / 20%) 25%, transparent 25%, transparent 50%, rgb(255 255 255 / 20%) 50%, rgb(255 255 255 / 20%) 75%, transparent 75%, transparent);
     background-size: 40px 40px;
-    animation: vicp_progress 0.5s linear infinite;
     animation: vicp_progress 0.5s linear infinite;
 }
 
@@ -603,7 +535,6 @@
     width: 9px;
     height: 9px;
     border: 1px solid rgb(245 246 247 / 70%);
-    box-shadow: 0 1px 4px 0 rgb(68 170 119 / 70%);
     box-shadow: 0 1px 4px 0 rgb(68 170 119 / 70%);
     border-radius: 100%;
     background-color: #4a7;
@@ -635,9 +566,6 @@
     color: #4a7;
     border-radius: 2px;
     overflow: hidden;
-    user-select: none;
-    user-select: none;
-    user-select: none;
     user-select: none;
 }
 
@@ -701,13 +629,9 @@
     height: 2px;
     background-color: #d10;
     transform: rotate(45deg);
-    transform: rotate(45deg);
-    transform: rotate(45deg);
 }
 
 .vue-image-crop-upload .vicp-wrap .vicp-icon2::after {
-    transform: rotate(-45deg);
-    transform: rotate(-45deg);
     transform: rotate(-45deg);
 }
 
@@ -718,11 +642,6 @@
     background-clip: padding-box;
     pointer-events: none;
     user-select: none;
-    user-select: none;
-    user-select: none;
-    user-select: none;
-    transform: scale(0);
-    transform: scale(0);
     transform: scale(0);
     opacity: 1;
 }
@@ -730,9 +649,6 @@
 .e-ripple.z-active {
     opacity: 0;
     transform: scale(2);
-    transform: scale(2);
-    transform: scale(2);
-    transition: opacity 1.2s ease-out, -webkit-transform 0.6s ease-out;
     transition: opacity 1.2s ease-out, -webkit-transform 0.6s ease-out;
     transition: opacity 1.2s ease-out, transform 0.6s ease-out;
     transition: opacity 1.2s ease-out, transform 0.6s ease-out, -webkit-transform 0.6s ease-out;

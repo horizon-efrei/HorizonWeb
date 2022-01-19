@@ -237,87 +237,70 @@ import effectRipple from './utils/effectRipple.js';
 
 export default {
     props: {
-        // 域，上传文件name，触发事件会带上（如果一个页面多个图片上传控件，可以做区分
         field: {
             type: String,
             'default': 'avatar'
         },
-        // 原名key，类似于id，触发事件会带上（如果一个页面多个图片上传控件，可以做区分
         ki: {
             type: String,
             'default': '0'
         },
-        // 显示该控件与否
         modelValue: {
             type: Boolean,
             'default': true
         },
-        // 上传地址
         url: {
             type: String,
             'default': ''
         },
-        // 其他要上传文件附带的数据，对象格式
         params: {
             type: Object,
             'default': ()=>null
         },
-        //Add custom headers
         headers: {
             type: Object,
             'default': ()=>null
         },
-        // 剪裁图片的宽
         width: {
             type: Number,
             default: 200
         },
-        // 剪裁图片的高
         height: {
             type: Number,
             default: 200
         },
-        // 不显示旋转功能
         noRotate: {
             type: Boolean,
             default: true
         },
-        // 不预览圆形图片
         noCircle: {
             type: Boolean,
             default: false
         },
-        // 不预览方形图片
         noSquare: {
             type: Boolean,
             default: false
         },
-        // 单文件大小限制
         maxSize: {
             type: Number,
             'default': 10240
         },
-        // 语言类型
         langType: {
             type: String,
             'default': 'zh'
         },
-        // 语言包
         langExt: {
             type: Object,
             'default': ()=>null
         },
-        // 图片上传格式
         imgFormat: {
             type: String,
             'default': 'png'
         },
-        // 图片背景 jpg情况下生效
         imgBgc: {
             type: String,
             'default': '#fff'
         },
-        // 是否支持跨域
         withCredentials: {
             type: Boolean,
             'default': false
@@ -354,8 +337,6 @@ export default {
             tempImgFormat = allowImgFormat.indexOf(imgFormat) === -1 ? 'jpg' : imgFormat,
             lang = language[langType] ? language[langType] : language['en'],
             mime = mimes[tempImgFormat];
-        // 规范图片格式
-        // that.imgFormat = tempImgFormat;
 
         if (langExt) {
             Object.assign(lang, langExt);
@@ -364,62 +345,49 @@ export default {
             isSupported = false;
         }
         return {
-            // 图片的mime
             mime,
 
-            // 语言包
             lang,
 
-            // 浏览器是否支持该控件
             isSupported,
-            // 浏览器是否支持触屏事件
             isSupportTouch: document.hasOwnProperty("ontouchstart"),
 
-            // 步骤
-            step: 1, //1选择文件 2剪裁 3上传
+            step: 1,
 
-            // 上传状态及进度
-            loading: 0, //0未开始 1正在 2成功 3错误
+            loading: 0,
             progress: 0,
 
-            // 是否有错误及错误信息
             hasError: false,
             errorMsg: '',
 
-            // 需求图宽高比
             ratio: width / height,
 
-            // 原图地址、生成图片地址
             sourceImg: null,
             sourceImgUrl: this.initialImgUrl,
             createImgUrl: this.initialImgUrl,
 
-            // 原图片拖动事件初始值
             sourceImgMouseDown: {
                 on: false,
-                mX: 0, //鼠标按下的坐标
+                mX: 0,
                 mY: 0,
-                x: 0, //scale原图坐标
+                x: 0,
                 y: 0
             },
 
-            // 生成图片预览的容器大小
             previewContainer: {
                 width: 100,
                 height: 100
             },
 
-            // 原图容器宽高
-            sourceImgContainer: { // sic
+            sourceImgContainer: {
                 width: 240,
-                height: 184 // 如果生成图比例与此一致会出现bug，先改成特殊的格式吧，哈哈哈
+                height: 184
             },
 
-            // 原图展示属性
             scale: {
-                zoomAddOn: false, //按钮缩放事件开启
-                zoomSubOn: false, //按钮缩放事件开启
-                range: 1, //最大100
+                zoomAddOn: false,
+                zoomSubOn: false,
+                range: 1,
 
                 x: 0,
                 y: 0,
@@ -427,16 +395,15 @@ export default {
                 height: 0,
                 maxWidth: 0,
                 maxHeight: 0,
-                minWidth: 0, //最宽
+                minWidth: 0,
                 minHeight: 0,
-                naturalWidth: 0, //原宽
+                naturalWidth: 0,
                 naturalHeight: 0
             }
         }
     },
 
     computed: {
-        // 进度条样式
         progressStyle() {
             let {
                 progress
@@ -445,7 +412,6 @@ export default {
                 width: progress + '%'
             }
         },
-        // 原图样式
         sourceImgStyle() {
             let {
                     scale,
@@ -457,10 +423,9 @@ export default {
                 top,
                 left,
                 width: scale.width + 'px',
-                height: scale.height + 'px',// 兼容 Opera
+                height: scale.height + 'px',
             }
         },
-        // 原图蒙版属性
         sourceImgMasking() {
             let {
                     width,
@@ -469,7 +434,7 @@ export default {
                     sourceImgContainer
                 } = this,
                 sic = sourceImgContainer,
-                sicRatio = sic.width / sic.height, // 原图容器宽高比
+                sicRatio = sic.width / sic.height,
                 x = 0,
                 y = 0,
                 w = sic.width,
@@ -486,14 +451,13 @@ export default {
                 y = (sic.height - h) / 2;
             }
             return {
-                scale, // 蒙版相对需求宽高的缩放
+                scale,
                 x,
                 y,
                 width: w,
                 height: h
             };
         },
-        // 原图遮罩样式
         sourceImgShadeStyle() {
             let {
                     sourceImgMasking,
@@ -510,8 +474,6 @@ export default {
         },
         previewStyle() {
             let {
-                    width,
-                    height,
                     ratio,
                     previewContainer
                 } = this,
@@ -541,7 +503,6 @@ export default {
     },
 
     created(){
-        // 绑定按键esc隐藏此插件事件
         document.addEventListener('keyup', this.handleEscClose )
     },
 
@@ -561,11 +522,9 @@ export default {
                 this.off();
             }
         },
-        // 点击波纹效果
         ripple(e) {
             effectRipple(e);
         },
-        // 关闭控件
         off() {
             setTimeout(()=> {
                 this.$emit('update:modelValue', false);
@@ -574,16 +533,12 @@ export default {
                 }
             }, 200);
         },
-        // 设置步骤
         setStep(no) {
-            // 延时是为了显示动画效果呢，哈哈哈
             setTimeout(()=> {
                 this.step = no;
             }, 200);
         },
 
-        /* 图片选择区域函数绑定
-         ---------------------------------------------------------------*/
         preventDefault(e) {
             e.preventDefault();
             return false;
@@ -608,23 +563,19 @@ export default {
                 }
             }
         },
-        /* ---------------------------------------------------------------*/
 
-        // 检测选择的文件是否合适
         checkFile(file) {
             let that = this,
                 {
                     lang,
                     maxSize
                 } = that;
-            // 仅限图片
             if (file.type.indexOf('image') === -1) {
                 that.hasError = true;
                 that.errorMsg = lang.error.onlyImg;
                 return false;
             }
 
-            // 超出大小
             if (file.size / 1024 > maxSize) {
                 that.hasError = true;
                 that.errorMsg = lang.error.outOfSize + maxSize + 'kb';
@@ -632,7 +583,6 @@ export default {
             }
             return true;
         },
-        // 重置控件
         reset() {
             let that = this;
             that.loading = 0;
@@ -640,18 +590,16 @@ export default {
             that.errorMsg = '';
             that.progress = 0;
         },
-        // 设置图片源
         setSourceImg(file) {
             this.$emit('src-file-set', file.name, file.type, file.size);
             let that = this,
                 fr = new FileReader();
-            fr.onload = function(e) {
+            fr.onload = function() {
                 that.sourceImgUrl = fr.result;
                 that.startCrop();
             }
             fr.readAsDataURL(file);
         },
-        // 剪裁前准备工作
         startCrop() {
             let that = this,
                 {
@@ -674,7 +622,6 @@ export default {
                     h = sim.height,
                     x = 0,
                     y = 0;
-                // 图片像素不达标
                 if (nWidth < width || nHeight < height) {
                     that.hasError = true;
                     that.errorMsg = lang.error.lowestPx + width + '*' + height;
@@ -704,10 +651,8 @@ export default {
                 that.setStep(2);
             };
         },
-        // 鼠标按下图片准备移动
         imgStartMove(e) {
             e.preventDefault();
-            // 支持触摸事件，则鼠标事件无效
             if(this.isSupportTouch && !e.targetTouches){
                 return false;
             }
@@ -723,10 +668,8 @@ export default {
             simd.y = scale.y;
             simd.on = true;
         },
-        // 鼠标按下状态下移动，图片移动
         imgMove(e) {
             e.preventDefault();
-            // 支持触摸事件，则鼠标事件无效
             if(this.isSupportTouch && !e.targetTouches){
                 return false;
             }
@@ -765,8 +708,7 @@ export default {
             scale.x = rX;
             scale.y = rY;
         },
-        // 顺时针旋转图片
-        rotateImg(e) {
+        rotateImg() {
             let {
                     sourceImg,
                     scale: {
@@ -797,15 +739,15 @@ export default {
         handleMouseWheel(e){
             e = e || window.event;
             let 	{ scale } = this;
-            if (e.wheelDelta) {  //判断浏览器IE，谷歌滑轮事件
-                if (e.wheelDelta > 0) { //当滑轮向上滚动时
+            if (e.wheelDelta) {
+                if (e.wheelDelta > 0) {
                     this.zoomImg(scale.range >= 100 ? 100 : ++scale.range);
                 }
                 if (e.wheelDelta < 0) {
                     this.zoomImg(scale.range <= 0 ? 0 : --scale.range);
                 }
-            } else if (e.detail) {  //Firefox滑轮事件
-                if (e.detail > 0) { //当滑轮向上滚动时
+            } else if (e.detail) {
+                if (e.detail > 0) {
                     this.zoomImg(scale.range >= 100 ? 100 : ++scale.range);
                 }
                 if (e.detail < 0) {
@@ -813,8 +755,7 @@ export default {
                 }
             }
         },
-        // 按钮按下开始放大
-        startZoomAdd(e) {
+        startZoomAdd() {
             let that = this,
                 {
                     scale
@@ -833,11 +774,11 @@ export default {
             zoom();
         },
         // 按钮松开或移开取消放大
-        endZoomAdd(e) {
+        endZoomAdd() {
             this.scale.zoomAddOn = false;
         },
         // 按钮按下开始缩小
-        startZoomSub(e) {
+        startZoomSub() {
             let that = this,
                 {
                     scale
@@ -856,7 +797,7 @@ export default {
             zoom();
         },
         // 按钮松开或移开取消缩小
-        endZoomSub(e) {
+        endZoomSub() {
             let {
                 scale
             } = this;
@@ -870,7 +811,6 @@ export default {
             let that = this,
                 {
                     sourceImgMasking,
-                    sourceImgMouseDown,
                     scale
                 } = this,
                 {
@@ -881,21 +821,16 @@ export default {
                     width,
                     height,
                     x,
-                    y,
-                    range
+                    y
                 } = scale,
                 sim = sourceImgMasking,
-                // 蒙版宽高
                 sWidth = sim.width,
                 sHeight = sim.height,
-                // 新宽高
                 nWidth = minWidth + (maxWidth - minWidth) * newRange / 100,
                 nHeight = minHeight + (maxHeight - minHeight) * newRange / 100,
-                // 新坐标（根据蒙版中心点缩放）
                 nX = sWidth / 2 - (nWidth / width) * (sWidth / 2 - x),
                 nY = sHeight / 2 - (nHeight / height) * (sHeight / 2 - y);
 
-            // 判断新坐标是否超过蒙版限制
             if (nX > 0) {
                 nX = 0;
             }
@@ -909,7 +844,6 @@ export default {
                 nY = sHeight - nHeight;
             }
 
-            // 赋值处理
             scale.x = nX;
             scale.y = nY;
             scale.width = nWidth;
@@ -921,7 +855,6 @@ export default {
                 }
             }, 300);
         },
-        // 生成需求图片
         createImg(e) {
             let that = this,
                 {
@@ -942,7 +875,6 @@ export default {
                 canvas = that.$refs.canvas,
                 ctx = canvas.getContext('2d');
             if (e) {
-                // 取消鼠标按下移动状态
                 that.sourceImgMouseDown.on = false;
             }
             canvas.width = that.width;
@@ -952,7 +884,6 @@ export default {
             if(imgFormat == 'png'){
                 ctx.fillStyle = 'rgba(0,0,0,0)';
             } else{
-                // 如果jpg 为透明区域设置背景，默认白色
                 ctx.fillStyle = imgBgc;
             }
             ctx.fillRect(0, 0, that.width, that.height);
@@ -974,7 +905,6 @@ export default {
                 this.off();
             }
         },
-        // 上传图片
         upload() {
             let that = this,
                 {
@@ -992,25 +922,21 @@ export default {
                 } = this,
                 fmData = new FormData();
 
-            // 添加其他参数
             if (typeof params == 'object' && params) {
                 Object.keys(params).forEach((k) => {
                     fmData.append(k, params[k]);
                 })
             }
 
-            // 将field的添加放到表单域的最后，以支持阿里云OSS的表单上传
             fmData.append(field, data2blob(createImgUrl, mime), field + '.' + imgFormat);
 
 
-            // 监听进度回调
             const uploadProgress = function(event) {
                 if (event.lengthComputable) {
                     that.progress = 100 * Math.round(event.loaded) / event.total;
                 }
             };
 
-            // 上传文件
             that.reset();
             that.loading = 1;
             that.setStep(3);
@@ -1028,8 +954,7 @@ export default {
                         reject(this.status);
                     }
                 };
-                client.upload.addEventListener("progress", uploadProgress, false); //监听进度
-                // 设置header
+                client.upload.addEventListener("progress", uploadProgress, false);
                 if (typeof headers == 'object' && headers) {
                     Object.keys(headers).forEach((k) => {
                         client.setRequestHeader(k, headers[k]);
@@ -1037,14 +962,12 @@ export default {
                 }
                 client.send(fmData);
             }).then(
-                // 上传成功
                 function(resData) {
                     if (that.modelValue) {
                         that.loading = 2;
                         that.$emit('crop-upload-success', resData, field, ki);
                     }
                 },
-                // 上传失败
                 function(sts) {
                     if (that.modelValue) {
                         that.loading = 3;
