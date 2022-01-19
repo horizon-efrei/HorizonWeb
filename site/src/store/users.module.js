@@ -262,7 +262,19 @@ export const users = {
                 },
                 error => {
                     console.log(error)
-                    Promise.reject(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        addClubMember({commit}, {clubId,userId}) {
+            return UserService.addClubMember({clubId,userId}).then(
+                success => {
+                    commit('addClubMemberSuccess',success)
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
                 }
             )
         }
@@ -402,6 +414,9 @@ export const users = {
         },
         fetchClubMembersSuccess(state,success){
             state.clubMembers = success
+        },
+        addClubMemberSuccess(state,success){
+            state.userClubs = [...state.userClubs, success]
         }
     }
 }

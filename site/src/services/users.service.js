@@ -114,6 +114,10 @@ class UserService {
     getClubMembers(clubId) {
         return axios.get(`${API_URL}clubs/${clubId}/members`, {withCredentials:true}).then((res) => res.data.items)
     }
+
+    addClubMember({clubId,userId}) {
+        return axios.post(`${API_URL}clubs/${clubId}/members/${userId}`, {role:"member"},{withCredentials:true}).then((res)=>res.data)
+    }
 }
 
 export default new UserService()

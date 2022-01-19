@@ -320,6 +320,8 @@ export default {
         }
     },
 
+    emits: ['src-file-set', 'crop-success', 'update:modelValue'],
+
     data() {
         let that = this,
             {
@@ -345,9 +347,8 @@ export default {
             mime,
 
             lang,
-
             isSupported,
-            isSupportTouch: document.hasOwnProperty("ontouchstart"),
+            // isSupportTouch: document.hasOwnProperty("ontouchstart"),
 
             step: 1,
 
@@ -650,7 +651,7 @@ export default {
         },
         imgStartMove(e) {
             e.preventDefault();
-            if(this.isSupportTouch && !e.targetTouches){
+            if(!e.targetTouches){
                 return false;
             }
             let et = e.targetTouches ? e.targetTouches[0] : e,
@@ -667,7 +668,7 @@ export default {
         },
         imgMove(e) {
             e.preventDefault();
-            if(this.isSupportTouch && !e.targetTouches){
+            if(!e.targetTouches){
                 return false;
             }
             let et = e.targetTouches ? e.targetTouches[0] : e,
