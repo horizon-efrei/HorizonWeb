@@ -40,8 +40,9 @@
                 items-center
                 bg-mouse-brand
                 cursor-pointer
+                hover:text-blue-500
               "
-                            :class="{ active: currentComponent === link.component }"
+                            :class=" currentComponent === link.component ? 'text-blue-500' : ''"
                             @click="currentComponent = link.component"
                         >
                             <i
