@@ -35,7 +35,6 @@
     right: 0;
     width: 100%;
     height: 100%;
-    background-color: rgb(0 0 0 / 65%);
     -webkit-tap-highlight-color: transparent;
     -moz-tap-highlight-color: transparent;
 }
@@ -54,8 +53,6 @@
     width: 600px;
     height: 330px;
     padding: 25px;
-    background-color: #fff;
-    border-radius: 2px;
     animation: vicp 0.12s ease-in;
 }
 
@@ -103,7 +100,6 @@
     box-sizing: border-box;
     padding: 35px;
     height: 170px;
-    background-color: rgb(0 0 0 / 3%);
     text-align: center;
     border: 1px dashed rgb(0 0 0 / 8%);
     overflow: hidden;
@@ -132,14 +128,12 @@
     width: 12.6px;
     height: 14.7px;
     margin: 0 auto;
-    background-color: rgb(0 0 0 / 30%);
 }
 
 .vue-image-crop-upload .vicp-wrap .vicp-step1 .vicp-drop-area .vicp-icon1 .vicp-icon1-bottom {
     box-sizing: border-box;
     display: block;
     height: 12.6px;
-    border: 6px solid rgb(0 0 0 / 30%);
     border-top: none;
 }
 
@@ -147,7 +141,6 @@
     display: block;
     padding: 15px;
     font-size: 14px;
-    color: #666;
     line-height: 30px;
 }
 
@@ -563,7 +556,6 @@
     text-align: center;
     cursor: pointer;
     font-size: 14px;
-    color: #4a7;
     border-radius: 2px;
     overflow: hidden;
     user-select: none;
@@ -579,13 +571,8 @@
     font-size: 14px;
     line-height: 24px;
     height: 24px;
-    color: #d10;
     text-align: center;
     vertical-align: top;
-}
-
-.vue-image-crop-upload .vicp-wrap .vicp-success {
-    color: #4a7;
 }
 
 .vue-image-crop-upload .vicp-wrap .vicp-icon3 {

@@ -1,9 +1,9 @@
 <template>
     <div
-        v-show="modelValue"
+        v-if="modelValue"
         class="vue-image-crop-upload"
     >
-        <div class="vicp-wrap">
+        <div class="vicp-wrap bg-2 rounded-lg">
             <div
                 class="vicp-close"
                 @click="off"
@@ -16,7 +16,7 @@
                 class="vicp-step1"
             >
                 <div
-                    class="vicp-drop-area"
+                    class="vicp-drop-area input"
                     @dragleave="preventDefault"
                     @dragover="preventDefault"
                     @dragenter="preventDefault"
@@ -25,15 +25,11 @@
                 >
                     <i
                         v-show="loading != 1"
-                        class="vicp-icon1"
-                    >
-                        <i class="vicp-icon1-arrow" />
-                        <i class="vicp-icon1-body" />
-                        <i class="vicp-icon1-bottom" />
-                    </i>
+                        class="ri-upload-2-fill text-6xl"
+                    />
                     <span
                         v-show="loading !== 1"
-                        class="vicp-hint"
+                        class="vicp-hint "
                     >{{ lang.hint }}</span>
                     <span
                         v-show="!isSupported"
@@ -54,7 +50,7 @@
                 >
                     <i class="vicp-icon2" /> {{ errorMsg }}
                 </div>
-                <div class="vicp-operate">
+                <div class="vicp-operate text-blue-500">
                     <a
                         @click="off"
                         @mousedown="ripple"
@@ -165,7 +161,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="vicp-operate">
+                <div class="vicp-operate text-blue-500">
                     <a
                         @click="setStep(1)"
                         @mousedown="ripple"
@@ -196,18 +192,18 @@
                     </div>
                     <div
                         v-show="hasError"
-                        class="vicp-error"
+                        class="vicp-error text-red-500"
                     >
                         <i class="vicp-icon2" /> {{ errorMsg }}
                     </div>
                     <div
                         v-show="loading === 2"
-                        class="vicp-success"
+                        class="vicp-success text-blue-500 flex"
                     >
-                        <i class="vicp-icon3" /> {{ lang.success }}
+                        <i class="ri-check-fill my-auto" /> {{ lang.success }}
                     </div>
                 </div>
-                <div class="vicp-operate">
+                <div class="vicp-operate text-blue-500">
                     <a
                         @click="setStep(2)"
                         @mousedown="ripple"
