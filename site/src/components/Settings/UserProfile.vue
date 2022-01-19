@@ -258,7 +258,15 @@
                 </div>
             </button>
 
-            <my-upload
+            <!-- <my-upload
+                v-model="avatarShown"
+                field="file"
+                img-format="jpg"
+                :url="`${API_URL}files/profile-images`"
+                lang-type="fr"
+                :with-credentials="true"
+            /> -->
+            <AvatarCropper
                 v-model="avatarShown"
                 field="file"
                 img-format="jpg"
@@ -276,12 +284,19 @@ import { watch } from 'vue';
 import _ from 'lodash'
 import default_avatar from '@/assets/img/default_avatars/user.png'
 import AvatarImage from '@/components/AvatarImage.vue';
-import myUpload from 'vue-image-crop-upload';
+// import myUpload from 'vue-image-crop-upload';
 import LoadingComponent from '@/views/LoadingComponent.vue';
+import AvatarCropper from '../AvatarCropper/AvatarCropper.vue';
 
 
 export default {
-    components: { SelectInput, AvatarImage, myUpload, LoadingComponent },
+    components: {
+        SelectInput,
+        AvatarImage,
+        // myUpload,
+        LoadingComponent,
+        AvatarCropper
+    },
     data() {
         return {
             user:this.$store.state.auth.user,
