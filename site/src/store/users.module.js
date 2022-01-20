@@ -277,6 +277,42 @@ export const users = {
                     return Promise.reject(error)
                 }
             )
+        },
+        deleteClubMember({commit}, {clubId,userId}) {
+            return UserService.deleteClubMember({clubId,userId}).then(
+                success => {
+                    commit('deleteClubMemberSuccess',{userId,clubId})
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        updateClubMember({commit}, {clubId,userId,role}){
+            return UserService.updateMemberRole({clubId,userId,role}).then(
+                success => {
+                    commit('updateRoleSuccess',success)
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        leaveClub({commit}, {clubId,userId}) {
+            return UserService.deleteClubMember({clubId,userId}).then(
+                success => {
+                    commit('leaveClubSuccess',clubId)
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
         }
 
     },
@@ -417,6 +453,25 @@ export const users = {
         },
         addClubMemberSuccess(state,success){
             state.userClubs = [...state.userClubs, success]
+        },
+        deleteClubMemberSuccess(state,{clubId,userId}){
+            state.clubMembers = state.clubMembers.filter((a) => {
+                if (a.user.userId != userId || a.club.clubId != clubId){
+                    return a
+                }
+            } )
+        },
+        updateRoleSuccess(state,success){
+            state.clubMembers = state.clubMembers.map((a)=>
+                a.clubMemberId === success.clubMemberId ? success : a
+            )
+        },
+        leaveClubSuccess(state,clubId){
+            state.userClubs = state.userClubs.filter((a)=>{
+                if(a.club.clubId !== clubId ){
+                    return a
+                }
+            })
         }
     }
 }

@@ -118,6 +118,16 @@ class UserService {
     addClubMember({clubId,userId}) {
         return axios.post(`${API_URL}clubs/${clubId}/members/${userId}`, {role:"member"},{withCredentials:true}).then((res)=>res.data)
     }
+
+    deleteClubMember({clubId,userId}){
+        return axios.delete(`${API_URL}clubs/${clubId}/members/${userId}`, {withCredentials:true}).then(()=>true).catch(()=>false)
+    }
+
+    updateMemberRole({clubId,userId,role}){
+        return axios.patch(`${API_URL}clubs/${clubId}/members/${userId}`,{role}, {withCredentials:true} ).then(
+            (res)=>res.data
+        )
+    }
 }
 
 export default new UserService()

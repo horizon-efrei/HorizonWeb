@@ -57,8 +57,8 @@
             v-if="componentSelected===1"
             class="px-4 sm:px-8 py-4"
         >
-            <div class="flex flex-col md:flex-row">
-                <div class="mb-2 md:w-1/2">
+            <div class="flex flex-col lg:flex-row">
+                <div class="mb-2 lg:w-1/2">
                     <div class="flex">
                         <div class="text-lg">
                             Associations
@@ -109,7 +109,7 @@
                                 </div>
                                 <button
                                     class="text-1 ml-4 text-md text-red-500 my-auto flex"
-                                    @click="rmLineClub(idx)"
+                                    @click="leaveClub(club.club.clubId)"
                                 >
                                     <i class="ri-close-line text-red-500 my-auto" />
                                     <p class="text-sm text-red-500 my-auto">
@@ -122,7 +122,7 @@
                 </div>
                 <div
                     v-if="showAddForm"
-                    class="md:w-1/2"
+                    class="lg:w-1/2 "
                 >
                     <h4 class="text-md mb-4">
                         Ajouter une association
@@ -140,12 +140,11 @@
                         />
                     </div>
                     <button
-                        class="text-blue-500 flex"
+                        class="button"
                         @click="signUp()"
                     >
-                        <i class="ri-add-fill my-auto" />
                         <p class="my-auto">
-                            S'enregistrer
+                            Sauvegarder
                         </p>
                     </button>
                 </div>
@@ -256,16 +255,21 @@
                                         size="8"
                                         class="my-auto"
                                     />
-                                    <p class="my-auto">
+                                    <router-link
+                                        class="hover:underline my-auto"
+                                        :to="`/users/${member.user.userId}`"
+                                    >
                                         {{ member.user.username }} {{ member.user.username.toUpperCase() }}
-                                    </p>
+                                    </router-link>
                                     <SelectInput
                                         v-model="member.role"
+                                        max-content-width="true"
                                         :choices="Object.keys(roles)"
                                         :model-value="Object.keys(roles).indexOf(Object.keys(roles).find((role)=> roles[role]===member.role))"
                                     />
                                     <button
                                         class="text-1 text-md text-red-500 my-auto flex"
+                                        @click="kickUser(member.user.userId)"
                                     >
                                         <i class="ri-close-line text-red-500 my-auto" />
                                         <p class="text-sm text-red-500 my-auto">
@@ -360,6 +364,22 @@ export default {
                 }
             )
 
+            watch(
+                () => this.clubMembers,
+                (newClubMember) => {
+                    if(newClubMember != null){
+                        for(let member of newClubMember) {
+                            if(Number.isInteger(member.role)){
+                                member.role = this.roles[Object.keys(this.roles)[member.role]]
+                                this.clubMembers.find((a)=> a.clubMemberId===member.clubMemberId).role = member.role
+                                this.$store.dispatch('users/updateClubMember',{clubId: this.clubSelected.club.clubId, userId:member.user.userId,role:member.role})
+                            }
+                        }
+                    }
+                },
+                {deep:true}
+            )
+
             this.$store.dispatch('users/getUserById',this.user.userId )
             this.$store.dispatch('users/getUserClubs', this.user.userId)
             this.$store.dispatch('users/getClubs')
@@ -387,8 +407,8 @@ export default {
         addLineClub: function addLineClub() {
             this.userClubs.push({role:null,club:{clubId:null}});
         },
-        rmLineClub: function rmLineClub(indx) {
-            this.userClubs.splice(indx,1);
+        leaveClub: function leaveClub(clubId) {
+            this.$store.dispatch('users/leaveClub', {clubId,userId:this.user.userId })
         },
         toggleShowAddForm: function toggleShowAddForm() {
             this.showAddForm = !this.showAddForm
@@ -397,6 +417,9 @@ export default {
             this.$store.dispatch('users/addClubMember', {clubId:this.clubs[this.addingClub].clubId,userId: this.user.userId})
             this.showAddForm = false
             this.addingClub = null
+        },
+        kickUser: function kickUser(memberId) {
+            this.$store.dispatch('users/deleteClubMember', {clubId: this.clubSelected.club.clubId,userId:memberId })
         }
     },
 }
