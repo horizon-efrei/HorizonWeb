@@ -139,14 +139,34 @@
                             :choices="clubs.map((a)=>a.name)"
                         />
                     </div>
-                    <button
-                        class="button"
-                        @click="signUp()"
-                    >
-                        <p class="my-auto">
-                            Sauvegarder
-                        </p>
-                    </button>
+                    <div class="flex">
+                        <button
+                            class="button"
+                            @click="signUp()"
+                        >
+                            <p class="my-auto">
+                                Sauvegarder
+                            </p>
+                        </button>
+                        <div
+                            v-if="submitSuccessNewMember===1"
+                            class="text-green-500 bg-green-500 bg-opacity-25 font-bold p-2 rounded-md my-auto ml-4 flex gap-2"
+                        >
+                            <i class="ri-check-fill my-auto" />
+                            <div class="my-auto">
+                                Réussi
+                            </div>
+                        </div>
+                        <div
+                            v-else-if="submitSuccessNewMember===-1"
+                            class="text-red-500 bg-red-500 bg-opacity-25 font-bold p-2 rounded-md my-auto ml-4 flex gap-2"
+                        >
+                            <i class="ri-close-fill my-auto" />
+                            <div class="my-auto">
+                                Erreur lors de l'enregistrement
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -321,7 +341,8 @@ export default {
             clubImageShown:false,
             clubMembers: null,
             showAddForm: false,
-            addingClub: null
+            addingClub: null,
+            submitSuccessNewMember: 0
         }
     },
     computed : {
@@ -414,9 +435,16 @@ export default {
             this.showAddForm = !this.showAddForm
         },
         signUp: function signUp() {
+            this.submitSuccessNewMember = 0
             this.$store.dispatch('users/addClubMember', {clubId:this.clubs[this.addingClub].clubId,userId: this.user.userId})
-            this.showAddForm = false
-            this.addingClub = null
+                .then(
+                    () => {
+                        this.submitSuccessNewMember = 1
+                        this.addingClub = null
+                    }).catch(
+                    () => {
+                        this.submitSuccessNewMember = -1
+                    })
         },
         kickUser: function kickUser(memberId) {
             this.$store.dispatch('users/deleteClubMember', {clubId: this.clubSelected.club.clubId,userId:memberId })
