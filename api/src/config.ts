@@ -24,6 +24,7 @@ interface Config {
   myefreiOauthClientSecret: string;
   myefreiOauthAuthorizeUrl: string;
   myefreiOauthTokenUrl: string;
+  myefreiOauthUserUrl: string;
   adminAccountUsername: string;
   adminAccountFirstName: string;
   adminAccountLastName: string;
@@ -142,6 +143,11 @@ export const config = createProfiguration<Config>({
     default: 'https://oauth2service.com/token',
     format: String,
     env: 'MYEFREI_OAUTH_TOKEN_URL',
+  },
+  myefreiOauthUserUrl: {
+    default: 'https://oauth2service.com/user',
+    format: String,
+    env: 'MYEFREI_OAUTH_USER_URL',
   },
   adminAccountUsername: {
     default: 'horizon-admin',

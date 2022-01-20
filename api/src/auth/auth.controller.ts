@@ -56,11 +56,12 @@ export class AuthController {
   @UseGuards(MyEfreiAuthGuard)
   @Get('myefrei/callback')
   public async myefreiCallback(@CurrentUser() user: User, @Response() res: Res): Promise<void> {
-    console.log('DEBUG: myefreiCallback called, handled by MyEfreiAuthGuard, loggin-in user', user.userId);
     const login = await this.authService.login(user);
 
     res.cookie('accessToken', login.accessToken, cookieOptions)
       .cookie('refreshToken', login.refreshToken, cookieOptions);
+
+    res.redirect('http://localhost:3000/');
   }
 
   @Get('logout')

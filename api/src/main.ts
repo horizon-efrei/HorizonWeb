@@ -70,7 +70,7 @@ async function bootstrap(): Promise<void> {
   app.use(loggerMiddleware);
   app.use(cookieParser(config.get('cookieSignature')));
 
-  app.enableCors({ origin: true, credentials: true });
+  app.enableCors({ credentials: true });
   app.enableShutdownHooks();
   app.useGlobalPipes(new ValidationPipe({
     transform: true,

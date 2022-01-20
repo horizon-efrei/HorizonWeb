@@ -26,7 +26,7 @@ export class MyEfreiStrategy extends PassportStrategy(Strategy, 'myefrei') {
   }
 
   public async validate(accessToken: string): Promise<User> {
-    const result = this.httpService.get('https://auth.myefrei.fr/uaa/user', {
+    const result = this.httpService.get(config.get('myefreiOauthUserUrl'), {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       headers: { Authorization: `Bearer ${accessToken}` },
     });
@@ -41,8 +41,8 @@ export class MyEfreiStrategy extends PassportStrategy(Strategy, 'myefrei') {
       email: data.email,
       username: data.username,
       firstname: data.firstname,
-      lastname: data.lastname,
-      fullname: data.fullname,
+      lastname: data.name,
+      fullname: data.fullName,
     });
   }
 }
