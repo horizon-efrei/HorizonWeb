@@ -11,9 +11,6 @@
             >
                 <div class="relative h-48 w-full">
                     <div class="banner w-full h-full" />
-                    <!-- <div class="flex absolute top-0 bg-gray-500 opacity-50 rounded items-center justify-center w-full h-full">
-                    Changer votre banniere
-                  </div> -->
                     <avatar-image
                         :src="user.avatar"
                         :size="32"
@@ -65,7 +62,6 @@
                                             {{ clubs.find(a => a.clubId === club.club.clubId).name }}
                                         </div>
                                         <div class=" -mb-1">
-                                            {{ club.role }}
                                             {{ Object.keys(roles).find((role) => roles[role] === club.role) }}
                                         </div>
                                         <div class="text-sm text-5 truncates">
