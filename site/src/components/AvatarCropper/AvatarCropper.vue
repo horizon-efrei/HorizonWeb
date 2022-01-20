@@ -771,11 +771,9 @@ export default {
             }
             zoom();
         },
-        // 按钮松开或移开取消放大
         endZoomAdd() {
             this.scale.zoomAddOn = false;
         },
-        // 按钮按下开始缩小
         startZoomSub() {
             let that = this,
                 {
@@ -794,7 +792,6 @@ export default {
             }
             zoom();
         },
-        // 按钮松开或移开取消缩小
         endZoomSub() {
             let {
                 scale
@@ -804,7 +801,6 @@ export default {
         zoomChange(e) {
             this.zoomImg(e.target.value);
         },
-        // 缩放原图
         zoomImg(newRange) {
             let that = this,
                 {
@@ -980,10 +976,6 @@ export default {
 }
 
 </script>
-
-<!--
-<style lang='sass' src="./scss/upload.scss">
-</style> -->
 
 <style>
 @import url('upload.css');

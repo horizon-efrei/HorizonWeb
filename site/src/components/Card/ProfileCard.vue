@@ -4,7 +4,7 @@
             <AvatarImage
                 alt="alt"
                 :src="user.avatar"
-                size="24"
+                :size="24"
             />
         </div>
         <div class="ml-4 flex flex-col justify-between">
@@ -36,6 +36,10 @@
                 <div class="flex gap-2">
                     <i class="ri-quill-pen-line" />
                     <div>25</div>
+                </div>
+                <div class="flex gap-2">
+                    <i class="ri-question-answer-line" />
+                    <div>2</div>
                 </div>
             </div>
         </div>

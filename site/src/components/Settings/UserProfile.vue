@@ -113,7 +113,7 @@
                                         <SelectInput
                                             v-model="social.social"
 
-                                            max-content-width="true"
+                                            :max-content-width="true"
                                             :choices="socials.map(sos=> sos.name)"
                                             :model-value="socials.indexOf(socials.find((a)=> a.socialId === social.social.socialId))"
                                         />
@@ -193,6 +193,7 @@
                 :url="`${API_URL}files/profile-images`"
                 lang-type="fr"
                 :with-credentials="true"
+                @crop-upload-success="cropUploadSuccess"
             />
         </div>
     </div>
@@ -250,7 +251,6 @@ export default {
             watch(
                 () => this.$store.state.users.socials,
                 (newSocials) => {
-                    console.log("socials",newSocials)
                     this.socials = [...newSocials]
                 }
             )
@@ -258,14 +258,12 @@ export default {
                 () => this.$store.state.users.userClubs,
                 (newClubs) => {
 
-                    console.log("userClubs",newClubs)
                     this.userClubs = [...newClubs]
                 }
             )
             watch(
                 () => this.$store.state.users.clubs,
                 (newClubs) =>{
-                    console.log("clubs",newClubs)
                     this.clubs = [...newClubs]
                 }
             )
@@ -315,6 +313,9 @@ export default {
             }else{
                 this.avatarShown = true
             }
+        },
+        cropUploadSuccess: function cropUploadSuccess(jsonData){
+            console.log(jsonData.profileImageId);
         },
         addLineAccount: function addLineAccount() {
             this.socialsAccounts.push({social:{socialId:null},pseudo:null,link:null});
