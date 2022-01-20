@@ -2,7 +2,7 @@
     <div class="flex space-x-4 items-center">
         <div class="relative w-11 h-11">
             <div>
-                <avatar-image
+                <AvatarImage
                     :size="11"
                     :src="avatar"
                     :alt="username"
@@ -45,15 +45,15 @@ export default {
     props: {
         username: {
             type: String,
-            default: ""
+            default: ''
         },
         email: {
             type: String,
-            default: ""
+            default: ''
         },
         avatar: {
             type: String,
-            default: ""
+            default: ''
         },
         status: {
             type: String,

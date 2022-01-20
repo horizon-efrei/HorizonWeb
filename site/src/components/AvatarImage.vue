@@ -1,9 +1,9 @@
 <template>
-    <div class="shadow rounded-full">
+    <div class="rounded-full hover:shadow-inner overflow-hidden">
         <img
-            :src="(src==='' || src=== null ||src === undefined) ? default_avatar :src"
+            :src="(src=== '' || src=== null || src === undefined) ? default_avatar :src"
             :alt="alt"
-            class="rounded-full "
+            class=""
             :class="`w-${size} h-${size}`"
         >
     </div>
@@ -33,9 +33,5 @@ export default {
     }
 }
 </script>
-<style>
-    .shadow{
-        box-shadow:inset 0 2px 4px 0 hsla(0,0%,0%,.2);
-
-    }
+<style >
 </style>

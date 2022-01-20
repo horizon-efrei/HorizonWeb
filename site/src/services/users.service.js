@@ -128,6 +128,10 @@ class UserService {
             (res)=>res.data
         )
     }
+
+    getUsers(){
+        return axios.get(`${API_URL}users`,{withCredentials:true}).then(res=>res.data.items)
+    }
 }
 
 export default new UserService()

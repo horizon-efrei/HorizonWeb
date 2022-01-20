@@ -15,7 +15,7 @@
                         :src="user.avatar"
                         :size="32"
                         :alt="user.username + ' profile image'"
-                        class="absolute left-10 -bottom-1/4 border-color-1 border-4"
+                        class="absolute left-10 -bottom-1/4 border-color-1 border-4 bg-1"
                     />
                 </div>
                 <div class="mt-20 px-4 w-full">
@@ -58,13 +58,13 @@
                                         >
                                     </p>
                                     <div class="ml-2 w-32 ">
-                                        <div class="text-lg font-bold truncate -mb-1">
-                                            {{ clubs.find(a => a.clubId === club.club.clubId).name }}
+                                        <div class="text-lg font-bold  last:text-clip truncate -mb-1">
+                                            {{ club.club.name }}
                                         </div>
                                         <div class=" -mb-1">
                                             {{ Object.keys(roles).find((role) => roles[role] === club.role) }}
                                         </div>
-                                        <div class="text-sm text-5 truncates">
+                                        <div class="text-sm text-5 truncate">
                                             {{ club.roleLabel }}
                                         </div>
                                     </div>

@@ -74,6 +74,11 @@ const routes = [
     {
         path: '/crous',
         component : () => import('@/views/CrousPage.vue')
+    },
+
+    {
+        path: '/users',
+        component: () => import('@/views/UsersList.vue')
     }
 ]
 

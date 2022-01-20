@@ -244,9 +244,9 @@ export const users = {
         },
         deleteFavoriteComment({ commit }, commentId) {
             return UserService.deleteFavoriteComment(commentId).then(
-                worked => {
+                success => {
                     commit('deleteFavoriteCommentSuccess',commentId)
-                    return Promise.resolve(worked)
+                    return Promise.resolve(success)
                 },
                 error => {
                     console.log(error)
@@ -306,6 +306,18 @@ export const users = {
             return UserService.deleteClubMember({clubId,userId}).then(
                 success => {
                     commit('leaveClubSuccess',clubId)
+                    return Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    return Promise.reject(error)
+                }
+            )
+        },
+        getUsers({commit}){
+            return UserService.getUsers().then(
+                success => {
+                    commit('getUsersSuccess',success)
                     return Promise.resolve(success)
                 },
                 error => {
@@ -472,6 +484,9 @@ export const users = {
                     return a
                 }
             })
+        },
+        getUsersSuccess(state,success){
+            state.users = success
         }
     }
 }
