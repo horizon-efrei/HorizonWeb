@@ -176,16 +176,36 @@
                     </div>
                 </div>
             </div>
-            <button
-                class="button mb-4 mt-16"
-                @click="submit()"
-            >
-                <div>
-                    <p class="px-5">
-                        Enregistrer
-                    </p>
+            <div class="flex mb-4 mt-16">
+                <button
+                    class="button my-auto"
+                    @click="submit()"
+                >
+                    <div>
+                        <p class="px-5">
+                            Enregistrer
+                        </p>
+                    </div>
+                </button>
+                <div
+                    v-if="submitSuccess===1"
+                    class="text-green-500 bg-green-500 bg-opacity-25 font-bold p-2 rounded-md my-auto ml-4 flex gap-2"
+                >
+                    <i class="ri-check-fill my-auto" />
+                    <div class="my-auto">
+                        Réussi
+                    </div>
                 </div>
-            </button>
+                <div
+                    v-else-if="submitSuccess===-1"
+                    class="text-red-500 bg-red-500 bg-opacity-25 font-bold p-2 rounded-md my-auto ml-4 flex gap-2"
+                >
+                    <i class="ri-close-fill my-auto" />
+                    <div class="my-auto">
+                        Erreur lors de l'enregistrement
+                    </div>
+                </div>
+            </div>
             <AvatarCropper
                 v-model="avatarShown"
                 field="file"
@@ -220,7 +240,7 @@ export default {
     data() {
         return {
             user:this.$store.state.auth.user,
-
+            submitSuccess: 0,
             userClubs:null,
             socialsAccounts:null,
             default_avatar:default_avatar,
@@ -333,19 +353,34 @@ export default {
                 }
                 return true
             }
-            this.$store.dispatch('users/updateUser',this.user)
+
+            this.submitSuccess = 1
+
+            this.$store.dispatch('users/updateUser',this.user).then().catch(() => {
+                console.log("updateUser")
+                this.submitSuccess = -1
+            })
 
             for( let i =0; i < this.socialsAccounts.length; i++) {
                 if(canSocialBePosted(this.socialsAccounts[i])){
                     if(!this.$store.state.users.socialsAccounts.find((a)=> _.isEqual(a,this.socialsAccounts[i]))){
                         if(this.socialsAccounts[i].socialAccountId == null){
-                            this.$store.dispatch('users/addSocialAccount',{userId:this.user.userId, socialId:this.socialsAccounts[i].social.socialId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link})
+                            this.$store.dispatch('users/addSocialAccount',{userId:this.user.userId, socialId:this.socialsAccounts[i].social.socialId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link}).then().catch(() =>{
+                                console.log("jambon")
+                                this.submitSuccess = -1
+                            })
                         }else{
                             if(this.socialsAccounts[i].social.socialId != this.$store.state.users.socialsAccounts.find((a) => a.socialAccountId === this.socialsAccounts[i].socialAccountId ).social.socialId){
-                                this.$store.dispatch('users/replaceSocialAccount',{userId:this.user.userId, socialAccountId:this.socialsAccounts[i].socialAccountId,socialId:this.socialsAccounts[i].social.socialId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link})
+                                this.$store.dispatch('users/replaceSocialAccount',{userId:this.user.userId, socialAccountId:this.socialsAccounts[i].socialAccountId,socialId:this.socialsAccounts[i].social.socialId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link}).then().catch(() =>{
+                                    console.log("jambon")
+                                    this.submitSuccess = -1
+                                })
                             }
                             else {
-                                this.$store.dispatch('users/updateSocialAccount',{ socialAccountId:this.socialsAccounts[i].socialAccountId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link})
+                                this.$store.dispatch('users/updateSocialAccount',{ socialAccountId:this.socialsAccounts[i].socialAccountId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link}).then().catch(() =>{
+                                    console.log("jambon")
+                                    this.submitSuccess = -1
+                                })
                             }
                         }
                     }
@@ -353,7 +388,9 @@ export default {
             }
             for( let i =0; i < this.$store.state.users.socialsAccounts.length; i++){
                 if(!this.socialsAccounts.find((a)=>a.socialAccountId === this.$store.state.users.socialsAccounts[i].socialAccountId)){
-                    this.$store.dispatch('users/deleteSocialAccount',this.$store.state.users.socialsAccounts[i].socialAccountId)
+                    this.$store.dispatch('users/deleteSocialAccount',this.$store.state.users.socialsAccounts[i].socialAccountId).then().catch(
+                        this.submitSuccess = -1
+                    )
                 }
             }
         }

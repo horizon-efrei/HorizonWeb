@@ -17,7 +17,7 @@
                         L2-F
                     </div>
                     <router-link
-                        class="text-blue-500 flex my-auto gap-1 ml-1"
+                        class="text-blue-500 hover:underline flex my-auto gap-1 ml-1"
                         :to="`/users/${user.userId}`"
                     >
                         <i class="ri-external-link-line" />
