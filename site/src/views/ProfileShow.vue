@@ -65,7 +65,8 @@
                                             {{ clubs.find(a => a.clubId === club.club.clubId).name }}
                                         </div>
                                         <div class=" -mb-1">
-                                            {{ Object.keys(roles).find((role) => roles[role] = club.role) }}
+                                            {{ club.role }}
+                                            {{ Object.keys(roles).find((role) => roles[role] === club.role) }}
                                         </div>
                                         <div class="text-sm text-5 truncates">
                                             {{ club.roleLabel }}
