@@ -17,14 +17,19 @@
                         :key="link"
                     >
                         <li
-                            class="h-12 py-2 pl-8 flex w-full gap-2 items-center bg-mouse-brand cursor-pointer hover:text-blue-500"
+                            class="h-12 py-2 pl-8  w-full  bg-mouse-brand cursor-pointer hover:text-blue-500"
                             :class="currentComponent === link.component ? 'text-blue-500' : ''"
-                            @click="currentComponent = link.component"
                         >
-                            <font-awesome-icon
-                                :icon="link.icon"
-                            />
-                            <span class="hidden lg:block">{{ link.text }}</span>
+                            <router-link
+                                class="flex gap-2 items-center"
+                                :to="`/users/me/${link.component}`"
+                                @click="currentComponent = link.component"
+                            >
+                                <font-awesome-icon
+                                    :icon="link.icon"
+                                />
+                                <span class="hidden lg:block">{{ link.text }}</span>
+                            </router-link>
                         </li>
                     </template>
                 </ul>
@@ -54,7 +59,7 @@ export default {
     inheritAttrs: false,
     data () {
         return {
-            currentComponent: 'Profile',
+            currentComponent: this.$route.params.component,
             links: [
                 { text: 'Profil', icon: 'address-card', component: 'Profile' },
                 { text: 'Discord', icon: ['fab', 'discord'], component: 'Settings' },
