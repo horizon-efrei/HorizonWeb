@@ -186,6 +186,9 @@
                         icon="check"
                         class="my-auto"
                     />
+                    <div class="my-auto">
+                        {{ submitMessage }}
+                    </div>
                 </div>
                 <div
                     v-else-if="submitSuccess===-1"
@@ -196,7 +199,7 @@
                         class="my-auto"
                     />
                     <div class="my-auto">
-                        Erreur lors de l'enregistrement
+                        {{ submitMessage }}
                     </div>
                 </div>
             </div>
@@ -242,7 +245,8 @@ export default {
             default_avatar:default_avatar,
             avatarShown: false,
             API_URL: `${import.meta.env.VITE_API_URL}/`,
-            blagues: blagues
+            blagues: blagues,
+            submitMessage: ""
         };
     },
     computed: {
@@ -350,12 +354,13 @@ export default {
                 }
                 return true
             }
-
+            this.submitMessage = "Enregistré"
             this.submitSuccess = 1
 
             if (this.user.description ==='' || this.user.description === null || this.user.description === undefined){
                 const blague = blagues[Math.floor(Math.random()*blagues.length)]
                 this.user.description = `${blague.question}\n${blague.answer}`
+                this.submitMessage = "Nous vous avons ajouté une blague en description :)"
             }
 
             this.$store.dispatch('users/updateUser',this.user).then().catch(() => {
@@ -368,20 +373,20 @@ export default {
                     if(!this.$store.state.users.socialsAccounts.find((a)=> _.isEqual(a,this.socialsAccounts[i]))){
                         if(this.socialsAccounts[i].socialAccountId == null){
                             this.$store.dispatch('users/addSocialAccount',{userId:this.user.userId, socialId:this.socialsAccounts[i].social.socialId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link}).then().catch(() =>{
-                                console.log("jambon")
                                 this.submitSuccess = -1
+                                this.submitMessage = "Erreur lors de l'ajout du compte"
                             })
                         }else{
                             if(this.socialsAccounts[i].social.socialId != this.$store.state.users.socialsAccounts.find((a) => a.socialAccountId === this.socialsAccounts[i].socialAccountId ).social.socialId){
                                 this.$store.dispatch('users/replaceSocialAccount',{userId:this.user.userId, socialAccountId:this.socialsAccounts[i].socialAccountId,socialId:this.socialsAccounts[i].social.socialId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link}).then().catch(() =>{
-                                    console.log("jambon")
                                     this.submitSuccess = -1
+                                    this.submitMessage = "Erreur lors du changement du type de compte"
                                 })
                             }
                             else {
                                 this.$store.dispatch('users/updateSocialAccount',{ socialAccountId:this.socialsAccounts[i].socialAccountId,pseudo:this.socialsAccounts[i].pseudo,link:this.socialsAccounts[i].link}).then().catch(() =>{
-                                    console.log("jambon")
                                     this.submitSuccess = -1
+                                    this.submitMessage = "Erreur lors de la modification du compte"
                                 })
                             }
                         }
