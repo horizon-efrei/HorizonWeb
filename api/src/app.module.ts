@@ -20,6 +20,7 @@ import { ReportsModule } from './reports/reports.module';
 import { PoliciesGuard } from './shared/modules/authorization';
 import { CaslModule } from './shared/modules/casl/casl.module';
 import { SocialsModule } from './socials/socials.module';
+import { UserStatModule } from './stats/userStat.module';
 import storageConfig from './storage.config';
 import { SubjectsModule } from './subjects/subjects.module';
 import { TagsModule } from './tags/tags.module';
@@ -47,6 +48,7 @@ import { UsersModule } from './users/users.module';
     TagsModule,
     UsersModule,
     SocialsModule,
+    UserStatModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
