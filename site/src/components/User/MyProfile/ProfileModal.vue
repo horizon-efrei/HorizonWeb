@@ -224,6 +224,7 @@ import SelectInput from '@/components/Input/SelectInput.vue'
 import AvatarImage from '@/components/User/UserAvatar.vue';
 import AppLoader from '@/components/App/AppLoader.vue';
 import AvatarCropper from '@/components/User/AvatarCropper/AvatarCropper.vue';
+import { blagues } from '@/assets/blagues/blagues';
 
 export default {
     components: {
@@ -240,7 +241,8 @@ export default {
             socialsAccounts:null,
             default_avatar:default_avatar,
             avatarShown: false,
-            API_URL: `${import.meta.env.VITE_API_URL}/`
+            API_URL: `${import.meta.env.VITE_API_URL}/`,
+            blagues: blagues
         };
     },
     computed: {
@@ -350,6 +352,11 @@ export default {
             }
 
             this.submitSuccess = 1
+
+            if (this.user.description ==='' || this.user.description === null || this.user.description === undefined){
+                const blague = blagues[Math.floor(Math.random()*blagues.length)]
+                this.user.description = `${blague.question}\n${blague.answer}`
+            }
 
             this.$store.dispatch('users/updateUser',this.user).then().catch(() => {
                 console.log("updateUser")
