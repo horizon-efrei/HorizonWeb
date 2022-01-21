@@ -21,9 +21,8 @@
                             :class="currentComponent === link.component ? 'text-blue-500' : ''"
                             @click="currentComponent = link.component"
                         >
-                            <i
-                                class="ri-xl"
-                                :class="link.icon"
+                            <font-awesome-icon
+                                :icon="link.icon"
                             />
                             <span class="hidden lg:block">{{ link.text }}</span>
                         </li>
@@ -58,20 +57,18 @@ export default {
         return {
             currentComponent: 'Profile',
             links: [
-                { text: 'Profil', icon: 'ri-profile-line', component: 'Profile' },
-                { text: 'Discord', icon: 'ri-discord-fill', component: 'Settings' },
-                { text: 'Associations', icon: 'ri-team-fill', component: 'ProfileClub' },
-
-                { text: 'Badges', icon: 'ri-medal-line', component: BadgeSettings },
-                { text: 'Accessibilité', icon: 'ri-hand-heart-fill', component: AccessibilitySettings }
-                // TODO: { text: "Rôles Ef'Réussite", icon: 'ri-book-mark-line', component: 'Roles' }
+                { text: 'Profil', icon: 'address-card', component: 'Profile' },
+                { text: 'Discord', icon: ['fab', 'discord'], component: 'Settings' },
+                { text: 'Associations', icon: 'user', component: 'ProfileClub' },
+                { text: 'Badges', icon: 'medal', component: BadgeSettings },
+                { text: 'Accessibilité', icon: 'universal-access', component: AccessibilitySettings }
             ],
             accounts : [
-                { name:'Mail', icon: 'ri-mail-line'},
-                { name:'LinkedIn', icon: 'ri-linkedin-fill'},
-                { name:'Discord', icon: 'ri-discord-fill'},
-                { name:'Instagram', icon: 'ri-instagram-fill'},
-                { name:'GitHub', icon: 'ri-github-fill'},
+                { name: 'Mail', icon: 'envelope'},
+                { name: 'LinkedIn', icon: ['fab', 'linkedin']},
+                { name: 'Discord', icon: ['fab', 'discord']},
+                { name: 'Instagram', icon: ['fab', 'instagram']},
+                { name: 'GitHub', icon: ['fab', 'github']},
             ]
         }
     }
