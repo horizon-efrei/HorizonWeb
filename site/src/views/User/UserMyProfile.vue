@@ -39,17 +39,16 @@
 
 <script lang="js">
 import Profile from '@/components/User/MyProfile/ProfileModal.vue'
-import BadgeSettings from '@/components/User/MyProfile/ProfileBadges.vue'
 import ExternalAccount from '@/components/User/MyProfile/ProfileSocials.vue'
 import ProfileClub from '@/components/User/MyProfile/ProfileClubs.vue'
-import AccessibilitySettings from '@/components/User/MyProfile/ProfileSettings.vue'
+import Accessibility from '@/components/User/MyProfile/ProfileSettings.vue'
 // import AppLoader from '@/components/App/AppLoader.vue'
 export default {
     components: {
         Profile,
-        BadgeSettings,
         ExternalAccount,
         ProfileClub,
+        Accessibility
         // AppLoader
     },
     inheritAttrs: false,
@@ -60,8 +59,7 @@ export default {
                 { text: 'Profil', icon: 'address-card', component: 'Profile' },
                 { text: 'Discord', icon: ['fab', 'discord'], component: 'Settings' },
                 { text: 'Associations', icon: 'user', component: 'ProfileClub' },
-                { text: 'Badges', icon: 'medal', component: BadgeSettings },
-                { text: 'Accessibilité', icon: 'universal-access', component: AccessibilitySettings }
+                { text: 'Accessibilité', icon: 'universal-access', component: 'Accessibility' }
             ],
             accounts : [
                 { name: 'Mail', icon: 'envelope'},

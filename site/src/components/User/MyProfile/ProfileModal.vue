@@ -1,9 +1,12 @@
 <template>
-    <AppLoader
+    <div
         v-if=" clubs === undefined || clubs === null || socials === undefined || socials === null || userClubs === undefined || userClubs === null "
-        :class="$store.state.users"
-        background="bg-1"
-    />
+        class="relative h-32"
+    >
+        <AppLoader
+            :class="$store.state.users"
+        />
+    </div>
     <div
         v-else
         class="px-4 sm:px-8 py-4 text-2"
