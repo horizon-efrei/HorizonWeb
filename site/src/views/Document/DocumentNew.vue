@@ -221,7 +221,6 @@ import RadioInput from '@/components/Input/RadioInput.vue'
 import SelectInput from '@/components/Input/SelectInput.vue'
 import FileInput from '@/components/Input/FileInput.vue'
 import FormMultiStep from '@/components/Form/FormMultiStep.vue'
-import AppAlert from '../../components/App/AppAlert.vue'
 import SearchInput from '@/components/Input/SearchInput.vue'
 
 export default {
@@ -231,7 +230,6 @@ export default {
         FileInput,
         FormMultiStep,
         SearchInput,
-        AppAlert
     },
     props: {
         steps: {
