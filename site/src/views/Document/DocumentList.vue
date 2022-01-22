@@ -10,12 +10,12 @@
                     <DocumentIcon
                         class="h-32 w-32"
                         :mime="filePreview.file.mimeType"
-                        :file-name="filePreview.file.originalName"
+                        :file-name="filePreview.file.name"
                     />
                 </div>
                 <div class="">
                     <div class="text-xl font-bold">
-                        {{ filePreview.file.originalName }}
+                        {{ filePreview.file.name }}
                     </div>
                     <div class="text-sm">
                         {{ new Date(filePreview.createdAt).toLocaleDateString() }}
@@ -109,7 +109,7 @@
                                     <DocumentIcon
                                         class="h-8 w-8"
                                         :mime="file.file.mimeType"
-                                        :file-name="file.file.originalName"
+                                        :file-name="file.file.name"
                                     />
                                 </div>
                             </td>
@@ -118,7 +118,7 @@
                                     class="flex justify-center items-center"
                                     @click="setFilePreview(file)"
                                 >
-                                    {{ file.file.originalName }}
+                                    {{ file.file.name }}
                                 </div>
                             </td>
                             <td>
@@ -195,10 +195,10 @@
                                         class="h-12 w-12"
 
                                         :mime="file.file.mimeType"
-                                        :file-name="file.file.originalName"
+                                        :file-name="file.file.name"
                                     />
                                     <div class="truncate w-full text-center">
-                                        {{ file.file.originalName }}
+                                        {{ file.file.name }}
                                     </div>
                                 </div>
 
@@ -241,12 +241,12 @@
                                 <DocumentIcon
                                     class="h-32 w-32"
                                     :mime="filePreview.file.mimeType"
-                                    :file-name="filePreview.file.originalName"
+                                    :file-name="filePreview.file.name"
                                 />
                             </div>
                             <div class="text-center">
                                 <div class="text-xl font-bold">
-                                    {{ filePreview.file.originalName }}
+                                    {{ filePreview.file.name }}
                                 </div>
                                 <div class="text-sm">
                                     {{ new Date(filePreview.createdAt).toLocaleDateString() }}
@@ -271,7 +271,7 @@
                                 class="flex justify-between"
                             >
                                 <div>
-                                    {{ file.file.originalName }}
+                                    {{ file.file.name }}
                                 </div>
                                 <div
                                     class="cursor-pointer"
@@ -330,7 +330,7 @@ export default {
             filePreview: null,
             showFile: false,
             fileGroup: [],
-            Date
+            Date,
         }
     },
     mounted() {
@@ -344,7 +344,7 @@ export default {
                     icon:'download',
                     class: 'hover:bg-blue-500 hover:text-white',
                     action: () => {
-                        filesService.downloadFile({query: studyDocId.file.fileUploadId, label:studyDocId.file.originalName})
+                        filesService.downloadFile({query: studyDocId.file.fileUploadId, label:studyDocId.file.name})
                     }
                 },
                 {
@@ -371,7 +371,7 @@ export default {
         },
         downloadFileGroup(){
             for(const el of this.fileGroup){
-                filesService.downloadFile({query: el.file.fileUploadId, label:el.file.originalName})
+                filesService.downloadFile({query: el.file.fileUploadId, label:el.file.name})
             }
             this.fileGroup = []
         }
