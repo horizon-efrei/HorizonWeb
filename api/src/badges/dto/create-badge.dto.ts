@@ -18,6 +18,9 @@ export class CreateBadgeDto {
   @IsInt()
   value: number;
 
+  @IsInt()
+  limit: number;
+
   @IsEnum(BadgeLevel)
   level: BadgeLevel;
 
@@ -28,5 +31,5 @@ export class CreateBadgeDto {
   serie: string;
 
   @IsString()
-  category: string;
+  stat: string;
 }

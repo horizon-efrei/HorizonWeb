@@ -1,6 +1,8 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import { pointsValue } from 'src/users/points.config';
+import { BadgesService } from '../badges/badges.service';
 import { ContentMaster } from '../shared/lib/entities/content-master.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { ContentKind } from '../shared/lib/types/content-kind.enum';
@@ -20,6 +22,7 @@ export class ContentsService {
   constructor(
     @InjectRepository(Content) private readonly contentRepository: BaseRepository<Content>,
     @InjectRepository(ContentMaster) private readonly contentMasterRepository: BaseRepository<ContentMaster>,
+    private readonly badgeService: BadgesService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
@@ -35,6 +38,26 @@ export class ContentsService {
       author: user,
     });
     await this.contentRepository.persistAndFlush(content);
+
+    const sameDay = (first: Date, second: Date): boolean => (first.getFullYear() === second.getFullYear()
+      && first.getMonth() === second.getMonth()
+      && first.getDate() === second.getDate());
+
+    const now = new Date();
+    if (sameDay(user.stat.lastPost, now))
+      user.stat.postStreak += 1;
+    else
+      user.stat.postStreak = 1;
+    user.stat.lastPost = now;
+    if (sameDay(user.stat.lastAction, now))
+      user.stat.actionStreak += 1;
+    else
+      user.stat.actionStreak = 1;
+    user.stat.lastAction = now;
+
+    user.points += pointsValue.post;
+    await this.badgeService.flushCheckAndUnlock(user, 'nbPosts');
+
     return content;
   }
 
@@ -68,6 +91,26 @@ export class ContentsService {
       await this.contentMasterRepository.flush();
     }
 
+    user.points += pointsValue.reply;
+
+    const sameDay = (first: Date, second: Date): boolean => (first.getFullYear() === second.getFullYear()
+      && first.getMonth() === second.getMonth()
+      && first.getDate() === second.getDate());
+
+    const now = new Date();
+    if (sameDay(user.stat.lastReply, now))
+      user.stat.replyStreak += 1;
+    else
+      user.stat.replyStreak = 1;
+    user.stat.lastReply = now;
+    if (sameDay(user.stat.lastAction, now))
+      user.stat.actionStreak += 1;
+    else
+      user.stat.actionStreak = 1;
+    user.stat.lastAction = now;
+
+    await this.badgeService.flushCheckAndUnlock(user, 'nbReplies');
+
     return content;
   }
 
@@ -100,6 +143,25 @@ export class ContentsService {
       master.contributors.add(user);
       await this.contentMasterRepository.flush();
     }
+
+    const sameDay = (first: Date, second: Date): boolean => (first.getFullYear() === second.getFullYear()
+      && first.getMonth() === second.getMonth()
+      && first.getDate() === second.getDate());
+
+    const now = new Date();
+    if (sameDay(user.stat.lastComment, now))
+      user.stat.commentStreak += 1;
+    else
+      user.stat.commentStreak = 1;
+    user.stat.lastComment = now;
+    if (sameDay(user.stat.lastAction, now))
+      user.stat.actionStreak += 1;
+    else
+      user.stat.actionStreak = 1;
+    user.stat.lastAction = now;
+
+    user.points += pointsValue.comment;
+    await this.badgeService.flushCheckAndUnlock(user, 'nbComments');
 
     return content;
   }
