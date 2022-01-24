@@ -1,6 +1,7 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import { BadgesService } from '../badges/badges.service';
 import { Post } from '../posts/entities/post.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assertPermission';
@@ -18,6 +19,7 @@ export class RepliesService {
   constructor(
     @InjectRepository(Post) private readonly postRepository: BaseRepository<Post>,
     @InjectRepository(Reply) private readonly replyRepository: BaseRepository<Reply>,
+    private readonly badgeService: BadgesService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
@@ -29,6 +31,9 @@ export class RepliesService {
 
     const reply = new Reply({ post, body: createReplyDto.body, author: user });
     await this.replyRepository.persistAndFlush(reply);
+
+    await this.badgeService.flushCheckAndUnlock(user, 'nbReplies');
+
     return reply;
   }
 

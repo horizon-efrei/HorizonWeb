@@ -1,5 +1,6 @@
 import {
   Collection,
+  Embedded,
   Entity,
   Enum,
   Index,
@@ -14,6 +15,7 @@ import type { BadgeUnlock } from '../badges/badge-unlock.entity';
 import { EMAIL_INCLUDED } from '../shared/lib/constants';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { Role } from '../shared/modules/authorization/types/role.enum';
+import { Stat } from '../stats/userStat.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -65,6 +67,9 @@ export class User extends BaseEntity {
 
   @Property({ type: 'text' })
   description?: string;
+
+  @Embedded()
+  stat = new Stat();
 
   constructor(options: {
     username: string;

@@ -1,6 +1,7 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import { BadgesService } from '../badges/badges.service';
 import { Post } from '../posts/entities/post.entity';
 import { Reply } from '../replies/entities/reply.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
@@ -21,6 +22,8 @@ export class CommentsService {
     @InjectRepository(Reply) private readonly replyRepository: BaseRepository<Reply>,
     @InjectRepository(Comment) private readonly commentRepository: BaseRepository<Comment>,
     private readonly caslAbilityFactory: CaslAbilityFactory,
+    private readonly badgeService: BadgesService,
+
   ) {}
 
   public async createUnderReply(user: User, replyId: string, createCommentDto: CreateCommentDto): Promise<Comment> {
@@ -36,6 +39,9 @@ export class CommentsService {
       author: user,
     });
     await this.commentRepository.persistAndFlush(comment);
+
+    await this.badgeService.flushCheckAndUnlock(user, 'nbComments');
+
     return comment;
   }
 
@@ -51,6 +57,9 @@ export class CommentsService {
       author: user,
     });
     await this.commentRepository.persistAndFlush(comment);
+
+    await this.badgeService.flushCheckAndUnlock(user, 'nbComments');
+
     return comment;
   }
 

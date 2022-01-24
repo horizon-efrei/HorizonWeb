@@ -1,20 +1,7 @@
-import {
-  Entity,
-  OneToOne,
-  PrimaryKey,
-  Property,
-} from '@mikro-orm/core';
-import { BaseEntity } from '../shared/lib/entities/base.entity';
-import { User } from '../users/user.entity';
+import { Embeddable, Property } from '@mikro-orm/core';
 
-@Entity()
-export class Stat extends BaseEntity {
-  @PrimaryKey()
-  statId!: number;
-
-  @OneToOne()
-  user: User;
-
+@Embeddable()
+export class Stat {
   @Property()
   nbPosts = 0;
 
@@ -22,13 +9,11 @@ export class Stat extends BaseEntity {
   nbComments = 0;
 
   @Property()
+  nbReplies = 0;
+
+  @Property()
   nbViews = 0;
 
   @Property()
   nbUploads = 0;
-
-  constructor(options: { user: User }) {
-    super();
-    this.user = options.user;
-  }
 }
