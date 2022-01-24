@@ -46,9 +46,27 @@ export class UsersService {
 
   public async getUserStats(userId: string): Promise<Stat | null> {
     const user = await this.userRepository.findOne({ userId });
-    if (user != null)
-      return user.stat;
+    if (user != null) {
+      const sameDay = (first: Date, second: Date): boolean => (first.getFullYear() === second.getFullYear()
+      && first.getMonth() === second.getMonth()
+      && first.getDate() === second.getDate());
+      const now = new Date();
+      if (!sameDay(now, user.stat.lastAction))
+        user.stat.actionStreak = 0;
 
+      if (!sameDay(now, user.stat.lastPost))
+        user.stat.postStreak = 0;
+
+      if (!sameDay(now, user.stat.lastReply))
+        user.stat.replyStreak = 0;
+
+      if (!sameDay(now, user.stat.lastComment))
+        user.stat.commentStreak = 0;
+
+
+      await this.userRepository.flush();
+      return user.stat;
+    }
     return user;
   }
 }
