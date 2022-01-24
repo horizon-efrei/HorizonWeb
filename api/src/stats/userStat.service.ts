@@ -17,19 +17,9 @@ export class UserStatsService {
       await this.userStatRepository.persistAndFlush(stat);
     } catch (error: unknown) {
       if (error instanceof UniqueConstraintViolationException)
-        throw new BadRequestException('Tag name already exists');
+        throw new BadRequestException('This User\'s stat already exist');
       throw error;
     }
     return stat;
-  }
-
-  public async findOne(statId: number): Promise<Stat> {
-    return await this.userStatRepository.findOneOrFail({ statId });
-  }
-
-
-  public async remove(statId: number): Promise<void> {
-    const tag = await this.userStatRepository.findOneOrFail({ statId });
-    await this.userStatRepository.removeAndFlush(tag);
   }
 }
