@@ -16,4 +16,28 @@ export class Stat {
 
   @Property()
   nbUploads = 0;
+
+  @Property()
+  lastReply = new Date();
+
+  @Property()
+  replyStreak = 0;
+
+  @Property()
+  lastPost = new Date();
+
+  @Property()
+  postStreak = 0;
+
+  @Property()
+  lastComment = new Date();
+
+  @Property()
+  commentStreak = 0;
+
+  @Property()
+  lastAction = new Date();
+
+  @Property()
+  actionStreak = 0;
 }

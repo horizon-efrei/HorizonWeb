@@ -58,6 +58,21 @@ export class CommentsService {
       author: user,
     });
     await this.commentRepository.persistAndFlush(comment);
+    const sameDay = (first: Date, second: Date): boolean => (first.getFullYear() === second.getFullYear()
+      && first.getMonth() === second.getMonth()
+      && first.getDate() === second.getDate());
+
+    const now = new Date();
+    if (sameDay(user.stat.lastComment, now))
+      user.stat.commentStreak += 1;
+    else
+      user.stat.commentStreak = 1;
+    user.stat.lastComment = now;
+    if (sameDay(user.stat.lastAction, now))
+      user.stat.actionStreak += 1;
+    else
+      user.stat.actionStreak = 1;
+    user.stat.lastAction = now;
 
     user.points += pointsValue.comment;
     await this.badgeService.flushCheckAndUnlock(user, 'nbComments');

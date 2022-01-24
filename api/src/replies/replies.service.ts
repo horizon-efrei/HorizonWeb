@@ -34,6 +34,25 @@ export class RepliesService {
     await this.replyRepository.persistAndFlush(reply);
 
     user.points += pointsValue.reply;
+
+
+    const sameDay = (first: Date, second: Date): boolean => (first.getFullYear() === second.getFullYear()
+      && first.getMonth() === second.getMonth()
+      && first.getDate() === second.getDate());
+
+    const now = new Date();
+    if (sameDay(user.stat.lastReply, now))
+      user.stat.replyStreak += 1;
+    else
+      user.stat.replyStreak = 1;
+    user.stat.lastReply = now;
+    if (sameDay(user.stat.lastAction, now))
+      user.stat.actionStreak += 1;
+    else
+      user.stat.actionStreak = 1;
+    user.stat.lastAction = now;
+
+
     await this.badgeService.flushCheckAndUnlock(user, 'nbReplies');
 
     return reply;
