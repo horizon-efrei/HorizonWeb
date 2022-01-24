@@ -12,7 +12,7 @@ import {
 import * as bcrypt from 'bcrypt';
 import { Exclude, Expose } from 'class-transformer';
 import type { BadgeUnlock } from '../badges/badge-unlock.entity';
-import { EMAIL_INCLUDED } from '../shared/lib/constants';
+import { EMAIL_INCLUDED, STAT_INCLUDED } from '../shared/lib/constants';
 import { BaseEntity } from '../shared/lib/entities/base.entity';
 import { Role } from '../shared/modules/authorization/types/role.enum';
 import { Stat } from '../stats/userStat.entity';
@@ -68,6 +68,7 @@ export class User extends BaseEntity {
   @Property({ type: 'text' })
   description?: string;
 
+  @Expose({ groups: [STAT_INCLUDED] })
   @Embedded()
   stat = new Stat();
 

@@ -6,6 +6,7 @@ import type { RegisterDto } from '../auth/dto/register.dto';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import type { Stat } from '../stats/userStat.entity';
 import type { UpdateUserDto } from './dto/update-user.dto';
 import { UserSearchService } from './user-search.service';
 import { User } from './user.entity';
@@ -41,5 +42,13 @@ export class UsersService {
 
   public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<User>> {
     return await this.userRepository.findWithPagination(paginationOptions);
+  }
+
+  public async getUserStats(userId: string): Promise<Stat | null> {
+    const user = await this.userRepository.findOne({ userId });
+    if (user != null)
+      return user.stat;
+
+    return user;
   }
 }
