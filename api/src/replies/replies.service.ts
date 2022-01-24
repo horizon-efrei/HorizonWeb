@@ -1,6 +1,7 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import { BadgesService } from '../badges/badges.service';
 import { Post } from '../posts/entities/post.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assertPermission';
@@ -8,6 +9,7 @@ import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { pointsValue } from '../users/points.config';
 import type { User } from '../users/user.entity';
 import type { CreateReplyDto } from './dto/create-reply.dto';
 import type { UpdateReplyDto } from './dto/update-reply.dto';
@@ -18,6 +20,7 @@ export class RepliesService {
   constructor(
     @InjectRepository(Post) private readonly postRepository: BaseRepository<Post>,
     @InjectRepository(Reply) private readonly replyRepository: BaseRepository<Reply>,
+    private readonly badgeService: BadgesService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
@@ -29,6 +32,29 @@ export class RepliesService {
 
     const reply = new Reply({ post, body: createReplyDto.body, author: user });
     await this.replyRepository.persistAndFlush(reply);
+
+    user.points += pointsValue.reply;
+
+
+    const sameDay = (first: Date, second: Date): boolean => (first.getFullYear() === second.getFullYear()
+      && first.getMonth() === second.getMonth()
+      && first.getDate() === second.getDate());
+
+    const now = new Date();
+    if (sameDay(user.stat.lastReply, now))
+      user.stat.replyStreak += 1;
+    else
+      user.stat.replyStreak = 1;
+    user.stat.lastReply = now;
+    if (sameDay(user.stat.lastAction, now))
+      user.stat.actionStreak += 1;
+    else
+      user.stat.actionStreak = 1;
+    user.stat.lastAction = now;
+
+
+    await this.badgeService.flushCheckAndUnlock(user, 'nbReplies');
+
     return reply;
   }
 

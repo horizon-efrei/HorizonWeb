@@ -32,7 +32,10 @@ export class Badge extends BaseEntity {
   serie!: string;
 
   @Property({ type: 'text' })
-  category!: string;
+  stat!: string;
+
+  @Property()
+  limit!: number;
 
   constructor(options: {
     name: string;
@@ -42,7 +45,8 @@ export class Badge extends BaseEntity {
     level: BadgeLevel;
     icon: string;
     serie: string;
-    category: string;
+    stat: string;
+    limit: number;
   }) {
     super();
     this.name = options.name;
@@ -52,6 +56,7 @@ export class Badge extends BaseEntity {
     this.level = options.level;
     this.icon = options.icon;
     this.serie = options.serie;
-    this.category = options.category;
+    this.stat = options.stat;
+    this.limit = options.limit;
   }
 }

@@ -1,6 +1,7 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import { BadgesService } from '../badges/badges.service';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { assertPermissions } from '../shared/lib/utils/assertPermission';
 import { Action } from '../shared/modules/authorization';
@@ -8,6 +9,7 @@ import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory'
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { Tag } from '../tags/tag.entity';
+import { pointsValue } from '../users/points.config';
 import { User } from '../users/user.entity';
 import type { CreatePostDto } from './dto/create-post.dto';
 import type { UpdatePostDto } from './dto/update-post.dto';
@@ -20,6 +22,7 @@ export class PostsService {
     @InjectRepository(Post) private readonly postRepository: BaseRepository<Post>,
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    private readonly badgeService: BadgesService,
     private readonly postSearchService: PostSearchService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
@@ -35,6 +38,26 @@ export class PostsService {
 
     await this.postRepository.persistAndFlush(post);
     await this.postSearchService.add(post);
+
+    const sameDay = (first: Date, second: Date): boolean => (first.getFullYear() === second.getFullYear()
+      && first.getMonth() === second.getMonth()
+      && first.getDate() === second.getDate());
+
+    const now = new Date();
+    if (sameDay(user.stat.lastPost, now))
+      user.stat.postStreak += 1;
+    else
+      user.stat.postStreak = 1;
+    user.stat.lastPost = now;
+    if (sameDay(user.stat.lastAction, now))
+      user.stat.actionStreak += 1;
+    else
+      user.stat.actionStreak = 1;
+    user.stat.lastAction = now;
+
+    user.points += pointsValue.post;
+    await this.badgeService.flushCheckAndUnlock(user, 'nbPosts');
+
     return post;
   }
 

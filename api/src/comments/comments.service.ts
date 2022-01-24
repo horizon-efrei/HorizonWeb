@@ -1,6 +1,7 @@
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import { BadgesService } from '../badges/badges.service';
 import { Post } from '../posts/entities/post.entity';
 import { Reply } from '../replies/entities/reply.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
@@ -9,6 +10,7 @@ import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { pointsValue } from '../users/points.config';
 import type { User } from '../users/user.entity';
 import type { CreateCommentDto } from './dto/create-comment.dto';
 import type { UpdateCommentDto } from './dto/update-comment.dto';
@@ -21,6 +23,8 @@ export class CommentsService {
     @InjectRepository(Reply) private readonly replyRepository: BaseRepository<Reply>,
     @InjectRepository(Comment) private readonly commentRepository: BaseRepository<Comment>,
     private readonly caslAbilityFactory: CaslAbilityFactory,
+    private readonly badgeService: BadgesService,
+
   ) {}
 
   public async createUnderReply(user: User, replyId: string, createCommentDto: CreateCommentDto): Promise<Comment> {
@@ -36,6 +40,9 @@ export class CommentsService {
       author: user,
     });
     await this.commentRepository.persistAndFlush(comment);
+
+    await this.badgeService.flushCheckAndUnlock(user, 'nbComments');
+
     return comment;
   }
 
@@ -51,6 +58,25 @@ export class CommentsService {
       author: user,
     });
     await this.commentRepository.persistAndFlush(comment);
+    const sameDay = (first: Date, second: Date): boolean => (first.getFullYear() === second.getFullYear()
+      && first.getMonth() === second.getMonth()
+      && first.getDate() === second.getDate());
+
+    const now = new Date();
+    if (sameDay(user.stat.lastComment, now))
+      user.stat.commentStreak += 1;
+    else
+      user.stat.commentStreak = 1;
+    user.stat.lastComment = now;
+    if (sameDay(user.stat.lastAction, now))
+      user.stat.actionStreak += 1;
+    else
+      user.stat.actionStreak = 1;
+    user.stat.lastAction = now;
+
+    user.points += pointsValue.comment;
+    await this.badgeService.flushCheckAndUnlock(user, 'nbComments');
+
     return comment;
   }
 
