@@ -26,8 +26,58 @@
                 </div>
             </div>
         </app-modal>
+        <div class="card w-1/5 hidden md:block">
+            <FileFolder
+                :folder-name="treeFake.folderName"
+                :childrens="treeFake.childrens"
+                @path="folderPath = $event"
+            />
+        </div>
+        <div class="card flex flex-col flex-grow gap-4">
+            <div class="group flex  justify-between">
+                <div class="flex gap-2">
+                    <div
+                        v-for="(path, i) in folderPath"
+                        :key="i"
+                        class=""
+                    >
+                        {{ path }}
+                        <font-awesome-icon
+                            icon="chevron-right"
+                            size="xs"
+                        />
+                    </div>
+                </div>
 
-        <div class="card flex flex-grow flex-col gap-4">
+                <div class="invisible group-hover:visible">
+                    <Popper placement="left">
+                        <font-awesome-icon
+                            icon="sliders-h"
+                        />
+                        <template #content>
+                            <div class="card flex flex-col gap-2">
+                                <div>Ordre des dossiers</div>
+                                <div class="flex items-center gap-1">
+                                    <div
+                                        v-for="(type, i) in folderType"
+                                        :key="i"
+                                        class="flex items-center gap-1"
+                                    >
+                                        <div>
+                                            {{ type }}
+                                        </div>
+                                        <font-awesome-icon
+                                            v-if="i != folderType.length -1"
+                                            icon="chevron-right"
+                                            size="xs"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </Popper>
+                </div>
+            </div>
             <div class="flex justify-center gap-4">
                 <div class="flex cursor-pointer">
                     <div
@@ -235,7 +285,7 @@
         </div>
         <div
             v-if="filePreview || fileGroup.length != 0"
-            class="w-1/4 hidden md:block relative"
+            class="w-1/5 hidden md:block relative"
         >
             <div class="sticky top-4">
                 <div class="flex flex-col gap-2">
@@ -246,13 +296,13 @@
                         <div class="flex flex-col gap-2 divide-y">
                             <div class="flex items-center justify-center">
                                 <DocumentIcon
-                                    class="h-32 w-32"
+                                    class="h-24 w-24"
                                     :mime="filePreview.file.mimeType"
                                     :file-name="filePreview.file.name"
                                 />
                             </div>
                             <div class="text-center">
-                                <div class="text-xl font-bold">
+                                <div class="text-lg font-bold">
                                     {{ filePreview.file.name }}
                                 </div>
                                 <div class="text-sm">
@@ -315,7 +365,7 @@
 
 import formatBytes from '@/utils/formatByteSize'
 import fileIcon from "@/assets/img/doctype/file.png"
-
+import FileFolder from '@/components/Document/FileFolder.vue'
 import DropDownInput from '@/components/Input/DropDownInput.vue'
 import DocumentIcon from '@/components/Document/DocumentIcon.vue'
 import AppModal from '@/components/App/AppModal.vue'
@@ -324,8 +374,10 @@ import Popper from "vue3-popper"
 
 import filesService from '@/services/files.service'
 
+import { treeFake } from "@/fake/tree.js"
 export default {
     components:{
+        FileFolder,
         DropDownInput,
         AppModal,
         DocumentIcon,
@@ -340,7 +392,10 @@ export default {
             filePreview: null,
             showFile: false,
             fileGroup: [],
+            folderPath:["Main"],
+            folderType:["Promotion", "Matière", "Cursus", "Année"],
             Date,
+            treeFake
         }
     },
     mounted() {
