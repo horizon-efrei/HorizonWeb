@@ -1,8 +1,8 @@
+import { promises as fs } from 'node:fs';
+import path from 'node:path';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Logger, Module } from '@nestjs/common';
-import { promises as fs } from 'node:fs';
-import path from 'node:path';
 import { BadgeUnlock } from '../../badges/badge-unlock.entity';
 import { Badge } from '../../badges/badge.entity';
 import { BadgesModule } from '../../badges/badges.module';
