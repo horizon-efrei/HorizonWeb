@@ -71,6 +71,9 @@ export class User extends BaseEntity {
   @Embedded()
   stat = new Stat();
 
+  @Property()
+  points = 0;
+
   constructor(options: {
     username: string;
     email: string;

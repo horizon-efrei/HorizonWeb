@@ -9,6 +9,7 @@ import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory'
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { Tag } from '../tags/tag.entity';
+import { pointsValue } from '../users/points.config';
 import { User } from '../users/user.entity';
 import type { CreatePostDto } from './dto/create-post.dto';
 import type { UpdatePostDto } from './dto/update-post.dto';
@@ -38,6 +39,7 @@ export class PostsService {
     await this.postRepository.persistAndFlush(post);
     await this.postSearchService.add(post);
 
+    user.points += pointsValue.post;
     await this.badgeService.flushCheckAndUnlock(user, 'nbPosts');
 
     return post;

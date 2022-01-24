@@ -9,6 +9,7 @@ import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { pointsValue } from '../users/points.config';
 import type { User } from '../users/user.entity';
 import type { CreateReplyDto } from './dto/create-reply.dto';
 import type { UpdateReplyDto } from './dto/update-reply.dto';
@@ -32,6 +33,7 @@ export class RepliesService {
     const reply = new Reply({ post, body: createReplyDto.body, author: user });
     await this.replyRepository.persistAndFlush(reply);
 
+    user.points += pointsValue.reply;
     await this.badgeService.flushCheckAndUnlock(user, 'nbReplies');
 
     return reply;

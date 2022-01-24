@@ -10,6 +10,7 @@ import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
+import { pointsValue } from '../users/points.config';
 import type { User } from '../users/user.entity';
 import type { CreateCommentDto } from './dto/create-comment.dto';
 import type { UpdateCommentDto } from './dto/update-comment.dto';
@@ -58,6 +59,7 @@ export class CommentsService {
     });
     await this.commentRepository.persistAndFlush(comment);
 
+    user.points += pointsValue.comment;
     await this.badgeService.flushCheckAndUnlock(user, 'nbComments');
 
     return comment;

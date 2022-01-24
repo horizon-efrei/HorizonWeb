@@ -80,6 +80,7 @@ export class BadgesService {
     const toBeUnlocked: Array<Promise<void>> = [];
     for (const badge of badges) {
       if (badge.limit <= user.stat[property]) {
+          user.points += badge.value;
           const unlock = new BadgeUnlock({ user, badge });
           toBeUnlocked.push(this.badgeUnlockRepository.persistAndFlush(unlock));
         }
