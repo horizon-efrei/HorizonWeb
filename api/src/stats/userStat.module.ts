@@ -3,7 +3,6 @@ import { Module } from '@nestjs/common';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
 import { Stat } from './userStat.entity';
 import { UserStatsService } from './userStat.service';
-import './userStat.subscriber';
 
 @Module({
   imports: [
