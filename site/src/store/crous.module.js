@@ -7,7 +7,6 @@ export const crous = {
     state: initialState,
     actions: {
         getMenuById({ commit },menuId) {
-            console.log(menuId)
             return crousService.getOneMenu(menuId).then(
                 success => {
                     commit('fetchMenu',success)

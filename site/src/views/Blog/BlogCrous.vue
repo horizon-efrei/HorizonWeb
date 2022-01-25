@@ -37,12 +37,14 @@
                             <p class="text-md">
                                 Entrées :
                             </p>
-                            <ul class="ml-4 list-disc">
+                            <ul
+                            v-if="menu.entree.length>0"
+                            class="ml-4 list-disc">
                                 <li
-                                    v-for="entree in menu.entrees"
+                                    v-for="entree in menu.entree"
                                     :key="entree"
                                 >
-                                    {{ entree }}
+                                    {{ entree.name }}
                                 </li>
                             </ul>
                         </div>
@@ -50,12 +52,14 @@
                             <p class="text-md">
                                 Plats :
                             </p>
-                            <ul class="ml-4 list-disc">
+                            <ul
+v-if="menu.dish.length>0"
+                            class="ml-4 list-disc">
                                 <li
-                                    v-for="plat in menu.plats"
-                                    :key="plat"
+                                    v-for="dish in menu.dish"
+                                    :key="dish"
                                 >
-                                    {{ plat }}
+                                    {{ dish.name }}
                                 </li>
                             </ul>
                         </div>
@@ -63,12 +67,14 @@
                             <p class="text-md">
                                 Desserts :
                             </p>
-                            <ul class="ml-4 list-disc">
+                            <ul
+                            v-if="menu.desserts.length>0"
+                            class="ml-4 list-disc">
                                 <li
                                     v-for="dessert in menu.desserts"
                                     :key="dessert"
                                 >
-                                    {{ dessert }}
+                                    {{ dessert.name }}
                                 </li>
                             </ul>
                         </div>
