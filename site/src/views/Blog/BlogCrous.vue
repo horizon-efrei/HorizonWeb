@@ -129,8 +129,8 @@ v-if="menu.dish.length>0"
                 <h3 class="text-xl font-bold">
                     Dernières informations
                 </h3>
-                <div class="mt-2 text-sm">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati cum voluptatum molestias adipisci id nihil voluptas quia, amet ipsum eaque reprehenderit aliquam aspernatur odio eum.
+                <div v-if="info!= null && info != undefined" class="mt-2 text-sm">
+                    {{info.content}}
                 </div>
             </div>
         </div>
@@ -146,9 +146,13 @@ export default {
         menu() {
             return this.$store.state.crous.menu
         },
+        info() {
+            return this.$store.state.crous.info
+        },
     },
     mounted() {
         this.$store.dispatch('crous/getMenuById',2)
+        this.$store.dispatch('crous/getInfoById',2)
     },
     methods: {
         joinedPlats: function joinedPlats(plats) {

@@ -18,10 +18,25 @@ export const crous = {
                 },
             )
         },
+        getInfoById({ commit },infoId) {
+            return crousService.getOneInfo(infoId).then(
+                success => {
+                    commit('fetchInfo',success)
+                    Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    Promise.reject(error)
+                },
+            )
+        },
     },
     mutations: {
         fetchMenu(state,success) {
             state.menu = success
+        },
+        fetchInfo(state,success) {
+            state.info = success
         },
     },
 }
