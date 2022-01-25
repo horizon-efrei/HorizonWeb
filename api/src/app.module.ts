@@ -10,6 +10,7 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { BadgesModule } from './badges/badges.module';
 import { ClubsModule } from './clubs/clubs.module';
 import { CommentsModule } from './comments/comments.module';
+import { CrousModule } from './crous/crous.module';
 import { FavoritesModule } from './favorites/favorites.module';
 import { FilesModule } from './files/files.module';
 import { HealthModule } from './health/health.module';
@@ -47,6 +48,7 @@ import { UsersModule } from './users/users.module';
     TagsModule,
     UsersModule,
     SocialsModule,
+    CrousModule,
   ],
   providers: [
     { provide: APP_GUARD, useClass: JwtAuthGuard },
