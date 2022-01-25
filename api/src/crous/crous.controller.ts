@@ -16,14 +16,23 @@ export class CrousController {
   constructor(private readonly crousService: CrousService) {}
 
   @Get()
-  public async getAllMenus(): Promise<void> {
-    // ...
-    await this.crousService.getAllMenus();
+  public async getAllMenus(): Promise<DailyMenu[]> {
+    return await this.crousService.getAllMenus();
   }
 
   @Post('/food')
   public async createFood(@Body() createFoodDto: CreateFoodDto): Promise<Food> {
     return await this.crousService.createFood(createFoodDto);
+  }
+
+  @Get('/food')
+  public async getFoods(): Promise<Food[]> {
+    return await this.crousService.getFoods();
+  }
+
+  @Get('/food/:foodId')
+  public async getOneFood(@Param('foodId')foodId: number): Promise<Food> {
+    return await this.crousService.getOneFood(foodId);
   }
 
   @Patch('/food/:foodId')

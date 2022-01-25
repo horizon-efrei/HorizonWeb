@@ -24,7 +24,7 @@ export class DailyMenu extends BaseEntity {
   entree = new Collection<Food>(this);
 
   @Property()
-  date !: Date;
+  date: Date;
 
   constructor(options: {
     date: Date;

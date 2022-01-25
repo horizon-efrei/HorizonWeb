@@ -16,8 +16,8 @@ export class CrousService {
     @InjectRepository(DailyMenu) private readonly dailyMenuRepository: BaseRepository<DailyMenu>,
   ) {}
 
-  public async getAllMenus(): Promise<void> {
-    await this.dailyMenuRepository.findAll();
+  public async getAllMenus(): Promise<DailyMenu[]> {
+    return await this.dailyMenuRepository.findAll({ populate: ['entree', 'dish', 'desserts'] });
   }
 
   public async createFood(createFoodDto: CreateFoodDto): Promise<Food> {
@@ -28,6 +28,10 @@ export class CrousService {
 
   public async getFoods(): Promise<Food[]> {
     return await this.foodRepository.findAll();
+  }
+
+  public async getOneFood(foodId: number): Promise<Food> {
+    return await this.foodRepository.findOneOrFail({ foodId });
   }
 
   public async updateFood(foodId: number, updateFoodDto: UpdateFoodDto): Promise<Food> {
@@ -49,20 +53,19 @@ export class CrousService {
     const desserts = await this.foodRepository.find({ foodId: { $in: createDailyMenuDto.desserts } });
 
     menu.entree.set(entree);
-    menu.entree.set(dish);
-    menu.entree.set(desserts);
+    menu.dish.set(dish);
+    menu.desserts.set(desserts);
 
     await this.dailyMenuRepository.persistAndFlush(menu);
     return menu;
   }
 
   public async getOneMenu(menuId: number): Promise<DailyMenu> {
-    return await this.dailyMenuRepository.findOneOrFail({ menuId });
+    return await this.dailyMenuRepository.findOneOrFail({ menuId }, { populate: ['entree', 'dish', 'desserts'] });
   }
 
   public async removeMenu(menuId: number): Promise<void> {
-    const menu = this.dailyMenuRepository.findOneOrFail({ menuId });
-    await this.dailyMenuRepository.removeAndFlush(menu);
+    await this.dailyMenuRepository.nativeDelete({ menuId });
   }
 
   public async updateMenu(menuId: number, updateDailyMenuDto: UpdateDailyMenuDto): Promise<DailyMenu> {

@@ -1,5 +1,5 @@
 import {
- IsArray, IsDate, IsNumber,
+ IsArray, IsDate,
 } from 'class-validator';
 
 export class CreateDailyMenuDto {
@@ -7,14 +7,11 @@ export class CreateDailyMenuDto {
   date: Date;
 
   @IsArray()
-  @IsNumber()
   entree: number[];
 
   @IsArray()
-  @IsNumber()
   dish: number[];
 
   @IsArray()
-  @IsNumber()
   desserts: number[];
 }
