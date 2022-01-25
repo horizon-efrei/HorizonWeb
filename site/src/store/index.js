@@ -1,10 +1,11 @@
 import { createStore } from 'vuex'
 import { auth } from './auth.module'
-import { posts } from './posts.module'
+import { crous } from './crous.module'
 import { files } from './files.module'
+import { posts } from './posts.module'
+import { thread } from './thread.module'
 import { userConfig } from './userConfig.module'
 import { users } from './users.module'
-import { thread } from './thread.module'
 
 const store = createStore({
     state: {},
@@ -15,6 +16,7 @@ const store = createStore({
         userConfig,
         users,
         thread,
+        crous,
     },
 })
 
