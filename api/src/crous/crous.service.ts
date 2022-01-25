@@ -2,10 +2,13 @@ import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
+import type { CreateDailyInfosDto } from './dto/create-dailyInfos.dto';
 import type { CreateDailyMenuDto } from './dto/create-dailyMenu.dto';
 import type { CreateFoodDto } from './dto/create-food.dto';
+import type { UpdateDailyInfosDto } from './dto/update-dailyInfos.dto';
 import type { UpdateDailyMenuDto } from './dto/update-dailyMenu.dto';
 import type { UpdateFoodDto } from './dto/update-food.dto';
+import { DailyInfos } from './entities/dailyInfos.entity';
 import { DailyMenu } from './entities/dailyMenu.entity';
 import { Food } from './entities/food.entity';
 
@@ -14,6 +17,7 @@ export class CrousService {
   constructor(
     @InjectRepository(Food) private readonly foodRepository: BaseRepository<Food>,
     @InjectRepository(DailyMenu) private readonly dailyMenuRepository: BaseRepository<DailyMenu>,
+    @InjectRepository(DailyInfos) private readonly dailyInfosRepository: BaseRepository<DailyInfos>,
   ) {}
 
   public async getAllMenus(): Promise<DailyMenu[]> {
@@ -78,5 +82,30 @@ export class CrousService {
     });
     await this.dailyMenuRepository.flush();
     return menu;
+  }
+
+  public async createDailyInfo(createDailyInfosDto: CreateDailyInfosDto): Promise<DailyInfos> {
+    const infos = new DailyInfos(createDailyInfosDto);
+    await this.dailyInfosRepository.persistAndFlush(infos);
+    return infos;
+  }
+
+  public async findDailyInfo(infoId: number): Promise<DailyInfos> {
+    return await this.dailyInfosRepository.findOneOrFail({ infoId });
+  }
+
+  public async findDailyInfos(): Promise<DailyInfos[]> {
+    return await this.dailyInfosRepository.findAll();
+  }
+
+  public async updateDailyInfo(infoId: number, updateDailyInfosDto: UpdateDailyInfosDto): Promise<DailyInfos> {
+    const info = await this.dailyInfosRepository.findOneOrFail({ infoId });
+    wrap(info).assign(updateDailyInfosDto);
+    await this.dailyInfosRepository.flush();
+    return info;
+  }
+
+  public async removeDailyInfo(infoId: number): Promise<void> {
+    await this.dailyInfosRepository.nativeDelete({ infoId });
   }
 }

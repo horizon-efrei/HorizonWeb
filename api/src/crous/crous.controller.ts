@@ -3,10 +3,13 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { CrousService } from './crous.service';
+import { CreateDailyInfosDto } from './dto/create-dailyInfos.dto';
 import { CreateDailyMenuDto } from './dto/create-dailyMenu.dto';
 import { CreateFoodDto } from './dto/create-food.dto';
+import { UpdateDailyInfosDto } from './dto/update-dailyInfos.dto';
 import { UpdateDailyMenuDto } from './dto/update-dailyMenu.dto';
 import { UpdateFoodDto } from './dto/update-food.dto';
+import type { DailyInfos } from './entities/dailyInfos.entity';
 import type { DailyMenu } from './entities/dailyMenu.entity';
 import type { Food } from './entities/food.entity';
 
@@ -15,7 +18,7 @@ import type { Food } from './entities/food.entity';
 export class CrousController {
   constructor(private readonly crousService: CrousService) {}
 
-  @Get()
+  @Get('/menu')
   public async getAllMenus(): Promise<DailyMenu[]> {
     return await this.crousService.getAllMenus();
   }
@@ -63,5 +66,30 @@ export class CrousController {
   @Patch('/menu/:menuId')
   public async updateMenu(@Param('menuId')menuId: number, @Body()updateDailyMenuDto: UpdateDailyMenuDto): Promise<DailyMenu> {
     return await this.crousService.updateMenu(menuId, updateDailyMenuDto);
+  }
+
+  @Post('/infos')
+  public async createInfos(@Body()createDailyInfosDto: CreateDailyInfosDto): Promise<DailyInfos> {
+    return await this.crousService.createDailyInfo(createDailyInfosDto);
+  }
+
+  @Get('/infos')
+  public async findAllInfos(): Promise<DailyInfos[]> {
+    return await this.crousService.findDailyInfos();
+  }
+
+  @Get('/infos/:infoId')
+  public async findOneInfo(@Param('infoId')infoId: number): Promise<DailyInfos> {
+    return await this.crousService.findDailyInfo(infoId);
+  }
+
+  @Patch('/infos/:infoId')
+  public async updateInfo(@Param('infoId')infoId: number, @Body()updateDailyInfosDto: UpdateDailyInfosDto): Promise<DailyInfos> {
+    return await this.crousService.updateDailyInfo(infoId, updateDailyInfosDto);
+  }
+
+  @Delete('/infos/:infoId')
+  public async removeInfo(@Param('infoId')infoId: number): Promise<void> {
+    await this.crousService.removeDailyInfo(infoId);
   }
 }
