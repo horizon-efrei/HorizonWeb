@@ -10,6 +10,14 @@ class CrousService {
     getOneInfo(infoId) {
         return axios.get(`${API_URL}/crous/infos/${infoId}`, { withCredentials: true }).then((res) => res.data)
     }
+
+    getToday() {
+        return axios.get(`${API_URL}/crous/today`, { withCredentials: true }).then(res => res.data)
+    }
+
+    getDate(date) {
+        return axios.get(`${API_URL}/crous/daily/${date}`, { withCredentials: true }).then(res => res.data)
+    }
 }
 
 export default new CrousService()

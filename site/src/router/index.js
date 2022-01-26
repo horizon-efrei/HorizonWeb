@@ -1,5 +1,5 @@
 import {
-    createRouter, createWebHashHistory, 
+    createRouter, createWebHashHistory,
 } from 'vue-router'
 
 const routes = [
@@ -79,8 +79,8 @@ const routes = [
     },
 
     {
-        path: '/crous',
-        component: () => import('@/views/Blog/BlogCrous.vue'),
+        path: '/crous/daily/:date',
+        component: () => import('@/views/Crous/ViewCrous.vue'),
     },
 ]
 

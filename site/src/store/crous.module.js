@@ -30,6 +30,30 @@ export const crous = {
                 },
             )
         },
+        getToday({ commit }) {
+            return crousService.getToday().then(
+                success => {
+                    commit('fetchDate',success)
+                    Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    Promise.reject(error)
+                },
+            )
+        },
+        getDate({ commit },date) {
+            return crousService.getDate(date).then(
+                success => {
+                    commit('fetchDate',success)
+                    Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    Promise.reject(error)
+                },
+            )
+        },
     },
     mutations: {
         fetchMenu(state,success) {
@@ -37,6 +61,10 @@ export const crous = {
         },
         fetchInfo(state,success) {
             state.info = success
+        },
+        fetchDate(state, success) {
+            state.menu = success.menu
+            state.info = success.infos
         },
     },
 }

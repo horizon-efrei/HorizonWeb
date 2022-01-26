@@ -108,4 +108,18 @@ export class CrousService {
   public async removeDailyInfo(infoId: number): Promise<void> {
     await this.dailyInfosRepository.nativeDelete({ infoId });
   }
+
+  public async getDateMenu(date: Date): Promise<DailyMenu | null> {
+    const today = { day: date.getDate(), mounth: date.getMonth(), year: date.getFullYear() };
+    const todayMidnight = new Date(today.year, today.mounth, today.day, 0, 0, 0);
+    const today23h59 = new Date(today.year, today.mounth, today.day, 23, 59, 59);
+    return await this.dailyMenuRepository.findOne({ date: { $gte: todayMidnight, $lt: today23h59 } }, { populate: ['entree', 'dish', 'desserts'] });
+  }
+
+  public async getDateInfos(date: Date): Promise<DailyInfos | null> {
+    const today = { day: date.getDate(), mounth: date.getMonth(), year: date.getFullYear() };
+    const todayMidnight = new Date(today.year, today.mounth, today.day, 0, 0, 0);
+    const today23h59 = new Date(today.year, today.mounth, today.day, 23, 59, 59);
+    return await this.dailyInfosRepository.findOne({ date: { $gte: todayMidnight, $lt: today23h59 } });
+  }
 }

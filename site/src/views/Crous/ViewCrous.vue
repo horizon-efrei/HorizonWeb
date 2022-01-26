@@ -21,19 +21,23 @@
     >
         <div class="flex flex-col order-2 gap-2 md:order-1 md:pl-4 md:w-2/3">
             <div class="rounded-none md:rounded-md card">
-                <div v-if="menu != null && menu != undefined">
 
-                    <div class="flex">
-                        <img
-                            class="my-auto w-16 h-16"
-                            src="https://cdn.discordapp.com/attachments/849667496184381480/933296458487173190/logo_crous.png"
-                        >
-                        <h3 class="my-auto ml-4 text-xl font-bold">
-                            Menu du Crous aujourd'hui
-                        </h3>
+                    <div class="flex justify-between items-center w-full">
+                        <div class="flex">
+                            <img
+                                class="my-auto w-16 h-16"
+                                src="https://cdn.discordapp.com/attachments/849667496184381480/933296458487173190/logo_crous.png"
+                            >
+                            <h3 class="my-auto ml-4 text-xl font-bold">
+                                Menu du Crous aujourd'hui
+                            </h3>
+                        </div>
+                        <div>
+                            <input v-model="date" class="input" type="date">
+                        </div>
                     </div>
-                    <div class="flex flex-col gap-4 justify-between mt-6 mb-4 sm:flex-row">
-                        <div class="ml-4">
+                    <div v-if="menu != null && menu != undefined" class="flex flex-col gap-4 justify-between mt-6 mb-4 sm:flex-row">
+                        <div class="ml-4 w-1/3">
                             <p class="text-md">
                                 Entrées :
                             </p>
@@ -48,12 +52,12 @@
                                 </li>
                             </ul>
                         </div>
-                        <div class="ml-4">
+                        <div class="ml-4 w-1/3">
                             <p class="text-md">
                                 Plats :
                             </p>
                             <ul
-v-if="menu.dish.length>0"
+                            v-if="menu.dish.length>0"
                             class="ml-4 list-disc">
                                 <li
                                     v-for="dish in menu.dish"
@@ -63,7 +67,7 @@ v-if="menu.dish.length>0"
                                 </li>
                             </ul>
                         </div>
-                        <div class="ml-4">
+                        <div class="ml-4 w-1/3">
                             <p class="text-md">
                                 Desserts :
                             </p>
@@ -79,7 +83,7 @@ v-if="menu.dish.length>0"
                             </ul>
                         </div>
                     </div>
-            </div>
+                    <div v-else>Il n'y a pas de menu renseigné pour aujourd'hui</div>
             </div>
             <div class="rounded-none md:rounded-md card">
                 <div class="flex mb-4">
@@ -132,15 +136,18 @@ v-if="menu.dish.length>0"
                 <div v-if="info!= null && info != undefined" class="mt-2 text-sm">
                     {{info.content}}
                 </div>
+                <div v-else> Il n'y a pas d'informations particulières</div>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { watch } from 'vue';
+
 export default {
     data() {
-        return {};
+        return { date: this.$route.params.date != 'today' ? this.$route.params.date : new Date().toISOString().split('T').shift() };
     },
     computed: {
         menu() {
@@ -151,8 +158,18 @@ export default {
         },
     },
     mounted() {
-        this.$store.dispatch('crous/getMenuById',2)
-        this.$store.dispatch('crous/getInfoById',2)
+        if (this.$route.params.date === 'today')
+            this.$store.dispatch('crous/getToday')
+        else {
+            this.$store.dispatch('crous/getDate',this.$route.params.date)
+        }
+        watch(
+            () => this.date,
+            () => {
+                this.$router.push(`/crous/daily/${this.date}`)
+                this.$store.dispatch('crous/getDate',this.date)
+            },
+        )
     },
     methods: {
         joinedPlats: function joinedPlats(plats) {

@@ -92,4 +92,22 @@ export class CrousController {
   public async removeInfo(@Param('infoId')infoId: number): Promise<void> {
     await this.crousService.removeDailyInfo(infoId);
   }
+
+  @Get('/today')
+  public async getToday(): Promise<{ menu: DailyMenu | null; infos: DailyInfos | null }> {
+    const today = new Date();
+    return {
+      menu: await this.crousService.getDateMenu(today),
+      infos: await this.crousService.getDateInfos(today),
+    };
+  }
+
+  @Get('/daily/:date')
+  public async getDate(@Param('date')date: string): Promise<{ menu: DailyMenu | null; infos: DailyInfos | null }> {
+    const wantedDate = new Date(date);
+    return {
+      menu: await this.crousService.getDateMenu(wantedDate),
+      infos: await this.crousService.getDateInfos(wantedDate),
+    };
+  }
 }
