@@ -7,10 +7,10 @@ export class CreateDailyMenuDto {
   date: Date;
 
   @IsArray()
-  entree: number[];
+  starters: number[];
 
   @IsArray()
-  dish: number[];
+  dishes: number[];
 
   @IsArray()
   desserts: number[];

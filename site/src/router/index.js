@@ -82,6 +82,11 @@ const routes = [
         path: '/crous/daily/:date',
         component: () => import('@/views/Crous/ViewCrous.vue'),
     },
+
+    {
+        path: '/crous/form',
+        component: () => import('@/views/Crous/FormCrous.vue'),
+    },
 ]
 
 if (import.meta.env.DEV) {

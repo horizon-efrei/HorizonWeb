@@ -52,12 +52,12 @@ export class CrousService {
 
   public async createDailyMenu(createDailyMenuDto: CreateDailyMenuDto): Promise<DailyMenu> {
     const menu = new DailyMenu({ date: createDailyMenuDto.date });
-    const entree = await this.foodRepository.find({ foodId: { $in: createDailyMenuDto.entree } });
-    const dish = await this.foodRepository.find({ foodId: { $in: createDailyMenuDto.dish } });
+    const starters = await this.foodRepository.find({ foodId: { $in: createDailyMenuDto.starters } });
+    const dishes = await this.foodRepository.find({ foodId: { $in: createDailyMenuDto.dishes } });
     const desserts = await this.foodRepository.find({ foodId: { $in: createDailyMenuDto.desserts } });
 
-    menu.entree.set(entree);
-    menu.dish.set(dish);
+    menu.starters.set(starters);
+    menu.dishes.set(dishes);
     menu.desserts.set(desserts);
 
     await this.dailyMenuRepository.persistAndFlush(menu);
@@ -65,7 +65,7 @@ export class CrousService {
   }
 
   public async getOneMenu(menuId: number): Promise<DailyMenu> {
-    return await this.dailyMenuRepository.findOneOrFail({ menuId }, { populate: ['entree', 'dish', 'desserts'] });
+    return await this.dailyMenuRepository.findOneOrFail({ menuId }, { populate: ['starters', 'dishes', 'desserts'] });
   }
 
   public async removeMenu(menuId: number): Promise<void> {
@@ -74,11 +74,11 @@ export class CrousService {
 
   public async updateMenu(menuId: number, updateDailyMenuDto: UpdateDailyMenuDto): Promise<DailyMenu> {
     const menu = await this.dailyMenuRepository.findOneOrFail({ menuId });
-    const entree = await this.foodRepository.find({ foodId: { $in: updateDailyMenuDto.entree } });
-    const dish = await this.foodRepository.find({ foodId: { $in: updateDailyMenuDto.dish } });
+    const starters = await this.foodRepository.find({ foodId: { $in: updateDailyMenuDto.starters } });
+    const dishes = await this.foodRepository.find({ foodId: { $in: updateDailyMenuDto.dishes } });
     const desserts = await this.foodRepository.find({ foodId: { $in: updateDailyMenuDto.desserts } });
     wrap(menu).assign({
-      date: updateDailyMenuDto.date, entree, dish, desserts,
+      date: updateDailyMenuDto.date, starters, dishes, desserts,
     });
     await this.dailyMenuRepository.flush();
     return menu;
@@ -113,7 +113,7 @@ export class CrousService {
     const today = { day: date.getDate(), mounth: date.getMonth(), year: date.getFullYear() };
     const todayMidnight = new Date(today.year, today.mounth, today.day, 0, 0, 0);
     const today23h59 = new Date(today.year, today.mounth, today.day, 23, 59, 59);
-    return await this.dailyMenuRepository.findOne({ date: { $gte: todayMidnight, $lt: today23h59 } }, { populate: ['entree', 'dish', 'desserts'] });
+    return await this.dailyMenuRepository.findOne({ date: { $gte: todayMidnight, $lt: today23h59 } }, { populate: ['starters', 'dishes', 'desserts'] });
   }
 
   public async getDateInfos(date: Date): Promise<DailyInfos | null> {

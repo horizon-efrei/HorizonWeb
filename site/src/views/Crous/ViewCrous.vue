@@ -42,13 +42,13 @@
                                 Entrées :
                             </p>
                             <ul
-                            v-if="menu.entree.length>0"
+                            v-if="menu.starters.length>0"
                             class="ml-4 list-disc">
                                 <li
-                                    v-for="entree in menu.entree"
-                                    :key="entree"
+                                    v-for="starter in menu.starters"
+                                    :key="starter"
                                 >
-                                    {{ entree.name }}
+                                    {{ starter.name }}
                                 </li>
                             </ul>
                         </div>
@@ -57,10 +57,10 @@
                                 Plats :
                             </p>
                             <ul
-                            v-if="menu.dish.length>0"
+                            v-if="menu.dishes.length>0"
                             class="ml-4 list-disc">
                                 <li
-                                    v-for="dish in menu.dish"
+                                    v-for="dish in menu.dishes"
                                     :key="dish"
                                 >
                                     {{ dish.name }}

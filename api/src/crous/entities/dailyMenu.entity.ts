@@ -13,15 +13,15 @@ export class DailyMenu extends BaseEntity {
 
   @ManyToMany()
   @TransformCollection()
+  starters = new Collection<Food>(this);
+
+  @ManyToMany()
+  @TransformCollection()
+  dishes = new Collection<Food>(this);
+
+  @ManyToMany()
+  @TransformCollection()
   desserts = new Collection<Food>(this);
-
-  @ManyToMany()
-  @TransformCollection()
-  dish = new Collection<Food>(this);
-
-  @ManyToMany()
-  @TransformCollection()
-  entree = new Collection<Food>(this);
 
   @Property()
   date: Date;

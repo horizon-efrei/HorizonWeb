@@ -18,6 +18,21 @@ class CrousService {
     getDate(date) {
         return axios.get(`${API_URL}/crous/daily/${date}`, { withCredentials: true }).then(res => res.data)
     }
+
+    getFood() {
+        return axios.get(`${API_URL}/crous/food`, { withCredentials: true }).then(res => res.data)
+    }
+
+    postMenu({
+        starters,dishes,desserts,date, 
+    }) {
+        return axios.post(`${API_URL}/crous/menu`, {
+            starters,
+            dishes,
+            desserts,
+            date, 
+        }, { withCredentials: true }).then(res => res.data)
+    }
 }
 
 export default new CrousService()

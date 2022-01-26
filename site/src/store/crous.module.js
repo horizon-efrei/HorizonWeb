@@ -1,6 +1,9 @@
 import crousService from '@/services/crous.service'
 
-const initialState = { menu: null }
+const initialState = {
+    menu: null,
+    food: [],
+}
 
 export const crous = {
     namespaced: true,
@@ -54,6 +57,37 @@ export const crous = {
                 },
             )
         },
+        getFood({ commit }) {
+            return crousService.getFood().then(
+                success => {
+                    commit('fetchFood',success)
+                    Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    Promise.reject(error)
+                },
+            )
+        },
+        postMenu({ commit },{
+            starters,dishes,desserts,date, 
+        }) {
+            return crousService.postMenu({
+                starters,
+                dishes,
+                desserts,
+                date, 
+            }).then(
+                success => {
+                    commit('fetchMenu',success)
+                    Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    Promise.reject(error)
+                },
+            )
+        },
     },
     mutations: {
         fetchMenu(state,success) {
@@ -65,6 +99,9 @@ export const crous = {
         fetchDate(state, success) {
             state.menu = success.menu
             state.info = success.infos
+        },
+        fetchFood(state, success) {
+            state.food = success
         },
     },
 }
