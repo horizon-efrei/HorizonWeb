@@ -70,16 +70,33 @@ export const crous = {
             )
         },
         postMenu({ commit },{
-            starters,dishes,desserts,date, 
+            starters,dishes,desserts,date,
         }) {
             return crousService.postMenu({
                 starters,
                 dishes,
                 desserts,
-                date, 
+                date,
             }).then(
                 success => {
                     commit('fetchMenu',success)
+                    Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    Promise.reject(error)
+                },
+            )
+        },
+        postFood({ commit },{
+            name,type,
+        }) {
+            return crousService.postFood({
+                name,
+                type,
+            }).then(
+                success => {
+                    commit('updateFood',success)
                     Promise.resolve(success)
                 },
                 error => {
@@ -102,6 +119,9 @@ export const crous = {
         },
         fetchFood(state, success) {
             state.food = success
+        },
+        updateFood(state,success) {
+            state.food = [...state.food,success]
         },
     },
 }

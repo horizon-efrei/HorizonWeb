@@ -24,13 +24,22 @@ class CrousService {
     }
 
     postMenu({
-        starters,dishes,desserts,date, 
+        starters,dishes,desserts,date,
     }) {
         return axios.post(`${API_URL}/crous/menu`, {
             starters,
             dishes,
             desserts,
-            date, 
+            date,
+        }, { withCredentials: true }).then(res => res.data)
+    }
+
+    postFood({
+        name,type,
+    }) {
+        return axios.post(`${API_URL}/crous/food`, {
+            name,
+            type,
         }, { withCredentials: true }).then(res => res.data)
     }
 }

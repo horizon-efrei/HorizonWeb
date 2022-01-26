@@ -43,7 +43,7 @@
                                 <p class=" text-sm text-blue-500">Ajouter une entree</p>
                             </button>
                         </div>
-                        <div v-for="(starter,idx) in menu.starters" :key="starter" class="mb-4">
+                        <div v-for="(starter,idx) in menu.starters" :key="starter" class="mb-2">
                             <SelectInput v-model="menu.starters[idx]" :model-value="food.filter((a) => a.type === 1).indexOf(starter)" :max-content-width="true" :choices="food.filter((a) => a.type === 1).map(a => a.name)"></SelectInput>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                                 <p class=" text-sm text-blue-500">Ajouter un plat</p>
                             </button>
                         </div>
-                        <div v-for="(dish,idx) in menu.dishes" :key="dish" class="mb-4">
+                        <div v-for="(dish,idx) in menu.dishes" :key="dish" class="mb-2">
                             <SelectInput v-model="menu.dishes[idx]" :model-value="food.filter((a) => a.type === 2).indexOf(dish)" :max-content-width="true" :choices="food.filter((a) => a.type === 2).map(a => a.name)"></SelectInput>
                         </div>
                     </div>
@@ -65,13 +65,33 @@
                                 <p class=" text-sm text-blue-500">Ajouter un dessert</p>
                             </button>
                         </div>
-                        <div v-for="(dessert,idx) in menu.desserts" :key="idx" class="mb-4">
+                        <div v-for="(dessert,idx) in menu.desserts" :key="idx" class="mb-2">
                             <SelectInput v-model="menu.desserts[idx]" :model-value="food.filter((a) => a.type === 3).indexOf(dessert)" :max-content-width="true" :choices="food.filter((a) => a.type === 3).map(a => a.name)"></SelectInput>
                         </div>
                     </div>
                 </div>
-                <button class="mt-8 button" @click="submitMenu()">
+                <button class="mt-4 mb-8 button" @click="submitMenu()">
                     <p>Enregistrer le Menu</p>
+                </button>
+            </div>
+            <div class="flex items-center">
+                <div class="text-lg font-bold">Un plat manque à la liste ?</div>
+                <button class="ml-2 text-sm text-blue-500" @click="toggleFoodForm()">Ajouter un plat</button>
+            </div>
+            <div v-if="showFoodForm">
+                <div class="flex">
+                    <div class="mb-2">
+                        <div>Nom du plat</div>
+                        <input v-model="foodForm.name" class="input">
+                    </div>
+                    <div class="mb-2 ml-4">
+                        <div >Type de Plat</div>
+                        <SelectInput v-model="foodForm.type" :choices="['Entrée','Plat','Dessert']"></SelectInput>
+                    </div>
+                </div>
+
+                <button class="button" @click="submitFood()">
+                    <p>Enregistrer</p>
                 </button>
             </div>
         </div>
@@ -91,6 +111,11 @@ export default {
                 starters: [],
             },
             date: new Date().toISOString().split('T').shift(),
+            showFoodForm: false,
+            foodForm: {
+                name: null,
+                type: null,
+            },
         }
     },
     computed: {
@@ -132,12 +157,21 @@ export default {
         addStarter: function addStarter() {
             this.menu.starters.push(null)
         },
+        toggleFoodForm: function toggleFoodForm() {
+            this.showFoodForm = !this.showFoodForm
+        },
         submitMenu: function submitMenu() {
             this.$store.dispatch('crous/postMenu', {
                 starters: this.menu.starters.map(a => a.foodId),
                 dishes: this.menu.dishes.map(a => a.foodId),
                 desserts: this.menu.desserts.map(a => a.foodId),
                 date: this.date,
+            })
+        },
+        submitFood: function submitFood() {
+            this.$store.dispatch('crous/postFood', {
+                name: this.foodForm.name,
+                type: this.foodForm.type +1,
             })
         },
     },
