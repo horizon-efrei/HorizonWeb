@@ -1,9 +1,12 @@
 import {
   Controller,
   Get,
+  Post,
   Param,
   Query,
+  Body,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import type { SearchResponse } from 'typesense/lib/Typesense/Documents';
@@ -15,6 +18,7 @@ import { UserSearchService } from './user-search.service';
 import type { IndexedUser } from './user-search.service';
 import type { User } from './user.entity';
 import { UsersService } from './users.service';
+import { RegisterDto } from 'src/auth/dto/register.dto';
 
 @ApiTags('Users')
 @Controller({ path: 'users' })
@@ -46,4 +50,16 @@ export class UsersController {
       return await this.userSearchService.searchAndPopulate(query);
     return await this.userSearchService.search(query);
   }
+
+  /* May be an error here */
+  @Post()
+  public async create(@Body() createdUser: RegisterDto) {
+    this.usersService.create(createdUser);
+  }
+
+  @Delete(':id')
+  async deleteUser(@Param('id') id: string) {
+    return await this.usersService.deleteUser(id)
+  }
+
 }

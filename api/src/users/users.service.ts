@@ -43,4 +43,11 @@ export class UsersService {
     await this.userSearchService.add(user);
     return user;
   }
+
+  // return TRUE if the user is deleted ... and false in another case
+  public async deleteUser(userId: string): Promise<boolean> {
+    const user = await this.userRepository.findOneOrFail({ userId });
+    return Boolean(this.userRepository.remove(user))
+  }
+
 }
