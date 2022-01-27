@@ -126,6 +126,7 @@
 <script>
 import AppAlert from '@/components/App/AppAlert.vue';
 import SelectInput from '@/components/Input/SelectInput.vue';
+import _ from 'lodash';
 import { watch } from 'vue';
 
 export default {
@@ -166,6 +167,7 @@ export default {
     },
     mounted() {
         this.$store.dispatch('crous/getFood')
+        this.$store.dispatch('crous/getToday')
         watch(
             () => this.menu,
             () => {
@@ -186,6 +188,31 @@ export default {
                 }
             },
             { deep: true },
+        )
+        watch(
+            () => this.date,
+            () => {
+                this.$store.dispatch('crous/getDate',this.date)
+            },
+        )
+        watch(
+            () => this.$store.state.crous.menu,
+            () => {
+                if (this.$store.state.crous.menu === null) {
+                    this.$store.state.crous.menu = {
+                        desserts: [],
+                        dishes: [],
+                        starters: [],
+                    }
+                }
+                this.menu = _.cloneDeep(this.$store.state.crous.menu)
+                this.menu = {
+                    starters: this.menu.starters.map((b) => this.food.filter((a) => a.type === 1).indexOf(this.food.find((a) => b.foodId === a.foodId))),
+                    dishes: this.menu.dishes.map((b) => this.food.filter((a) => a.type === 2).indexOf(this.food.find((a) => b.foodId === a.foodId))),
+                    desserts: this.menu.desserts.map((b) => this.food.filter((a) => a.type === 3).indexOf(this.food.find((a) => b.foodId === a.foodId))),
+                }
+                console.log(this.menu)
+            },
         )
     },
     methods: {
