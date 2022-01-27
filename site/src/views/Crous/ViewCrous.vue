@@ -36,7 +36,7 @@
                             <input v-model="date" class="input" type="date">
                         </div>
                     </div>
-                    <div v-if="menu != null && menu != undefined" class="flex flex-col gap-4 justify-between mt-6 mb-4 sm:flex-row">
+                    <div v-if="(menu != null && menu != undefined) " class="flex flex-col gap-4 justify-between mt-6 mb-4 sm:flex-row">
                         <div class="ml-4 w-1/3">
                             <p class="text-md">
                                 Entrées :
@@ -83,7 +83,7 @@
                             </ul>
                         </div>
                     </div>
-                    <div v-else>Il n'y a pas de menu renseigné pour aujourd'hui</div>
+                    <div v-else class="mt-4">Il n'y a pas de menu renseigné pour aujourd'hui</div>
             </div>
             <div class="rounded-none md:rounded-md card">
                 <div class="flex mb-4">

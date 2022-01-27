@@ -230,7 +230,7 @@ export default {
                     },
                 )
             } else {
-                if (this.menu.starters.length === 0 || this.menu.dishes.length === 0 || this.menu.desserts.length === 0 ) {
+                if (this.menu.starters.length === 0 && this.menu.dishes.length === 0 && this.menu.desserts.length === 0 ) {
                     this.validateMenuMessage = 'Veuillez ajouter au moins un element'
                 } else {
                     this.validateMenuMessage = 'Veuillez ne laisser aucun déroulant vide'
