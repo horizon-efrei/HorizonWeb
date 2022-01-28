@@ -71,12 +71,11 @@ export class StudyDocsController {
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, StudyDoc))
   public async findAllStudyDocs(
-    @Body() filters: DocsFilterDto,
-    @Query() query: PaginateDto,
+    @Query() query: DocsFilterDto,
   ): Promise<PaginatedResult<StudyDoc>> {
     if (query.page)
-      return await this.studyDocsService.findAll(filters, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.studyDocsService.findAll(filters);
+      return await this.studyDocsService.findAll(query, { page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
+    return await this.studyDocsService.findAll(query);
   }
 
   @Get('/categories')
