@@ -6,6 +6,7 @@ import { profiles } from './profiles.module'
 import { reports } from './reports.modules'
 import { threads } from './threads.module'
 import { user } from './user.module'
+import { crous } from './crous.module'
 
 const store = createStore({
     state: {},
@@ -16,6 +17,7 @@ const store = createStore({
         reports,
         threads,
         user,
+        crous,
     },
 })
 

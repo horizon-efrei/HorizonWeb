@@ -38,7 +38,7 @@ const routes = [
 
     {
         path: '/posts',
-        component: () => import('@/views/Thread/Threads.vue'),
+        component: () => import('@/views/Thread/ThreadList.vue'),
     },
 
     {
@@ -82,8 +82,13 @@ const routes = [
     },
 
     {
-        path: '/crous',
-        component: () => import('@/views/Blog/BlogCrous.vue'),
+        path: '/crous/daily/:date',
+        component: () => import('@/views/Crous/ViewCrous.vue'),
+    },
+
+    {
+        path: '/crous/form',
+        component: () => import('@/views/Crous/FormCrous.vue'),
     },
 ]
 
