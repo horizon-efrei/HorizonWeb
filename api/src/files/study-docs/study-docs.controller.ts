@@ -21,7 +21,6 @@ import { StudyDocCategoryType } from '../../shared/lib/types/docs-category.type'
 import type { Category } from '../../shared/lib/types/docs-category.type';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
-import { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../../shared/modules/search/search.dto';
 import { User } from '../../users/user.entity';
