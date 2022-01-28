@@ -136,6 +136,20 @@ const routes = [
             requiresAuth: true,
         },
     },
+    {
+        path: '/crous/daily/:date',
+        component: () => import('@/views/Crous/ViewCrous.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+    {
+        path: '/crous/form',
+        component: () => import('@/views/Crous/FormCrous.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
 
     {
         path: '/:pathMatch(.*)*',
