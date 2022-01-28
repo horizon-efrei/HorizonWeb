@@ -241,21 +241,42 @@ export default {
         submitMenu: function submitMenu() {
             this.showMenuValidation = false
             if (this.isValidFormMenu()) {
-                this.$store.dispatch('crous/postMenu', {
-                    starters: this.menu.starters.map(a => a.foodId),
-                    dishes: this.menu.dishes.map(a => a.foodId),
-                    desserts: this.menu.desserts.map(a => a.foodId),
-                    date: this.date,
-                }).then(
-                    () => {
-                        this.validateMenuMessage = 'Création réussie'
-                        this.menuFormStatus = true
-                    },
-                    () => {
-                        this.validateMenuMessage = 'Création failed'
-                        this.menuFormStatus = false
-                    },
-                )
+                if ( this.$store.state.crous.menu === null) {
+                    this.$store.dispatch('crous/postMenu', {
+                        starters: this.menu.starters.map(a => a.foodId),
+                        dishes: this.menu.dishes.map(a => a.foodId),
+                        desserts: this.menu.desserts.map(a => a.foodId),
+                        date: this.date,
+                    }).then(
+                        () => {
+                            this.validateMenuMessage = 'Création réussie'
+                            this.menuFormStatus = true
+                        },
+                        () => {
+                            this.validateMenuMessage = 'Création failed'
+                            this.menuFormStatus = false
+                        },
+                    )
+                } else {
+                    this.$store.dispatch('crous/updateMenu', {
+                        menuId: this.$store.state.crous.menu.menuId,
+                        menu: {
+                            starters: this.menu.starters.map(a => a.foodId),
+                            dishes: this.menu.dishes.map(a => a.foodId),
+                            desserts: this.menu.desserts.map(a => a.foodId),
+                            date: this.$store.state.crous.menu.date,
+                        },
+                    }).then(
+                        () => {
+                            this.validateMenuMessage = 'Mise à jour du menu réussie'
+                            this.menuFormStatus = true
+                        },
+                        () => {
+                            this.validateMenuMessage = 'Echec de la mise à jour du menu'
+                            this.menuFormStatus = false
+                        },
+                    )
+                }
             } else {
                 if (this.menu.starters.length === 0 && this.menu.dishes.length === 0 && this.menu.desserts.length === 0 ) {
                     this.validateMenuMessage = 'Veuillez ajouter au moins un element'

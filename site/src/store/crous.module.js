@@ -105,6 +105,23 @@ export const crous = {
                 },
             )
         },
+        updateMenu({ commit },{
+            menuId,menu,
+        }) {
+            return crousService.updateMenu({
+                menuId,
+                menu,
+            }).then(
+                success => {
+                    commit('fetchMenu',success)
+                    Promise.resolve(success)
+                },
+                error => {
+                    console.log(error)
+                    Promise.reject(error)
+                },
+            )
+        },
     },
     mutations: {
         fetchMenu(state,success) {

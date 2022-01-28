@@ -42,6 +42,12 @@ class CrousService {
             type,
         }, { withCredentials: true }).then(res => res.data)
     }
+
+    updateMenu({
+        menuId,menu,
+    }) {
+        return axios.patch(`${API_URL}/crous/menu/${menuId}`,{ ...menu }, { withCredentials: true }).then(res => res.data)
+    }
 }
 
 export default new CrousService()
