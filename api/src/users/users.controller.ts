@@ -53,13 +53,13 @@ export class UsersController {
 
   /* May be an error here */
   @Post()
-  public async create(@Body() createdUser: RegisterDto) {
-    this.usersService.create(createdUser);
+  public async create(@Body() createdUser: RegisterDto): Promise<User> {
+    return await this.usersService.create(createdUser);
   }
 
   @Delete(':id')
-  async deleteUser(@Param('id') id: string) {
-    return await this.usersService.deleteUser(id)
+  public async deleteUser(@Param('id') id: string) {
+    await this.usersService.deleteUser(id)
   }
 
 }
