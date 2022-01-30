@@ -1,25 +1,19 @@
-import {
-  IsEnum,
-  IsInt,
-  IsString,
-} from 'class-validator';
+import { IsEnum, IsInt, IsString } from 'class-validator';
 import { BadgeLevel } from '../../shared/lib/types/badge-level.enum';
+import { Statistic } from '../../shared/lib/types/statistic.enum';
 
 export class CreateBadgeDto {
   @IsString()
   name: string;
 
   @IsString()
-  slug: string;
-
-  @IsString()
   description: string;
 
   @IsInt()
-  value: number;
+  pointPrize: number;
 
   @IsInt()
-  limit: number;
+  statisticThreshold: number;
 
   @IsEnum(BadgeLevel)
   level: BadgeLevel;
@@ -30,6 +24,6 @@ export class CreateBadgeDto {
   @IsString()
   serie: string;
 
-  @IsString()
-  stat: string;
+  @IsEnum(Statistic)
+  statistic: Statistic;
 }

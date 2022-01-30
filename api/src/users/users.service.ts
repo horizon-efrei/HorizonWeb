@@ -6,7 +6,8 @@ import type { RegisterDto } from '../auth/dto/register.dto';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
-import type { Stat } from '../stats/userStat.entity';
+import { Statistics } from '../statistics/statistics.entity';
+import { StatisticsService } from '../statistics/statistics.service';
 import type { UpdateUserDto } from './dto/update-user.dto';
 import { UserSearchService } from './user-search.service';
 import { User } from './user.entity';
@@ -15,7 +16,9 @@ import { User } from './user.entity';
 export class UsersService {
   constructor(
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    @InjectRepository(Statistics) private readonly statisticsRepository: BaseRepository<Statistics>,
     private readonly userSearchService: UserSearchService,
+    private readonly statisticsService: StatisticsService,
   ) {}
 
   public async findOneById(userId: string): Promise<User> {
@@ -44,29 +47,9 @@ export class UsersService {
     return await this.userRepository.findWithPagination(paginationOptions);
   }
 
-  public async getUserStats(userId: string): Promise<Stat | null> {
-    const user = await this.userRepository.findOne({ userId });
-    if (user != null) {
-      const sameDay = (first: Date, second: Date): boolean => (first.getFullYear() === second.getFullYear()
-      && first.getMonth() === second.getMonth()
-      && first.getDate() === second.getDate());
-      const now = new Date();
-      if (!sameDay(now, user.stat.lastAction))
-        user.stat.actionStreak = 0;
-
-      if (!sameDay(now, user.stat.lastPost))
-        user.stat.postStreak = 0;
-
-      if (!sameDay(now, user.stat.lastReply))
-        user.stat.replyStreak = 0;
-
-      if (!sameDay(now, user.stat.lastComment))
-        user.stat.commentStreak = 0;
-
-
-      await this.userRepository.flush();
-      return user.stat;
-    }
-    return user;
+  public async getUserStats(userId: string): Promise<Statistics> {
+    const stats = await this.statisticsRepository.findOneOrFail({ user: { userId } });
+    const streaks = await this.statisticsService.getAllStreaks(stats);
+    return { ...stats, ...streaks };
   }
 }

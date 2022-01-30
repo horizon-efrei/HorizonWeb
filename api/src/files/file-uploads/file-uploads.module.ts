@@ -3,9 +3,6 @@ import path from 'node:path';
 import { MikroOrmModule } from '@mikro-orm/nestjs';
 import type { OnModuleInit } from '@nestjs/common';
 import { Logger, Module } from '@nestjs/common';
-import { BadgeUnlock } from '../../badges/badge-unlock.entity';
-import { Badge } from '../../badges/badge.entity';
-import { BadgesModule } from '../../badges/badges.module';
 import { config } from '../../config';
 import { FileKind } from '../../shared/lib/types/file-kind.enum';
 import { enumKeys } from '../../shared/lib/utils/enumKeys';
@@ -15,7 +12,9 @@ import { FileUpload } from './file-upload.entity';
 import { FileUploadsService } from './file-uploads.service';
 
 @Module({
-  imports: [MikroOrmModule.forFeature([FileUpload, Badge, BadgeUnlock]), BadgesModule],
+  imports: [
+    MikroOrmModule.forFeature([FileUpload]),
+  ],
   controllers: [],
   providers: [CaslAbilityFactory, FileUploadsService, FilePersistanceService],
   exports: [FileUploadsService],

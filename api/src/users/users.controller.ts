@@ -15,7 +15,7 @@ import { TypesenseGuard } from '../shared/lib/guards/typesense.guard';
 import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { SearchDto } from '../shared/modules/search/search.dto';
-import type { Stat } from '../stats/userStat.entity';
+import type { Statistics } from '../statistics/statistics.entity';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { UserSearchService } from './user-search.service';
 import type { IndexedUser } from './user-search.service';
@@ -54,8 +54,8 @@ export class UsersController {
     return await this.usersService.findAll();
   }
 
-  @Get('/:userId/stat')
-  public async getUserStats(@Param('userId') userId: string): Promise<Stat | null> {
+  @Get('/:userId/statistics')
+  public async getUserStats(@Param('userId') userId: string): Promise<Statistics | null> {
     return await this.usersService.getUserStats(userId);
   }
 
