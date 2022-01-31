@@ -4,10 +4,11 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import type { NestExpressApplication } from '@nestjs/platform-express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import cookieParser from 'cookie-parser';
+import session from 'express-session';
 import helmet from 'helmet';
 import { AppModule } from './app.module';
 import { config } from './shared/configs/config';
-import { client } from './shared/configs/typesense.config';
+import { computedConfig, client } from './shared/configs/typesense.config';
 import { ExceptionsFilter } from './shared/lib/filters/exceptions.filter';
 import { TypesenseFilter } from './shared/lib/filters/typesense.filter';
 import { logger as loggerMiddleware } from './shared/lib/middlewares/logger.middleware';
@@ -49,8 +50,15 @@ async function bootstrap(): Promise<void> {
   app.use(helmet());
   app.use(loggerMiddleware);
   app.use(cookieParser(config.get('cookieSignature')));
+  app.use(
+    session({
+      secret: 'my-secret',
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
 
-  app.enableCors({ origin: config.get('frontendUrl'), credentials: true });
+  app.enableCors({ origin: computedConfig.frontendUrl, credentials: true });
   app.enableShutdownHooks();
   app.useGlobalPipes(new ValidationPipe({
     transform: true,

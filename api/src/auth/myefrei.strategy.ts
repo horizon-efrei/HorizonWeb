@@ -1,13 +1,15 @@
+import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-oauth2';
 import { firstValueFrom } from 'rxjs';
-import { config } from '../shared/configs/config';
+import { computedConfig, config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { User } from '../users/user.entity';
 import { UsersService } from '../users/users.service';
+import { MyEfreiDto } from './dto/myefrei.dto';
 
 @Injectable()
 export class MyEfreiStrategy extends PassportStrategy(Strategy, 'myefrei') {
@@ -21,28 +23,29 @@ export class MyEfreiStrategy extends PassportStrategy(Strategy, 'myefrei') {
       tokenURL: config.get('myefreiOauthTokenUrl'),
       clientID: config.get('myefreiOauthClientId'),
       clientSecret: config.get('myefreiOauthClientSecret'),
-      callbackURL: 'https://api.horizon-efrei.fr/auth/myefrei/callback',
+      callbackURL: `${computedConfig.apiUrl}/auth/myefrei/callback`,
+      state: true,
     });
   }
 
   public async validate(accessToken: string): Promise<User> {
-    const result = this.httpService.get(config.get('myefreiOauthUserUrl'), {
+    const result = this.httpService.get<MyEfreiDto>(config.get('myefreiOauthUserUrl'), {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     const { data } = await firstValueFrom(result);
-    console.log('DEBUG: returned user:', data);
 
+    // TODO: Check + Add roles
     const user = await this.userRepository.findOne({ userId: data.username });
-    if (user)
+    const creationOptions = MyEfreiDto.normalize(data);
+    if (!user)
+      return await this.userService.create(creationOptions);
+
+    if (!user.hasChanged(creationOptions))
       return user;
 
-    return await this.userService.create({
-      email: data.email,
-      username: data.username,
-      firstname: data.firstname,
-      lastname: data.name,
-      fullname: data.fullName,
-    });
+    wrap(user).assign(creationOptions);
+    await this.userRepository.flush();
+    return user;
   }
 }
