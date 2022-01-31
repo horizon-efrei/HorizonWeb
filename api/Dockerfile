@@ -1,4 +1,4 @@
-FROM node:16.12.0-alpine3.12
+FROM node:17.3.0-alpine3.12
 
 WORKDIR /app
 RUN adduser -HD --uid 1111 api
