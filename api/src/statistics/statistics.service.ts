@@ -1,7 +1,7 @@
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import { isDayBeforeYesterday } from '../shared/lib/utils/dateUtils';
+import { isBeforeYesterday } from '../shared/lib/utils/dateUtils';
 import { Statistics } from './statistics.entity';
 
 @Injectable()
@@ -21,25 +21,25 @@ export class StatisticsService {
     // If the user has never posted and the postStreak is not already 0,
     // OR if the user has posted but too long ago, reset the postStreak to 0
     if ((!stats.lastPost && stats.postStreak !== 0)
-      || (stats.lastPost && isDayBeforeYesterday(stats.lastPost))) {
+      || (stats.lastPost && isBeforeYesterday(stats.lastPost))) {
       stats.postStreak = 0;
       hasChanged = true;
     }
 
     if ((!stats.lastReply && stats.replyStreak !== 0)
-      || (stats.lastReply && isDayBeforeYesterday(stats.lastReply))) {
+      || (stats.lastReply && isBeforeYesterday(stats.lastReply))) {
       stats.replyStreak = 0;
       hasChanged = true;
     }
 
     if ((!stats.lastComment && stats.commentStreak !== 0)
-      || (stats.lastComment && isDayBeforeYesterday(stats.lastComment))) {
+      || (stats.lastComment && isBeforeYesterday(stats.lastComment))) {
       stats.commentStreak = 0;
       hasChanged = true;
     }
 
     if ((!stats.lastAction && stats.actionStreak !== 0)
-      || (stats.lastAction && isDayBeforeYesterday(stats.lastAction))) {
+      || (stats.lastAction && isBeforeYesterday(stats.lastAction))) {
       stats.actionStreak = 0;
       hasChanged = true;
     }

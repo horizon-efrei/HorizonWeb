@@ -10,7 +10,7 @@ import type { StudyDoc } from '../files/study-docs/study-doc.entity';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { ContentKind } from '../shared/lib/types/content-kind.enum';
 import { Statistic } from '../shared/lib/types/statistic.enum';
-import { isDayBeforeYesterday, isToday } from '../shared/lib/utils/dateUtils';
+import { isYesterday } from '../shared/lib/utils/dateUtils';
 import { User } from '../users/user.entity';
 import { Statistics } from './statistics.entity';
 
@@ -32,7 +32,7 @@ export class StatisticsListener {
       switch (content.kind) {
         case ContentKind.Post:
           stats.postCount++;
-          if (!stats.lastPost || isDayBeforeYesterday(stats.lastPost))
+          if (stats.postStreak === 0 || isYesterday(stats.lastPost!))
             stats.postStreak++;
           stats.lastPost = new Date();
 
@@ -40,7 +40,7 @@ export class StatisticsListener {
           break;
         case ContentKind.Reply:
           stats.replyCount++;
-          if (!stats.lastReply || isDayBeforeYesterday(stats.lastReply))
+          if (stats.replyStreak === 0 || isYesterday(stats.lastReply!))
             stats.replyStreak++;
           stats.lastReply = new Date();
 
@@ -48,7 +48,7 @@ export class StatisticsListener {
           break;
         case ContentKind.Comment:
           stats.commentCount++;
-          if (!stats.lastComment || isDayBeforeYesterday(stats.lastComment))
+          if (stats.commentStreak || isYesterday(stats.lastComment!))
             stats.commentStreak++;
           stats.lastComment = new Date();
 
@@ -69,7 +69,7 @@ export class StatisticsListener {
   }
 
   private async registerAction(stats: Statistics, statistic: Statistic): Promise<void> {
-    if (!stats.lastAction || isToday(stats.lastAction))
+    if (!stats.lastAction || isYesterday(stats.lastAction))
       stats.actionStreak++;
     stats.lastAction = new Date();
 

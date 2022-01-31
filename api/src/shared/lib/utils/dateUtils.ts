@@ -4,13 +4,18 @@ export function isSameDay(first: Date, second: Date): boolean {
     && first.getDate() === second.getDate();
 }
 
-export function isToday(date: Date): boolean {
-  return isSameDay(date, new Date());
+export function isYesterday(date: Date): boolean {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  return isSameDay(yesterday, date);
 }
 
-export function isDayBeforeYesterday(date: Date): boolean {
-  const dayBeforeYesterday = (new Date(date.getTime()));
-  dayBeforeYesterday.setDate(date.getDate() - 2);
 
-  return isSameDay(dayBeforeYesterday, date);
+export function isBeforeYesterday(date: Date): boolean {
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  yesterday.setHours(0, 0, 0, 0);
+
+  return date.getTime() < yesterday.getTime();
 }
