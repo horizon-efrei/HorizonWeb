@@ -38,22 +38,6 @@ export class ContentsService {
     return content;
   }
 
-  public async createDraft(
-    user: User,
-    contentMaster: ContentMaster,
-    createContentDto: CreateOrphanContentDto,
-  ): Promise<Content> {
-    const content = new Content({
-      ...createContentDto,
-      contentMaster,
-      kind: ContentKind.Post,
-      author: user,
-      isDrafted:true
-    });
-    await this.contentRepository.persistAndFlush(content);
-    return content;
-  }
-
   public async createReply(user: User, createContentDto: CreateContentDto): Promise<Content> {
     const parent = await this.contentRepository.findOneOrFail(
       { contentId: createContentDto.parentId, kind: ContentKind.Post },
