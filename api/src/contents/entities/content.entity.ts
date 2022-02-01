@@ -50,6 +50,7 @@ export class Content extends BaseEntity {
   kind!: ContentKind;
 
 
+
   @Property()
   isDrafted : Boolean;
 
