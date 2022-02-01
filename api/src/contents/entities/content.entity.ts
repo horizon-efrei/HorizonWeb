@@ -49,10 +49,8 @@ export class Content extends BaseEntity {
   @Index()
   kind!: ContentKind;
 
-
-
   @Property()
-  isDrafted : Boolean;
+  isDrafted: boolean;
 
   @ManyToOne()
   @Transform(({ obj }: { obj: Content }) => ({ contentId: obj.parent?.contentId, kind: obj.parent?.kind }))
@@ -95,7 +93,7 @@ export class Content extends BaseEntity {
     kind: ContentKind;
     contentMaster: ContentMaster;
     contentMasterType: ContentMasterType;
-    isDrafted?:Boolean;
+    isDrafted?: boolean;
     parent?: Content;
   }) {
     super();
@@ -105,8 +103,8 @@ export class Content extends BaseEntity {
     this.contentMaster = options.contentMaster;
     this.contentMasterType = options.contentMasterType;
     this.contentMasterId = this.contentMaster.contentMasterId;
-    if(options.isDrafted)
-      this.isDrafted=options.isDrafted
+    if (options.isDrafted)
+      this.isDrafted = options.isDrafted;
     if (options.parent)
       this.parent = options.parent;
   }
