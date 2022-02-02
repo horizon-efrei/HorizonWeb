@@ -151,7 +151,7 @@
                                 {{ fileGroup.length }} fichier{{ fileGroup.length > 1 ? 's' : '' }}
                             </div>
                             <div v-for="(file, i) in fileGroup" :key="i" class="flex justify-between">
-                                <div>
+                                <div class="truncate">
                                     {{ file.file.name }}
                                 </div>
                                 <div class="cursor-pointer" @click.prevent="updateFileGroup(file)">
