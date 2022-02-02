@@ -20,8 +20,7 @@
                             $emit('update:folderList', {
                                 children: folder.children,
                                 filters: { ...folderList.filters, [folder.context]: folder.title },
-                            }),
-                                $emit('update:filePreview', null)
+                            })
                         "
                     >
                         <td class="p-2 pl-4 rounded-l-xl">
@@ -113,11 +112,29 @@
                     </tr>
                 </tbody>
             </table>
-            <div v-else class="grid grid-cols-2 md:grid-cols-6">
+            <div v-else class="flex gap-2">
+                <div
+                    v-for="(folder, i) in folderList.children"
+                    :key="i"
+                    class="group flex relative flex-col gap-1 justify-center items-center w-1/5 rounded cursor-pointer"
+                    @click="
+                        $emit('update:folderList', {
+                            children: folder.children,
+                            filters: { ...folderList.filters, [folder.context]: folder.title },
+                        })
+                    "
+                >
+                    <div class="flex flex-col gap-1 justify-center items-center">
+                        <font-awesome-icon size="3x" icon="folder"></font-awesome-icon>
+                        <div class="w-full text-sm text-center truncate">
+                            {{ contextList[folder.context](folder.title) }}
+                        </div>
+                    </div>
+                </div>
                 <div
                     v-for="(file, i) in fileList"
                     :key="i"
-                    class="group flex relative flex-col gap-1 justify-center items-center rounded hover:bg-2"
+                    class="group flex relative flex-col gap-1 justify-center items-center w-1/5 hover:bg-2-light hover:dark:bg-2-dark rounded"
                 >
                     <input
                         type="checkbox"
@@ -126,9 +143,9 @@
                         :checked="downloadFileGroup.includes(file)"
                         @click="updateFileGroup(file)"
                     />
-                    <Popper :offset-distance="'0'" :interactive="false">
+                    <Popper :offset-distance="'0'" :interactive="false" class="w-full">
                         <div
-                            class="flex flex-col gap-1 justify-center items-center"
+                            class="flex flex-col gap-1 justify-center items-center w-full"
                             @click="$emit('update:filePreview', file)"
                         >
                             <DocumentIcon
