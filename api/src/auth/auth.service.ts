@@ -1,3 +1,4 @@
+import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
 import type { JwtSignOptions } from '@nestjs/jwt';
@@ -5,6 +6,8 @@ import { JwtService } from '@nestjs/jwt';
 import { config } from '../shared/configs/config';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { User } from '../users/user.entity';
+import { UsersService } from '../users/users.service';
+import type { MyEfreiDto } from './dto/myefrei.dto';
 import type { Token } from './jwt-auth.guard';
 
 export interface TokenResponse {
@@ -18,6 +21,7 @@ export interface TokenResponse {
 export class AuthService {
   constructor(
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
+    private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -74,5 +78,18 @@ export class AuthService {
       options.expiresIn = expiration;
 
     return options;
+  }
+
+  public async createOrUpdate(userInfo: MyEfreiDto): Promise<User> {
+    const user = await this.userRepository.findOne({ userId: userInfo.userId });
+    if (!user)
+      return await this.usersService.create(userInfo);
+
+    if (!user.hasChanged(userInfo))
+      return user;
+
+    wrap(user).assign(userInfo);
+    await this.userRepository.flush();
+    return user;
   }
 }

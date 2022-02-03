@@ -58,8 +58,8 @@ export class User extends BaseEntity {
   @Enum({ items: () => Role, array: true, default: [Role.User] })
   roles: Role[] = [Role.User];
 
-  @Enum({ items: () => SchoolRole, array: true, default: [] })
-  schoolRoles: SchoolRole[] = [];
+  @Enum(() => SchoolRole)
+  schoolRole!: SchoolRole;
 
   @Property({ type: 'text' })
   color?: string;
@@ -85,12 +85,12 @@ export class User extends BaseEntity {
 
   constructor(options: UserCreationOptions) {
     super();
-    this.userId = options.username;
+    this.userId = options.userId;
     this.email = options.email;
     this.firstname = options.firstname;
     this.lastname = options.lastname;
     this.fullname = options.fullname;
-    this.schoolRoles = options.schoolRoles;
+    this.schoolRole = options.schoolRole;
   }
 
   public async setPassword(password: string): Promise<void> {
@@ -106,7 +106,6 @@ export class User extends BaseEntity {
       || this.lastname !== dto.lastname
       || this.fullname !== dto.fullname
       || this.email !== dto.email
-      || !this.schoolRoles.every(role => dto.schoolRoles.includes(role))
-      || !dto.schoolRoles.every(role => this.schoolRoles.includes(role));
+      || this.schoolRole !== dto.schoolRole;
   }
 }

@@ -25,11 +25,9 @@ interface Config {
   refreshTokenExpiration: string;
   refreshTokenExpirationSeconds: number;
   cookieSignature: string;
-  myefreiOauthClientId: string;
-  myefreiOauthClientSecret: string;
-  myefreiOauthAuthorizeUrl: string;
-  myefreiOauthTokenUrl: string;
-  myefreiOauthUserUrl: string;
+  myefreiOidcClientId: string;
+  myefreiOidcClientSecret: string;
+  myefreiOidcDiscoveryUrl: string;
   adminAccountUsername: string;
   adminAccountFirstName: string;
   adminAccountLastName: string;
@@ -154,30 +152,20 @@ export const config = createProfiguration<Config>({
     format: String,
     env: 'COOKIE_SIGNATURE_SECRET',
   },
-  myefreiOauthClientId: {
+  myefreiOidcClientId: {
     default: 'client-id',
     format: String,
-    env: 'MYEFREI_OAUTH_CLIENT_ID',
+    env: 'MYEFREI_OIDC_CLIENT_ID',
   },
-  myefreiOauthClientSecret: {
+  myefreiOidcClientSecret: {
     default: 'client-secret',
     format: String,
-    env: 'MYEFREI_OAUTH_CLIENT_SECRET',
+    env: 'MYEFREI_OIDC_CLIENT_SECRET',
   },
-  myefreiOauthAuthorizeUrl: {
-    default: 'https://oauth2service.com/authorize',
+  myefreiOidcDiscoveryUrl: {
+    default: 'https://oauth2service.com/.well-known/openid-configuration',
     format: String,
-    env: 'MYEFREI_OAUTH_AUTHORIZE_URL',
-  },
-  myefreiOauthTokenUrl: {
-    default: 'https://oauth2service.com/token',
-    format: String,
-    env: 'MYEFREI_OAUTH_TOKEN_URL',
-  },
-  myefreiOauthUserUrl: {
-    default: 'https://oauth2service.com/user',
-    format: String,
-    env: 'MYEFREI_OAUTH_USER_URL',
+    env: 'MYEFREI_OIDC_DISCOVERY_URL',
   },
   adminAccountUsername: {
     default: 'horizon-admin',

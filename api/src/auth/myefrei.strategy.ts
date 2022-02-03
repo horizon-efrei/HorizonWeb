@@ -1,51 +1,56 @@
-import { wrap } from '@mikro-orm/core';
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
-import { Strategy } from 'passport-oauth2';
-import { firstValueFrom } from 'rxjs';
-import { computedConfig, config } from '../shared/configs/config';
-import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import { User } from '../users/user.entity';
-import { UsersService } from '../users/users.service';
+import type {
+  BaseClient,
+  ClientMetadata,
+  TokenSet,
+  UserinfoResponse,
+} from 'openid-client';
+import { Client, Issuer, Strategy } from 'openid-client';
+import { config } from '../shared/configs/config';
+import type { User } from '../users/user.entity';
+import { AuthService } from './auth.service';
 import { MyEfreiDto } from './dto/myefrei.dto';
+
+/* eslint-disable @typescript-eslint/naming-convention */
+const clientOptions: ClientMetadata = {
+  client_id: config.get('myefreiOidcClientId'),
+  client_secret: config.get('myefreiOidcClientSecret'),
+};
+
+const paramOptions = {
+  redirect_uri: 'https://api.horizon-efrei.fr/auth/myefrei/callback',
+  scope: 'openid profile email role',
+};
+/* eslint-enable @typescript-eslint/naming-convention */
+
+export const buildOpenIdClient = async (): Promise<BaseClient> => {
+  const TrustIssuer = await Issuer.discover(config.get('myefreiOidcDiscoveryUrl'));
+  return new TrustIssuer.Client(clientOptions);
+};
 
 @Injectable()
 export class MyEfreiStrategy extends PassportStrategy(Strategy, 'myefrei') {
+  private readonly client: BaseClient;
+
   constructor(
-    @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
-    private readonly httpService: HttpService,
-    private readonly userService: UsersService,
+    private readonly authService: AuthService,
+    client: Client,
   ) {
     super({
-      authorizationURL: config.get('myefreiOauthAuthorizeUrl'),
-      tokenURL: config.get('myefreiOauthTokenUrl'),
-      clientID: config.get('myefreiOauthClientId'),
-      clientSecret: config.get('myefreiOauthClientSecret'),
-      callbackURL: `${computedConfig.apiUrl}/auth/myefrei/callback`,
-      state: true,
+      client,
+      params: paramOptions,
+      usePKCE: false,
     });
+    this.client = client;
   }
 
-  public async validate(accessToken: string): Promise<User> {
-    const result = this.httpService.get<MyEfreiDto>(config.get('myefreiOauthUserUrl'), {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
-    const { data } = await firstValueFrom(result);
+  public async validate(tokenset: TokenSet): Promise<User> {
+    const data: UserinfoResponse = await this.client.userinfo(tokenset);
+    console.log('DEBUG: returned user:', data);
+    const userInfo = new MyEfreiDto(data);
+    console.log('DEBUG ~ file: myefrei.strategy.ts ~ line 56 ~ validate ~ userInfo', userInfo);
 
-    // TODO: Check + Add roles
-    const user = await this.userRepository.findOne({ userId: data.username });
-    const creationOptions = MyEfreiDto.normalize(data);
-    if (!user)
-      return await this.userService.create(creationOptions);
-
-    if (!user.hasChanged(creationOptions))
-      return user;
-
-    wrap(user).assign(creationOptions);
-    await this.userRepository.flush();
-    return user;
+    return await this.authService.createOrUpdate(userInfo);
   }
 }

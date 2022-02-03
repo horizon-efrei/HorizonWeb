@@ -1,11 +1,11 @@
 import type { SchoolRole } from '../../modules/authorization/types/school-role.enum';
 
 export interface UserCreationOptions {
-  username: string;
+  userId: string;
   email: string;
   firstname: string;
   lastname: string;
   fullname: string;
+  schoolRole: SchoolRole;
   password?: string;
-  schoolRoles: SchoolRole[];
 }
