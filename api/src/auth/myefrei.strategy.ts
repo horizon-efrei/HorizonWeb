@@ -20,7 +20,7 @@ const clientOptions: ClientMetadata = {
 
 const paramOptions = {
   redirect_uri: 'https://api.horizon-efrei.fr/auth/myefrei/callback',
-  scope: 'openid profile email role',
+  scope: config.get('myefreiOidcScopes'),
 };
 /* eslint-enable @typescript-eslint/naming-convention */
 
@@ -47,9 +47,7 @@ export class MyEfreiStrategy extends PassportStrategy(Strategy, 'myefrei') {
 
   public async validate(tokenset: TokenSet): Promise<User> {
     const data: UserinfoResponse = await this.client.userinfo(tokenset);
-    console.log('DEBUG: returned user:', data);
     const userInfo = new MyEfreiDto(data);
-    console.log('DEBUG ~ file: myefrei.strategy.ts ~ line 56 ~ validate ~ userInfo', userInfo);
 
     return await this.authService.createOrUpdate(userInfo);
   }

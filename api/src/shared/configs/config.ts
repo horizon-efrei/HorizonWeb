@@ -28,6 +28,7 @@ interface Config {
   myefreiOidcClientId: string;
   myefreiOidcClientSecret: string;
   myefreiOidcDiscoveryUrl: string;
+  myefreiOidcScopes: string;
   adminAccountUsername: string;
   adminAccountFirstName: string;
   adminAccountLastName: string;
@@ -166,6 +167,11 @@ export const config = createProfiguration<Config>({
     default: 'https://oauth2service.com/.well-known/openid-configuration',
     format: String,
     env: 'MYEFREI_OIDC_DISCOVERY_URL',
+  },
+  myefreiOidcScopes: {
+    default: 'openid profile',
+    format: String,
+    env: 'MYEFREI_OIDC_SCOPES',
   },
   adminAccountUsername: {
     default: 'horizon-admin',

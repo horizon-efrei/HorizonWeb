@@ -50,6 +50,7 @@ async function bootstrap(): Promise<void> {
   app.use(helmet());
   app.use(loggerMiddleware);
   app.use(cookieParser(config.get('cookieSignature')));
+  // TODO: Use redis for session storage, and ensure they are used only for the initial myEfrei login
   app.use(
     session({
       secret: 'my-secret',
