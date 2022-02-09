@@ -28,6 +28,9 @@ interface Config {
     enabled: boolean;
     dsn: string;
   };
+  redis: {
+    url: string;
+  };
   tokens: {
     accessTokenSecret: string;
     accessTokenExpirationSeconds: number;
@@ -112,6 +115,13 @@ export const config = createProfiguration<Config>({
       default: 'http',
       format: ['http', 'https'],
       env: 'TYPESENSE_SCHEME',
+    },
+  },
+  redis: {
+    url: {
+      default: 'redis://localhost:6379',
+      format: String,
+      env: 'REDIS_URL',
     },
   },
   storage: {

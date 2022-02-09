@@ -3,7 +3,7 @@ version: '3.9'
 services:
   database:
     ports:
-      - 54321:5432
+      - 15432:5432
 
   pgadmin:
     ports:
@@ -12,6 +12,10 @@ services:
   typesense:
     ports:
       - 18108:8108
+
+  redis:
+    ports:
+      - 16379:6379
 
   api:
     ports:

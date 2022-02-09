@@ -35,6 +35,12 @@ services:
       TYPESENSE_API_KEY: ${TYPESENSE_API_KEY}
       TYPESENSE_ENABLE_CORS: "true"
 
+  redis:
+    image: redis:6.2.6-alpine
+    restart: always
+    volumes:
+      - ./data/redis:/var/lib/redis
+
   api:
     build: ./api
     restart: always

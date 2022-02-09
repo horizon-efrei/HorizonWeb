@@ -26,6 +26,7 @@ import { TypesenseFilter } from './shared/lib/filters/typesense.filter';
 import { TraceMiddleware } from './shared/lib/middlewares/trace.middleware';
 import { PoliciesGuard } from './shared/modules/authorization';
 import { CaslModule } from './shared/modules/casl/casl.module';
+import { RedisModule } from './shared/modules/redis/redis.module';
 import { StatisticsModule } from './statistics/statistics.module';
 import { SubjectsModule } from './subjects/subjects.module';
 import { TagsModule } from './tags/tags.module';
@@ -42,6 +43,7 @@ import { WikisModule } from './wiki/wikis.module';
     S3Module.forRoot(storageConfig),
     SentryModule.forRoot(sentryConfig),
     CaslModule,
+    RedisModule,
     AuthModule,
     BadgesModule,
     BlogsModule,
