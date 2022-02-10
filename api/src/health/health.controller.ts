@@ -1,3 +1,4 @@
+import path from 'node:path';
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import type { HealthCheckResult, HealthIndicatorResult } from '@nestjs/terminus';
@@ -8,7 +9,6 @@ import {
   HttpHealthIndicator,
   MemoryHealthIndicator,
 } from '@nestjs/terminus';
-import path from 'node:path';
 import { computedConfig, config } from '../shared/configs/config';
 import { Public } from '../shared/lib/decorators/public.decorator';
 import { MikroOrmHealthIndicator } from '../shared/modules/health/mikro-orm.health';
