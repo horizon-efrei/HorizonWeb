@@ -90,9 +90,10 @@ export class BlogsService {
       }
     }
 
-    if (updatedProps)
+    if (updatedProps) {
+      if (updatedProps.isDraft == true && blog.isDraft == false) updatedProps.isDraft = false;
       wrap(blog).assign(updatedProps);
-
+    }
     await this.blogRepository.flush();
     return blog;
   }

@@ -144,7 +144,6 @@ export class ThreadsService {
         thread.assignees.set(assignees);
       }
     }
-
     const validationReplyQuery = { kind: ContentKind.Reply, contentMaster: { contentMasterId } };
 
     if (typeof opValidatedWith !== 'undefined') {
@@ -162,10 +161,10 @@ export class ThreadsService {
         : null;
     }
 
-
-    if (updatedProps)
+    if (updatedProps){
+      if (thread.isDraft==false && updatedProps.isDraft==true) updatedProps.isDraft=false;
       wrap(thread).assign(updatedProps);
-
+    }
     await this.threadRepository.flush();
     return thread;
   }

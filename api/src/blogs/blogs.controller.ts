@@ -44,6 +44,7 @@ export class BlogsController {
     return await this.blogsService.create(user, createBlogDto);
   }
 
+
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Blog))
   public async findAll(
@@ -52,6 +53,7 @@ export class BlogsController {
   ): Promise<PaginatedResult<Blog>> {
     return await this.blogsService.findAll(user, { ...normalizePagination(query), ...normalizeSort(query) });
   }
+
 
   @UseGuards(TypesenseEnabledGuard)
   @Get('/search')
