@@ -24,7 +24,7 @@ export class BlogsService {
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
     private readonly contentsService: ContentsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
-  ) { }
+  ) {}
 
   public async create(user: User, createBlogDto: CreateBlogDto): Promise<Blog> {
     const blog = new Blog({
@@ -56,11 +56,11 @@ export class BlogsService {
     );
   }
 
-  public async findDraftedOrFullBlogs(paginationOptions?: PaginationOptions,drafted?:boolean): Promise<PaginatedResult<Blog>> {
+  public async findDraftedOrFullBlogs(paginationOptions?: PaginationOptions, drafted?: boolean): Promise<PaginatedResult<Blog>> {
     // To get drafted blogs 'drafted' should be 'true'
     if (drafted)
-      return await this.blogRepository.findWithPagination(paginationOptions, {isDraft:drafted}, { populate: ['post', 'tags'] });
-    return await this.blogRepository.findWithPagination(paginationOptions, {isDraft:true}, { populate: ['post', 'tags'] });
+      return await this.blogRepository.findWithPagination(paginationOptions, { isDraft: drafted }, { populate: ['post', 'tags'] });
+    return await this.blogRepository.findWithPagination(paginationOptions, { isDraft: true }, { populate: ['post', 'tags'] });
   }
 
   public async findOne(user: User, contentMasterId: number): Promise<Blog> {
@@ -98,7 +98,7 @@ export class BlogsService {
     }
 
     if (updatedProps) {
-      if (updatedProps.isDraft == true && blog.isDraft == false)
+      if (updatedProps.isDraft == true && !blog.isDraft)
         updatedProps.isDraft = false;
       wrap(blog).assign(updatedProps);
     }
