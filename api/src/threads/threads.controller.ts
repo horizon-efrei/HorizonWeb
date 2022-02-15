@@ -65,6 +65,14 @@ export class ThreadsController {
     return await this.threadSearchService.search(query);
   }
 
+  @Get('/drafts')
+  @CheckPolicies(ability => ability.can(Action.Read, Thread))
+  public async findThreadsDrafts(@Query() query: PaginateDto): Promise<PaginatedResult<Thread>> {
+    if (query.page)
+      return await this.threadsService.findDraftedOrFullThreads({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
+    return await this.threadsService.findDraftedOrFullThreads();
+  }
+
   @Get(':id')
   @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Read, Thread))

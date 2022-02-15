@@ -50,6 +50,13 @@ export class BlogsService {
     return await this.blogRepository.findWithPagination(paginationOptions, {}, { populate: ['post', 'tags'] });
   }
 
+  public async findDraftedOrFullBlogs(paginationOptions?: PaginationOptions,drafted?:boolean): Promise<PaginatedResult<Blog>> {
+    // To get drafted blogs 'drafted' should be 'true'
+    if (drafted)
+      return await this.blogRepository.findWithPagination(paginationOptions, {isDraft:drafted}, { populate: ['post', 'tags'] });
+    return await this.blogRepository.findWithPagination(paginationOptions, {isDraft:true}, { populate: ['post', 'tags'] });
+  }
+
   public async findOne(contentMasterId: number): Promise<Blog> {
     // TODO: Maybe the user won't have access to this blog. There can be some restrictions
     // (i.e. "personal"/"sensitive" blogs)
