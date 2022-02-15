@@ -127,9 +127,10 @@ export class ThreadsService {
       }
     }
 
-    if (updatedProps)
+    if (updatedProps){
+      if (thread.isDraft==false && updatedProps.isDraft==true) updatedProps.isDraft=false;
       wrap(thread).assign(updatedProps);
-
+    }
     await this.threadRepository.flush();
     return thread;
   }
