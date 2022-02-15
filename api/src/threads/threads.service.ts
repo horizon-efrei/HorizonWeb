@@ -37,7 +37,7 @@ export class ThreadsService {
     @InjectRepository(Report) private readonly reportRepository: BaseRepository<Report>,
     private readonly contentsService: ContentsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
-  ) {}
+  ) { }
 
   public async create(user: User, createThreadDto: CreateThreadDto): Promise<Thread> {
     const thread = new Thread(createThreadDto);
@@ -72,6 +72,24 @@ export class ThreadsService {
         populate: ['post', 'tags', 'assignees', 'post.author', 'post.lastEdit', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'],
         orderBy: { post: serializeOrder(options?.sortBy) },
       },
+    );
+  }
+
+  public async findDraftedOrFullThreads(paginationOptions?: PaginationOptions, drafted?: boolean): Promise<PaginatedResult<Thread>> {
+    if (drafted)
+      return await this.threadRepository.findWithPagination(
+        paginationOptions,
+        {
+          isDraft: drafted
+        },
+        { populate: ['post', 'tags', 'assignees'] },
+      );
+    return await this.threadRepository.findWithPagination(
+      paginationOptions,
+      {
+        isDraft: true
+      },
+      { populate: ['post', 'tags', 'assignees'] },
     );
   }
 
@@ -161,8 +179,8 @@ export class ThreadsService {
         : null;
     }
 
-    if (updatedProps){
-      if (thread.isDraft==false && updatedProps.isDraft==true) updatedProps.isDraft=false;
+    if (updatedProps) {
+      if (thread.isDraft == false && updatedProps.isDraft == true) updatedProps.isDraft = false;
       wrap(thread).assign(updatedProps);
     }
     await this.threadRepository.flush();

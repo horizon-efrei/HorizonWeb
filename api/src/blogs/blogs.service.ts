@@ -56,6 +56,13 @@ export class BlogsService {
     );
   }
 
+  public async findDraftedOrFullBlogs(paginationOptions?: PaginationOptions,drafted?:boolean): Promise<PaginatedResult<Blog>> {
+    // To get drafted blogs 'drafted' should be 'true'
+    if (drafted)
+      return await this.blogRepository.findWithPagination(paginationOptions, {isDraft:drafted}, { populate: ['post', 'tags'] });
+    return await this.blogRepository.findWithPagination(paginationOptions, {isDraft:true}, { populate: ['post', 'tags'] });
+  }
+
   public async findOne(user: User, contentMasterId: number): Promise<Blog> {
     const blog = await this.blogRepository.findOneOrFail(
       { contentMasterId },
