@@ -35,7 +35,7 @@ export class BlogsController {
   constructor(
     private readonly blogsService: BlogsService,
     private readonly blogSearchService: BlogSearchService,
-  ) { }
+  ) {}
 
   @Post()
   @SerializerExcludeContentAuthor()
@@ -74,6 +74,7 @@ export class BlogsController {
       return await this.blogsService.findDraftedOrFullBlogs({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
     return await this.blogsService.findDraftedOrFullBlogs();
   }
+
   @Get(':id')
   @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Read, Blog))

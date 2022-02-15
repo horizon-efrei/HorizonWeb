@@ -24,7 +24,7 @@ export class BlogsService {
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
     private readonly contentsService: ContentsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
-  ) {}
+  ) { }
 
   public async create(user: User, createBlogDto: CreateBlogDto): Promise<Blog> {
     const blog = new Blog({
@@ -98,7 +98,8 @@ export class BlogsService {
     }
 
     if (updatedProps) {
-      if (updatedProps.isDraft == true && blog.isDraft == false) updatedProps.isDraft = false;
+      if (updatedProps.isDraft == true && blog.isDraft == false)
+        updatedProps.isDraft = false;
       wrap(blog).assign(updatedProps);
     }
     await this.blogRepository.flush();
