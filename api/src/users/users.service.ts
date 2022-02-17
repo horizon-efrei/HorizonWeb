@@ -48,6 +48,7 @@ export class UsersService {
     const user = await this.userRepository.findOneOrFail({ userId });
     await this.userSearchService.remove(userId)
     await this.userRepository.removeAndFlush(user)
+    
   }
 
 }
