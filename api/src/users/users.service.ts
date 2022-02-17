@@ -42,7 +42,7 @@ export class UsersService {
     await this.userRepository.persistAndFlush(user);
     await this.userSearchService.add(user);
     return user;
-  }
+  } 
 
   public async deleteUser(userId: string): Promise<void> {
     const user = await this.userRepository.findOneOrFail({ userId });
