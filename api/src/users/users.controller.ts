@@ -52,10 +52,10 @@ export class UsersController {
   }
 
   /* May be an error here */
-  @Post()
+  /* @Post()
   public async create(@Body() createdUser: RegisterDto): Promise<User> {
     return await this.usersService.create(createdUser);
-  }
+  } */
 
   @Delete(':id')
   public async deleteUser(@Param('id') id: string) {

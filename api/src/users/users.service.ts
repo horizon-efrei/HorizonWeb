@@ -44,11 +44,10 @@ export class UsersService {
     return user;
   }
 
-  // return TRUE if the user is deleted ... and false in another case
   public async deleteUser(userId: string): Promise<void> {
     const user = await this.userRepository.findOneOrFail({ userId });
     await this.userSearchService.remove(userId)
-    await this.userRepository.remove(user)
+    await this.userRepository.removeAndFlush(user)
   }
 
 }
