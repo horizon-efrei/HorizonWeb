@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Patch,
+  Delete,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -50,6 +51,11 @@ export class UsersController {
     if (query.page)
       return await this.usersService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
     return await this.usersService.findAll();
+  }
+
+  @Delete(':id')
+  public async deleteUser(@Param('id') id: string) {
+    await this.usersService.deleteUser(id)
   }
 
   @Get('/:userId/statistics')
