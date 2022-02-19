@@ -1,7 +1,9 @@
 import {
+  BeforeUpdate,
   Collection,
   Entity,
   Enum,
+  EventArgs,
   Index,
   ManyToOne,
   OneToMany,
@@ -40,15 +42,14 @@ export class Content extends BaseEntity {
   @Transform(({ obj }: { obj: Content }) => (obj.kind === ContentKind.Comment ? undefined : obj.downvotes))
   downvotes = 0;
 
+  @Property()
+  votes = 0;
+
   @Enum(() => ContentKind)
   @Index()
   kind!: ContentKind;
 
-
-  @Property()
-  isDrafted : Boolean;
-
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   @Transform(({ obj }: { obj: Content }) => ({ contentId: obj.parent?.contentId, kind: obj.parent?.kind }))
   parent?: Content;
 
@@ -89,7 +90,6 @@ export class Content extends BaseEntity {
     kind: ContentKind;
     contentMaster: ContentMaster;
     contentMasterType: ContentMasterType;
-    isDrafted?:Boolean;
     parent?: Content;
   }) {
     super();
@@ -99,9 +99,14 @@ export class Content extends BaseEntity {
     this.contentMaster = options.contentMaster;
     this.contentMasterType = options.contentMasterType;
     this.contentMasterId = this.contentMaster.contentMasterId;
-    if(options.isDrafted)
-      this.isDrafted=options.isDrafted
     if (options.parent)
       this.parent = options.parent;
+  }
+
+  @BeforeUpdate()
+  public beforeUpdate(event: EventArgs<this>): void {
+    const payload = event.changeSet?.payload;
+    if (payload && ('upvotes' in payload || 'downvotes' in payload))
+      this.votes = this.upvotes - this.downvotes;
   }
 }

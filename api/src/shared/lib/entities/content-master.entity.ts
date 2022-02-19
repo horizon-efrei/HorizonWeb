@@ -5,6 +5,7 @@ import {
   ManyToMany,
   OneToOne,
   PrimaryKey,
+  Property,
 } from '@mikro-orm/core';
 // eslint-disable-next-line import/no-cycle
 import { Content } from '../../../contents/entities/content.entity';
@@ -36,9 +37,14 @@ export abstract class ContentMaster extends BaseEntity {
   @Enum(() => ContentMasterType)
   kind: ContentMasterType;
 
-  constructor(options: { post?: Content }) {
+  @Property()
+  isDraft = true;
+
+  constructor(options: { post?: Content; isDraft?: boolean }) {
     super();
     if (options.post)
       this.post = options.post;
+    if (options.isDraft)
+      this.isDraft = options.isDraft;
   }
 }
