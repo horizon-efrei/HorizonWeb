@@ -48,7 +48,7 @@ export class ContentsService {
       contentMaster,
       kind: ContentKind.Post,
       author: user,
-      isDrafted:true
+      isDrafted: true,
     });
     await this.contentRepository.persistAndFlush(content);
     return content;

@@ -70,8 +70,12 @@ export class BlogsController {
   @Get('/drafts')
   @CheckPolicies(ability => ability.can(Action.Read, Blog))
   public async findDraftedOrFullBlogs(@Query() query: PaginateDto): Promise<PaginatedResult<Blog>> {
-    if (query.page)
-      return await this.blogsService.findDraftedOrFullBlogs({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
+    if (query.page) {
+return await this.blogsService.findDraftedOrFullBlogs({
+        page: query.page,
+        itemsPerPage: query.itemsPerPage ?? 10,
+      });
+}
     return await this.blogsService.findDraftedOrFullBlogs();
   }
 

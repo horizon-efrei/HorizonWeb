@@ -57,7 +57,7 @@ export class Thread extends ContentMaster {
     title: string;
     post?: Content;
     type: ThreadType;
-    isDraft?:boolean
+    isDraft?: boolean;
   }) {
     super(options);
     this.title = options.title;

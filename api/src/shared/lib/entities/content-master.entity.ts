@@ -40,11 +40,11 @@ export abstract class ContentMaster extends BaseEntity {
   @Property()
   isDraft? = true;
 
-  constructor(options: { post?: Content ,isDraft?: boolean}) {
+  constructor(options: { post?: Content; isDraft?: boolean }) {
     super();
     if (options.post)
       this.post = options.post;
     if (options.isDraft)
-      this.isDraft=options.isDraft
+      this.isDraft = options.isDraft;
   }
 }
