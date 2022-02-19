@@ -9,6 +9,7 @@ import { ContentMasterType } from '../shared/lib/types/content-master-type.enum'
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
+import type { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { serializeOrder } from '../shared/modules/sorting/serialize-order';
 import { Tag } from '../tags/tag.entity';
@@ -56,7 +57,10 @@ export class BlogsService {
     );
   }
 
-  public async findDraftedOrFullBlogs(paginationOptions?: PaginationOptions, drafted?: boolean): Promise<PaginatedResult<Blog>> {
+  public async findDraftedOrFullBlogs(
+    paginationOptions?: Required<PaginateDto>,
+    drafted?: boolean,
+  ): Promise<PaginatedResult<Blog>> {
     // To get drafted blogs 'drafted' should be 'true'
     if (drafted)
       return await this.blogRepository.findWithPagination(paginationOptions, { isDraft: drafted }, { populate: ['post', 'tags'] });
@@ -98,7 +102,7 @@ export class BlogsService {
     }
 
     if (updatedProps) {
-      if (updatedProps.isDraft == true && !blog.isDraft)
+      if (updatedProps.isDraft === true && !blog.isDraft)
         updatedProps.isDraft = false;
       wrap(blog).assign(updatedProps);
     }

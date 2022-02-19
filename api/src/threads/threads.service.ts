@@ -13,6 +13,7 @@ import { ContentMasterType } from '../shared/lib/types/content-master-type.enum'
 import { assertPermissions } from '../shared/lib/utils/assert-permission';
 import { Action } from '../shared/modules/authorization';
 import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
+import type { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
 import { serializeOrder } from '../shared/modules/sorting/serialize-order';
 import { Tag } from '../tags/tag.entity';
@@ -76,23 +77,19 @@ export class ThreadsService {
   }
 
   public async findDraftedOrFullThreads(
-    paginationOptions?: PaginationOptions,
+    paginationOptions?: Required<PaginateDto>,
     drafted?: boolean,
   ): Promise<PaginatedResult<Thread>> {
     if (drafted) {
       return await this.threadRepository.findWithPagination(
         paginationOptions,
-        {
-          isDraft: drafted,
-        },
+        { isDraft: drafted },
         { populate: ['post', 'tags', 'assignees'] },
       );
     }
     return await this.threadRepository.findWithPagination(
       paginationOptions,
-      {
-        isDraft: true,
-      },
+      { isDraft: true },
       { populate: ['post', 'tags', 'assignees'] },
     );
   }
@@ -166,6 +163,7 @@ export class ThreadsService {
         thread.assignees.set(assignees);
       }
     }
+
     const validationReplyQuery = { kind: ContentKind.Reply, contentMaster: { contentMasterId } };
 
     if (typeof opValidatedWith !== 'undefined') {
@@ -184,7 +182,7 @@ export class ThreadsService {
     }
 
     if (updatedProps) {
-      if (thread.isDraft === false && updatedProps.isDraft === true)
+      if (!thread.isDraft && updatedProps.isDraft === true)
         updatedProps.isDraft = false;
       wrap(thread).assign(updatedProps);
     }

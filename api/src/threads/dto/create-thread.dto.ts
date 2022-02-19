@@ -1,6 +1,9 @@
 import { IntersectionType, PickType } from '@nestjs/mapped-types';
 import {
- IsBoolean, IsEnum, IsString, Length,
+  IsBoolean,
+  IsEnum,
+  IsString,
+  Length,
 } from 'class-validator';
 import { CreateOrphanContentDto } from '../../contents/dto/create-orphan-content.dto';
 import { ThreadType } from '../../shared/lib/types/thread-type.enum';

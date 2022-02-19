@@ -52,7 +52,7 @@ export class Content extends BaseEntity {
   @Property()
   isDrafted: boolean;
 
-  @ManyToOne()
+  @ManyToOne({ onDelete: 'CASCADE' })
   @Transform(({ obj }: { obj: Content }) => ({ contentId: obj.parent?.contentId, kind: obj.parent?.kind }))
   parent?: Content;
 

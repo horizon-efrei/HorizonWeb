@@ -44,7 +44,6 @@ export class BlogsController {
     return await this.blogsService.create(user, createBlogDto);
   }
 
-
   @Get()
   @CheckPolicies(ability => ability.can(Action.Read, Blog))
   public async findAll(
@@ -53,7 +52,6 @@ export class BlogsController {
   ): Promise<PaginatedResult<Blog>> {
     return await this.blogsService.findAll(user, { ...normalizePagination(query), ...normalizeSort(query) });
   }
-
 
   @UseGuards(TypesenseEnabledGuard)
   @Get('/search')
@@ -69,14 +67,8 @@ export class BlogsController {
 
   @Get('/drafts')
   @CheckPolicies(ability => ability.can(Action.Read, Blog))
-  public async findDraftedOrFullBlogs(@Query() query: PaginateDto): Promise<PaginatedResult<Blog>> {
-    if (query.page) {
-return await this.blogsService.findDraftedOrFullBlogs({
-        page: query.page,
-        itemsPerPage: query.itemsPerPage ?? 10,
-      });
-}
-    return await this.blogsService.findDraftedOrFullBlogs();
+  public async findDraftedOrFullBlogs(@Query() query: ListOptionsDto): Promise<PaginatedResult<Blog>> {
+    return await this.blogsService.findDraftedOrFullBlogs({ ...normalizePagination(query), ...normalizeSort(query) });
   }
 
   @Get(':id')
@@ -85,7 +77,7 @@ return await this.blogsService.findDraftedOrFullBlogs({
   public async findOne(
     @CurrentUser() user: User,
     @Param('id', ParseIntPipe) id: number,
-): Promise<Blog> {
+  ): Promise<Blog> {
     return await this.blogsService.findOne(user, id);
   }
 
