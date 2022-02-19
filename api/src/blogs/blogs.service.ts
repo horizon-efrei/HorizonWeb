@@ -23,7 +23,7 @@ export class BlogsService {
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
     private readonly contentsService: ContentsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
-  ) {}
+  ) { }
 
   public async create(user: User, createBlogDto: CreateBlogDto): Promise<Blog> {
     const blog = new Blog({
@@ -59,6 +59,7 @@ export class BlogsService {
 
   public async findOne(user: User, contentMasterId: number): Promise<Blog> {
     const blog = await this.blogRepository.findOneOrFail(
+
       { contentMasterId },
       { populate: ['post', 'post.children', 'post.children.children', 'tags', 'participants'] },
     );
