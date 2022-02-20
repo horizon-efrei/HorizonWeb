@@ -1,54 +1,66 @@
-import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
+import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
-import type { PaginationOptions } from '../shared/modules/pagination/pagination-option.interface';
+import { CaslAbilityFactory } from '../shared/modules/casl/casl-ability.factory';
+import type { PaginateDto } from '../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
-import type { CreateWikiDto } from './dto/create-wiki.dto';
-import type { UpdateWikiDto } from './dto/update-wiki.dto';
-import { Wiki } from './wiki.entity';
+import type { User } from '../users/user.entity';
+import type { CreateWikiPageDto } from './dto/create-wiki-page.dto';
+import type { UpdateWikiPageDto } from './dto/update-wiki-page.dto';
+import { WikiPage } from './wiki-page.entity';
 
 @Injectable()
 export class WikisService {
   constructor(
-    @InjectRepository(Wiki) private readonly wikiRepository: BaseRepository<Wiki>,
+    @InjectRepository(WikiPage) private readonly wikiPageRepository: BaseRepository<WikiPage>,
+    private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async create(createWikiDto: CreateWikiDto): Promise<Wiki> {
-    const wiki = new Wiki(createWikiDto);
-    try {
-      await this.wikiRepository.persistAndFlush(Wiki);
-    } catch (error: unknown) {
-      if (error instanceof UniqueConstraintViolationException)
-        throw new BadRequestException('Wiki wikiPageId already exists');
-      throw error;
-    }
+  public async create(createWikiPageDto: CreateWikiPageDto): Promise<WikiPage> {
+    const wiki = new WikiPage(createWikiPageDto);
+    await this.wikiPageRepository.persistAndFlush(wiki);
     return wiki;
   }
 
-  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<Wiki>> {
-    return await this.wikiRepository.findWithPagination(paginationOptions);
+  public async findAll(user: User, paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<WikiPage>> {
+    const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+    const visibilityQuery = canSeeHiddenContent ? {} : { hidden: false };
+    return await this.wikiPageRepository.findWithPagination(
+      paginationOptions,
+      visibilityQuery,
+      { orderBy: { createdAt: 'DESC' } },
+    );
   }
 
-  public async findByCategory(category: string, paginationOptions?: PaginationOptions): Promise<PaginatedResult<Wiki>> {
-    return await this.wikiRepository.findWithPagination(paginationOptions, { category });
+  public async findAllByCategory(
+    user: User,
+    category: string,
+    paginationOptions?: Required<PaginateDto>,
+  ): Promise<PaginatedResult<WikiPage>> {
+    const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
+    const visibilityQuery = canSeeHiddenContent ? {} : { hidden: false };
+    return await this.wikiPageRepository.findWithPagination(
+      paginationOptions,
+      { category, ...visibilityQuery },
+      { orderBy: { createdAt: 'DESC' } },
+    );
   }
 
-
-  public async findOne(wikiPageId: number): Promise<Wiki> {
-    return await this.wikiRepository.findOneOrFail({ wikiPageId });
+  public async findOne(wikiId: number): Promise<WikiPage> {
+    return await this.wikiPageRepository.findOneOrFail({ wikiPageId: wikiId });
   }
 
-  public async update(wikiPageId: number, updateWikiDto: UpdateWikiDto): Promise<Wiki> {
-    const wiki = await this.wikiRepository.findOneOrFail({ wikiPageId });
+  public async update(wikiId: number, updateWikiDto: UpdateWikiPageDto): Promise<WikiPage> {
+    const wiki = await this.wikiPageRepository.findOneOrFail({ wikiPageId: wikiId });
 
     wrap(wiki).assign(updateWikiDto);
-    await this.wikiRepository.flush();
+    await this.wikiPageRepository.flush();
     return wiki;
   }
 
-  public async remove(wikiPageId: number): Promise<void> {
-    const wiki = await this.wikiRepository.findOneOrFail({ wikiPageId });
-    await this.wikiRepository.removeAndFlush(wiki);
+  public async remove(wikiId: number): Promise<void> {
+    const wiki = await this.wikiPageRepository.findOneOrFail({ wikiPageId: wikiId });
+    await this.wikiPageRepository.removeAndFlush(wiki);
   }
 }

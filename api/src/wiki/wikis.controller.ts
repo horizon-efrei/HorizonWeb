@@ -9,12 +9,15 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-// Import { Action, CheckPolicies } from '../shared/modules/authorization';
-import { PaginateDto } from '../shared/modules/pagination/paginate.dto';
+import { CurrentUser } from '../shared/lib/decorators/current-user.decorator';
+import { Action, CheckPolicies } from '../shared/modules/authorization';
+import { normalizePagination } from '../shared/modules/pagination/normalize-pagination';
 import type { PaginatedResult } from '../shared/modules/pagination/pagination.interface';
-import { CreateWikiDto } from './dto/create-wiki.dto';
-import { UpdateWikiDto } from './dto/update-wiki.dto';
-import type { Wiki } from './wiki.entity';
+import { User } from '../users/user.entity';
+import { CreateWikiPageDto } from './dto/create-wiki-page.dto';
+import { FilterAndPaginateDto } from './dto/filter-and-paginate.dto';
+import { UpdateWikiPageDto } from './dto/update-wiki-page.dto';
+import { WikiPage } from './wiki-page.entity';
 import { WikisService } from './wikis.service';
 
 @ApiTags('Wikis')
@@ -23,39 +26,36 @@ export class WikisController {
   constructor(private readonly wikisService: WikisService) {}
 
   @Post()
-  // @CheckPolicies(ability => ability.can(Action.Create, Wiki))
-  public async create(@Body() createWikiDto: CreateWikiDto): Promise<Wiki> {
-    return await this.wikisService.create(createWikiDto);
+  @CheckPolicies(ability => ability.can(Action.Create, WikiPage))
+  public async create(@Body() createWikiPageDto: CreateWikiPageDto): Promise<WikiPage> {
+    return await this.wikisService.create(createWikiPageDto);
   }
 
   @Get()
-  // @CheckPolicies(ability => ability.can(Action.Read, Wiki))
-  public async findAll(@Query() query: PaginateDto): Promise<PaginatedResult<Wiki>> {
-    if (query.page)
-      return await this.wikisService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.wikisService.findAll();
-  }
-
-  @Get(':category')
-  // @CheckPolicies(ability => ability.can(Action.Read, Wiki))
-  public async findByCategory(@Query() query: PaginateDto, @Param('category') category: string): Promise<PaginatedResult<Wiki>> {
-    return await this.wikisService.findByCategory(category);
+  @CheckPolicies(ability => ability.can(Action.Read, WikiPage))
+  public async findAll(
+    @CurrentUser() user: User,
+    @Query() query: FilterAndPaginateDto,
+  ): Promise<PaginatedResult<WikiPage>> {
+    if (query.category)
+      return await this.wikisService.findAllByCategory(user, query.category, normalizePagination(query));
+    return await this.wikisService.findAll(user, normalizePagination(query));
   }
 
   @Get(':wikiPageId')
-  // @CheckPolicies(ability => ability.can(Action.Read, Wiki))
-  public async findOne(@Param('wikiPageId') wikiPageId: number): Promise<Wiki | null> {
+  @CheckPolicies(ability => ability.can(Action.Read, WikiPage))
+  public async findOne(@Param('wikiPageId') wikiPageId: number): Promise<WikiPage | null> {
     return await this.wikisService.findOne(wikiPageId);
   }
 
   @Patch(':wikiPageId')
-  // @CheckPolicies(ability => ability.can(Action.Update, Wiki))
-  public async update(@Param('wikiPageId') wikiPageId: number, @Body() updateWikiDto: UpdateWikiDto): Promise<Wiki> {
-    return await this.wikisService.update(wikiPageId, updateWikiDto);
+  @CheckPolicies(ability => ability.can(Action.Update, WikiPage))
+  public async update(@Param('wikiPageId') wikiPageId: number, @Body() updateWikiPageDto: UpdateWikiPageDto): Promise<WikiPage> {
+    return await this.wikisService.update(wikiPageId, updateWikiPageDto);
   }
 
   @Delete(':wikiPageId')
-  // @CheckPolicies(ability => ability.can(Action.Delete, Wiki))
+  @CheckPolicies(ability => ability.can(Action.Delete, WikiPage))
   public async remove(@Param('wikiPageId') wikiPageId: number): Promise<void> {
     await this.wikisService.remove(wikiPageId);
   }
