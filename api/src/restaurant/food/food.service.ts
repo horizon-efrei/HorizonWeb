@@ -6,17 +6,20 @@ import type { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
 import type { CreateFoodDto } from './dto/create-food.dto';
 import type { UpdateFoodDto } from './dto/update-food.dto';
+import { FoodSearchService } from './food-search.service';
 import { Food } from './food.entity';
 
 @Injectable()
 export class FoodService {
   constructor(
     @InjectRepository(Food) private readonly foodRepository: BaseRepository<Food>,
+    private readonly foodSearchService: FoodSearchService,
   ) {}
 
   public async create(createFoodDto: CreateFoodDto): Promise<Food> {
     const food = new Food(createFoodDto);
     await this.foodRepository.persistAndFlush(food);
+    await this.foodSearchService.add(food);
     return food;
   }
 
@@ -32,11 +35,13 @@ export class FoodService {
     const food = await this.foodRepository.findOneOrFail({ foodId });
     wrap(food).assign(updateFoodDto);
     await this.foodRepository.flush();
+    await this.foodSearchService.update(food);
     return food;
   }
 
   public async remove(foodId: number): Promise<void> {
     const food = await this.foodRepository.findOneOrFail({ foodId });
     await this.foodRepository.removeAndFlush(food);
+    await this.foodSearchService.remove(foodId.toString());
   }
 }
