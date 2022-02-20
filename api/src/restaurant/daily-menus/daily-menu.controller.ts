@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
+import { normalizePagination } from '../../shared/modules/pagination/normalize-pagination';
 import { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
 import { DailyMenu } from './daily-menu.entity';
@@ -35,9 +36,7 @@ export class DailyMenusController {
   public async findAll(
     @Query() query: PaginateDto,
   ): Promise<PaginatedResult<DailyMenu>> {
-    if (query.page)
-      return await this.dailyMenuService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.dailyMenuService.findAll();
+    return await this.dailyMenuService.findAll(normalizePagination(query));
   }
 
   @Get(':id')

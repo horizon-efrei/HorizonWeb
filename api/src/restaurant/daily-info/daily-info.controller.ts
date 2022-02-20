@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
+import { normalizePagination } from '../../shared/modules/pagination/normalize-pagination';
 import { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
 import { DailyInfo } from './daily-info.entity';
@@ -35,9 +36,7 @@ export class DailyInfoController {
   public async findAll(
     @Query() query: PaginateDto,
   ): Promise<PaginatedResult<DailyInfo>> {
-    if (query.page)
-      return await this.dailyInfoService.findAll({ page: query.page, itemsPerPage: query.itemsPerPage ?? 10 });
-    return await this.dailyInfoService.findAll();
+    return await this.dailyInfoService.findAll(normalizePagination(query));
   }
 
   @Get(':id')

@@ -2,7 +2,7 @@ import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
-import type { PaginationOptions } from '../../shared/modules/pagination/pagination-option.interface';
+import type { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
 import { DailyInfo } from './daily-info.entity';
 import type { CreateDailyInfoDto } from './dto/create-daily-info.dto';
@@ -32,8 +32,12 @@ export class DailyInfoService {
     return await this.dailyInfoRepository.findOneOrFail({ infoId });
   }
 
-  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<DailyInfo>> {
-    return await this.dailyInfoRepository.findWithPagination(paginationOptions);
+  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<DailyInfo>> {
+    return await this.dailyInfoRepository.findWithPagination(
+      paginationOptions,
+      {},
+      { orderBy: { date: 'ASC' } },
+    );
   }
 
   public async update(infoId: number, updateDailyInfoDto: NormalizedDate<UpdateDailyInfoDto>): Promise<DailyInfo> {

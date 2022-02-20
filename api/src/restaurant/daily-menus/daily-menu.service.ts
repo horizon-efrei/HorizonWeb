@@ -2,7 +2,7 @@ import { UniqueConstraintViolationException, wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
-import type { PaginationOptions } from '../../shared/modules/pagination/pagination-option.interface';
+import type { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
 import type { PaginatedResult } from '../../shared/modules/pagination/pagination.interface';
 import { Food } from '../food/food.entity';
 import { DailyMenu } from './daily-menu.entity';
@@ -38,8 +38,15 @@ export class DailyMenusService {
     return menu;
   }
 
-  public async findAll(paginationOptions?: PaginationOptions): Promise<PaginatedResult<DailyMenu>> {
-    return await this.dailyMenuRepository.findWithPagination(paginationOptions, {}, { populate: ['starters', 'dishes', 'desserts'] });
+  public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<DailyMenu>> {
+    return await this.dailyMenuRepository.findWithPagination(
+      paginationOptions,
+      {},
+      {
+        populate: ['starters', 'dishes', 'desserts'],
+        orderBy: { date: 'DESC' },
+      },
+      );
   }
 
   public async findOne(menuId: number): Promise<DailyMenu> {
