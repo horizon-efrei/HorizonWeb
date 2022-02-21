@@ -38,7 +38,7 @@ export class ThreadsService {
     @InjectRepository(Report) private readonly reportRepository: BaseRepository<Report>,
     private readonly contentsService: ContentsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
-  ) { }
+  ) {}
 
   public async create(user: User, createThreadDto: CreateThreadDto): Promise<Thread> {
     const thread = new Thread(createThreadDto);
