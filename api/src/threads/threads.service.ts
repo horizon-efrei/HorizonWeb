@@ -38,7 +38,7 @@ export class ThreadsService {
     @InjectRepository(Report) private readonly reportRepository: BaseRepository<Report>,
     private readonly contentsService: ContentsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
-  ) {}
+  ) { }
 
   public async create(user: User, createThreadDto: CreateThreadDto): Promise<Thread> {
     const thread = new Thread(createThreadDto);
@@ -64,10 +64,10 @@ export class ThreadsService {
 
   public async findAll(user: User, options?: Required<ListOptionsDto>): Promise<PaginatedResult<Thread>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
-    const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
+    const queryParams = canSeeHiddenContent ? { isDraft: false } : { isDraft: false, post: { isVisible: true } };
     return await this.threadRepository.findWithPagination(
       options,
-      visibilityQuery,
+      queryParams,
       {
         // TODO: Remove 'post.lastEdit' once we add activities
         populate: ['post', 'tags', 'assignees', 'post.author', 'post.lastEdit', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'],
@@ -76,17 +76,9 @@ export class ThreadsService {
     );
   }
 
-  public async findDraftedOrFullThreads(
+  public async findDraftThreads(
     paginationOptions?: Required<PaginateDto>,
-    drafted?: boolean,
   ): Promise<PaginatedResult<Thread>> {
-    if (drafted) {
-      return await this.threadRepository.findWithPagination(
-        paginationOptions,
-        { isDraft: drafted },
-        { populate: ['post', 'tags', 'assignees'] },
-      );
-    }
     return await this.threadRepository.findWithPagination(
       paginationOptions,
       { isDraft: true },

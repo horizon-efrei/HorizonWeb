@@ -71,7 +71,7 @@ export class ThreadsController {
   @Get('/drafts')
   @CheckPolicies(ability => ability.can(Action.Read, Thread))
   public async findThreadsDrafts(@Query() query: ListOptionsDto): Promise<PaginatedResult<Thread>> {
-    return await this.threadsService.findDraftedOrFullThreads({
+    return await this.threadsService.findDraftThreads({
       ...normalizePagination(query),
       ...normalizeSort(query),
     });

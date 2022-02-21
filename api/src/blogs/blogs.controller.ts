@@ -67,8 +67,8 @@ export class BlogsController {
 
   @Get('/drafts')
   @CheckPolicies(ability => ability.can(Action.Read, Blog))
-  public async findDraftedOrFullBlogs(@Query() query: ListOptionsDto): Promise<PaginatedResult<Blog>> {
-    return await this.blogsService.findDraftedOrFullBlogs({ ...normalizePagination(query), ...normalizeSort(query) });
+  public async findDraftBlogs(@Query() query: ListOptionsDto): Promise<PaginatedResult<Blog>> {
+    return await this.blogsService.findDraftBlogs({ ...normalizePagination(query), ...normalizeSort(query) });
   }
 
   @Get(':id')

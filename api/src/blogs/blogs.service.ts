@@ -25,7 +25,7 @@ export class BlogsService {
     @InjectRepository(Tag) private readonly tagRepository: BaseRepository<Tag>,
     private readonly contentsService: ContentsService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
-  ) {}
+  ) { }
 
   public async create(user: User, createBlogDto: CreateBlogDto): Promise<Blog> {
     const blog = new Blog({
@@ -49,21 +49,17 @@ export class BlogsService {
 
   public async findAll(user: User, options?: Required<ListOptionsDto>): Promise<PaginatedResult<Blog>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
-    const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
+    const queryParams = canSeeHiddenContent ? { isDraft: false } : { isDraft: false, post: { isVisible: true } };
     return await this.blogRepository.findWithPagination(
       options,
-      visibilityQuery,
+      queryParams,
       { populate: ['post', 'tags'], orderBy: { post: serializeOrder(options?.sortBy) } },
     );
   }
 
-  public async findDraftedOrFullBlogs(
+  public async findDraftBlogs(
     paginationOptions?: Required<PaginateDto>,
-    drafted?: boolean,
   ): Promise<PaginatedResult<Blog>> {
-    // To get drafted blogs 'drafted' should be 'true'
-    if (drafted)
-      return await this.blogRepository.findWithPagination(paginationOptions, { isDraft: drafted }, { populate: ['post', 'tags'] });
     return await this.blogRepository.findWithPagination(paginationOptions, { isDraft: true }, { populate: ['post', 'tags'] });
   }
 
