@@ -27,6 +27,7 @@ import { BlogSearchService } from './blog-search.service';
 import { Blog } from './blog.entity';
 import { BlogsService } from './blogs.service';
 import { CreateBlogDto } from './dto/create-blog.dto';
+import { CreateDraftBlogDto } from './dto/create-draft-blog.dto';
 import { UpdateBlogDto } from './dto/update-blog.dto';
 
 @ApiTags('Blogs')
@@ -42,6 +43,13 @@ export class BlogsController {
   @CheckPolicies(ability => ability.can(Action.Create, Blog))
   public async create(@CurrentUser() user: User, @Body() createBlogDto: CreateBlogDto): Promise<Blog> {
     return await this.blogsService.create(user, createBlogDto);
+  }
+
+  @Post('/draft')
+  @SerializerExcludeContentAuthor()
+  @CheckPolicies(ability => ability.can(Action.Create, Blog))
+  public async createDraft(@CurrentUser() user: User, @Body() createBlogDto: CreateDraftBlogDto): Promise<Blog> {
+    return await this.blogsService.createDraft(user, createBlogDto);
   }
 
   @Get()
@@ -67,8 +75,11 @@ export class BlogsController {
 
   @Get('/drafts')
   @CheckPolicies(ability => ability.can(Action.Read, Blog))
-  public async findDraftBlogs(@Query() query: ListOptionsDto): Promise<PaginatedResult<Blog>> {
-    return await this.blogsService.findDraftBlogs({ ...normalizePagination(query), ...normalizeSort(query) });
+  public async findDraftBlogs(
+    @Query() query: ListOptionsDto,
+    @CurrentUser() user: User,
+  ): Promise<PaginatedResult<Blog>> {
+    return await this.blogsService.findDraftBlogs(user, { ...normalizePagination(query), ...normalizeSort(query) });
   }
 
   @Get(':id')

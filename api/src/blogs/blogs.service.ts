@@ -16,6 +16,7 @@ import { Tag } from '../tags/tag.entity';
 import type { User } from '../users/user.entity';
 import { Blog } from './blog.entity';
 import type { CreateBlogDto } from './dto/create-blog.dto';
+import type { CreateDraftBlogDto } from './dto/create-draft-blog.dto';
 import type { UpdateBlogDto } from './dto/update-blog.dto';
 
 @Injectable()
@@ -31,6 +32,7 @@ export class BlogsService {
     const blog = new Blog({
       ...createBlogDto,
       slug: slugify(createBlogDto.slug ?? createBlogDto.title),
+      isDraft: false,
       location: createBlogDto?.location?.split(',').map(Number) as [lat: number, lon: number] | undefined,
     });
 
@@ -42,10 +44,30 @@ export class BlogsService {
       ...createBlogDto,
       contentMasterType: ContentMasterType.Blog,
     });
-
     await this.blogRepository.persistAndFlush(blog);
     return blog;
   }
+
+  public async createDraft(user: User, createDraftBlogDto: CreateDraftBlogDto): Promise<Blog> {
+    const blog = new Blog({
+      ...createDraftBlogDto,
+      slug: slugify(createDraftBlogDto.slug ?? createDraftBlogDto.title),
+      isDraft: true,
+      location: createDraftBlogDto?.location?.split(',').map(Number) as [lat: number, lon: number] | undefined,
+    });
+
+    // TODO: Keep the original order
+    const tags = await this.tagRepository.find({ name: { $in: createDraftBlogDto.tags } });
+    blog.tags.add(...tags);
+
+    blog.post = await this.contentsService.createPost(user, blog, {
+      ...createDraftBlogDto,
+      contentMasterType: ContentMasterType.Blog,
+    });
+    await this.blogRepository.persistAndFlush(blog);
+    return blog;
+  }
+
 
   public async findAll(user: User, options?: Required<ListOptionsDto>): Promise<PaginatedResult<Blog>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
@@ -58,8 +80,10 @@ export class BlogsService {
   }
 
   public async findDraftBlogs(
+    user: User,
     paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<Blog>> {
+    // We may use blogsSearchService
     return await this.blogRepository.findWithPagination(paginationOptions, { isDraft: true }, { populate: ['post', 'tags'] });
   }
 

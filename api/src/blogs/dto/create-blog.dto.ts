@@ -1,7 +1,6 @@
 import { IntersectionType, PickType } from '@nestjs/mapped-types';
 import {
   IsArray,
-  IsBoolean,
   IsLatLong,
   IsOptional,
   IsString,
@@ -30,10 +29,9 @@ export class CreateBlogDto extends IntersectionType(TagsDto, PickType(CreateOrph
   @IsString()
   category: string;
 
-  @IsBoolean()
-  isDraft: boolean;
-
   @IsArray()
   @IsString({ each: true })
   tags: string[];
+
+  isDraft: boolean;
 }
