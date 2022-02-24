@@ -62,5 +62,6 @@ export class Thread extends ContentMaster {
     super(options);
     this.title = options.title;
     this.type = options.type;
+    options.isDraft === undefined ? this.isDraft = false : this.isDraft = false;
   }
 }

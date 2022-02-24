@@ -19,6 +19,7 @@ import { serializeOrder } from '../shared/modules/sorting/serialize-order';
 import { Tag } from '../tags/tag.entity';
 import { User } from '../users/user.entity';
 import { Vote } from '../votes/vote.entity';
+import type { CreateDraftThreadDto } from './dto/create-draft-thread.dto';
 import type { CreateThreadDto } from './dto/create-thread.dto';
 import type { UpdateThreadDto } from './dto/update-thread.dto';
 import type { ThreadInteractions } from './thread-interactions.interface';
@@ -41,7 +42,7 @@ export class ThreadsService {
   ) {}
 
   public async create(user: User, createThreadDto: CreateThreadDto): Promise<Thread> {
-    const thread = new Thread(createThreadDto);
+    const thread = new Thread({ ...createThreadDto, isDraft: false });
 
     // TODO: Keep the original order
     const tags = await this.tagRepository.find({ name: { $in: createThreadDto.tags } });
@@ -54,6 +55,28 @@ export class ThreadsService {
 
     thread.post = await this.contentsService.createPost(user, thread, {
       ...createThreadDto,
+      contentMasterType: ContentMasterType.Thread,
+    });
+
+    await this.threadRepository.persistAndFlush(thread);
+
+    return thread;
+  }
+
+  public async createDraft(user: User, createDraftThreadDto: CreateDraftThreadDto): Promise<Thread> {
+    const thread = new Thread(createDraftThreadDto);
+
+    // TODO: Keep the original order
+    const tags = await this.tagRepository.find({ name: { $in: createDraftThreadDto.tags } });
+    thread.tags.add(...tags);
+
+    const assignees = await this.userRepository.find({ userId: { $in: createDraftThreadDto.assignees } });
+    thread.assignees.add(...assignees);
+
+    thread.participants.add(user);
+
+    thread.post = await this.contentsService.createPost(user, thread, {
+      ...createDraftThreadDto,
       contentMasterType: ContentMasterType.Thread,
     });
 

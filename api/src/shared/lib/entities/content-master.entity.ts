@@ -44,7 +44,5 @@ export abstract class ContentMaster extends BaseEntity {
     super();
     if (options.post)
       this.post = options.post;
-    if (options.isDraft)
-      this.isDraft = options.isDraft;
   }
 }

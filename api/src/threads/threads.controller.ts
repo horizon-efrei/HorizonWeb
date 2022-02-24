@@ -23,6 +23,7 @@ import { SearchDto } from '../shared/modules/search/search.dto';
 import { normalizeSort } from '../shared/modules/sorting/normalize-sort';
 import { User } from '../users/user.entity';
 import { AssigneesDto } from './dto/assignees.dto';
+import { CreateDraftThreadDto } from './dto/create-draft-thread.dto';
 import { CreateThreadDto } from './dto/create-thread.dto';
 import { TagsDto } from './dto/tags.dto';
 import { UpdateThreadDto } from './dto/update-thread.dto';
@@ -45,6 +46,16 @@ export class ThreadsController {
   @CheckPolicies(ability => ability.can(Action.Create, Thread))
   public async create(@CurrentUser() user: User, @Body() createThreadDto: CreateThreadDto): Promise<Thread> {
     return await this.threadsService.create(user, createThreadDto);
+  }
+
+  @Post('/draft')
+  @SerializerExcludeContentAuthor()
+  @CheckPolicies(ability => ability.can(Action.Create, Thread))
+  public async createDraft(
+    @CurrentUser() user: User,
+    @Body() createDraftThreadDto: CreateDraftThreadDto,
+  ): Promise<Thread> {
+    return await this.threadsService.createDraft(user, createDraftThreadDto);
   }
 
   @Get()
