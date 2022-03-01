@@ -130,22 +130,16 @@ const routes = [
     },
 
     {
-        path: '/crous',
-        component: () => import('@/views/Blog/BlogCrous.vue'),
-        meta: {
-            requiresAuth: true,
-        },
-    },
-    {
         path: '/crous/daily/:date',
-        component: () => import('@/views/Crous/ViewCrous.vue'),
+        component: () => import('@/views/Crous/CrousView.vue'),
         meta: {
             requiresAuth: true,
         },
     },
+
     {
-        path: '/crous/form',
-        component: () => import('@/views/Crous/FormCrous.vue'),
+        path: '/crous/new',
+        component: () => import('@/views/Crous/CrousNew.vue'),
         meta: {
             requiresAuth: true,
         },
