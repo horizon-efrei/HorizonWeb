@@ -130,6 +130,7 @@ const routes = [
     },
 
     {
+        name: 'crous',
         path: '/crous/daily/:date',
         component: () => import('@/views/Crous/CrousView.vue'),
         meta: {

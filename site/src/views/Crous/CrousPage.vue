@@ -88,25 +88,27 @@
     })
 
     const loadDayCrous = async () => {
-        try {
-            const date = ref(route.params.date === 'today' ? new Date() : new Date(route.params.date))
-            if (date.value < START_DATE) {
-                throw new Error('No records before ' + START_DATE.toLocaleDateString())
-            } else {
-                restaurant
-                    .getDate(date.value.toISOString().split('T').shift())
-                    .then((data) => {
-                        dayCrous.menu = data.menu
-                        dayCrous.info = data.info
-                    })
-                    .catch((err) => {
-                        emitter.emit('error-route', { code: getStatus(err.response) })
-                    })
-                // TODO: globally improve status error catching
+        if (route.name === 'crous') {
+            try {
+                const date = ref(route.params.date === 'today' ? new Date() : new Date(route.params.date))
+                if (date.value < START_DATE) {
+                    throw new Error('No records before ' + START_DATE.toLocaleDateString())
+                } else {
+                    restaurant
+                        .getDate(date.value.toISOString().split('T').shift())
+                        .then((data) => {
+                            dayCrous.menu = data.menu
+                            dayCrous.info = data.info
+                        })
+                        .catch((err) => {
+                            emitter.emit('error-route', { code: getStatus(err.response) })
+                        })
+                    // TODO: globally improve status error catching
+                }
+            } catch (e) {
+                console.log('ERROR', e)
+                emitter.emit('error-route', { code: '404' })
             }
-        } catch (e) {
-            console.log('ERROR', e)
-            emitter.emit('error-route', { code: '404' })
         }
     }
 
