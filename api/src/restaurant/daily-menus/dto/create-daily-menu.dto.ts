@@ -1,7 +1,8 @@
 import { IsArray, Matches } from 'class-validator';
+import { iso8601Regex } from '../../../shared/lib/utils/iso-8601-date';
 
 export class CreateDailyMenuDto {
-  @Matches(/^\d{4}-(?:0\d|1[0-2])-(?:[0-2]\d|3[01])$/, { message: 'date must be in format YYYY-MM-DD' })
+  @Matches(iso8601Regex, { message: 'date must be in format YYYY-MM-DD' })
   date: string;
 
   @IsArray()
@@ -12,13 +13,4 @@ export class CreateDailyMenuDto {
 
   @IsArray()
   desserts: number[];
-
-  public normalizeDates(): Omit<CreateDailyMenuDto, 'normalizeDates'> & { date: Date } {
-    // eslint-disable-next-line @typescript-eslint/unbound-method
-    const { normalizeDates: _, ...keep } = this;
-    return {
-      ...keep,
-      date: new Date(this.date),
-    };
-  }
 }

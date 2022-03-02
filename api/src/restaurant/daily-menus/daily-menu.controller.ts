@@ -9,6 +9,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { ParseDatePipe } from '../../shared/lib/pipes/parse-date.pipe';
 import { Action, CheckPolicies } from '../../shared/modules/authorization';
 import { normalizePagination } from '../../shared/modules/pagination/normalize-pagination';
 import { PaginateDto } from '../../shared/modules/pagination/paginate.dto';
@@ -28,7 +29,10 @@ export class DailyMenusController {
   @Post()
   @CheckPolicies(ability => ability.can(Action.Create, DailyMenu))
   public async create(@Body() createDailyMenuDto: CreateDailyMenuDto): Promise<DailyMenu> {
-    return await this.dailyMenuService.create(createDailyMenuDto.normalizeDates());
+    return await this.dailyMenuService.create({
+      ...createDailyMenuDto,
+      date: new Date(createDailyMenuDto.date),
+    });
   }
 
   @Get()
@@ -39,21 +43,24 @@ export class DailyMenusController {
     return await this.dailyMenuService.findAll(normalizePagination(query));
   }
 
-  @Get(':id')
+  @Get(':date')
   @CheckPolicies(ability => ability.can(Action.Read, DailyMenu))
-  public async findOne(@Param('id') id: number): Promise<DailyMenu> {
-    return await this.dailyMenuService.findOne(id);
+  public async findOne(@Param('date', ParseDatePipe) date: Date): Promise<DailyMenu> {
+    return await this.dailyMenuService.findOne(date);
   }
 
-  @Patch(':id')
+  @Patch(':date')
   @CheckPolicies(ability => ability.can(Action.Update, DailyMenu))
-  public async update(@Param('id') id: number, @Body() updateDailyMenuDto: UpdateDailyMenuDto): Promise<DailyMenu> {
-    return await this.dailyMenuService.update(id, updateDailyMenuDto.normalizeDates());
+  public async update(
+    @Param('date', ParseDatePipe) date: Date,
+    @Body() updateDailyMenuDto: UpdateDailyMenuDto,
+  ): Promise<DailyMenu> {
+    return await this.dailyMenuService.update(date, updateDailyMenuDto);
   }
 
-  @Delete(':id')
+  @Delete(':date')
   @CheckPolicies(ability => ability.can(Action.Delete, DailyMenu))
-  public async remove(@Param('id') id: number): Promise<void> {
-    await this.dailyMenuService.remove(id);
+  public async remove(@Param('date', ParseDatePipe) date: Date): Promise<void> {
+    await this.dailyMenuService.remove(date);
   }
 }

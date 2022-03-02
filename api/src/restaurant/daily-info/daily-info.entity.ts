@@ -1,22 +1,13 @@
-import {
-  Entity,
-  PrimaryKey,
-  Property,
-  Unique,
-} from '@mikro-orm/core';
+import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 
 @Entity()
 export class DailyInfo extends BaseEntity {
   @PrimaryKey()
-  infoId!: number;
+  date!: Date;
 
   @Property({ type: 'text' })
   content!: string;
-
-  @Property()
-  @Unique()
-  date!: Date;
 
   constructor(options: {
     content: string;

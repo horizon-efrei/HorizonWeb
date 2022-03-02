@@ -1,12 +1,5 @@
-import {
-  IntersectionType,
-  OmitType,
-  PartialType,
-  PickType,
-} from '@nestjs/mapped-types';
+import { OmitType, PartialType } from '@nestjs/mapped-types';
 import { CreateDailyMenuDto } from './create-daily-menu.dto';
 
-export class UpdateDailyMenuDto extends IntersectionType(
-  PartialType(OmitType(CreateDailyMenuDto, ['normalizeDates'])),
-  PickType(CreateDailyMenuDto, ['normalizeDates']),
-) {}
+// TODO: Make it possible to update the date.
+export class UpdateDailyMenuDto extends PartialType(OmitType(CreateDailyMenuDto, ['date'])) {}

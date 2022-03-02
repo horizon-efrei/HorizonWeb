@@ -8,7 +8,7 @@ import { DailyInfo } from './daily-info.entity';
 import type { CreateDailyInfoDto } from './dto/create-daily-info.dto';
 import type { UpdateDailyInfoDto } from './dto/update-daily-info.dto';
 
-type NormalizedDate<T> = Omit<T, 'normalizeDates'> & { date: Date };
+type NormalizedDate<T> = Omit<T, 'date'> & { date: Date };
 
 @Injectable()
 export class DailyInfoService {
@@ -28,8 +28,8 @@ export class DailyInfoService {
     return info;
   }
 
-  public async findOne(infoId: number): Promise<DailyInfo> {
-    return await this.dailyInfoRepository.findOneOrFail({ infoId });
+  public async findOne(date: Date): Promise<DailyInfo> {
+    return await this.dailyInfoRepository.findOneOrFail({ date });
   }
 
   public async findAll(paginationOptions?: Required<PaginateDto>): Promise<PaginatedResult<DailyInfo>> {
@@ -40,15 +40,15 @@ export class DailyInfoService {
     );
   }
 
-  public async update(infoId: number, updateDailyInfoDto: NormalizedDate<UpdateDailyInfoDto>): Promise<DailyInfo> {
-    const info = await this.dailyInfoRepository.findOneOrFail({ infoId });
+  public async update(date: Date, updateDailyInfoDto: Partial<NormalizedDate<UpdateDailyInfoDto>>): Promise<DailyInfo> {
+    const info = await this.dailyInfoRepository.findOneOrFail({ date });
     wrap(info).assign(updateDailyInfoDto);
     await this.dailyInfoRepository.flush();
     return info;
   }
 
-  public async remove(infoId: number): Promise<void> {
-    const dailyInfo = await this.dailyInfoRepository.findOneOrFail({ infoId });
+  public async remove(date: Date): Promise<void> {
+    const dailyInfo = await this.dailyInfoRepository.findOneOrFail({ date });
     await this.dailyInfoRepository.removeAndFlush(dailyInfo);
   }
 }

@@ -51,12 +51,12 @@ export class FoodSearchService extends SearchService<Food, IndexedFood> {
   }
 
   @RequireTypesense()
-  public async search(queries: SearchParams<IndexedFood>): Promise<SearchResponse<IndexedFood>> {
+  public async search(queries: SearchParams): Promise<SearchResponse<IndexedFood>> {
     return await this.documents.search(queries);
   }
 
   @RequireTypesense()
-  public async searchAndPopulate(queries: SearchParams<IndexedFood>): Promise<SearchResponse<Food>> {
+  public async searchAndPopulate(queries: SearchParams): Promise<SearchResponse<Food>> {
     const results = await this.documents.search(queries);
 
     if (results.hits?.length) {

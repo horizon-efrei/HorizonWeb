@@ -9,7 +9,7 @@ import { DailyMenu } from './daily-menu.entity';
 import type { CreateDailyMenuDto } from './dto/create-daily-menu.dto';
 import type { UpdateDailyMenuDto } from './dto/update-daily-menu.dto';
 
-type NormalizedDate<T> = Omit<T, 'normalizeDates'> & { date: Date };
+type NormalizedDate<T> = Omit<T, 'date'> & { date: Date };
 
 @Injectable()
 export class DailyMenusService {
@@ -49,27 +49,42 @@ export class DailyMenusService {
       );
   }
 
-  public async findOne(menuId: number): Promise<DailyMenu> {
-    return await this.dailyMenuRepository.findOneOrFail({ menuId }, { populate: ['starters', 'dishes', 'desserts'] });
+  public async findOne(date: Date): Promise<DailyMenu> {
+    return await this.dailyMenuRepository.findOneOrFail({ date }, { populate: ['starters', 'dishes', 'desserts'] });
   }
 
-  public async update(menuId: number, updateDailyMenuDto: NormalizedDate<UpdateDailyMenuDto>): Promise<DailyMenu> {
-    const menu = await this.dailyMenuRepository.findOneOrFail({ menuId });
-    const starters = await this.foodRepository.find({ foodId: { $in: updateDailyMenuDto.starters } });
-    const dishes = await this.foodRepository.find({ foodId: { $in: updateDailyMenuDto.dishes } });
-    const desserts = await this.foodRepository.find({ foodId: { $in: updateDailyMenuDto.desserts } });
-    wrap(menu).assign({
-      date: updateDailyMenuDto.date,
-      starters,
-      dishes,
-      desserts,
-    });
+  public async update(date: Date, updateDailyMenuDto: Partial<NormalizedDate<UpdateDailyMenuDto>>): Promise<DailyMenu> {
+    const menu = await this.dailyMenuRepository.findOneOrFail({ date });
+
+    const {
+      starters: wantedStarters,
+      dishes: wantedDishes,
+      desserts: wantedDesserts,
+      ...dto
+    } = updateDailyMenuDto;
+    // TODO: Making you puke is the only thing this code is efficient about.
+    const starters = updateDailyMenuDto.starters
+      ? await this.foodRepository.find({ foodId: { $in: updateDailyMenuDto.starters } })
+      : [];
+    const dishes = updateDailyMenuDto.dishes
+      ? await this.foodRepository.find({ foodId: { $in: updateDailyMenuDto.dishes } })
+      : [];
+    const desserts = updateDailyMenuDto.desserts
+      ? await this.foodRepository.find({ foodId: { $in: updateDailyMenuDto.desserts } })
+      : [];
+
+    wrap(menu).assign(dto);
+
+    menu.starters.set(starters);
+    menu.dishes.set(dishes);
+    menu.desserts.set(desserts);
+
     await this.dailyMenuRepository.flush();
     return menu;
   }
 
-  public async remove(menuId: number): Promise<void> {
-    const menu = await this.dailyMenuRepository.findOneOrFail({ menuId });
+  public async remove(date: Date): Promise<void> {
+    const menu = await this.dailyMenuRepository.findOneOrFail({ date });
     await this.dailyMenuRepository.removeAndFlush(menu);
   }
 }
