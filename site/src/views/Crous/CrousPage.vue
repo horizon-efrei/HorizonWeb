@@ -78,7 +78,6 @@
         const dishesDetails = {}
 
         Object.keys(FOOD_TYPES).forEach((type) => {
-            console.log('TYPE', FOOD_TYPES[type], FOOD_TYPES[type].key, dayCrous.menu)
             dishesDetails[type] = dayCrous.menu[FOOD_TYPES[type].key].map((dish) =>
                 restaurant.food.find((food) => food.foodId === dish.foodId),
             )
@@ -100,13 +99,13 @@
                             dayCrous.menu = data.menu
                             dayCrous.info = data.info
                         })
+                        // TODO: globally improve status error catching
                         .catch((err) => {
                             emitter.emit('error-route', { code: getStatus(err.response) })
                         })
-                    // TODO: globally improve status error catching
                 }
             } catch (e) {
-                console.log('ERROR', e)
+                // TODO: globally improve status error catching
                 emitter.emit('error-route', { code: '404' })
             }
         }

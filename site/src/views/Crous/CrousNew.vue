@@ -73,7 +73,6 @@
 
     const crous = useRestaurantStore()
 
-    console.log('TODAY', getTodayDate())
     const date = ref(getTodayDate())
 
     const daily = ref({
