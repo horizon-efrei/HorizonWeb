@@ -62,18 +62,19 @@ export class DailyMenusService {
       desserts: wantedDesserts,
       ...dto
     } = updateDailyMenuDto;
-    // TODO: Making you puke is the only thing this code is efficient about.
-    const starters = updateDailyMenuDto.starters
-      ? await this.foodRepository.find({ foodId: { $in: updateDailyMenuDto.starters } })
-      : [];
-    const dishes = updateDailyMenuDto.dishes
-      ? await this.foodRepository.find({ foodId: { $in: updateDailyMenuDto.dishes } })
-      : [];
-    const desserts = updateDailyMenuDto.desserts
-      ? await this.foodRepository.find({ foodId: { $in: updateDailyMenuDto.desserts } })
-      : [];
 
     wrap(menu).assign(dto);
+
+    // TODO: Making you puke is the only thing this code is efficient about.
+    const starters = wantedStarters
+      ? await this.foodRepository.find({ foodId: { $in: wantedStarters } })
+      : [];
+    const dishes = wantedDishes
+      ? await this.foodRepository.find({ foodId: { $in: wantedDishes } })
+      : [];
+    const desserts = wantedDesserts
+      ? await this.foodRepository.find({ foodId: { $in: wantedDesserts } })
+      : [];
 
     menu.starters.set(starters);
     menu.dishes.set(dishes);
