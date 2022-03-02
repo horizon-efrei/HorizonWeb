@@ -42,7 +42,7 @@
 
             <div class="flex flex-col gap-4 card">
                 <h3 class="text-xl font-bold">Dernières informations</h3>
-                <div v-if="dayCrous.info">{{ dayCrous.info }}</div>
+                <div v-if="dayCrous.info?.content">{{ dayCrous.info?.content }}</div>
                 <div v-else>Pas d'informations pour ce jour !</div>
             </div>
         </div>
@@ -66,7 +66,7 @@
 
     const START_DATE = new Date('2022-02-25')
 
-    const restaurant = useRestaurantStore()
+    const crous = useRestaurantStore()
     const route = useRoute()
 
     const dayCrous = reactive({ menu: null, info: null })
@@ -79,7 +79,7 @@
 
         Object.keys(FOOD_TYPES).forEach((type) => {
             dishesDetails[type] = dayCrous.menu[FOOD_TYPES[type].key].map((dish) =>
-                restaurant.food.find((food) => food.foodId === dish.foodId),
+                crous.food.find((food) => food.foodId === dish.foodId),
             )
         })
 
@@ -93,7 +93,7 @@
                 if (date.value < START_DATE) {
                     throw new Error('No records before ' + START_DATE.toLocaleDateString())
                 } else {
-                    restaurant
+                    crous
                         .getDate(date.value.toISOString().split('T').shift())
                         .then((data) => {
                             dayCrous.menu = data.menu

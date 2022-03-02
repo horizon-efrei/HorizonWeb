@@ -7,3 +7,5 @@ export const FOOD_TYPES = {
     [DISH]: { 'key': 'dishes', 'fr': 'Plat', 'en': 'Dish', frFeminine: false },
     [DESSERT]: { 'key': 'desserts', 'fr': 'Dessert', 'en': 'Dessert', frFeminine: false },
 }
+
+export const FOOD_TYPES_KEYS = Object.values(FOOD_TYPES).map((foodType) => foodType.key)

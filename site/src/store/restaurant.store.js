@@ -13,11 +13,11 @@ const types = {
     },
     menu: {
         endpoint: 'daily-menus',
-        idKey: 'menuId',
+        idKey: 'date',
     },
     info: {
         endpoint: 'daily-info',
-        idKey: 'infoId',
+        idKey: 'date',
     },
 }
 
@@ -27,6 +27,16 @@ export const useRestaurantStore = defineStore('restaurant', {
     state: () => ({ food: [], menu: [], info: [] }),
 
     actions: {
+        getFoodType(type) {
+            if (type === STARTER) {
+                return this.getStarters
+            } else if (type === DISH) {
+                return this.getDishes
+            } else if (type === DESSERT) {
+                return this.getDesserts
+            }
+        },
+
         replaceItems({ type, items }) {
             if (Object.keys(types).includes(type)) {
                 this[type] = items
@@ -55,11 +65,13 @@ export const useRestaurantStore = defineStore('restaurant', {
         },
         async getFoodsIfNeeded(foods) {
             return await Promise.all(
-                foods.map((food) =>
-                    $axios
-                        .get(`restaurant/food/${food.foodId}`)
-                        .then(onData(this.replaceItem, { type: 'food' })),
-                ),
+                foods
+                    .filter((food) => this.food.findIndex(sameByIdFunc(food, 'foodId')) === -1)
+                    .map((food) =>
+                        $axios
+                            .get(`restaurant/food/${food.foodId}`)
+                            .then(onData(this.replaceItem, { type: 'food' })),
+                    ),
             )
         },
         async getDate(date) {
@@ -90,8 +102,9 @@ export const useRestaurantStore = defineStore('restaurant', {
                 .then(onData(this.replaceItem, { type }))
         },
         async updateItem(type, item) {
+            const { [types[type].idKey]: id, ...updatedItem } = item
             return await $axios
-                .patch(`/restaurant/${types[type].endpoint}/${item[types[type].idKey]}`, item)
+                .patch(`/restaurant/${types[type].endpoint}/${id}`, updatedItem)
                 .then(onData(this.replaceItem, { type }))
         },
         async deleteItem(type, id) {

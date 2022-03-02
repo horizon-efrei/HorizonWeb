@@ -19,13 +19,14 @@
                     placeholder="Informations du jour..."
                 />
             </div>
+
             <div class="flex justify-between">
                 <div v-if="daily.menu === null" class="flex gap-4">
                     <div>Pas de menu pour ce jour !</div>
                     <button class="text-sm text-blue-500" @click="initMenu()">+ Ajouter un menu</button>
                 </div>
                 <template v-for="(dishType, _, i) in FOOD_TYPES" v-else :key="i">
-                    <div class="flex flex-col">
+                    <div class="flex flex-col gap-2">
                         <div class="flex gap-2 items-center">
                             <span>{{ dishType[i18n.global.locale] + 's' }}</span>
                             <button
@@ -43,8 +44,8 @@
                             v-for="(__, j) in daily.menu[dishType.key]"
                             :key="j"
                             v-model="daily.menu[dishType.key][j]"
-                            :choices="getFoodType(i).map((dish) => dish.name)"
-                            :values="getFoodType(i)"
+                            :choices="crous.getFoodType(i).map((dish) => dish.name)"
+                            :values="crous.getFoodType(i).map((dish) => dish.foodId)"
                         />
                     </div>
                 </template>
@@ -61,14 +62,14 @@
     import crousLogo from '@/assets/img/crous/crous_logo.png'
 
     import { useRestaurantStore } from '@/store/restaurant.store'
-    import { FOOD_TYPES, STARTER, DISH, DESSERT } from '@/shared/types/food-types.enum'
+    import { FOOD_TYPES, FOOD_TYPES_KEYS } from '@/shared/types/food-types.enum'
     import { i18n } from '@/shared/modules/i18n'
     import { ref, watch } from 'vue'
 
     import SelectInput from '@/components/Input/SelectInput.vue'
-    import { getTodayDate } from '@/utils/dateUtils'
+    import { getDateFromDatetime, getTodayDate } from '@/utils/dateUtils'
 
-    import { isNil } from 'lodash'
+    import { isNil, pick } from 'lodash'
     import { emitter } from '@/shared/modules/emitter'
 
     const crous = useRestaurantStore()
@@ -83,64 +84,57 @@
     })
 
     const initMenu = () => {
-        daily.value.menu = {
-            [FOOD_TYPES[STARTER].key]: [],
-            [FOOD_TYPES[DISH].key]: [],
-            [FOOD_TYPES[DESSERT].key]: [],
-        }
+        daily.value.menu = FOOD_TYPES_KEYS.reduce((acc, curr) => ((acc[curr] = []), acc), {})
     }
-
-    crous.getItems('food')
-
     const updateDate = (date) =>
         crous.getDate(date).then((data) => {
-            daily.value.info = data.info ?? ''
-            daily.value.menu = data.menu
+            daily.value.info = data.info?.content ?? ''
+            daily.value.menu = isNil(data.menu) ? null : pick(data.menu, FOOD_TYPES_KEYS)
+            if (!isNil(daily.value.menu)) {
+                FOOD_TYPES_KEYS.forEach((key) => {
+                    daily.value.menu[key] = daily.value.menu[key].map((food) => food.foodId)
+                })
+            }
             daily.value.infoExists = !isNil(data.info)
             daily.value.menuExists = !isNil(data.menu)
         })
 
-    updateDate(date.value)
-
-    const getFoodType = (type) => {
-        if (type === STARTER) {
-            return crous.getStarters
-        } else if (type === DISH) {
-            return crous.getDishes
-        } else if (type === DESSERT) {
-            return crous.getDesserts
-        }
-    }
+    // Query foods THEN get daily
+    crous.getItems('food').then(() => {
+        updateDate(date.value)
+    })
 
     const isValidMenu = () => {
         const menu = daily.value.menu
-        return (
-            !isNil(menu) &&
-            menu[FOOD_TYPES[STARTER].key].length > 0 &&
-            menu[FOOD_TYPES[DISH].key].length > 0 &&
-            menu[FOOD_TYPES[DESSERT].key].length > 0 &&
-            menu[FOOD_TYPES[STARTER].key].every((dish) => !isNil(dish)) &&
-            menu[FOOD_TYPES[DISH].key].every((dish) => !isNil(dish)) &&
-            menu[FOOD_TYPES[DESSERT].key].every((dish) => !isNil(dish))
+
+        if (isNil(menu)) return false
+        return FOOD_TYPES_KEYS.every(
+            (foodType) => menu[foodType].length > 0 && menu[foodType].every((food) => food !== null),
         )
     }
 
-    // TODO: wait for API to switch route to /daily/:item/:date instead of /daily/:item/:id
     const sendDaily = () => {
         const promises = []
+        const dateString = getDateFromDatetime(date.value)
         if (daily.value.info.length) {
             promises.push(
                 daily.value.infoExists
-                    ? crous.updateItem('info', { date: date.value, content: daily.value.info })
-                    : crous.addItem('info', { date: date.value, content: daily.value.info }),
+                    ? crous.updateItem('info', {
+                          date: dateString,
+                          content: daily.value.info,
+                      })
+                    : crous.addItem('info', {
+                          date: dateString,
+                          content: daily.value.info,
+                      }),
             )
         }
 
         if (isValidMenu()) {
             promises.push(
                 daily.value.menuExists
-                    ? crous.addItem('menu', daily.value.menu)
-                    : crous.addItem('menu', daily.value.menu),
+                    ? crous.updateItem('menu', { ...daily.value.menu, date: dateString })
+                    : crous.addItem('menu', { ...daily.value.menu, date: dateString }),
             )
         }
 
