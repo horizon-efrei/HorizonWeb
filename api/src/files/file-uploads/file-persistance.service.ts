@@ -24,7 +24,9 @@ export class FilePersistanceService {
     file: Express.Multer.File,
     { path, key, kind }: { path: string; key: string; kind: FileKind },
   ): Promise<{ url: string; etag: string }> {
-    if (!config.get('storage.enabled')) {
+
+    if (true) {
+
       await fs.writeFile(path, file.buffer);
       return { url: `${computedConfig.apiUrl}/${path}`, etag: key };
     }

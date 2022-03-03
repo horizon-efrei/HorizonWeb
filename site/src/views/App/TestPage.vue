@@ -6,9 +6,23 @@
         <br />
         <br />
         @/views/TestPage.vue
+        {{fileTree}}
     </div>
 </template>
 
+
 <script setup>
-    defineProps({})
+    import { useFilesStore } from '@/store/files.store'
+    import { storeToRefs } from 'pinia'
+    import { watch } from 'vue'
+
+    const files = useFilesStore()
+    console.warn(files.getFiles('study'))
+    let { filesList,fileTree } = storeToRefs(files)
+
+    watch(fileTree, (newVal) => {
+        console.log(newVal)
+    })
+    //setTimeout(() => {files.getFiles('study/1/FH30')}, 2000)
+
 </script>

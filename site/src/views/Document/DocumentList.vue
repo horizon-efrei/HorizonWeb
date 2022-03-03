@@ -173,6 +173,7 @@
 </template>
 
 <script>
+
     import fileIcon from '@/assets/img/doctype/file.png'
     import AppModal from '@/components/App/AppModal.vue'
     import DocumentIcon from '@/components/Document/DocumentIcon.vue'
