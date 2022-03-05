@@ -48,7 +48,7 @@ export class ThreadsController {
     return await this.threadsService.create(user, createThreadDto);
   }
 
-  @Post('/draft')
+  @Post('/drafts')
   @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Create, Thread))
   public async createDraft(
@@ -81,11 +81,17 @@ export class ThreadsController {
 
   @Get('/drafts')
   @CheckPolicies(ability => ability.can(Action.Read, Thread))
-  public async findThreadsDrafts(@Query() query: ListOptionsDto): Promise<PaginatedResult<Thread>> {
-    return await this.threadsService.findDraftThreads({
-      ...normalizePagination(query),
-      ...normalizeSort(query),
-    });
+  public async findThreadsDrafts(
+    @CurrentUser() user: User,
+    @Query() query: ListOptionsDto,
+  ): Promise<PaginatedResult<Thread>> {
+    return await this.threadsService.findDraftThreads(
+      user,
+      {
+        ...normalizePagination(query),
+        ...normalizeSort(query),
+      },
+    );
   }
 
   @Get(':id')

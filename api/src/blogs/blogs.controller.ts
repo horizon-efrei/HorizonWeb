@@ -45,7 +45,7 @@ export class BlogsController {
     return await this.blogsService.create(user, createBlogDto);
   }
 
-  @Post('/draft')
+  @Post('/drafts')
   @SerializerExcludeContentAuthor()
   @CheckPolicies(ability => ability.can(Action.Create, Blog))
   public async createDraft(@CurrentUser() user: User, @Body() createBlogDto: CreateDraftBlogDto): Promise<Blog> {

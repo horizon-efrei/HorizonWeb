@@ -100,11 +100,12 @@ export class ThreadsService {
   }
 
   public async findDraftThreads(
+    user: User,
     paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<Thread>> {
     return await this.threadRepository.findWithPagination(
       paginationOptions,
-      { isDraft: true },
+      { post: { author: user }, isDraft: true },
       { populate: ['post', 'tags', 'assignees'] },
     );
   }
