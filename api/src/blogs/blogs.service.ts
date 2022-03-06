@@ -71,10 +71,10 @@ export class BlogsService {
 
   public async findAll(user: User, options?: Required<ListOptionsDto>): Promise<PaginatedResult<Blog>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
-    const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };};
+    const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
     return await this.blogRepository.findWithPagination(
       options,
-      { isDraft: false, ... visibilityQuery },
+      { isDraft: false, ...visibilityQuery },
       { populate: ['post', 'tags'], orderBy: { post: serializeOrder(options?.sortBy) } },
     );
   }
