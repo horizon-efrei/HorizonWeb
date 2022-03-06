@@ -1,8 +1,6 @@
 import { IntersectionType, PickType } from '@nestjs/mapped-types';
 import {
-  IsBoolean,
   IsEnum,
-  IsOptional,
   IsString,
   Length,
 } from 'class-validator';
