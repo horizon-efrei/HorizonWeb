@@ -90,7 +90,7 @@ export class ThreadsService {
     const queryParams = canSeeHiddenContent ? { isDraft: false } : { isDraft: false, post: { isVisible: true } };
     return await this.threadRepository.findWithPagination(
       options,
-      queryParams,
+      { isDraft: false, ...visibilityQuery },
       {
         // TODO: Remove 'post.lastEdit' once we add activities
         populate: ['post', 'tags', 'assignees', 'post.author', 'post.lastEdit', 'opValidatedWith', 'adminValidatedWith', 'adminValidatedBy'],
