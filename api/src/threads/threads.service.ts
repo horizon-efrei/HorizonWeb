@@ -87,7 +87,7 @@ export class ThreadsService {
 
   public async findAll(user: User, options?: Required<ListOptionsDto>): Promise<PaginatedResult<Thread>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
-    const queryParams = canSeeHiddenContent ? { isDraft: false } : { isDraft: false, post: { isVisible: true } };
+    const visibilityQuery = canSeeHiddenContent ? {} : { post: { isVisible: true } };
     return await this.threadRepository.findWithPagination(
       options,
       { isDraft: false, ...visibilityQuery },
