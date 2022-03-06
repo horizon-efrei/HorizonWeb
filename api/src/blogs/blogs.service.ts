@@ -74,7 +74,7 @@ export class BlogsService {
     const queryParams = canSeeHiddenContent ? { isDraft: false } : { isDraft: false, post: { isVisible: true } };
     return await this.blogRepository.findWithPagination(
       options,
-      queryParams,
+      { isDraft: false, ... visibilityQuery },
       { populate: ['post', 'tags'], orderBy: { post: serializeOrder(options?.sortBy) } },
     );
   }
