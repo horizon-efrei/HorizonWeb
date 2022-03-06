@@ -83,7 +83,6 @@ export class BlogsService {
     user: User,
     paginationOptions?: Required<PaginateDto>,
   ): Promise<PaginatedResult<Blog>> {
-    // We may use blogsSearchService
     return await this.blogRepository.findWithPagination(
       paginationOptions,
       { post: { author: user }, isDraft: true },
