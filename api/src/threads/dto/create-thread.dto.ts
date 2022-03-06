@@ -18,8 +18,4 @@ export class CreateThreadDto extends IntersectionType(AssigneesDto, TagsDto, Pic
 
   @IsEnum(ThreadType)
   type: ThreadType;
-
-  @IsOptional()
-  @IsBoolean()
-  isDraft?: boolean;
 }

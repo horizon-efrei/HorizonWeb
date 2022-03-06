@@ -32,6 +32,4 @@ export class CreateBlogDto extends IntersectionType(TagsDto, PickType(CreateOrph
   @IsArray()
   @IsString({ each: true })
   tags: string[];
-
-  isDraft: boolean;
 }

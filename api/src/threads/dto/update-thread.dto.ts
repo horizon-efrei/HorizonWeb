@@ -14,4 +14,8 @@ export class UpdateThreadDto extends PartialType(CreateThreadDto) {
   @IsInt()
   @IsOptional()
   adminValidatedWith?: number;
+
+  @IsOptional()
+  @IsBoolean()
+  isDraft?: boolean;
 }
