@@ -57,11 +57,11 @@ export class Thread extends ContentMaster {
     title: string;
     post?: Content;
     type: ThreadType;
-    isDraft?: boolean;
+    isDraft: boolean;
   }) {
     super(options);
     this.title = options.title;
     this.type = options.type;
-    options.isDraft === undefined ? this.isDraft = false : this.isDraft = false;
+    this.isDraft = options.isDraft;
   }
 }

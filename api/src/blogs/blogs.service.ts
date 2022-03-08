@@ -33,7 +33,7 @@ export class BlogsService {
       ...createBlogDto,
       slug: slugify(createBlogDto.slug ?? createBlogDto.title),
       isDraft: false,
-      location: createBlogDto?.location?.split(',').map(Number) as [lat: number, lon: number] | undefined,
+      location: createBlogDto.location?.split(',').map(Number) as [lat: number, lon: number] | undefined,
     });
 
     // TODO: Keep the original order
@@ -53,7 +53,7 @@ export class BlogsService {
       ...createDraftBlogDto,
       slug: slugify(createDraftBlogDto.slug ?? createDraftBlogDto.title),
       isDraft: true,
-      location: createDraftBlogDto?.location?.split(',').map(Number) as [lat: number, lon: number] | undefined,
+      location: createDraftBlogDto.location?.split(',').map(Number) as [lat: number, lon: number] | undefined,
     });
 
     // TODO: Keep the original order
@@ -67,7 +67,6 @@ export class BlogsService {
     await this.blogRepository.persistAndFlush(blog);
     return blog;
   }
-
 
   public async findAll(user: User, options?: Required<ListOptionsDto>): Promise<PaginatedResult<Blog>> {
     const canSeeHiddenContent = this.caslAbilityFactory.canSeeHiddenContent(user);
