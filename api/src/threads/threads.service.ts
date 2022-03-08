@@ -42,7 +42,7 @@ export class ThreadsService {
   ) {}
 
   public async create(user: User, createThreadDto: CreateThreadDto): Promise<Thread> {
-    const thread = new Thread({ ...createThreadDto, isDraft: false });
+    const thread = new Thread(createThreadDto);
 
     // TODO: Keep the original order
     const tags = await this.tagRepository.find({ name: { $in: createThreadDto.tags } });
@@ -64,7 +64,7 @@ export class ThreadsService {
   }
 
   public async createDraft(user: User, createDraftThreadDto: CreateDraftThreadDto): Promise<Thread> {
-    const thread = new Thread(createDraftThreadDto);
+    const thread = new Thread({ ...createDraftThreadDto, isDraft: true });
 
     // TODO: Keep the original order
     const tags = await this.tagRepository.find({ name: { $in: createDraftThreadDto.tags } });

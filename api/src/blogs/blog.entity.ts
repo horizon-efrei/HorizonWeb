@@ -25,15 +25,11 @@ export class Blog extends ContentMaster {
   @Property()
   locked = false;
 
-  // TODO: Add full 'draft' support
-  @Property()
-  isDraft = false;
-
   constructor(options: {
     title: string;
     slug: string;
     category: string;
-    isDraft: boolean;
+    isDraft?: boolean;
     post?: Content;
     location?: [lat: number, lon: number];
     locationName?: string;
@@ -42,7 +38,6 @@ export class Blog extends ContentMaster {
     this.title = options.title;
     this.slug = options.slug;
     this.category = options.category;
-    this.isDraft = options.isDraft;
     if (options.location)
       this.location = options.location.join(',');
     if (options.locationName)

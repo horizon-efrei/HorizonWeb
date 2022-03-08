@@ -32,7 +32,6 @@ export class BlogsService {
     const blog = new Blog({
       ...createBlogDto,
       slug: slugify(createBlogDto.slug ?? createBlogDto.title),
-      isDraft: false,
       location: createBlogDto.location?.split(',').map(Number) as [lat: number, lon: number] | undefined,
     });
 
