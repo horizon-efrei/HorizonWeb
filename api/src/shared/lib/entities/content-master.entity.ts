@@ -44,7 +44,7 @@ export abstract class ContentMaster extends BaseEntity {
     super();
     if (options.post)
       this.post = options.post;
-    if (typeof isDraft !== 'undefined')
+    if (typeof options.isDraft !== 'undefined')
       this.isDraft = options.isDraft;
   }
 }
