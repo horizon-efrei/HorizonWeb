@@ -11,7 +11,7 @@ export class UpdateBlogDto extends PartialType(CreateBlogDto) {
   @IsOptional()
   opened?: boolean;
 
-  @IsBoolean()
   @IsOptional()
-  isDraft?: boolean;
+  @IsIn([false])
+  isDraft?: false;
 }
