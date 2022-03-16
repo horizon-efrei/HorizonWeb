@@ -66,10 +66,10 @@ export const useFilesStore = defineStore('files', {
             let children = this.fileTree.children
             let filter = {}
             let result = null
-            for (const pathPart of path.split('/')) {
+            for (const pathPart of path) {
                 result = children.find(el => el.title === pathPart)
                 if (typeof result === 'undefined') {
-                    throw 'No such directory:', path.split('/')
+                    throw 'No such directory:', path
                 }
                 filter[result.context]=result.title
                 children = result.children
