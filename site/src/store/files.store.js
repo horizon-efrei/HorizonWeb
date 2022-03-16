@@ -36,45 +36,49 @@ export const useFilesStore = defineStore('files', {
         },
 
         async getFiles(path) {
-            const finder = await this.findInTree(path)
-            if (finder !== null) {
-                const { children, filter } = finder
-                console.log(filter, children)
-                if (children.length !== 0) {
-                    console.log()
+            try {
+                let treeFinder = await this.findInTree(path)
+                if (treeFinder.children.length === 0) {
+                    const listFinder = this.findInList(treeFinder.filter)
+                    return listFinder == undefined ? await this.requestFiles(treeFinder.filter) : listFinder
                 }
+                return treeFinder.children
+            } catch (e) {
+                console.error('No such directory:', e)
             }
-            return null
         },
 
         async requestFiles(filter) {
             const endpointList = { study: 'files/study-docs',info: 'files/info-docs' }
-            return await $axios.get(endpointList[filter.baseFolder], { params: _.omit(filter, 'baseFolder') }).then(onItems(this.applyFiles))
+            return await $axios.get(endpointList[filter.baseFolder], { params: { ..._.omit(filter, 'baseFolder') , itemsPerPage: 1000 } })
+            .then(onItems(this.applyFiles, { filter }))
         },
-        applyFiles() {
 
+        applyFiles({ filter, items }) {
+            this.filesList.push({ filter, items })
+            return items
         },
 
         async findInTree(path) {
             if (this.fileTree === null) {
                 await this.getFileTree()
             }
-
-            console.log(this.fileTree.children, [...this.fileTree.children])
             let children = this.fileTree.children
-            console.log(children)
             let filter = {}
             let result = null
             for (const pathPart of path.split('/')) {
                 result = children.find(el => el.title === pathPart)
                 if (result === undefined) {
-                    console.error('No such directory:', path.split('/'))
-                    return null
+                    throw 'No such directory:', path.split('/')
                 }
                 filter[result.context]=result.title
                 children = result.children
             }
             return { children, filter }
+        },
+
+        findInList(filter) {
+            return this.filesList.find(el => el.filter === filter)
         },
 
         async getStudyDocList(query) {
