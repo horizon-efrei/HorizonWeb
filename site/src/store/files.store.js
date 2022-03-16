@@ -40,7 +40,7 @@ export const useFilesStore = defineStore('files', {
                 let treeFinder = await this.findInTree(path)
                 if (treeFinder.children.length === 0) {
                     const listFinder = this.findInList(treeFinder.filter)
-                    return listFinder == undefined ? await this.requestFiles(treeFinder.filter) : listFinder
+                    return typeof listFinder == 'undefined' ? await this.requestFiles(treeFinder.filter) : listFinder
                 }
                 return treeFinder.children
             } catch (e) {
@@ -68,7 +68,7 @@ export const useFilesStore = defineStore('files', {
             let result = null
             for (const pathPart of path.split('/')) {
                 result = children.find(el => el.title === pathPart)
-                if (result === undefined) {
+                if (typeof result === 'undefined') {
                     throw 'No such directory:', path.split('/')
                 }
                 filter[result.context]=result.title
