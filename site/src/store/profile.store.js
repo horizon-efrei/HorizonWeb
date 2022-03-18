@@ -3,28 +3,38 @@ import $axios from '../shared/config/axios.config'
 
 
 
-export const useProfileStore = defineStore('profile', {
+export const useProfilesStore = defineStore('profile', {
     state: () => ({
         user: null,
-        socialsAccounts: [],
-        socials: [],
+        contacts: [],
         clubs: [],
-        userClubs: [],
     }),
     actions: {
         changeUser(user) {
             this.user = user;
+            return user;
+        },
+        changeContacts(contacts) {
+            this.contacts = contacts;
+            return contacts;
+        },
+        changeClubs(clubs) {
+            this.clubs = clubs
         },
         async loadUser(userId) {
             return await $axios
                 .get(`users/${userId}`)
-                .then(this.changeUser())
+                .then((res) => this.changeUser(res.data))
         },
-        async loadSocialsAccounts(userId) {
+        async loadContacts(userId) {
             return await $axios
-                .get(`users/${userId}`)
-                .then()
+                .get(`contacts/user/${userId}`)
+                .then( (res) => this.changeContacts(res.data))
         },
-
+        async loadClubs(userId) {
+            return await $axios
+                .get(`club/memberships/${userId}`)
+                .then(res => this.changeClubs(res.data))
+        },
     },
 })
