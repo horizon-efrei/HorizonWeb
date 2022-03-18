@@ -18,15 +18,16 @@ export const useProfilesStore = defineStore('profile', {
         },
         changeClubs(clubs) {
             this.clubs = clubs
+            return clubs
         },
         async loadUser(userId) {
             return await $axios.get(`users/${userId}`).then((res) => this.changeUser(res.data))
         },
         async loadContacts(userId) {
-            return await $axios.get(`contacts/user/${userId}`).then((res) => this.changeContacts(res.data))
+            return await $axios.get(`contacts/users/${userId}`).then((res) => this.changeContacts(res.data))
         },
         async loadClubs(userId) {
-            return await $axios.get(`club/memberships/${userId}`).then((res) => this.changeClubs(res.data))
+            return await $axios.get(`clubs/memberships/${userId}`).then((res) => this.changeClubs(res.data))
         },
     },
 })
