@@ -8,26 +8,32 @@ export const useProfilesStore = defineStore('profile', {
         clubs: [],
     }),
     actions: {
-        changeUser(user) {
+        replaceUser(user) {
             this.user = user
             return user
         },
-        changeContacts(contacts) {
+        replaceContacts(contacts) {
             this.contacts = contacts
             return contacts
         },
-        changeClubs(clubs) {
+        replaceClubs(clubs) {
             this.clubs = clubs
             return clubs
         },
-        async loadUser(userId) {
-            return await $axios.get(`users/${userId}`).then((res) => this.changeUser(res.data))
+        async getUser(userId) {
+            return await $axios.get(`users/${userId}`).then((res) => this.replaceUser(res.data))
         },
-        async loadContacts(userId) {
-            return await $axios.get(`contacts/users/${userId}`).then((res) => this.changeContacts(res.data))
+        async getContacts(userId) {
+            return await $axios.get(`contacts/users/${userId}`).then((res) => this.replaceContacts(res.data))
         },
-        async loadClubs(userId) {
-            return await $axios.get(`clubs/memberships/${userId}`).then((res) => this.changeClubs(res.data))
+        async getClubs(userId) {
+            return await $axios.get(`clubs/memberships/${userId}`).then((res) => this.replaceClubs(res.data))
+        },
+        async getContactsTypes() {
+            return await $axios.get('/contacts').then((res) => res.data)
+        },
+        async patchUser(props) {
+            return await $axios.patch('users', props).then((res) => this.replaceUser(res.data))
         },
     },
 })
