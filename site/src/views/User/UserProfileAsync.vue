@@ -5,7 +5,11 @@
                 <div class="relative w-full h-48">
                     <div class="w-full h-full banner" />
                     <div class="absolute -bottom-8 left-8">
-                        <UserAvatar :img-src="user.avatar" size="4.5" :username="user.firstname" />
+                        <UserAvatar
+                            :img-src="user.avatar"
+                            size="4.5"
+                            :username="user.firstname + ' ' + user.lastname"
+                        />
                     </div>
                 </div>
                 <div class="px-4 mt-8 w-full">
@@ -99,7 +103,6 @@
 </template>
 
 <script setup>
-    // import AppLoader from '@/components/App/AppLoader.vue'
     // import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
     import UserAvatar from '@/components/User/UserAvatar.vue'
     import { useRoute } from 'vue-router'
@@ -117,13 +120,11 @@
     const clubs = ref(null)
     const me = ref(null)
 
-    // const contacts = ref(null)
-
     const loadProfile = async () => {
         if (route.name === 'profile') {
             const userId = route.params.userId
             await profiles
-                .loadUser(userId)
+                .getUser(userId)
                 .then((res) => {
                     user.value = res
                     nextTick(() => {
@@ -142,7 +143,7 @@
         if (route.name === 'profile') {
             const userId = route.params.userId
             await profiles
-                .loadContacts(userId)
+                .getContacts(userId)
                 .then((res) => {
                     contacts.value = res
                     nextTick(() => {
@@ -161,7 +162,7 @@
         if (route.name === 'profile') {
             const userId = route.params.userId
             await profiles
-                .loadClubs(userId)
+                .getClubs(userId)
                 .then((res) => {
                     clubs.value = res
                     nextTick(() => {
@@ -202,7 +203,6 @@
     await loadMe()
     // await loadContacts()
     watch(() => route.params.userId, loadProfile)
-    console.log(me.value)
 </script>
 
 <style lang="scss">

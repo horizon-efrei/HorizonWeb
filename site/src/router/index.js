@@ -99,6 +99,7 @@ const routes = [
     },
 
     {
+        name: 'settings',
         path: '/me/favorites',
         component: () => import('@/views/User/UserFavoriteList.vue'),
         meta: {
