@@ -7,78 +7,90 @@ import { onData, onItems } from '@/utils/store'
 export const useFilesStore = defineStore('files', {
     state: () => ({
         filesList: [],
-        fileTree: null,
+        fileTree: {
+            title: 'doc',
+            context: 'origin',
+            children: [],
+        },
     }),
     actions: {
-        async getFileTree() {
-            this.fileTree = {
-                title: 'doc',
-                context: 'origin',
-                children: [],
-            }
+        async getFileTree(studyOrder = ['schoolYear', 'subject','type', 'year'], infoOrder=['year', 'schoolYear']) {
+
             const folderList=[
                 {
                     title: 'info',
                     context: 'baseFolder',
                     endpoint: 'files/info-docs/categories',
+                    order: infoOrder,
                 },
                 {
                     title: 'study',
                     context: 'baseFolder',
                     endpoint: 'files/study-docs/categories',
+                    order: studyOrder,
                 },
             ]
 
-            await Promise.all(folderList.map(this.getFilePromise))
+            await Promise.all(folderList.map(this.getFileTreePromise))
         },
-        getFilePromise({ title, context, endpoint }) {
-            return $axios.get(endpoint).then(onData((data) => this.fileTree.children.push({ title, context, children: data })))
+
+        getFileTreePromise({ title, context, endpoint, order }) {
+            return $axios.get(endpoint, { params: { categories: order.join(',') } }).then(onData((data) => this.fileTree.children.push({ title, context, children: data })))
         },
 
         async getFiles(path) {
             try {
                 let treeFinder = await this.findInTree(path)
                 if (treeFinder.children.length === 0) {
-                    const listFinder = this.findInList(treeFinder.filter)
-                    return typeof listFinder == 'undefined' ? await this.requestFiles(treeFinder.filter) : listFinder
-                }
+                    if (typeof treeFinder.fileId == 'undefined') {
+                        return await this.requestFiles(treeFinder.filter, path)
+                    }
+                    return this.filesList[treeFinder.fileId]
+                     }
                 return treeFinder.children
             } catch (e) {
                 console.error('No such directory:', e)
             }
         },
 
-        async requestFiles(filter) {
+        async requestFiles(filter, path) {
             const endpointList = { study: 'files/study-docs',info: 'files/info-docs' }
             return await $axios.get(endpointList[filter.baseFolder], { params: { ..._.omit(filter, 'baseFolder') , itemsPerPage: 1000 } })
-            .then(onItems(this.applyFiles, { filter }))
+            .then(onItems(this.applyFiles, { path }))
         },
 
-        applyFiles({ filter, items }) {
-            this.filesList.push({ filter, items })
+        applyFiles({ path, items }) {
+            this.addIdInTree(path, this.filesList.length )
+            this.filesList[this.filesList.length] = items
             return items
         },
 
+        addIdInTree(path, id) {
+            let result, children = this.fileTree.children
+            for (const pathPart of path) {
+                result = children.find(el => el.title === pathPart)
+                children = result.children
+            }
+            result.fileId = id
+        },
+
         async findInTree(path) {
-            if (this.fileTree === null) {
+            if (this.fileTree.children.length === 0) {
                 await this.getFileTree()
             }
             let children = this.fileTree.children
-            let filter = {}
-            let result = null
+            console.log(children)
+            let filter = {}, result = null, fileId
             for (const pathPart of path) {
                 result = children.find(el => el.title === pathPart)
                 if (typeof result === 'undefined') {
-                    throw 'No such directory:', path
+                    throw { path, pathPart }
                 }
                 filter[result.context]=result.title
                 children = result.children
+                fileId = result?.fileId
             }
-            return { children, filter }
-        },
-
-        findInList(filter) {
-            return this.filesList.find(el => el.filter === filter)
+            return { children, filter, fileId }
         },
 
         async getStudyDocList(query) {

@@ -6,23 +6,21 @@
         <br />
         <br />
         @/views/TestPage.vue
-        {{fileTree}}
+        {{files.fileTree}}
+        <hr class="m-2">
+        {{files.filesList}}
     </div>
 </template>
 
 
 <script setup>
     import { useFilesStore } from '@/store/files.store'
-    import { storeToRefs } from 'pinia'
-    import { watch } from 'vue'
 
     const files = useFilesStore()
-    console.warn(files.getFiles('study'))
-    let { filesList,fileTree } = storeToRefs(files)
 
-    watch(fileTree, (newVal) => {
-        console.log(newVal)
-    })
-    //setTimeout(() => {files.getFiles('study/1/FH30')}, 2000)
+    files.getFiles(['study', '1', 'FH301', 'examCE', '2025']).then(e => console.log(e))
+
+
+    setTimeout(() => console.log(files.filesList), 1000)
 
 </script>
