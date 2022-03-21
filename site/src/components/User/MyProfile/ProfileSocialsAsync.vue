@@ -14,17 +14,20 @@
 
         <div class="flex">
             <div class="flex flex-col">
-                <div v-for="(contact, idx) in contacts" :key="idx" class="flex items-center mb-8 lg:mb-2">
+                <div v-for="(contact, idx) in contacts" :key="idx" class="flex items-center mb-8 md:mb-2">
                     <div class="flex">
                         <i
-                            v-if="contact.contactId != null"
+                            v-if="contact.contact != null && contact.contact != undefined"
                             class="my-auto mr-2"
                             :class="contact.contact.icon"
                         />
+
                         <SelectInput
                             v-model="contact.contact"
+                            button-name="Type"
                             :max-content-width="true"
-                            :choices="contactsTypes.map((sos) => sos.name)"
+                            :model-value="contactsTypes.findIndex((el) => el.name === contact.contact.name)"
+                            :choices="contactsTypes.map((type) => type.name)"
                         />
                         <button
                             class="block my-auto w-8 h-8 text-xl md:hidden text-1 red-500"
@@ -55,6 +58,11 @@
                 </div>
             </div>
         </div>
+        <button class="my-auto button" @click="submit()">
+            <div>
+                <p class="px-5">Enregistrer</p>
+            </div>
+        </button>
     </div>
 </template>
 
@@ -63,7 +71,7 @@
     import { useAuthStore } from '@/store/auth.store'
     import { useProfilesStore } from '@/store/profile.store'
     import { getStatus } from '@/utils/errors'
-    import { ref } from 'vue'
+    import { ref, watch } from 'vue'
     import SelectInput from '@/components/Input/SelectInput.vue'
 
     const auth = useAuthStore()
@@ -105,10 +113,28 @@
 
     const addLineAccount = () => {
         contacts.value.push({
-            social: { socialId: null },
+            contact: { contactId: null },
             pseudo: null,
             link: null,
         })
+    }
+
+    const submit = () => {
+        let bol = true
+        const notNull = (str) => {
+            str != '' && str != null && str != undefined
+        }
+        contacts.value.forEach((contact) => {
+            if (
+                !bol ||
+                !contact.contact.name ||
+                !notNull(contact.contact.pseudo) ||
+                !notNull(contact.contact.link)
+            )
+                bol = false
+        })
+        if (bol) console.log('Submit')
+        else console.log('error')
     }
 
     const rmLineAccount = (idx) => {
@@ -118,5 +144,19 @@
     await loadMe()
     await loadContacts()
     await loadContactsTypes()
-    console.log(contactsTypes.value)
+
+    watch(
+        () => contacts.value,
+        () => {
+            contacts.value.map((contact) => {
+                if (Number.isInteger(contact.contact)) {
+                    console.log('load', contact.contact, contactsTypes.value)
+                    contact.contact = contactsTypes.value[contact.contact]
+                }
+                return contact
+            })
+            console.log(contacts.value)
+        },
+        { deep: true },
+    )
 </script>
