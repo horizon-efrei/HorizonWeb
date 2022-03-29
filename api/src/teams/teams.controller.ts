@@ -30,6 +30,7 @@ import { Team } from './entities/team.entity';
 import type { IndexedTeam } from './team-search.service';
 import { TeamSearchService } from './team-search.service';
 import { TeamsService } from './teams.service';
+import { TeamMembershipRequest } from './entities/team-membership-request.entity';
 
 @ApiTags('Teams')
 @Controller({ path: 'teams' })
@@ -107,8 +108,8 @@ export class TeamsController {
     @Param('userId') userId: string,
     @Body() createTeamMemberDto: CreateTeamMemberDto,
     @CurrentUser() requester: User,
-  ): Promise<TeamMember> {
-    return await this.teamsService.addUserToTeam(requester, teamId, userId, createTeamMemberDto);
+  ): Promise<TeamMembershipRequest> {
+    return await this.teamsService.inviteUserToTeam(requester, teamId, userId, createTeamMemberDto);
   }
 
   @Patch(':teamId/members/:userId')
