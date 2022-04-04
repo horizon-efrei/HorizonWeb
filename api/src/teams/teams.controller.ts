@@ -26,11 +26,11 @@ import { TeamListOptions } from './dto/team-list-options.dto';
 import { UpdateTeamMemberDto } from './dto/update-team-member.dto';
 import { UpdateTeamDto } from './dto/update-team.dto';
 import type { TeamMember } from './entities/team-member.entity';
+import type { TeamMembershipRequest } from './entities/team-membership-request.entity';
 import { Team } from './entities/team.entity';
 import type { IndexedTeam } from './team-search.service';
 import { TeamSearchService } from './team-search.service';
 import { TeamsService } from './teams.service';
-import { TeamMembershipRequest } from './entities/team-membership-request.entity';
 
 @ApiTags('Teams')
 @Controller({ path: 'teams' })

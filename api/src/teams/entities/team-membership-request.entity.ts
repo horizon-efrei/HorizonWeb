@@ -1,20 +1,22 @@
-import {Entity, Property, PrimaryKey, ManyToOne } from '@mikro-orm/core';
+import {
+    Entity, ManyToOne, PrimaryKey, Property,
+} from '@mikro-orm/core';
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { User } from '../../users/user.entity';
 import { Team } from './team.entity';
 
 @Entity()
-export class TeamMembershipRequest extends BaseEntity{
+export class TeamMembershipRequest extends BaseEntity {
     @PrimaryKey()
     teamMembershipRequestId!: number;
 
-    @ManyToOne({onDelete: 'CASCADE'})
+    @ManyToOne({ onDelete: 'CASCADE' })
     team!: Team;
 
-    @ManyToOne({onDelete: 'CASCADE'})
+    @ManyToOne({ onDelete: 'CASCADE' })
     user!: User;
 
-    @Property({type: 'text'})
+    @Property({ type: 'text' })
     reason?: string;
 
     @Property()
@@ -23,19 +25,19 @@ export class TeamMembershipRequest extends BaseEntity{
     @Property()
     approved = false;
 
-    @ManyToOne({onDelete: 'CASCADE'})
+    @ManyToOne({ onDelete: 'CASCADE' })
     approvedBy?: User;
 
-    @ManyToOne({onDelete: 'CASCADE'})
+    @ManyToOne({ onDelete: 'CASCADE' })
     initiatedBy!: User;
 
-    constructor(options:{
+    constructor(options: {
         team: Team;
         user: User;
         reason?: string;
         issuer: number;
         initiatedBy: User;
-    }){
+    }) {
         super();
         this.team = options.team;
         this.user = options.user;
@@ -43,5 +45,4 @@ export class TeamMembershipRequest extends BaseEntity{
         this.issuer = options.issuer;
         this.initiatedBy = options.initiatedBy;
     }
-
 }

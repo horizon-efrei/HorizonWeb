@@ -22,7 +22,8 @@ export class TeamsService {
   constructor(
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
-    @InjectRepository(TeamMembershipRequest) private readonly teamMembershipRepository: BaseRepository<TeamMembershipRequest>,
+    @InjectRepository(TeamMembershipRequest) private readonly teamMembershipRepository:
+      BaseRepository<TeamMembershipRequest>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
     private readonly teamSearchService: TeamSearchService,
@@ -135,7 +136,7 @@ export class TeamsService {
     teamId: number,
     userId: string,
     createTeamMemberDto: CreateTeamMemberDto,
-): Promise<TeamMembershipRequest> {
+  ): Promise<TeamMembershipRequest> {
     const team = await this.teamRepository.findOneOrFail(
       { teamId },
       { populate: ['members'] },
@@ -157,61 +158,65 @@ export class TeamsService {
       throw new ForbiddenException('Role too high');
 
     const teamMember = new TeamMember({ ...createTeamMemberDto, team, user });
-    const teamMembershipRequest = new TeamMembershipRequest({team, user, initiatedBy: requester, issuer:team.teamId })
-    await this.teamMemberRepository.persist(teamMember);
-    await this.teamMembershipRepository.persistAndFlush(teamMembershipRequest)
+    const teamMembershipRequest = new TeamMembershipRequest({
+      team, user, initiatedBy: requester, issuer: team.teamId,
+    });
+    this.teamMemberRepository.persist(teamMember);
+    await this.teamMembershipRepository.persistAndFlush(teamMembershipRequest);
     return teamMembershipRequest;
   }
 
-  public async joinTeam (
+  public async joinTeam(
     requester: User,
     teamId: number,
     createTeamMemberDto: CreateTeamMemberDto,
-): Promise<TeamMembershipRequest> {
-  const team = await this.teamRepository.findOneOrFail(
-    { teamId },
-    { populate: ['members'] },
-  );
-  const user = await this.userRepository.findOneOrFail({ userId: requester.userId });
-  const existing = await this.teamMemberRepository.count({ team, user });
-  if (existing)
-    throw new BadRequestException('User is already in team');
+  ): Promise<TeamMembershipRequest> {
+    const team = await this.teamRepository.findOneOrFail(
+      { teamId },
+      { populate: ['members'] },
+    );
+    const user = await this.userRepository.findOneOrFail({ userId: requester.userId });
+    const existing = await this.teamMemberRepository.count({ team, user });
+    if (existing)
+      throw new BadRequestException('User is already in team');
 
-  const teamMember = new TeamMember({ ...createTeamMemberDto, team, user });
-  const teamMembershipRequest = new TeamMembershipRequest({team, user, initiatedBy: requester, issuer:team.teamId })
-  await this.teamMembershipRepository.persistAndFlush(teamMembershipRequest)
-  return teamMembershipRequest
+    const teamMember = new TeamMember({ ...createTeamMemberDto, team, user });
+    this.teamMemberRepository.persist(teamMember);
+    const teamMembershipRequest = new TeamMembershipRequest({
+      team, user, initiatedBy: requester, issuer: team.teamId,
+    });
+    await this.teamMembershipRepository.persistAndFlush(teamMembershipRequest);
+    return teamMembershipRequest;
   }
 
   public async acceptRequest(
     requester: User,
     teamId: number,
-    createTeamMemberDto: CreateTeamMemberDto
-    ): Promise<TeamMember>{
-      const team = await this.teamRepository.findOneOrFail(
-        { teamId },
-        { populate: ['members'] },
-      );
+    createTeamMemberDto: CreateTeamMemberDto,
+  ): Promise<TeamMember> {
+    const team = await this.teamRepository.findOneOrFail(
+      { teamId },
+      { populate: ['members'] },
+    );
 
-      const teamMemberShipRequest = await this.teamMembershipRepository.findOneOrFail(
-        { team },
-        { populate: ['members'] },
-      );
+    const teamMembershipRequest = await this.teamMembershipRepository.findOneOrFail(
+      { team },
+      { populate: ['members'] },
+    );
 
-      if(!team.isTeamAdmin(requester))
-        throw new BadRequestException("You don't have access");
-        
-      const user = teamMemberShipRequest.user
-      const teamMember = new TeamMember({ ...createTeamMemberDto, team, user });
-      await this.teamMembershipRepository.nativeUpdate(
-        {teamMembershipRequestId: teamMemberShipRequest.teamMembershipRequestId},
-        {approved: true, approvedBy: requester} )
-      await this.teamMemberRepository.persistAndFlush(teamMember);
+    if (!team.isTeamAdmin(requester))
+      throw new BadRequestException("You don't have access");
+
+    const { user } = teamMembershipRequest;
+    const teamMember = new TeamMember({ ...createTeamMemberDto, team, user });
+    await this.teamMembershipRepository.nativeUpdate(
+      { teamMembershipRequestId: teamMembershipRequest.teamMembershipRequestId },
+      { approved: true, approvedBy: requester },
+    );
+    await this.teamMemberRepository.persistAndFlush(teamMember);
 
 
-
-      return teamMember
-    
+    return teamMember;
   }
 
   public async updateUserRole(
@@ -293,19 +298,19 @@ export class TeamsService {
       await this.profileImageRepository.flush();
     }
   }
-  // TeamMemberShipRequest
+  // TeamMembershipRequest
 
-  public async findAllTeamMemberShipRequestForTeam(teamId: number, approved = false): Promise<TeamMembershipRequest[]> {
-    return  await this.teamMembershipRepository.findAll(
-      {team:{teamId}, approved},
-      { orderBy: { approvedBy: 'ASC', initiatedBy: 'ASC', createdAt: 'ASC'} },
-    ); 
+  private async findAllMembershipRequestForTeam(teamId: number, approved = false): Promise<TeamMembershipRequest[]> {
+    return await this.teamMembershipRepository.findAll(
+      { team: { teamId }, approved },
+      { orderBy: { approvedBy: 'ASC', initiatedBy: 'ASC', createdAt: 'ASC' } },
+    );
   }
 
-  public async findAllTeamMemberShipRequestForUser(userId: string, approved = false): Promise<TeamMembershipRequest[]> {
-    return  await this.teamMembershipRepository.findAll(
-      {user:{userId}, approved},
-      { orderBy: { approvedBy: 'ASC', initiatedBy: 'ASC', createdAt: 'ASC'} },
-    ); 
+  private async findAllMembershipRequestForUser(userId: string, approved = false): Promise<TeamMembershipRequest[]> {
+    return await this.teamMembershipRepository.findAll(
+      { user: { userId }, approved },
+      { orderBy: { approvedBy: 'ASC', initiatedBy: 'ASC', createdAt: 'ASC' } },
+    );
   }
 }
