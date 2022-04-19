@@ -15,17 +15,20 @@ import type { UpdateTeamDto } from './dto/update-team.dto';
 import { TeamMember } from './entities/team-member.entity';
 import { TeamMembershipRequest } from './entities/team-membership-request.entity';
 import { Team } from './entities/team.entity';
+import { MembershipRequestIssuer } from './membership-request-issuer.enum';
 import { TeamSearchService } from './team-search.service';
 
 @Injectable()
 export class TeamsService {
+  // eslint-disable-next-line max-params
   constructor(
     @InjectRepository(Team) private readonly teamRepository: BaseRepository<Team>,
     @InjectRepository(TeamMember) private readonly teamMemberRepository: BaseRepository<TeamMember>,
-    @InjectRepository(TeamMembershipRequest) private readonly teamMembershipRepository:
-      BaseRepository<TeamMembershipRequest>,
+    @InjectRepository(TeamMembershipRequest)
+    private readonly teamMembershipRepository: BaseRepository<TeamMembershipRequest>,
     @InjectRepository(User) private readonly userRepository: BaseRepository<User>,
     @InjectRepository(ProfileImage) private readonly profileImageRepository: BaseRepository<ProfileImage>,
+
     private readonly teamSearchService: TeamSearchService,
   ) {}
 
@@ -158,9 +161,13 @@ export class TeamsService {
       throw new ForbiddenException('Role too high');
 
     const teamMembershipRequest = new TeamMembershipRequest({
-      team, user, initiatedBy: requester, issuer: team.teamId,
+      team,
+      user,
+      initiatedBy: requester,
+      issuer: MembershipRequestIssuer.Team,
     });
     await this.teamMembershipRepository.persistAndFlush(teamMembershipRequest);
+
     return teamMembershipRequest;
   }
 
@@ -173,14 +180,18 @@ export class TeamsService {
       { populate: ['members'] },
     );
     const user = await this.userRepository.findOneOrFail({ userId: requester.userId });
-    const existing = await this.teamMemberRepository.count({ team, user });
+    const existing = await this.teamMemberRepository.findOne({ team, user });
     if (existing)
       throw new BadRequestException('User is already in team');
 
     const teamMembershipRequest = new TeamMembershipRequest({
-      team, user, initiatedBy: requester, issuer: team.teamId,
+      team,
+      user,
+      initiatedBy: requester,
+      issuer: MembershipRequestIssuer.User,
     });
     await this.teamMembershipRepository.persistAndFlush(teamMembershipRequest);
+
     return teamMembershipRequest;
   }
 
@@ -202,14 +213,15 @@ export class TeamsService {
     if (!team.isTeamAdmin(requester))
       throw new BadRequestException("You don't have access");
 
-    const { user } = teamMembershipRequest;
+    const { user, teamMembershipRequestId } = teamMembershipRequest;
+
     const teamMember = new TeamMember({ ...createTeamMemberDto, team, user });
-    await this.teamMembershipRepository.nativeUpdate(
-      { teamMembershipRequestId: teamMembershipRequest.teamMembershipRequestId },
-      { approved: true, approvedBy: requester },
-    );
     await this.teamMemberRepository.persistAndFlush(teamMember);
 
+    await this.teamMembershipRepository.nativeUpdate(
+      { teamMembershipRequestId },
+      { approved: true, approvedBy: requester },
+    );
 
     return teamMember;
   }
@@ -307,5 +319,4 @@ export class TeamsService {
       await this.profileImageRepository.flush();
     }
   }
-  // TeamMembershipRequest
 }
