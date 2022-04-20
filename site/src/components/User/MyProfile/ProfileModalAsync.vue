@@ -102,10 +102,10 @@
     const apiUrl = import.meta.env.VITE_API_URL
     const auth = useAuthStore()
     const profile = useProfilesStore()
+    const me = ref(null)
     let submitSuccess = 0
     let avatarShown = ref(false)
     let submitMessage = ''
-    const me = ref(null)
 
     const loadMe = async () => {
         await auth
