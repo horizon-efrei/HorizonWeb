@@ -19,6 +19,11 @@ export const EXAMS = [
         fr: 'Devoir Maison (DM)',
         en: 'Graded Homework (DM)',
     },
+    {
+        key: 'examTAI',
+        fr: "Travaux d'Autonomie et d'Initiative",
+        en: 'Group Project (TAI)',
+    },
 ]
 
 export const PROJECTS = [
@@ -26,11 +31,6 @@ export const PROJECTS = [
         key: 'project',
         fr: 'Projet',
         en: 'Project',
-    },
-    {
-        key: 'TAI',
-        fr: "Travaux d'Autonomie et d'Initiative",
-        en: 'Group Project (TAI)',
     },
 ]
 

@@ -32,6 +32,6 @@
     "[vue]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "editor.formatOnSave": false,
-    "editor.codeActionsOnSave": ["source.fixAll.eslint", "source.fixAll.stylelint", "source.formatDocument"]
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": [ "source.formatDocument"]
 }

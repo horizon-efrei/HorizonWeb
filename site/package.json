@@ -66,6 +66,11 @@
         "stylelint-config-standard": "25.0.0",
         "stylelint-config-standard-scss": "3.0.0",
         "tailwindcss": "3.0.23",
+<<<<<<< HEAD
         "vite": "2.9.1"
+=======
+        "vite": "2.8.6",
+        "vite-plugin-pwa": "^0.11.13"
+>>>>>>> 89302c7 (Add doc list)
     }
 }

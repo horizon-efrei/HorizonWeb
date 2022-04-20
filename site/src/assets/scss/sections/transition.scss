@@ -17,14 +17,3 @@
 .search-fade-leave-to {
     opacity: 0;
 }
-
-.file-tree-enter-active,
-.file-tree-leave-active {
-    transition: all 0.3s ease;
-}
-
-.file-tree-enter-from,
-.file-tree-leave-to {
-    opacity: 0;
-    transform: translateY(-10%);
-}

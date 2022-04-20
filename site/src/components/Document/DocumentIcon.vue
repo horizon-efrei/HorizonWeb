@@ -14,7 +14,7 @@
         />
         <foreignObject x="0" y="180" width="289.77" height="100">
             <div
-                class="flex justify-center items-center w-full h-full text-7xl font-black text-white uppercase"
+                class="flex justify-center items-center w-full h-full text-8xl font-black text-white uppercase cursor-default"
             >
                 {{ fileName.split('.').pop() }}
             </div>

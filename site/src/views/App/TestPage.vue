@@ -6,21 +6,15 @@
         <br />
         <br />
         @/views/TestPage.vue
-        {{files.fileTree}}
-        <hr class="m-2">
-        {{files.filesList}}
     </div>
 </template>
 
-
 <script setup>
-    import { useFilesStore } from '@/store/files.store'
+    // import { useFilesStore } from '@/store/files.store'
 
-    const files = useFilesStore()
+    // const files = useFilesStore()
 
-    files.getFiles(['study', '1', 'FH301', 'examCE', '2025']).then(e => console.log(e))
+    // files.getFiles(['study', '1', 'FH301', 'examCE', '2025']).then(e => console.log(e))
 
-
-    setTimeout(() => console.log(files.filesList), 1000)
-
+    // setTimeout(() => console.log(files.filesList), 1000)
 </script>

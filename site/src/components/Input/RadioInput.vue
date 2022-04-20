@@ -11,7 +11,8 @@
                 class="p-2 w-full h-full text-center rounded"
                 :class="[modelValue == choice.key ? 'bg-blue-500 text-white ring-2 ring-blue-500' : '']"
             >
-                {{ choice.name }}
+                <i v-if="choice?.icon" class="fas" :class="choice.icon"></i>
+                {{ choice?.name }}
             </div>
         </button>
     </div>

@@ -63,24 +63,7 @@
                             class="mt-4 w-full h-52 rounded"
                             :class="{ 'ring-2 ring-red-500': v$.stepsModel[0].files.$error }"
                             :size-limit="2097152"
-                            :regex-mimes="[
-                                '^image/(.)+',
-                                '^audio/(.)+',
-                                '^text/(.)+',
-                                '^video/(.)+',
-                                '^application/msword',
-                                '^application/xml',
-                                '^application/json',
-                                '^application/pdf',
-                                String.raw`^application/vnd\.oasis\.opendocument\.presentation`,
-                                String.raw`^application/vnd\.oasis\.opendocument\.spreadsheet`,
-                                String.raw`^application/vnd\.oasis\.opendocument\.text`,
-                                String.raw`^application/vnd\.ms-powerpoint`,
-                                String.raw`^application/vnd\.openxmlformats-officedocument\.presentationml\.presentation`,
-                                String.raw`^application/vnd\.ms-excel`,
-                                String.raw`^application/vnd\.openxmlformats-officedocument\.spreadsheetml\.sheet`,
-                                String.raw`^application/vnd\.openxmlformats-officedocument\.wordprocessingml\.document`,
-                            ]"
+                            :regex-mimes="Array.prototype.concat(DOCUMENTS, IMAGES, AUDIO, VIDEO)"
                         />
                         <div v-if="v$.stepsModel[0].files.$error" class="flex flex-col">
                             <AppAlert
@@ -225,19 +208,11 @@
                             <div for="doc-type">Type de document<span class="text-red-500">*</span></div>
                             <SelectInput
                                 v-model="stepsModel[1].docContent"
-                                :choices="[
-                                    'examDE',
-                                    'examCE',
-                                    'examCC',
-                                    'examDM',
-                                    'course',
-                                    'sheet',
-                                    'projects',
-                                    'efreiClass',
-                                    'eprofClass',
-                                    'classNote',
-                                    'other',
-                                ]"
+                                :choices="
+                                    Array.prototype
+                                        .concat(EXAMS, PROJECTS, COURSES, OTHER)
+                                        .map((item) => item.key)
+                                "
                             />
                             <div v-if="v$.stepsModel[1].docContent.$error" class="flex flex-col">
                                 <AppAlert
@@ -255,20 +230,10 @@
                         </div>
                         <div
                             v-if="
-                                ['examDE', 'examCE', 'examCC', 'examDM', 'examTAI'].includes(
-                                    [
-                                        'examDE',
-                                        'examCE',
-                                        'examCC',
-                                        'examDM',
-                                        'course',
-                                        'sheet',
-                                        'projects',
-                                        'efreiClass',
-                                        'eprofClass',
-                                        'classNote',
-                                        'other',
-                                    ][stepsModel[1].docContent],
+                                EXAMS.map((item) => item.key).includes(
+                                    Array.prototype
+                                        .concat(EXAMS, PROJECTS, COURSES, OTHER)
+                                        .map((item) => item.key)[stepsModel[1].docContent],
                                 )
                             "
                             class="flex flex-col"
@@ -372,6 +337,8 @@
     import { integer, maxLength, required, requiredIf, sameAs } from '@vuelidate/validators'
     import CardPage from '../App/CardPage.vue'
 
+    import { DOCUMENTS, IMAGES, AUDIO, VIDEO } from '@/shared/types/regex-mimes.enum'
+    import { EXAMS, PROJECTS, COURSES, OTHER } from '@/shared/types/studydoc-types.enum'
     export default {
         components: {
             RadioInput,
@@ -480,6 +447,14 @@
                     { acceptCondition: false },
                 ],
                 subjectYear: ['L1', 'L2', 'L3', 'M1', 'M2'],
+                DOCUMENTS,
+                IMAGES,
+                AUDIO,
+                VIDEO,
+                EXAMS,
+                PROJECTS,
+                COURSES,
+                OTHER,
             }
         },
         methods: {
