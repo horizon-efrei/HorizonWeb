@@ -29,11 +29,22 @@ export const useProfilesStore = defineStore('profile', {
         async getClubs(userId) {
             return await $axios.get(`clubs/memberships/${userId}`).then((res) => this.replaceClubs(res.data))
         },
+        async getClubsList() {
+            return await $axios.get('clubs').then((res) => res.data)
+        },
         async getContactsTypes() {
             return await $axios.get('/contacts').then((res) => res.data)
         },
         async patchUser(props) {
             return await $axios.patch('users', props).then((res) => this.replaceUser(res.data))
         },
+        async postContact({ contactId, link, pseudo }) {
+            return await $axios
+                .post('/contacts/users', { contactId, link, pseudo })
+                .then((res) => this.replaceContacts(...this.contacts, res))
+        },
+        // async patchContact(contact) {
+        //     return await $axios.patch()
+        // },
     },
 })
