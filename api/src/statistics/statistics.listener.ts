@@ -5,8 +5,7 @@ import { OnEvent } from '@nestjs/event-emitter';
 import { BadgeUnlock } from '../badges/entities/badge-unlock.entity';
 import { Badge } from '../badges/entities/badge.entity';
 import { Content } from '../contents/entities/content.entity';
-import type { InfoDoc } from '../files/info-docs/info-doc.entity';
-import type { StudyDoc } from '../files/study-docs/study-doc.entity';
+import { Document } from '../files/documents/entities/document.entity';
 import pointsConfig from '../shared/configs/points.config';
 import { BaseRepository } from '../shared/lib/repositories/base.repository';
 import { ContentKind } from '../shared/lib/types/enums/content-kind.enum';
@@ -65,7 +64,7 @@ export class StatisticsListener {
 
   @OnEvent('document.created')
   @UseRequestContext()
-  public async onDocumentCreated(document: InfoDoc | StudyDoc): Promise<void> {
+  public async onDocumentCreated(document: Document): Promise<void> {
     const stats = await this.statisticsRepository.findOne({ user: document.file.user }, { populate: ['user'] });
     if (stats) {
       stats.uploadCount++;

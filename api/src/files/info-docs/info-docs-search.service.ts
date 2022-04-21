@@ -8,7 +8,7 @@ import RequireTypesense from '../../shared/lib/decorators/require-typesense.deco
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
 import { authorizeNotFound, SearchService } from '../../shared/modules/search/search.service';
-import { InfoDoc } from './info-doc.entity';
+import { InfoDoc } from '../documents/entities/info-doc.entity';
 
 export interface IndexedInfoDoc {
   user: string;

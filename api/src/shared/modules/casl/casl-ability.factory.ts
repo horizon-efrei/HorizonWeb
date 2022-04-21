@@ -7,9 +7,8 @@ import type { Contact } from '../../../contacts/entities/contact.entity';
 import { Content } from '../../../contents/entities/content.entity';
 import { Favorite } from '../../../favorites/favorite.entity';
 import { Attachment } from '../../../files/attachments/attachment.entity';
-import { InfoDoc } from '../../../files/info-docs/info-doc.entity';
+import { Document } from '../../../files/documents/entities/document.entity';
 import { ProfileImage } from '../../../files/profile-images/profile-image.entity';
-import { StudyDoc } from '../../../files/study-docs/study-doc.entity';
 import { Report } from '../../../reports/report.entity';
 import { DailyInfo } from '../../../restaurant/daily-info/daily-info.entity';
 import { DailyMenu } from '../../../restaurant/daily-menus/daily-menu.entity';
@@ -32,12 +31,11 @@ export type Subjects = InferSubjects<
   | typeof Content
   | typeof DailyInfo
   | typeof DailyMenu
+  | typeof Document
   | typeof Favorite
   | typeof Food
-  | typeof InfoDoc
   | typeof ProfileImage
   | typeof Report
-  | typeof StudyDoc
   | typeof Subject
   | typeof Tag
   | typeof Team
@@ -75,7 +73,7 @@ export class CaslAbilityFactory {
       // @ts-expect-error
       allow([Action.Read, Action.Update], Report, { 'user.userId': user.userId });
 
-      allow(Action.Create, [Attachment, Content, Favorite, InfoDoc, StudyDoc, Tag, Thread]);
+      allow(Action.Create, [Attachment, Content, Favorite, Document, Tag, Thread]);
       allow(Action.Report, 'all');
       // @ts-expect-error
       forbid(Action.Report, Content, isAuthor)
@@ -89,7 +87,7 @@ export class CaslAbilityFactory {
         allow(Action.Read, 'all');
         allow(Action.Update, 'all');
         forbid(Action.Update, Badge);
-        allow(Action.Manage, [Blog, Content, InfoDoc, ProfileImage, Report, StudyDoc, Subject, Tag, Thread, WikiPage]);
+        allow(Action.Manage, [Blog, Content, Document, ProfileImage, Report, Subject, Tag, Thread, WikiPage]);
       } else {
         if (user.roles.includes(Role.RestaurantManager))
           allow(Action.Manage, [DailyInfo, DailyMenu, Food]);
@@ -113,10 +111,7 @@ export class CaslAbilityFactory {
           .because('Not the author');
 
         // @ts-expect-error
-        allow(Action.Update, StudyDoc, ['description', 'docSeries', 'name', 'subject', 'tags', 'year'], isFileUploader)
-          .because('Not the author');
-        // @ts-expect-error
-        allow(Action.Update, InfoDoc, ['description', 'docSeries', 'name', 'tags', 'year'], isFileUploader)
+        allow(Action.Update, Document, ['description', 'docSeries', 'name', 'subject', 'tags', 'year'], isFileUploader)
           .because('Not the author');
         // @ts-expect-error
         allow(Action.Manage, ProfileImage, isFileUploader)
@@ -126,10 +121,7 @@ export class CaslAbilityFactory {
         allow(Action.Delete, Content, isAuthor)
           .because('Not the author');
         // @ts-expect-error
-        allow(Action.Delete, StudyDoc, isFileUploader)
-          .because('Not the author');
-        // @ts-expect-error
-        allow(Action.Delete, InfoDoc, isFileUploader)
+        allow(Action.Delete, Document, isFileUploader)
           .because('Not the author');
 
         forbid([Action.Update, Action.Delete, Action.Interact], Thread, { locked: true })

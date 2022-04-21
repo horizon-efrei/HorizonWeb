@@ -1,5 +1,8 @@
+/* eslint-disable max-classes-per-file */
+import { IntersectionType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
 import {
+  IsBoolean,
   IsEnum,
   IsInt,
   IsOptional,
@@ -8,10 +11,12 @@ import {
   Min,
 } from 'class-validator';
 import { Cursus } from '../../../shared/lib/types/enums/cursus.enum';
+import { DocumentKind } from '../../../shared/lib/types/enums/file-kind.enum';
+import { SchoolYear } from '../../../shared/lib/types/enums/school-year.enum';
 import { StudyDocType } from '../../../shared/lib/types/enums/study-doc-type.enum';
 import { CreateFileUploadDto } from '../../file-uploads/dto/create-file-upload.dto';
 
-export class CreateStudyDocDto extends CreateFileUploadDto {
+class CreateStudyDocDto {
   @IsInt()
   year: number;
 
@@ -33,6 +38,25 @@ export class CreateStudyDocDto extends CreateFileUploadDto {
 
   @IsOptional()
   @IsString()
+  name?: string;
+}
+
+class CreateInfoDocDto {
+  @IsOptional()
+  @IsEnum(SchoolYear)
+  schoolYear?: SchoolYear;
+
+  @IsInt()
+  year!: number;
+}
+
+export class CreateDocumentDto extends IntersectionType(
+  CreateFileUploadDto,
+  CreateStudyDocDto,
+  CreateInfoDocDto,
+) {
+  @IsOptional()
+  @IsString()
   docSeries?: string;
 
   @IsOptional()
@@ -42,4 +66,11 @@ export class CreateStudyDocDto extends CreateFileUploadDto {
   @IsOptional()
   @IsString()
   description?: string;
+
+  @IsOptional()
+  @IsBoolean()
+  isObsolete?: boolean;
+
+  @IsEnum(DocumentKind)
+  kind!: DocumentKind;
 }

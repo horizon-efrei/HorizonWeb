@@ -7,7 +7,7 @@ export enum StudyDocType {
   Course = 'course',
   Sheet = 'sheet',
   Projects = 'projects',
-  EfreiClass = 'efreiClass',
+  OfficialClass = 'officialClass',
   EprofClass = 'eprofClass',
   ClassNote = 'classNote',
   Other = 'other',

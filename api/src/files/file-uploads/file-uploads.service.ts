@@ -26,7 +26,7 @@ export class FileUploadsService {
     fileKind: FileKind,
     fileLastModifiedAt = new Date(),
   ): Promise<FileUpload> {
-    const fileDocument = new FileUpload({
+    const fileUpload = new FileUpload({
       user,
       name: file.originalname,
       fileSize: file.size,
@@ -36,15 +36,15 @@ export class FileUploadsService {
       url: '',
     });
 
-    await this.fileUploadRepository.persistAndFlush(fileDocument);
+    await this.fileUploadRepository.persistAndFlush(fileUpload);
     const infos = await this.filePersistanceService.upload(file, {
-      path: fileDocument.getPath(),
-      key: fileDocument.fileUploadId,
+      path: fileUpload.getPath(),
+      key: fileUpload.fileUploadId,
       kind: fileKind,
     });
 
-    fileDocument.url = infos.url;
+    fileUpload.url = infos.url;
 
-    return fileDocument;
+    return fileUpload;
   }
 }

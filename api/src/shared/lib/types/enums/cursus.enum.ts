@@ -3,5 +3,5 @@ export enum Cursus {
   Classic = 'classic',
   Int = 'int',
   Pex = 'pex',
-  Renforced = 'renforced',
+  Reinforced = 'reinforced',
 }

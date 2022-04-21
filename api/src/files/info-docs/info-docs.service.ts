@@ -13,11 +13,11 @@ import { CaslAbilityFactory } from '../../shared/modules/casl/casl-ability.facto
 import type { PaginatedResult, PaginateDto } from '../../shared/modules/pagination';
 import type { User } from '../../users/user.entity';
 import { DocSeries } from '../doc-series/doc-series.entity';
+import type { CreateInfoDocDto } from '../documents/dto/create-info-doc.dtonfo-doc.dto';
+import { InfoDoc } from '../documents/entities/info-doc.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
-import type { CreateInfoDocDto } from './dto/create-info-doc.dto';
 import type { DocsFilterDto } from './dto/docs-filter.dto';
 import type { UpdateInfoDocDto } from './dto/update-info-doc.dto';
-import { InfoDoc } from './info-doc.entity';
 import { InfoDocSearchService } from './info-docs-search.service';
 
 @Injectable()

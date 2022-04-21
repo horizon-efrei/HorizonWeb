@@ -1,10 +1,10 @@
 import partition from 'lodash.partition';
-import type { InfoDoc } from '../../../files/info-docs/info-doc.entity';
-import type { StudyDoc } from '../../../files/study-docs/study-doc.entity';
-import type { InfoDocFilter, StudyDocFilter } from '../types/enums/docs-filters.enum';
+import type { InfoDoc } from '../../../files/documents/entities/info-doc.entity';
+import type { StudyDoc } from '../../../files/documents/entities/study-doc.entity';
+import type { DocumentFilter } from '../types/enums/docs-filters.enum';
 import { groupBy } from './group-by';
 
-export interface Category<T extends InfoDocFilter | StudyDocFilter> {
+export interface Category<T extends DocumentFilter> {
   group: string;
   name: string | null;
   context: T | '__root__';
@@ -12,27 +12,23 @@ export interface Category<T extends InfoDocFilter | StudyDocFilter> {
   children: Array<Category<T>>;
 }
 
-export type Categories<Document extends InfoDoc | StudyDoc> = Category<PossibleFilters<Document>>;
+export type Categories<Doc extends Document> = Category<PossibleFilters<Doc>>;
 
-export type GroupFilters<Document extends InfoDoc | StudyDoc> = Readonly<Record<
-  PossibleFilters<Document>,
-  (elt: Document) => {
+export type GroupFilters<Doc extends InfoDoc | StudyDoc> = Readonly<Record<
+  DocumentFilter<Doc>,
+  (elt: Doc) => {
     key: string | undefined;
     metadata: string | null;
   }
 >>;
 
-type PossibleFilters<Document extends InfoDoc | StudyDoc> = Document extends InfoDoc
-  ? InfoDocFilter
-  : StudyDocFilter;
-
 const getId = (doc: InfoDoc | StudyDoc): string => ('infoDocId' in doc ? doc.infoDocId : doc.studyDocId);
 
-export function computeDocumentCategories<Document extends InfoDoc | StudyDoc>(
-  allDocuments: Document[],
-  groupFilters: GroupFilters<Document>,
-  baseFilters: Array<PossibleFilters<Document>>,
-): Categories<Document> {
+export function computeDocumentCategories<Doc extends InfoDoc | StudyDoc>(
+  allDocuments: Doc[],
+  groupFilters: GroupFilters<Doc>,
+  baseFilters: Array<PossibleFilters<Doc>>,
+): Categories<Doc> {
   /**
    * Recursive helper method that will compute the whole tree of sub-folders based on a set of documents that is
    * reduced by a set of filters, and a set of filters that are used to group the documents.
@@ -42,9 +38,9 @@ export function computeDocumentCategories<Document extends InfoDoc | StudyDoc>(
   //       2. Cache the result of this function for X hours.
   //       3. Use a queue to handle the job and have a worker that will process the queue.
   const computeChildren = (
-    documents: Document[],
-    [currentFilter, ...nextFilters]: Array<PossibleFilters<Document>>,
-  ): Array<Categories<Document>> => {
+    documents: Doc[],
+    [currentFilter, ...nextFilters]: Array<PossibleFilters<Doc>>,
+  ): Array<Categories<Doc>> => {
     if (!currentFilter)
       return [];
 

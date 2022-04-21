@@ -1,6 +1,10 @@
 export enum FileKind {
   ProfileImage = 'profile-image',
-  InfoDoc = 'info-doc',
+  Document = 'document',
   Attachment = 'attachment',
-  StudyDoc = 'study-doc',
+}
+
+export enum DocumentKind {
+  Study = 'study',
+  Info = 'info',
 }

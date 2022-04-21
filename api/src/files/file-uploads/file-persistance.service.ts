@@ -11,9 +11,8 @@ import { UploadBucket } from '../../shared/lib/types/enums/upload-bucket.enum';
 export class FilePersistanceService {
   private static readonly fileKindBucket = {
     [FileKind.Attachment]: UploadBucket.Attachments,
-    [FileKind.InfoDoc]: UploadBucket.Documents,
+    [FileKind.Document]: UploadBucket.Documents,
     [FileKind.ProfileImage]: UploadBucket.ProfileImages,
-    [FileKind.StudyDoc]: UploadBucket.Documents,
   };
 
   constructor(
@@ -24,9 +23,7 @@ export class FilePersistanceService {
     file: Express.Multer.File,
     { path, key, kind }: { path: string; key: string; kind: FileKind },
   ): Promise<{ url: string; etag: string }> {
-
-    if (true) {
-
+    if (!config.get('storage.enabled')) {
       await fs.writeFile(path, file.buffer);
       return { url: `${computedConfig.apiUrl}/${path}`, etag: key };
     }

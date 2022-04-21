@@ -2,9 +2,10 @@ import type { FilterQuery } from '@mikro-orm/core';
 import { wrap } from '@mikro-orm/core';
 import { InjectRepository } from '@mikro-orm/nestjs';
 import { Injectable } from '@nestjs/common';
+import { DocumentKind } from 'src/shared/lib/types/enums/file-kind.enum';
 import { BaseRepository } from '../../shared/lib/repositories/base.repository';
 import { Cursus } from '../../shared/lib/types/enums/cursus.enum';
-import type { StudyDocFilter } from '../../shared/lib/types/enums/docs-filters.enum';
+import type { DocumentFilter } from '../../shared/lib/types/enums/docs-filters.enum';
 import { SchoolYear } from '../../shared/lib/types/enums/school-year.enum';
 import { assertPermissions } from '../../shared/lib/utils/assert-permission';
 import type { Categories, GroupFilters } from '../../shared/lib/utils/compute-document-categories';
@@ -16,67 +17,98 @@ import { Subject } from '../../subjects/subject.entity';
 import type { User } from '../../users/user.entity';
 import { DocSeries } from '../doc-series/doc-series.entity';
 import type { FileUpload } from '../file-uploads/file-upload.entity';
-import type { CreateStudyDocDto } from './dto/create-study-doc.dto';
+import { DocumentSearchService } from './document-search.service';
+import type { CreateDocumentDto } from './dto/create-document.dto';
 import type { DocsFilterDto } from './dto/docs-filter.dto';
-import type { UpdateStudyDocDto } from './dto/update-study-doc.dto';
-import { StudyDoc } from './study-doc.entity';
-import { StudyDocSearchService } from './study-docs-search.service';
+import type { UpdateDocumentDto } from './dto/update-document.dto';
+import { Document } from './entities/document.entity';
+import { InfoDoc } from './entities/info-doc.entity';
+import { StudyDoc } from './entities/study-doc.entity';
 
 @Injectable()
-export class StudyDocsService {
+export class DocumentsService {
+  // eslint-disable-next-line max-params
   constructor(
     @InjectRepository(StudyDoc) private readonly studyDocRepository: BaseRepository<StudyDoc>,
+    @InjectRepository(InfoDoc) private readonly infoDocRepository: BaseRepository<InfoDoc>,
+    @InjectRepository(Document) private readonly documentRepository: BaseRepository<Document>,
     @InjectRepository(Subject) private readonly subjectRepository: BaseRepository<Subject>,
     @InjectRepository(DocSeries) private readonly docSeriesRepository: BaseRepository<DocSeries>,
-    private readonly studyDocSearchService: StudyDocSearchService,
+    private readonly documentSearchService: DocumentSearchService,
     private readonly caslAbilityFactory: CaslAbilityFactory,
   ) {}
 
-  public async create(createStudyDocDto: CreateStudyDocDto, file: FileUpload): Promise<StudyDoc> {
-    const subject = await this.subjectRepository.findOneOrFail({ subjectId: createStudyDocDto.subject });
+  public async create(createDocumentDto: CreateDocumentDto, file: FileUpload): Promise<Document> {
+    const subject = await this.subjectRepository.findOneOrFail({ subjectId: createDocumentDto.subject });
 
-    const docSeries = await this.docSeriesRepository.findOne({ docSeriesId: createStudyDocDto.docSeries });
-    const studyDoc = new StudyDoc({
-      ...createStudyDocDto,
-      subject,
-      file,
-      docSeries,
-    });
-    await this.studyDocRepository.persistAndFlush(studyDoc);
-    await this.studyDocSearchService.add(studyDoc);
-    return studyDoc;
+    const docSeries = await this.docSeriesRepository.findOne({ docSeriesId: createDocumentDto.docSeries });
+
+    let document: Document;
+    switch (createDocumentDto.kind) {
+      case DocumentKind.Study: {
+        const studyDoc = new StudyDoc({
+          ...createDocumentDto,
+          subject,
+        });
+        await this.studyDocRepository.persistAndFlush(studyDoc);
+
+        document = new Document({
+          ...createDocumentDto,
+          file,
+          studyDoc,
+          docSeries,
+        });
+        break;
+      }
+      case DocumentKind.Info: {
+        const infoDoc = new InfoDoc(createDocumentDto);
+        await this.infoDocRepository.persistAndFlush(infoDoc);
+
+        document = new Document({
+          ...createDocumentDto,
+          file,
+          infoDoc,
+          docSeries,
+        });
+        break;
+      }
+    }
+
+    await this.documentRepository.persistAndFlush(document);
+    await this.documentSearchService.add(document);
+    return document;
   }
 
   public async findAll(
     filters: DocsFilterDto,
     paginationOptions?: Required<PaginateDto>,
-  ): Promise<PaginatedResult<StudyDoc>> {
+  ): Promise<PaginatedResult<Document>> {
     // TODO: Maybe the user won't have access to all docs. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
-    let options: FilterQuery<StudyDoc> = {};
+    let options: FilterQuery<Document> = {};
     if (typeof filters.schoolYear !== 'undefined')
-      options = { subject: { schoolYear: filters.schoolYear } };
+      options = { studyDoc: { subject: { schoolYear: filters.schoolYear } } };
     if (typeof filters.year !== 'undefined')
-      options = { ...options, year: filters.year };
+      options = { ...options, studyDoc: { year: filters.year }, infoDoc: { year: filters.year } };
     if (typeof filters.subject !== 'undefined')
       // @ts-expect-error: ts(2339)
-      options = { ...options, subject: { ...options.subject, subjectId: filters.subject } };
+      options = { ...options, studyDoc: { subject: { ...options.subject, subjectId: filters.subject } } };
     if (typeof filters.type !== 'undefined')
       options = { ...options, type: filters.type };
     if (typeof filters.cursus !== 'undefined')
       options = { ...options, cursus: { $in: [filters.cursus, Cursus.All] } };
 
-    return await this.studyDocRepository.findWithPagination(
+    return await this.documentRepository.findWithPagination(
       paginationOptions,
       options,
-      { populate: ['file', 'file.user', 'subject', 'docSeries'] },
+      { populate: ['file', 'file.user', 'studyDoc', 'studyDoc.subject', 'infoDoc', 'docSeries'] },
     );
   }
 
-  public async findCategories(baseFilters: StudyDocFilter[]): Promise<Categories<StudyDoc>> {
-    const allDocuments: StudyDoc[] = await this.studyDocRepository.findAll({ populate: ['subject'] });
+  public async findCategories(baseFilters: DocumentFilter[]): Promise<Categories<Document>> {
+    const allDocuments: Document[] = await this.studyDocRepository.findAll({ populate: ['subject'] });
 
-    const groupFilters: GroupFilters<StudyDoc> = {
+    const groupFilters: GroupFilters<Document> = {
       schoolYear: elt => ({ key: elt.subject.schoolYear.toString(), metadata: SchoolYear[elt.subject.schoolYear] }),
       subject: elt => ({ key: elt.subject.subjectId.toString(), metadata: elt.subject.name }),
       type: elt => ({ key: elt.type.toString(), metadata: null }),
@@ -86,7 +118,7 @@ export class StudyDocsService {
     return computeDocumentCategories(allDocuments, groupFilters, baseFilters);
   }
 
-  public async findOne(studyDocId: string): Promise<StudyDoc> {
+  public async findOne(studyDocId: string): Promise<Document> {
     // TODO: Maybe the user won't have access to this doc. There can be some restrictions
     // (i.e. "sensitive"/"deprecated" docs)
     return await this.studyDocRepository.findOneOrFail(
@@ -95,7 +127,7 @@ export class StudyDocsService {
     );
   }
 
-  public async update(user: User, studyDocId: string, updateCourseDto: UpdateStudyDocDto): Promise<StudyDoc> {
+  public async update(user: User, studyDocId: string, updateCourseDto: UpdateDocumentDto): Promise<Document> {
     const studyDoc = await this.studyDocRepository.findOneOrFail(
       { studyDocId },
       { populate: ['file', 'file.user', 'subject', 'docSeries'] },
@@ -109,7 +141,7 @@ export class StudyDocsService {
 
     wrap(studyDoc).assign({ ...updateCourseDto, subject, docSeries });
     await this.studyDocRepository.flush();
-    await this.studyDocSearchService.update(studyDoc);
+    await this.documentSearchService.update(studyDoc);
     return studyDoc;
   }
 
@@ -120,6 +152,8 @@ export class StudyDocsService {
     assertPermissions(ability, Action.Delete, studyDoc);
 
     await this.studyDocRepository.removeAndFlush(studyDoc);
-    await this.studyDocSearchService.remove(studyDoc.studyDocId);
+    await this.documentSearchService.remove(studyDoc.studyDocId);
   }
+
+x;
 }
