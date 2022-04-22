@@ -26,11 +26,7 @@
                         </div>
                         <div class="flex gap-4 justify-center w-full">
                             <a
-                                :href="`#/clubs/${club.clubId}`"
                                 class="w-32 text-base text-center text-white bg-blue-500 rounded-md"
-                            >
-                                Plus d'infos
-                            </a>
                             <button class="w-32 text-base text-center text-white bg-green-500 rounded-md">
                                 Rejoindre
                             </button>
