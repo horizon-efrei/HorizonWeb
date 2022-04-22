@@ -149,6 +149,22 @@ const routes = [
     },
 
     {
+        path: '/clubs',
+        component: () => import('@/views/Clubs/ClubsList.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
+        path: '/clubs/:clubId',
+        component: () => import('@/views/Clubs/ClubView.vue'),
+        meta: {
+            requiresAuth: true,
+        },
+    },
+
+    {
         path: '/:pathMatch(.*)*',
         component: () => import('@/views/App/AppException.vue'),
         props: {
