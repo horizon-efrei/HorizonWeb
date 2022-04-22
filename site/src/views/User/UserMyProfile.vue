@@ -41,7 +41,7 @@
         },
         {
             id: 'clubs',
-            name: 'Associations',
+            name: 'Mes associations',
             icon: 'user',
         },
         {
