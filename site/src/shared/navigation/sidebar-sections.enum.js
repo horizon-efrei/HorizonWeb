@@ -62,29 +62,29 @@ export const sections = computed(() => {
               ]
             : []),
 
-        // ...(auth.loggedIn
-        //     ? [
-        //           {
-        //               name: 'Horizon Cloud',
-        //               links: [
-        //                   {
-        //                       to: '/docs',
-        //                       regActive: /^\/docs(?!\/new)/,
-        //                       textSmall: 'Documents',
-        //                       textLarge: 'Tous les documents',
-        //                       icon: 'folder',
-        //                   },
-        //                   {
-        //                       to: '/docs/new',
-        //                       regActive: /^\/docs\/new$/,
-        //                       textSmall: 'Uploader',
-        //                       textLarge: 'Ajouter un fichier',
-        //                       icon: 'upload',
-        //                   },
-        //               ],
-        //           },
-        //       ]
-        //     : []),
+        ...(auth.loggedIn
+            ? [
+                  {
+                      name: 'Horizon Cloud',
+                      links: [
+                          {
+                              to: '/docs',
+                              regActive: /^\/docs(?!\/new)/,
+                              textSmall: 'Documents',
+                              textLarge: 'Tous les documents',
+                              icon: 'folder',
+                          },
+                          {
+                              to: '/docs/new',
+                              regActive: /^\/docs\/new$/,
+                              textSmall: 'Uploader',
+                              textLarge: 'Ajouter un fichier',
+                              icon: 'upload',
+                          },
+                      ],
+                  },
+              ]
+            : []),
 
         ...(auth.loggedIn
             ? [
@@ -135,6 +135,13 @@ export const sections = computed(() => {
                   {
                       name: 'Communauté',
                       links: [
+                          {
+                              to: '/clubs/',
+                              regActive: /^\/clubs/,
+                              textSmall: 'Associations',
+                              textLarge: 'Associations',
+                              icon: 'users',
+                          },
                           {
                               to: '/users/',
                               regActive: /^\/users/,

@@ -49,7 +49,9 @@
                                 <div class="my-auto">Rejoindre une association</div>
                             </a>
                         </div>
-                        <div v-if="clubs.length === 0">Vous n'avez pas encore d'Association</div>
+                        <div v-if="clubs.items.length === 0" class="mb-8">
+                            Vous n'avez pas encore rejoint d'Association
+                        </div>
                         <div v-else class="flex">
                             <!-- {{ clubs }} -->
                             <div class="flex flex-col">
@@ -93,7 +95,7 @@
                     <div id="join">
                         <div>
                             <div class="flex">
-                                <h1 class="text-lg">Rejoindre une association</h1>
+                                <h1 class="text-lg">Associations proposées</h1>
                                 <a class="flex gap-2 my-auto ml-4 text-sm text-blue-500" href="#userClubs">
                                     <font-awesome-icon class="my-auto" icon="plus" />
                                     <div class="my-auto">Voir tes associations</div>
@@ -104,6 +106,28 @@
                                 association"
                             </p>
                         </div>
+                        <ul v-for="club in clubList.items" :key="club" class="flex flex-col">
+                            <!-- {{
+                                club
+                            }} -->
+                            <li class="flex gap-2 pr-2 w-full h-10 even:bg-gray-100">
+                                <img
+                                    v-if="club.clubId != null"
+                                    class="my-auto w-8 h-8 rounded-full"
+                                    :src="club.avatar"
+                                />
+                                <div class="my-auto truncate w-50">
+                                    {{ club.name }}
+                                </div>
+                                <div class="flex gap-1 my-auto w-6 text-sm">
+                                    <p class="my-auto">{{ club.members ? club.members.length : 1 }}</p>
+                                    <i class="my-auto fas fa-user"></i>
+                                </div>
+                                <button class="w-fit text-sm text-blue-500">
+                                    <p>Demander à rejoindre</p>
+                                </button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
