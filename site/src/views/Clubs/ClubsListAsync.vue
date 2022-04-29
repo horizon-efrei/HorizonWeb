@@ -7,11 +7,11 @@
                 <!-- <ClubCard v-for="club in clubs" :key="club.id" :club="club" /> -->
                 <div v-for="club in clubList.items" :key="club">
                     <div
-                        class="flex flex-col justify-between items-center pb-4 w-96 h-64 text-black bg-white rounded-lg shadow-xl"
+                        class="flex flex-col justify-between items-center pb-4 bg-white rounded-lg shadow-xl w-96text-black"
                     >
                         <div class="flex flex-col items-center w-full">
                             <div class="w-full h-20 bg-blue-200 rounded-t-lg"></div>
-                            <div class="flex gap-4 px-4 w-full">
+                            <div class="flex gap-4 px-4 mb-2 w-full">
                                 <div class="-mt-8">
                                     <UserAvatar :img-src="club.avatar" size="4.5" :username="club.name" />
                                 </div>
@@ -22,7 +22,7 @@
                                     <p class="-mt-2 text-sm text-gray-400">57 membres</p>
                                 </div>
                             </div>
-                            <p class="px-4 text-sm text-justify line-clamp-4">{{ club.description }}</p>
+                            <p class="px-4 h-24 text-sm text-justify line-clamp-4">{{ club.description }}</p>
                         </div>
                         <div class="flex gap-4 justify-center w-full">
                             <a

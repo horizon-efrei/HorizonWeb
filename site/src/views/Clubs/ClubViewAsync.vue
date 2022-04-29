@@ -1,62 +1,33 @@
 <template>
     <div>
-        <div class="pb-2 mx-auto text-1">
-            <div class="p-0 pb-6 rounded-b-none card">
+        <div class="p-0 pb-2 mx-auto rounded-b-none text-1 card">
+            <div class="">
                 <div class="relative w-full h-48">
                     <div class="w-full h-full bg-blue-200" />
                     <div class="absolute -bottom-8 left-8">
                         <UserAvatar :img-src="club.avatar" size="4.5" :username="club.name" />
                     </div>
                 </div>
-                <div class="px-4 mt-8 w-full">
+                <div class="px-4 pb-6 mt-8 w-full shadow-lg">
                     <div class="flex flex-col pr-8 mb-4 space-y-4">
                         <div>
                             <div class="flex">
-                                <div class="text-2xl">{{ club.name }}</div>
+                                <div class="text-2xl font-bold">{{ club.name }}</div>
                                 <div class="my-auto ml-2 text-gray-500">
-                                    {{ 'M2-F' }}
+                                    {{ club.category }}
                                 </div>
-                                <!-- <router-link
-                                    v-if="me.userId === user.userId"
-                                    to="/me/profile"
-                                    class="my-auto ml-8"
-                                >
-                                    <div
-                                        class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded"
-                                    >
-                                        <i class="fas fa-pen-alt" />
-                                    </div>
-                                </router-link> -->
+                                <div class="my-auto ml-2 text-gray-500">
+                                    {{ club.members.length }}
+                                    <i class="fas fa-users"> </i>
+                                </div>
                             </div>
                             <div>{{ club.description }}</div>
                         </div>
-                        <!-- <div v-if="clubs != 0">
-                            <div class="text-lg">Associations</div>
-                            <div class="flex flex-wrap mt-2">
-                                <div v-for="club in clubs.items" :key="club" class="flex mr-4 mb-4 h-16">
-                                    <p v-if="club.club.avatar != null" class="my-auto w-16 h-16">
-                                        <img
-                                            :src="club.club.avatar"
-                                            :alt="`${club.club.name} Logo`"
-                                            class="rounded-full shadow-inner"
-                                        />
-                                    </p>
-                                    <div class="ml-2 w-32">
-                                        <div class="-mb-1 text-lg font-bold truncate last:text-clip">
-                                            {{ club.club.name }}
-                                        </div>
-                                        <div class="-mb-1">
-                                            {{ Object.keys(roles).find((role) => roles[role] === club.role) }}
-                                        </div>
-                                        <div class="text-sm truncate text-5">
-                                            {{ club.roleLabel }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
+            </div>
+            <div class="px-4">
+                <h1 class="mt-4 text-2xl">Le Bureau</h1>
             </div>
         </div>
 
