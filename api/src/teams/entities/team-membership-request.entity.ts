@@ -9,6 +9,7 @@ import {
 import { BaseEntity } from '../../shared/lib/entities/base.entity';
 import { User } from '../../users/user.entity';
 import { MembershipRequestIssuer } from '../membership-request-issuer.enum';
+import { MembershipRequestState } from '../membership-request-state.enum';
 import { Team } from './team.entity';
 
 @Entity()
@@ -25,32 +26,35 @@ export class TeamMembershipRequest extends BaseEntity {
   user!: User;
 
   @Property({ type: 'text' })
-  reason?: string;
+  message?: string;
 
   @Enum(() => MembershipRequestIssuer)
   issuer!: MembershipRequestIssuer;
 
+  @Enum(() => MembershipRequestState)
+  state = MembershipRequestState.Pending;
+
+  @ManyToOne({ onDelete: 'CASCADE' })
+  handledBy?: User;
+
   @Property()
-  approved = false;
+  handledAt?: Date;
 
   @ManyToOne({ onDelete: 'CASCADE' })
-  approvedBy?: User;
-
-  @ManyToOne({ onDelete: 'CASCADE' })
-  initiatedBy!: User;
+  issuedBy!: User;
 
   constructor(options: {
     team: Team;
     user: User;
-    reason?: string;
+    message?: string;
     issuer: MembershipRequestIssuer;
-    initiatedBy: User;
+    issuedBy: User;
   }) {
     super();
     this.team = options.team;
     this.user = options.user;
-    this.reason = options.reason;
+    this.message = options.message;
     this.issuer = options.issuer;
-    this.initiatedBy = options.initiatedBy;
+    this.issuedBy = options.issuedBy;
   }
 }
