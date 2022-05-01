@@ -157,11 +157,9 @@ export class TeamsService {
     if (!team.canActOnRole(requester, createTeamMemberDto.role))
       throw new ForbiddenException('Role too high');
 
-    const teamMember = new TeamMember({ ...createTeamMemberDto, team, user });
     const teamMembershipRequest = new TeamMembershipRequest({
       team, user, initiatedBy: requester, issuer: team.teamId,
     });
-    this.teamMemberRepository.persist(teamMember);
     await this.teamMembershipRepository.persistAndFlush(teamMembershipRequest);
     return teamMembershipRequest;
   }
@@ -169,7 +167,6 @@ export class TeamsService {
   public async joinTeam(
     requester: User,
     teamId: number,
-    createTeamMemberDto: CreateTeamMemberDto,
   ): Promise<TeamMembershipRequest> {
     const team = await this.teamRepository.findOneOrFail(
       { teamId },
@@ -180,8 +177,6 @@ export class TeamsService {
     if (existing)
       throw new BadRequestException('User is already in team');
 
-    const teamMember = new TeamMember({ ...createTeamMemberDto, team, user });
-    this.teamMemberRepository.persist(teamMember);
     const teamMembershipRequest = new TeamMembershipRequest({
       team, user, initiatedBy: requester, issuer: team.teamId,
     });
@@ -283,6 +278,20 @@ export class TeamsService {
     await this.teamMemberRepository.removeAndFlush(teamMember);
   }
 
+  public async findAllMembershipRequestForTeam(teamId: number, approved = false): Promise<TeamMembershipRequest[]> {
+    return await this.teamMembershipRepository.findAll(
+      { team: { teamId }, approved },
+      { orderBy: { approvedBy: 'ASC', initiatedBy: 'ASC', createdAt: 'ASC' } },
+    );
+  }
+
+  public async findAllMembershipRequestForUser(userId: string, approved = false): Promise<TeamMembershipRequest[]> {
+    return await this.teamMembershipRepository.findAll(
+      { user: { userId }, approved },
+      { orderBy: { approvedBy: 'ASC', initiatedBy: 'ASC', createdAt: 'ASC' } },
+    );
+  }
+
   private async setAvatar(profileImageId: string, team: Team): Promise<void> {
     // Get the avatar image and validate it
     const avatarImage = await this.profileImageRepository.findOne({ profileImageId }, { populate: ['file'] });
@@ -299,18 +308,4 @@ export class TeamsService {
     }
   }
   // TeamMembershipRequest
-
-  private async findAllMembershipRequestForTeam(teamId: number, approved = false): Promise<TeamMembershipRequest[]> {
-    return await this.teamMembershipRepository.findAll(
-      { team: { teamId }, approved },
-      { orderBy: { approvedBy: 'ASC', initiatedBy: 'ASC', createdAt: 'ASC' } },
-    );
-  }
-
-  private async findAllMembershipRequestForUser(userId: string, approved = false): Promise<TeamMembershipRequest[]> {
-    return await this.teamMembershipRepository.findAll(
-      { user: { userId }, approved },
-      { orderBy: { approvedBy: 'ASC', initiatedBy: 'ASC', createdAt: 'ASC' } },
-    );
-  }
 }

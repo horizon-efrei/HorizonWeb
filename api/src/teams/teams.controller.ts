@@ -159,4 +159,22 @@ export class TeamsController {
   public async remove(@Param('teamId', ParseIntPipe) teamId: number): Promise<void> {
     await this.teamsService.remove(teamId);
   }
+
+  @Get('/teamMembershipRequest/:teamId')
+  @CheckPolicies(ability => ability.can(Action.Read, Team))
+  @SerializerTeamMemberIncludeTeam()
+  public async findAllMembershipRequestForTeam(
+    @Param('teamId', ParseIntPipe) teamId: number,
+  ): Promise<TeamMembershipRequest[]> {
+      return await this.teamsService.findAllMembershipRequestForTeam(teamId);
+}
+
+@Get('/myJointRequest/:userId')
+@CheckPolicies(ability => ability.can(Action.Read, Team))
+@SerializerTeamMemberIncludeTeam()
+public async findAllMembershipRequestForUser(
+  @Param('userId', ParseIntPipe) userId: string,
+): Promise<TeamMembershipRequest[]> {
+    return await this.teamsService.findAllMembershipRequestForUser(userId);
+}
 }
