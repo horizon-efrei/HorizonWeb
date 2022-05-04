@@ -16,10 +16,10 @@ export const useClubsStore = defineStore('clubs', {
             return club
         },
         async getClubs() {
-            return await $axios.get('clubs').then((res) => this.replaceClubs(res.data))
+            return await $axios.get('teams').then((res) => this.replaceClubs(res.data))
         },
         async getClub(clubId) {
-            return await $axios.get(`clubs/${clubId}`).then((res) => this.replaceClub(res.data))
+            return await $axios.get(`teams/${clubId}`).then((res) => this.replaceClub(res.data))
         },
         // async patchUser(props) {
         //     return await $axios.patch('users', props).then((res) => this.replaceUser(res.data))

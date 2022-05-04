@@ -27,7 +27,58 @@
                 </div>
             </div>
             <div class="px-4">
-                <h1 class="mt-4 text-2xl">Le Bureau</h1>
+                <h1 class="mt-4 mb-2 text-xl">Le Bureau</h1>
+                <div class="flex gap-4">
+                    <div
+                        class="flex flex-col flex-wrap justify-between items-center p-4 mb-4 w-48 h-48 rounded-lg shadow-md bg-2"
+                    >
+                        <UserAvatar
+                            :img-src="club.members.find((member) => member.role === 'owner').avatar"
+                            size="6"
+                            :username="
+                                club.members.find((member) => member.role === 'owner').user.firstname +
+                                ' ' +
+                                club.members.find((member) => member.role === 'owner').user.lastname
+                            "
+                        />
+                        <div class="text-center">
+                            <p class="leading-none line-clamp-2">
+                                {{
+                                    club.members.find((member) => member.role === 'owner').user.firstname +
+                                    ' ' +
+                                    club.members.find((member) => member.role === 'owner').user.lastname
+                                }}
+                            </p>
+                            <p class="text-gray-400">Président</p>
+                        </div>
+                    </div>
+                </div>
+                <h1 class="mt-4 mb-2 text-xl">Les dernières activités</h1>
+                <div class="flex gap-4">
+                    <!-- <div
+                        class="flex flex-col flex-wrap justify-between items-center p-4 mb-4 w-48 h-48 rounded-lg shadow-md bg-2"
+                    >
+                        <UserAvatar
+                            :img-src="club.members.find((member) => member.role === 'owner').avatar"
+                            size="6"
+                            :username="
+                                club.members.find((member) => member.role === 'owner').user.firstname +
+                                ' ' +
+                                club.members.find((member) => member.role === 'owner').user.lastname
+                            "
+                        />
+                        <div class="text-center">
+                            <p class="leading-none line-clamp-2">
+                                {{
+                                    club.members.find((member) => member.role === 'owner').user.firstname +
+                                    ' ' +
+                                    club.members.find((member) => member.role === 'owner').user.lastname
+                                }}
+                            </p>
+                            <p class="text-gray-400">Président</p>
+                        </div>
+                    </div> -->
+                </div>
             </div>
         </div>
 
@@ -121,5 +172,5 @@
 
     await loadClub()
     // await loadContacts()
-    watch(() => route.params.clubId, loadClub)
+    // watch(() => route.params.clubId, loadClub)
 </script>
