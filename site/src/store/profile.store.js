@@ -27,10 +27,10 @@ export const useProfilesStore = defineStore('profile', {
             return await $axios.get(`contacts/users/${userId}`).then((res) => this.replaceContacts(res.data))
         },
         async getClubs(userId) {
-            return await $axios.get(`clubs/memberships/${userId}`).then((res) => this.replaceClubs(res.data))
+            return await $axios.get(`teams/memberships/${userId}`).then((res) => this.replaceClubs(res.data))
         },
         async getClubsList() {
-            return await $axios.get('clubs').then((res) => res.data)
+            return await $axios.get('teams').then((res) => res.data)
         },
         async getContactsTypes() {
             return await $axios.get('/contacts').then((res) => res.data)
