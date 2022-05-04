@@ -5,7 +5,7 @@
             <!-- grid 3 columns for each clubs centered-->
             <div class="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3">
                 <!-- <ClubCard v-for="club in clubs" :key="club.id" :club="club" /> -->
-                <div v-for="club in clubList.items" :key="club">
+                <div v-for="club in clubList.items" :key="club.teamId">
                     <div
                         class="flex flex-col justify-between items-center pb-4 bg-white rounded-lg shadow-xl w-96text-black"
                     >
@@ -26,8 +26,12 @@
                         </div>
                         <div class="flex gap-4 justify-center w-full">
                             <a
-                                class="w-32 text-base text-center text-white bg-blue-500 rounded-md"
-                            <button class="w-32 text-base text-center text-white bg-green-500 rounded-md">
+                                class="p-2 w-44 text-base text-center text-white bg-blue-500 rounded-md"
+                                :href="'#/clubs/' + club.teamId"
+                            >
+                                Plus d'informations
+                            </a>
+                            <button class="p-2 w-44 text-base text-center text-white bg-green-500 rounded-md">
                                 Rejoindre
                             </button>
                         </div>
