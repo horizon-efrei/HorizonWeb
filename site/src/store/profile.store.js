@@ -30,7 +30,7 @@ export const useProfilesStore = defineStore('profile', {
             return await $axios.get(`teams/memberships/${userId}`).then((res) => this.replaceClubs(res.data))
         },
         async getClubsList() {
-            return await $axios.get('teams').then((res) => res.data)
+            return await $axios.get('teams/teams').then((res) => res.data)
         },
         async getContactsTypes() {
             return await $axios.get('/contacts').then((res) => res.data)
@@ -42,6 +42,15 @@ export const useProfilesStore = defineStore('profile', {
             return await $axios
                 .post('/contacts/users', { contactId, link, pseudo })
                 .then((res) => this.replaceContacts(...this.contacts, res))
+        },
+        async getMembershipsRequests(clubId) {
+            return await $axios.get(`/teams/requests/${clubId}`).then((res) => res.data)
+        },
+        async acceptMembershipRequest(requestId) {
+            console.log('ZoboZob', requestId)
+            return await $axios
+                .patch(`/teams/requests/${requestId}/`, { state: 'approved' })
+                .then((res) => res.data)
         },
         // async patchContact(contact) {
         //     return await $axios.patch()

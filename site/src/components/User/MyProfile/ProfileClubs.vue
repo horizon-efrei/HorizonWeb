@@ -9,5 +9,5 @@
 
 <script setup>
     import AppLoader from '@/components/App/AppLoader.vue'
-    import ProfileClubsAsync from './ProfileClubsAsync.vue'
+    import ProfileClubsAsync from './ProfileClubAsync.vue'
 </script>

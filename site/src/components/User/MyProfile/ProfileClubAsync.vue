@@ -61,13 +61,13 @@
                                     class="flex items-center my-2 h-8"
                                 >
                                     <div class="flex mr-2">
-                                        <img
-                                            v-if="club.club.clubId != null"
-                                            class="my-auto w-8 h-8 rounded-full"
-                                            :src="club.club.avatar"
+                                        <UserAvatar
+                                            :img-src="club.team.avatar"
+                                            size="2"
+                                            :username="club.team.name"
                                         />
                                         <div class="my-auto ml-2">
-                                            {{ club.club.name }}
+                                            {{ club.team.name }}
                                         </div>
                                     </div>
                                 </div>
@@ -83,7 +83,7 @@
                                     </div>
                                     <button
                                         class="flex my-auto ml-4 text-red-500 text-1 text-md"
-                                        @click="leaveClub(club.club.clubId)"
+                                        @click="leaveClub(club.team.teamId)"
                                     >
                                         <font-awesome-icon icon="times" class="my-auto text-red-500" />
                                         <p class="my-auto text-sm text-red-500">Quitter</p>
@@ -96,38 +96,40 @@
                         <div>
                             <div class="flex">
                                 <h1 class="text-lg">Associations proposées</h1>
-                                <a class="flex gap-2 my-auto ml-4 text-sm text-blue-500" href="#userClubs">
-                                    <font-awesome-icon class="my-auto" icon="plus" />
-                                    <div class="my-auto">Voir tes associations</div>
-                                </a>
                             </div>
                             <p class="text-sm">
                                 Vous pouvez rejoindre une association en cliquant sur le bouton "Rejoindre une
                                 association"
                             </p>
                         </div>
-                        <ul v-for="club in clubList.items" :key="club" class="flex flex-col">
-                            <!-- {{
-                                club
-                            }} -->
-                            <li class="flex gap-2 pr-2 w-full h-10 even:bg-gray-100">
-                                <img
-                                    v-if="club.clubId != null"
-                                    class="my-auto w-8 h-8 rounded-full"
-                                    :src="club.avatar"
-                                />
-                                <div class="my-auto truncate w-50">
-                                    {{ club.name }}
+                        <div class="flex w-full">
+                            <ul class="flex flex-col">
+                                <!-- {{
+                                    club
+                                }} -->
+                                <li
+                                    v-for="club in clubList.items"
+                                    :key="club"
+                                    class="flex gap-2 pr-2 w-full h-10"
+                                >
+                                    <UserAvatar :img-src="club.avatar" size="2" :username="club.name" />
+                                    <div class="my-auto truncate w-50">
+                                        {{ club.name }}
+                                    </div>
+                                    <div class="flex gap-1 my-auto w-6 text-sm">
+                                        <p class="my-auto">{{ club.members ? club.members.length : 1 }}</p>
+                                        <i class="my-auto fas fa-user"></i>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="flex flex-col">
+                                <div v-for="(club, idx) in clubs.items" :key="idx" class="my-1 h-8">
+                                    <button class="my-auto text-1">
+                                        <p class="text-sm text-blue-500">Demander à rejoindre</p>
+                                    </button>
                                 </div>
-                                <div class="flex gap-1 my-auto w-6 text-sm">
-                                    <p class="my-auto">{{ club.members ? club.members.length : 1 }}</p>
-                                    <i class="my-auto fas fa-user"></i>
-                                </div>
-                                <button class="w-fit text-sm text-blue-500">
-                                    <p>Demander à rejoindre</p>
-                                </button>
-                            </li>
-                        </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -162,16 +164,16 @@
                         <div v-if="userClubsPresident().length > 1">
                             <SelectInput
                                 v-model="clubSelected"
-                                :choices="userClubsPresident().map((a) => a.club.name)"
+                                :choices="userClubsPresident().map((a) => a.team.name)"
                                 :model-value="
                                     userClubsPresident().findIndex(
-                                        (a) => clubSelected.club.clubId === a.club.clubId,
+                                        (a) => clubSelected.team.teamId === a.team.teamId,
                                     )
                                 "
                             />
                         </div>
                         <div v-else>
-                            {{ clubSelected.club.name }}
+                            {{ clubSelected.team.name }}
                         </div>
                     </div>
                     <h3 class="mb-8 text-lg">Informations de l'association</h3>
@@ -180,9 +182,10 @@
                             <div class="flex flex-col mr-8 mb-4 w-fit">
                                 <div class="relative mx-auto mb-2">
                                     <UserAvatar
-                                        :img-src="clubSelected.club.avatar"
-                                        :alt="clubSelected.club.name + ' icon'"
+                                        :img-src="clubSelected.team.avatar"
+                                        :alt="clubSelected.team.name + ' icon'"
                                         :size="5"
+                                        :username="clubSelected.team.name"
                                     />
                                     <button
                                         class="hidden absolute right-4 bottom-0 md:block"
@@ -195,14 +198,14 @@
                                 </div>
                                 <div class="flex justify-between mx-auto">
                                     <div class="mr-2 w-full capitalize whitespace-nowrap bg-1">
-                                        {{ clubSelected.club.name }}
+                                        {{ clubSelected.team.name }}
                                     </div>
                                 </div>
                             </div>
                             <div class="flex flex-col w-full">
                                 <label for="description" class="text-lg">Description</label>
                                 <textarea
-                                    v-model="clubSelected.club.description"
+                                    v-model="clubSelected.team.description"
                                     name="description"
                                     class="resize-none input"
                                     rows="5"
@@ -219,9 +222,56 @@
                         lang-type="fr"
                         :with-credentials="true"
                     />
+                    <div>
+                        <h3 class="mb-4 text-lg">Invitations en attente</h3>
+                        <div class="flex">
+                            <div class="flex flex-col gap-2 w-48">
+                                <div
+                                    v-for="request in requests"
+                                    :key="request.teamMembershipRequestId"
+                                    class="flex flex-col gap-2"
+                                >
+                                    <div class="flex gap-2">
+                                        <UserAvatar
+                                            :img-src="request.user.avatar"
+                                            :alt="request.user.name + ' icon'"
+                                            :size="2"
+                                            :username="request.user.firstname + ' ' + request.user.lastname"
+                                        />
+                                        <div class="flex flex-col my-auto">
+                                            {{ request.user.firstname + ' ' + request.user.lastname }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col mr-4">
+                                <div
+                                    v-for="request in requests"
+                                    :key="request.teamMembershipRequestId"
+                                    class="flex flex-col gap-2 my-1 h-8"
+                                >
+                                    <p class="my-auto text-sm text-green-500">{{ request.state }}</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-col">
+                                <div
+                                    v-for="request in requests"
+                                    :key="request.teamMembershipRequestId"
+                                    class="flex flex-col gap-2 my-1 h-8"
+                                >
+                                    <button
+                                        class="my-auto text-sm text-blue-500"
+                                        @click="() => acceptDemand(request)"
+                                    >
+                                        Accepter la demande
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div>
-                        <h3 class="mb-4 text-lg">Liste des Membres</h3>
+                        <h3 class="my-4 text-lg">Liste des Membres</h3>
                         <!-- <div v-if="clubMembers != undefined && clubMembers != null">
                             <ul>
                                 <li v-for="member in clubMembers" :key="member" class="flex gap-4">
@@ -281,8 +331,8 @@
     // import _ from 'lodash'
     // import { watch } from 'vue'
     const apiUrl = import.meta.env.VITE_API_URL
-    const auth = useAuthStore()
     const profile = useProfilesStore()
+    const auth = useAuthStore()
     const clubs = ref([])
     const me = ref(null)
     const componentSelected = ref(1)
@@ -290,10 +340,12 @@
     const clubList = ref([])
     const clubSelected = ref(null)
     const avatarShown = ref(false)
+    const requests = ref([])
 
-    const userClubsPresident = () => clubs.value.items.filter((club) => club.role === 'president')
-    const changeSelectedClub = (club) => {
+    const userClubsPresident = () => clubs.value.items.filter((club) => club.role === 'owner')
+    const changeSelectedClub = async (club) => {
         clubSelected.value = userClubsPresident()[club]
+        await loadRequests(clubSelected.value.team.teamId)
     }
     const showImage = () => {
         avatarShown.value = !avatarShown.value
@@ -330,6 +382,11 @@
             .then((res) => {
                 clubs.value = res
                 clubSelected.value = userClubsPresident()[0]
+                const teamId = clubSelected.value.team.teamId
+                if (teamId) {
+                    console.log({ teamId })
+                    loadRequests(teamId)
+                }
             })
             .catch((err) => {
                 emitter.emit('error-route', { code: getStatus(err.response) })
@@ -347,14 +404,36 @@
             })
     }
 
+    const loadRequests = async (teamId) => {
+        await profile
+            .getMembershipsRequests(teamId)
+            .then((res) => {
+                requests.value = res.items
+            })
+            .catch((err) => {
+                emitter.emit('error-route', { code: getStatus(err.response) })
+            })
+    }
+
+    const acceptDemand = async (request) => {
+        await profile
+            .acceptMembershipRequest(request.teamMembershipRequestId)
+            .then(() => {
+                loadRequests(clubSelected.value.team.teamId)
+            })
+            .catch((err) => {
+                emitter.emit('error-route', { code: getStatus(err.response) })
+            })
+    }
+
     //TODO leaveClub
 
     await loadMe()
     await loadClubs()
     await loadClubList()
-    watch(clubSelected, () => {
+    watch(clubSelected, async () => {
         if (Number.isInteger(clubSelected.value)) {
-            changeSelectedClub(clubSelected.value)
+            await changeSelectedClub(clubSelected.value)
         }
     })
     // export default {
