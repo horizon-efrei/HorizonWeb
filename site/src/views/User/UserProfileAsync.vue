@@ -26,7 +26,7 @@
                                     class="my-auto ml-8"
                                 >
                                     <div
-                                        class="flex items-center py-1.5 px-2 rounded hover:bg-3-light hover:dark:bg-3-dark"
+                                        class="flex items-center py-1.5 px-2 hover:bg-3-light hover:dark:bg-3-dark rounded"
                                     >
                                         <i class="fas fa-pen-alt" />
                                     </div>
