@@ -4,7 +4,19 @@ import { onItems } from '@/utils/store'
 
 export const useCategoriesStore = defineStore('categories', {
     state: () => ({
-        categories: [],
+        categories: [
+            'Alimentation',
+            'Impôts et taxes',
+            'Logistique',
+            'Assurance',
+            'Restaurant et bars',
+            'Équipement et matériel',
+            'Salaire',
+            'Transports',
+            'Marketing',
+            'IT & Electronique',
+            'Autres dépenses',
+        ],
     }),
     actions: {
         replaceCategories(categories, pageInfo) {
