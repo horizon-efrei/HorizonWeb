@@ -33,8 +33,16 @@ export const sections = computed(() => {
                               textLarge: 'Modération',
                               icon: 'columns',
                           },
+                          {
+                            to: '/admin/association',
+                            regActive: /^\/admin/,
+                            textSmall: 'Association',
+                            textLarge: 'Association',
+                            icon: 'gear',
+                        },
                       ],
                   },
+
               ]
             : []),
 
