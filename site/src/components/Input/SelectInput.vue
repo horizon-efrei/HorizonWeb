@@ -33,8 +33,7 @@
                         >
                             <i v-if="i === currentChoice" class="shrink-0 w-6 h-6 font-bold fas fa-check" />
                             <div>
-                                <span>{{ icons }}</span>
-                                <i class="shrink-0 w-6 h-6 font-bold fas fa-{{icons}}" />
+                                <i :class="'shrink-0 w-6 h-6 font-bold fas fa-' + ico" />
                                 {{ choice }}
                             </div>
                         </div>
@@ -60,9 +59,9 @@
             type: Array,
             default: () => [],
         },
-        icons: {
-            type: String,
-            default: 'burger',
+        ico: {
+            type: Array,
+            default: () => [],
         },
         maxContentWidth: {
             type: Number,

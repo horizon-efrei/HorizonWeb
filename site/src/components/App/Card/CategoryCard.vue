@@ -39,8 +39,6 @@
 </template>
 
 <script setup>
-    /* import { computed, ref } from '@vue/runtime-core' */
-    /* import axios from 'axios' */
     import AppModal from '../AppModal.vue'
     defineProps({
         categorie: {

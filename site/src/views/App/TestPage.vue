@@ -12,7 +12,11 @@
 
             <div>
                 <div for="doc-type">Catégorie<span class="text-red-500">*</span></div>
-                <SelectInput v-model="model[0].categorie" :choices="listOfCategories" :icons="'check'" />
+                <SelectInput
+                    v-model="model[0].categorie"
+                    :choices="listOfCategories"
+                    :ico="listOfCategories"
+                />
                 <div v-if="v$.model[0].typePaiement.$error" class="flex flex-col">
                     <AppAlert v-for="(error, i) in v$.model[0].typePaiement.$errors" :key="i" type="error">
                         <template #message>
@@ -153,7 +157,6 @@
     import FileInput from '@/components/Input/FileInput.vue'
     import RadioInput from '@/components/Input/RadioInput.vue'
     import SelectInput from '@/components/Input/SelectInput.vue'
-    import SelectInputIcon from '@/components/Input/SelectInputIcon.vue'
     import useVuelidate from '@vuelidate/core'
     import { required } from '@vuelidate/validators'
     import CardPage from '../App/CardPage.vue'
@@ -210,19 +213,6 @@
                 listOfCategories: [
                     'Alimentation',
                     'Impôts et taxes',
-                    'Logistique',
-                    'Assurance',
-                    'Restaurant et bars',
-                    'Équipement et matériel',
-                    'Salaire',
-                    'Transports',
-                    'Marketing',
-                    'IT & Electronique',
-                    'Autres dépenses',
-                ],
-                iconList: [
-                    'check',
-                    'burger',
                     'Logistique',
                     'Assurance',
                     'Restaurant et bars',

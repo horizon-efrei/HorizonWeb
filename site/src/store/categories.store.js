@@ -1,6 +1,6 @@
-import $axios from '@/shared/config/axios.config'
+// import $axios from '@/shared/config/axios.config'
 import { defineStore } from 'pinia'
-import { onItems } from '@/utils/store'
+// import { onItems } from '@/utils/store'
 
 export const useCategoriesStore = defineStore('categories', {
     state: () => ({
@@ -29,7 +29,7 @@ export const useCategoriesStore = defineStore('categories', {
             }
             return { items: categories, pageInfo }
         },
-        async getCategories(query) {
+        async getCategories() {
             return { items: [1, 2, 3, 4], pageInfo: { totalItemCount: 4, totalPages: 1 } }
         },
     },
