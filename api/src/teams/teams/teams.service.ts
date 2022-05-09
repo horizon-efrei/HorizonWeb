@@ -60,7 +60,7 @@ export class TeamsService {
     const allTeams = await this.teamRepository.findWithPagination(
       paginationOptions,
       options,
-      { orderBy: { name: 'ASC' } },
+      { populate: ['members'], orderBy: { name: 'ASC' } },
     );
 
     allTeams.items = allTeams.items.map((team) => {

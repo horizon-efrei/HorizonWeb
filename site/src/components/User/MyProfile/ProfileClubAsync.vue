@@ -123,7 +123,7 @@
                                 </li>
                             </ul>
                             <div class="flex flex-col">
-                                <div v-for="(club, idx) in clubs.items" :key="idx" class="my-1 h-8">
+                                <div v-for="(club, idx) in clubList.items" :key="idx" class="my-1 h-8">
                                     <button class="my-auto text-1">
                                         <p class="text-sm text-blue-500">Demander à rejoindre</p>
                                     </button>
@@ -138,26 +138,6 @@
         <!-- Gestion des assos (pres/ vice pres) -->
         <div v-if="componentSelected === 2 && userClubsPresident().length >= 1">
             <div class="">
-                <!-- <div
-                    v-if="userClubsPresident().length >= 1"
-                    class="flex flex-col p-2 w-1/6 border-r-2 border-color-4-alt"
-                >
-                    <div v-for="club in userClubsPresident()" :key="club" class="mb-8">
-                        <button class="flex text-left" @click="changeSelectedClub(club)">
-                            <img
-                                :src="club.club.avatar"
-                                :alt="`${club.club.name} icon`"
-                                class="my-auto w-8 h-8 rounded-full"
-                            />
-                            <div
-                                class="hidden my-auto ml-2 md:block"
-                                :class="club.club.clubId === clubSelected.club.clubId ? 'text-blue-500' : ''"
-                            >
-                                {{ club.club.name }}
-                            </div>
-                        </button>
-                    </div>
-                </div> -->
                 <div class="p-4 w-full sm:px-8">
                     <div class="flex gap-2 items-center mb-8">
                         <h2 class="text-xl">Gestion de votre Association :</h2>
@@ -224,7 +204,7 @@
                     />
                     <div>
                         <h3 class="mb-4 text-lg">Invitations en attente</h3>
-                        <div class="flex">
+                        <div v-if="requests.length > 0" class="flex">
                             <div class="flex flex-col gap-2 w-48">
                                 <div
                                     v-for="request in requests"
@@ -268,10 +248,41 @@
                                 </div>
                             </div>
                         </div>
+                        <div v-else>Vous n'avez pas de demandes d'adhésions en attente</div>
                     </div>
 
                     <div>
                         <h3 class="my-4 text-lg">Liste des Membres</h3>
+                        <div class="flex gap-8">
+                            <div class="flex flex-col gap-2">
+                                <div v-for="member in members" :key="member.teamMemberId" class="flex gap-2">
+                                    <UserAvatar
+                                        :img-src="member.user.avatar"
+                                        :alt="member.user.firstname + ' ' + member.user.lastname + ' icon'"
+                                        :size="2"
+                                        :username="member.user.firstname + ' ' + member.user.lastname"
+                                    />
+                                    <div class="flex flex-col my-auto">
+                                        {{ member.user.firstname + ' ' + member.user.lastname }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2 mt-1">
+                                <div v-for="member in members" :key="member.teamMemberId" class="h-8">
+                                    {{ member.role }}
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-2">
+                                <button
+                                    v-for="member in members"
+                                    :key="member.teamMemberId"
+                                    class="h-8 text-red-500"
+                                    @click="() => kickMember(member.user.userId)"
+                                >
+                                    Kick
+                                </button>
+                            </div>
+                        </div>
                         <!-- <div v-if="clubMembers != undefined && clubMembers != null">
                             <ul>
                                 <li v-for="member in clubMembers" :key="member" class="flex gap-4">
@@ -341,18 +352,20 @@
     const clubSelected = ref(null)
     const avatarShown = ref(false)
     const requests = ref([])
+    const members = ref([])
 
     const userClubsPresident = () => clubs.value.items.filter((club) => club.role === 'owner')
     const changeSelectedClub = async (club) => {
         clubSelected.value = userClubsPresident()[club]
         await loadRequests(clubSelected.value.team.teamId)
+        await loadMembers(clubSelected.value.team.teamId)
     }
     const showImage = () => {
         avatarShown.value = !avatarShown.value
     }
 
     const roles = {
-        'Président': 'president',
+        'Président': 'owner',
         'Vice-Président': 'vice-president',
         'Secretaire': 'secretary',
         'Trésorier': 'treasurer',
@@ -379,14 +392,12 @@
         const userId = me.value.userId
         await profile
             .getClubs(userId)
-            .then((res) => {
+            .then(async (res) => {
                 clubs.value = res
                 clubSelected.value = userClubsPresident()[0]
                 const teamId = clubSelected.value.team.teamId
-                if (teamId) {
-                    console.log({ teamId })
-                    loadRequests(teamId)
-                }
+                loadRequests(teamId)
+                loadMembers(teamId)
             })
             .catch((err) => {
                 emitter.emit('error-route', { code: getStatus(err.response) })
@@ -426,7 +437,29 @@
             })
     }
 
+    const loadMembers = async (teamId) => {
+        await profile
+            .getMembers(teamId)
+            .then((res) => {
+                members.value = res.items
+            })
+            .catch((err) => {
+                emitter.emit('error-route', { code: getStatus(err.response) })
+            })
+    }
+
     //TODO leaveClub
+
+    const kickMember = async (userId) => {
+        await profile
+            .removeMember(userId, clubSelected.value.team.teamId)
+            .then(() => {
+                loadMembers(clubSelected.value.team.teamId)
+            })
+            .catch((err) => {
+                emitter.emit('error-route', { code: getStatus(err.response) })
+            })
+    }
 
     await loadMe()
     await loadClubs()
