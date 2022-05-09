@@ -60,7 +60,6 @@
     import JoinPopUp from '@/components/Clubs/JoinPopUp.vue'
     import { useAuthStore } from '@/store/auth.store'
 
-    console.log('hehe')
     const clubs = useClubsStore()
     const clubList = ref([])
     const showPopUp = ref(false)
@@ -72,9 +71,7 @@
         await clubs
             .getClubs()
             .then((res) => {
-                console.log({ res })
                 clubList.value = res
-                console.log({ clubList })
             })
             .catch((err) => {
                 emitter.emit('error-route', { code: getStatus(err.response) })

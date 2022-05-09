@@ -138,12 +138,10 @@
         () => {
             contacts.value.map((contact) => {
                 if (Number.isInteger(contact.contact)) {
-                    console.log('load', contact.contact, contactsTypes.value)
                     contact.contact = contactsTypes.value[contact.contact]
                 }
                 return contact
             })
-            console.log(contacts.value)
         },
         { deep: true },
     )

@@ -37,7 +37,6 @@
         //     // required: true,
         // },
     })
-    console.log({ Jambon: props.modelValue })
     const close = () => {
         // props.modelValue.value = false
     }
