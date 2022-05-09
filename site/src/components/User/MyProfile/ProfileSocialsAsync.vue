@@ -1,5 +1,4 @@
 <template>
-    <div class="">Jambonneau</div>
     <div class="mb-4">
         <div class="flex">
             <div class="text-lg">Comptes Externes</div>
