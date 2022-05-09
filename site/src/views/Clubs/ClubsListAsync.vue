@@ -7,38 +7,38 @@
                 <!-- <ClubCard v-for="club in clubs" :key="club.id" :club="club" /> -->
                 <div v-for="club in clubList.items" :key="club.teamId">
                     <div
-                        class="flex flex-col justify-between items-center pb-4 rounded-lg shadow-xl bg-1 w-96text-black"
+                        class="flex flex-col justify-between items-center pb-4 w-96 text-black rounded-lg shadow-xl bg-1"
                     >
                         <div class="flex flex-col items-center w-full">
-                            <div class="w-full h-20 bg-blue-200 rounded-t-lg"></div>
-                            <div class="flex gap-4 px-4 mb-2 w-full">
-                                <div class="-mt-8">
-                                    <UserAvatar :img-src="club.avatar" size="4.5" :username="club.name" />
-                                </div>
-                                <div>
-                                    <h3 class="text-lg font-bold truncate text-1">
-                                        {{ club.name }}
-                                    </h3>
-                                    <p class="-mt-2 text-sm text-gray-400">57 membres</p>
-                                </div>
+                            <div class="w-full h-24 bg-blue-200 rounded-t-lg"></div>
+                            <div class="-mt-8 rounded-full border-4 border-white">
+                                <UserAvatar :img-src="club.avatar" size="4.5" :username="club.name" />
                             </div>
-                            <p class="px-4 h-24 text-sm text-justify line-clamp-4 text-1">
-                                {{ club.description }}
-                            </p>
+                            <h3 class="text-lg font-bold truncate text-1">
+                                {{ club.name }}
+                            </h3>
+                            <p class="text-gray-400 text-md">Entraide</p>
                         </div>
-                        <div class="flex gap-4 justify-center w-full">
-                            <a
+                        <div
+                            class="grid grid-cols-3 gap-4 justify-items-center items-center px-4 pt-2 mt-6 w-full border-t-2 border-gray-400"
+                        >
+                            <div class="flex gap-2 items-center">
+                                {{ club.members.length }}
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <!-- <a
                                 class="p-2 w-44 text-base text-center text-white bg-blue-500 rounded-md"
                                 :href="'#/clubs/' + club.teamId"
                             >
                                 Plus d'informations
-                            </a>
+                            </a> -->
                             <button
-                                class="p-2 w-44 text-base text-center text-white bg-green-500 rounded-md"
+                                class="p-2 w-fit text-base text-center text-white bg-green-500 rounded-md"
                                 @click="() => joinClub(club.teamId)"
                             >
                                 Rejoindre
                             </button>
+                            <a :href="'#/clubs/' + club.teamId">Plus d'info</a>
                         </div>
                     </div>
                 </div>

@@ -38,19 +38,22 @@
                             <div class="text-lg">Associations</div>
                             <div class="flex flex-wrap mt-2">
                                 <div v-for="club in clubs.items" :key="club" class="flex mr-4 mb-4 h-16">
-                                    <p v-if="club.club.avatar != null" class="my-auto w-16 h-16">
-                                        <img
-                                            :src="club.club.avatar"
-                                            :alt="`${club.club.name} Logo`"
+                                    <p class="my-auto">
+                                        <UserAvatar
+                                            :img-src="club.team.avatar"
+                                            :alt="`${club.team.name} Logo`"
+                                            :username="club.team.name"
+                                            size="4"
                                             class="rounded-full shadow-inner"
-                                        />
+                                        ></UserAvatar>
                                     </p>
-                                    <div class="ml-2 w-32">
+                                    <div class="my-auto ml-2 w-32">
                                         <div class="-mb-1 text-lg font-bold truncate last:text-clip">
-                                            {{ club.club.name }}
+                                            {{ club.team.name }}
                                         </div>
                                         <div class="-mb-1">
-                                            {{ Object.keys(roles).find((role) => roles[role] === club.role) }}
+                                            <!-- {{ Object.keys(roles).find((role) => roles[role] === club.role) }} -->
+                                            {{ club.role }}
                                         </div>
                                         <div class="text-sm truncate text-5">
                                             {{ club.roleLabel }}
@@ -188,14 +191,14 @@
             })
     }
 
-    const roles = {
-        'Président': 'president',
-        'Vice-Président': 'vice-president',
-        'Secretaire': 'secretary',
-        'Trésorier': 'treasurer',
-        'Manager': 'manager',
-        'Membre': 'member',
-    }
+    // const roles = {
+    //     'Président': 'president',
+    //     'Vice-Président': 'vice-president',
+    //     'Secretaire': 'secretary',
+    //     'Trésorier': 'treasurer',
+    //     'Manager': 'manager',
+    //     'Membre': 'member',
+    // }
 
     await loadProfile()
     await loadContacts()

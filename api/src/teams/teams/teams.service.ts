@@ -52,7 +52,7 @@ export class TeamsService {
     return await this.teamRepository.findWithPagination(
       paginationOptions,
       options,
-      { orderBy: { name: 'ASC' } },
+      { populate: ['members'], orderBy: { name: 'ASC' } },
     );
   }
 

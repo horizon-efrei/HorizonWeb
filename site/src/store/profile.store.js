@@ -44,13 +44,18 @@ export const useProfilesStore = defineStore('profile', {
                 .then((res) => this.replaceContacts(...this.contacts, res))
         },
         async getMembershipsRequests(clubId) {
-            return await $axios.get(`/teams/requests/${clubId}`).then((res) => res.data)
+            return await $axios.get(`/teams/requests/${clubId}?state=pending`).then((res) => res.data)
+        },
+        async getMembers(clubId) {
+            return await $axios.get(`/teams/members/${clubId}`).then((res) => res.data)
         },
         async acceptMembershipRequest(requestId) {
-            console.log('ZoboZob', requestId)
             return await $axios
                 .patch(`/teams/requests/${requestId}/`, { state: 'approved' })
                 .then((res) => res.data)
+        },
+        async removeMember(userId, clubId) {
+            return await $axios.delete(`teams/members/${clubId}/${userId}`).then((res) => res.data)
         },
         // async patchContact(contact) {
         //     return await $axios.patch()

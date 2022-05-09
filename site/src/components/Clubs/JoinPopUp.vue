@@ -25,17 +25,17 @@
 </template>
 
 <script setup>
-    import { ref } from 'vue'
+    // import { ref } from 'vue'
 
     const props = defineProps({
         request: {
             type: Object,
             required: true,
         },
-        modelValue: {
-            type: ref(Boolean),
-            // required: true,
-        },
+        // modelValue: {
+        //     type: Boolean,
+        //     // required: true,
+        // },
     })
     console.log({ Jambon: props.modelValue })
     const close = () => {
