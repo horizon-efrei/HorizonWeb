@@ -124,7 +124,6 @@
         else console.log('error')
     }
 
-
     const rmLineAccount = (idx) => {
         contacts.value.splice(idx, 1)
     }

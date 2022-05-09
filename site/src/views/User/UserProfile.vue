@@ -9,6 +9,5 @@
 
 <script setup>
     import AppLoader from '@/components/App/AppLoader.vue'
-    import UserProfileAsync from './UserProfileAsync.vue';
-
+    import UserProfileAsync from './UserProfileAsync.vue'
 </script>
