@@ -34,15 +34,14 @@ export const sections = computed(() => {
                               icon: 'columns',
                           },
                           {
-                            to: '/admin/association',
-                            regActive: /^\/admin\/association/,
-                            textSmall: 'Association',
-                            textLarge: 'Association',
-                            icon: 'gear',
-                        },
+                              to: '/admin/association',
+                              regActive: /^\/admin\/association/,
+                              textSmall: 'Association',
+                              textLarge: 'Association',
+                              icon: 'gear',
+                          },
                       ],
                   },
-
               ]
             : []),
 
