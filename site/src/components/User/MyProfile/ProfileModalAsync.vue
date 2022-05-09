@@ -118,11 +118,7 @@
             })
     }
     const showImage = () => {
-        if (avatarShown.value) {
-            avatarShown.value = false
-        } else {
-            avatarShown.value = true
-        }
+        avatarShown.value = !avatarShown.value
     }
     const cropUploadSuccess = (jsonData) => {
         console.log(jsonData.profileImageId)
