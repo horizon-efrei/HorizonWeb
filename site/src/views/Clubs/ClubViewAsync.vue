@@ -124,7 +124,7 @@
     // import ThreadPreviewCard from '@/components/App/Card/ThreadPreviewCard.vue'
     import UserAvatar from '@/components/User/UserAvatar.vue'
     import { useRoute } from 'vue-router'
-    import { watch, ref, nextTick } from 'vue'
+    import { ref, nextTick } from 'vue'
     import { useClubsStore } from '@/store/clubs.store'
     import { emitter } from '@/shared/modules/emitter'
     import { getStatus } from '@/utils/errors'
