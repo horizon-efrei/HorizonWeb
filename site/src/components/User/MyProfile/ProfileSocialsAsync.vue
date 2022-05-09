@@ -120,22 +120,11 @@
     }
 
     const submit = () => {
-        let bol = true
-        const notNull = (str) => {
-            str != '' && str != null && str != undefined
-        }
-        contacts.value.forEach((contact) => {
-            if (
-                !bol ||
-                !contact.contact.name ||
-                !notNull(contact.contact.pseudo) ||
-                !notNull(contact.contact.link)
-            )
-                bol = false
-        })
-        if (bol) console.log('Submit')
+        const isValid = contacts.value.every(({ contact }) => contact.name && contact.pseudo && contact.link)
+        if (isValid) console.log('Submit')
         else console.log('error')
     }
+
 
     const rmLineAccount = (idx) => {
         contacts.value.splice(idx, 1)
