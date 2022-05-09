@@ -9,7 +9,7 @@
     </div>
     <ListPage base-route="/test" :store-callback="categories.getCategories">
         <template #default="{ items }">
-            <CategorieList :categories="items" />
+            <CategoryList :categories="items" />
         </template>
     </ListPage>
 
@@ -24,7 +24,7 @@
     import AppModal from '@/components/App/AppModal.vue'
     import ListPage from '@/views/App/ListPage.vue'
     import { ref } from 'vue'
-    import CategorieList from '../Categorie/CategorieList.vue'
+    import CategoryList from './Category/CategoryList.vue'
 
     import { useCategoriesStore } from '@/store/categories.store'
 

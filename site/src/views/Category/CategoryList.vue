@@ -2,7 +2,7 @@
     <!-- TODO: add filtering, tab, info panel -->
     <div class="flex flex-col gap-4 my-2 mx-4 text-0">
         <template v-if="categories.length">
-            <CategoriePreviewCard
+            <CategoryCard
                 v-for="(categorie, i) in categories"
                 :key="i"
                 :categorie="categorie"
@@ -13,7 +13,7 @@
 </template>
 
 <script setup>
-    import CategoriePreviewCard from '@/components/App/Card/CategoriePreviewCard.vue'
+    import CategoryCard from '@/components/App/Card/CategoryCard.vue'
 
     defineProps({
         categories: {

@@ -1,35 +1,34 @@
 <template>
     <!-- TODO: add filtering, tab, info panel -->
-    <AppView>
-        <div class="flex">
-            <h3 class="pl-10 mb-8 text-3xl font-bold text-0">Trésorerie</h3>
-            <div class="grow h-14 ..."></div>
-            <button class="shrink-0 button-green" @click="handleModal">
-                <p><i class="fas fa-plus"></i> Ajouter</p>
-            </button>
-        </div>
-        <!-- <AppModal :show="showModal" @close="handleModal = false">
+    <div class="flex">
+        <h3 class="pl-10 mb-8 text-3xl font-bold text-0">Trésorerie</h3>
+        <div class="grow h-14 ..."></div>
+        <button class="shrink-0 button-green" @click="handleModal">
+            <p><i class="fas fa-plus"></i> Ajouter</p>
+        </button>
+    </div>
+    <!-- <AppModal :show="showModal" @close="handleModal = false">
             <Transition name="fade">
                 <p>zj</p>
             </Transition>
         </AppModal> -->
-        <div class="grid grid-cols-3 gap-4 my-2">
-            <CardPreviewTreasure
-                v-for="el in data"
-                :key="el"
-                class="p-5"
-                :categorie-name="el.name"
-                :icon="el.icon"
-                :montant="el.price"
-                :color="el.color"
-            />
-        </div>
+    <div class="grid grid-cols-3 gap-4 my-2">
+        <AccountingCard
+            v-for="el in data"
+            :key="el"
+            class="p-5"
+            :categorie-name="el.name"
+            :icon="el.icon"
+            :montant="el.price"
+            :color="el.color"
+        />
+    </div>
 
-        <AppTabs v-model:tab="currentTab" :tabs="tabs" route-base="/test">
-            <DashboardCore :columns="tabs" />
-        </AppTabs>
+    <AppTabs v-model:tab="currentTab" :tabs="tabs" route-base="/test">
+        <DashboardCore :columns="tabs" />
+    </AppTabs>
 
-        <!--
+    <!--
             Creer un tableau pour le tbody ...
             Il sera passer en props par :items
 
@@ -38,15 +37,13 @@
                 <i class="mx-3 fas fa-trash" @click="deleteCategorie" />
             </button>
         -->
-    </AppView>
 </template>
 
 <script setup>
     import DashboardCore from '@/components/Dashboard/DashboardCore.vue'
     /* import AppModal from '@/components/App/AppModal.vue' */
-    import AppView from '@/views/App/AppView.vue'
     import { ref, computed } from 'vue'
-    import CardPreviewTreasure from '../CardPreviewTreasure.vue'
+    import AccountingCard from '@/components/App/Card/AccountingCard.vue'
 
     const data = [
         {

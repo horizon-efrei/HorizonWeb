@@ -155,7 +155,7 @@
     import SelectInput from '@/components/Input/SelectInput.vue'
     import useVuelidate from '@vuelidate/core'
     import { required } from '@vuelidate/validators'
-    import CardPage from '@/components/App/CardPage.vue'
+    import CardPage from '@/views/App/CardPage.vue'
     /* import { useCategoriesStore } from '@/store/categories.store'
 
     const categories = useCategoriesStore() */
