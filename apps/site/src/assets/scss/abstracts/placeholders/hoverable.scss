@@ -1,0 +1,7 @@
+%tab-hover:hover {
+    @apply bg-slate-600/50;
+
+    .dark & {
+        @apply bg-slate-700/50;
+    }
+}

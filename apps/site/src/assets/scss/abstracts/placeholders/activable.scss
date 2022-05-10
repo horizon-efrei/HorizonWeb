@@ -1,0 +1,15 @@
+%tab-active.active {
+    @apply bg-slate-600/50 text-blue-500;
+
+    &:hover {
+        @apply bg-slate-800/50 text-blue-600;
+    }
+
+    .dark & {
+        @apply bg-slate-700/50 text-blue-600;
+
+        &:hover {
+            @apply bg-slate-900/50 text-blue-500;
+        }
+    }
+}

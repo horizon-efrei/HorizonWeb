@@ -1,8 +1,0 @@
-@import '@/assets/scss/abstracts/placeholders/activable';
-@import '@/assets/scss/abstracts/placeholders/focusable';
-@import '@/assets/scss/abstracts/placeholders/hoverable';
-
-.tab {
-    @apply cursor-pointer;
-    @extend %text-hover, %left-label-active, %text-opaque-hover, %text-opaque-active;
-}

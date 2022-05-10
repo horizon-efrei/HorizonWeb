@@ -1,0 +1,78 @@
+%button-flat,
+.button-flat {
+    @apply rounded-md font-medium cursor-pointer select-none;
+}
+
+%button-raised {
+    @extend %button-flat;
+    @apply flex justify-center items-center h-fit w-fit mt-1.5;
+
+    box-shadow: 0 0 1px rgb(0 0 0 / 40%);
+
+    & > :first-child {
+        @apply px-4 py-2 relative bottom-[0.3rem] w-fit rounded;
+
+        box-shadow: inset 0 0 3px rgb(255 255 255 / 50%);
+    }
+
+    &[disabled] > :first-child {
+        @apply bg-gray-500 dark:bg-gray-700 cursor-not-allowed;
+    }
+
+    &:not([disabled]) > :first-child {
+        @apply transform active:translate-y-[0.14rem]
+            transition duration-75 ease-in-out;
+    }
+}
+
+.button {
+    @extend %button-raised;
+    @apply text-white bg-indigo-600 dark:bg-indigo-800
+        hover:bg-indigo-700 hover:dark:bg-indigo-900
+        active:bg-indigo-800 active:dark:bg-indigo-900
+        disabled:bg-gray-600 disabled:dark:bg-gray-800;
+
+    & > :first-child {
+        @apply bg-indigo-500 dark:bg-indigo-700
+            hover:bg-indigo-600 dark:hover:bg-indigo-800
+            active:bg-indigo-700 dark:active:bg-indigo-900;
+    }
+}
+
+.button-blue-gradient {
+    @extend %button-raised;
+
+    background: linear-gradient(to right, #45aaf2, #1d98df);
+
+    & > :first-child {
+        background: linear-gradient(to right, #45aaf2, #1d98df);
+    }
+}
+
+.button-red {
+    @extend %button-raised;
+    @apply text-white bg-red-600 dark:bg-red-800
+        hover:bg-red-700 hover:dark:bg-red-900
+        active:bg-red-800 active:dark:bg-red-900
+        disabled:bg-gray-600 disabled:dark:bg-gray-800;
+
+    & > :first-child {
+        @apply bg-red-500 dark:bg-red-700
+            hover:bg-red-600 dark:hover:bg-red-800
+            active:bg-red-700 dark:active:bg-red-900;
+    }
+}
+
+.button-green {
+    @extend %button-raised;
+    @apply text-white bg-green-600 dark:bg-green-800
+        hover:bg-green-700 hover:dark:bg-green-900
+        active:bg-green-800 active:dark:bg-green-900
+        disabled:bg-gray-600 disabled:dark:bg-gray-800;
+
+    & > :first-child {
+        @apply bg-green-500 dark:bg-green-700
+            hover:bg-green-600 dark:hover:bg-green-800
+            active:bg-green-700 dark:active:bg-green-900;
+    }
+}
